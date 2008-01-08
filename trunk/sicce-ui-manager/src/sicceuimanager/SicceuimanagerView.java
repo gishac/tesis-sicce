@@ -3,9 +3,20 @@
  */
 package sicceuimanager;
 
+import com.jgoodies.looks.Options;
+import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
+import com.jgoodies.looks.plastic.theme.AbstractSkyTheme;
+import com.jgoodies.looks.plastic.theme.DarkStar;
+import com.jgoodies.looks.plastic.theme.DesertBlue;
+import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -17,6 +28,7 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.JTabbedPaneExtended;
 
@@ -28,6 +40,7 @@ public class SicceuimanagerView extends FrameView {
     public SicceuimanagerView(SingleFrameApplication app) {
         super(app);
 
+        ApplyLookAndFeel();
         initComponents();
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
@@ -86,7 +99,7 @@ public class SicceuimanagerView extends FrameView {
                 }
             }
         });
-        SetFrameSize();
+        SetFrameSize(); 
         AddTabManager();
     }
 
@@ -235,5 +248,15 @@ public class SicceuimanagerView extends FrameView {
         tabManager.AddTab(new JTabExtended("gisbert 2"));
     }
     
+    private void ApplyLookAndFeel()
+    {
+        try {
+            //com.jgoodies.looks.plastic.theme.
+            PlasticLookAndFeel.setPlasticTheme(new com.jgoodies.looks.plastic.theme.DarkStar());
+            UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
+        } catch (Exception ex) {
+            Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 }
