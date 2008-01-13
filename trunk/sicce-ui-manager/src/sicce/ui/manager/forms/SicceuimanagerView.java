@@ -1,7 +1,7 @@
 /*
  * SicceuimanagerView.java
  */
-package sicceuimanager;
+package sicce.ui.manager.forms;
 
 import com.jgoodies.looks.Options;
 import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
@@ -158,11 +158,11 @@ public class SicceuimanagerView extends FrameView {
 
         menuBar.setName("menuBar"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicceuimanager.SicceuimanagerApp.class).getContext().getResourceMap(SicceuimanagerView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(SicceuimanagerView.class);
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(sicceuimanager.SicceuimanagerApp.class).getContext().getActionMap(SicceuimanagerView.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getActionMap(SicceuimanagerView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setMnemonic('r');

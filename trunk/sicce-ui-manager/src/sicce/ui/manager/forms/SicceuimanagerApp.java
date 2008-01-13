@@ -2,7 +2,7 @@
  * SicceuimanagerApp.java
  */
 
-package sicceuimanager;
+package sicce.ui.manager.forms;
 
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;

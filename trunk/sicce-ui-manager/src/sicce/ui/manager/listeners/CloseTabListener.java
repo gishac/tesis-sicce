@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package sicce.ui.listeners;
+package sicce.ui.manager.listeners;
 
 import java.awt.Point;
 import java.awt.Rectangle;
