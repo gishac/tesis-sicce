@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import sicce.api.info.interfaces.ITabbedWindow;
-import sicce.ui.listeners.CloseTabListener;
+import sicce.ui.manager.listeners.CloseTabListener;
 
 /**
  *

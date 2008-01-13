@@ -23,7 +23,7 @@
             </reference>
         </references>
         <swingapp xmlns="http://www.netbeans.org/ns/form-swingapp/1">
-            <application-class name="sicceuimanager.SicceuimanagerApp"/>
+            <application-class name="sicce.ui.manager.forms.SicceuimanagerApp"/>
         </swingapp>
     </configuration>
 </project>
