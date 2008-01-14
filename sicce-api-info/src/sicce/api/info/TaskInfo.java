@@ -14,8 +14,8 @@ import sicce.api.info.ConstantsProvider.TasksProvider;
  * @author gish@c
  */
 public class TaskInfo {
-
-    private String name;
+ 
+    private String name;;
     private String iconName;
     private String description;
 
