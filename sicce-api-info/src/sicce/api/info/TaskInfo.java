@@ -15,9 +15,9 @@ import sicce.api.info.ConstantsProvider.TasksProvider;
  */
 public class TaskInfo {
  
-    private String name;;
+    private String name;
     private String iconName;
-    private String description;
+    private String description;;
 
     public String getDescription() {
         return description;
