@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Interfaz a ser implementada por los componentes que van a interactuar con la barra de herramientas
+ * El proposito principal, es que esta interfaz sea implementada por los mantenimientos de la aplicacion
  */
 
 package sicce.api.info.interfaces;
@@ -13,4 +13,8 @@ public interface ITabbedWindow {
 
     void setTitle(String title);
     String getTitle();
+    void Save();
+    void Search();
+    void Delete();
+    void Edit();
 }
