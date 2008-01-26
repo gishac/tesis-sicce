@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.JTabbedPane;
+import sicce.ui.manager.controls.JTabbedPaneExtended;
 
 /**
  *
@@ -21,12 +21,12 @@ import javax.swing.JTabbedPane;
  */
 public class CloseTabListener implements ActionListener, MouseListener {
 
-    JTabbedPane tabManager;
+    JTabbedPaneExtended tabManager;
     JPopupMenu popupMenu;
     private Object source;
     private Point clickPoint;
     
-    public CloseTabListener(JTabbedPane ownerTab)
+    public CloseTabListener(JTabbedPaneExtended ownerTab)
     {
         this.tabManager = ownerTab;
         popupMenu = new JPopupMenu();
@@ -41,7 +41,7 @@ public class CloseTabListener implements ActionListener, MouseListener {
          {
             Rectangle rect = tabManager.getUI().getTabBounds(tabManager, i);
             if(rect.contains(clickPoint)){
-                tabManager.remove(i);
+                tabManager.RemoveTab(i);
             }
         }
     }

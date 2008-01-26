@@ -5,6 +5,7 @@
 
 package sicce.ui.manager.controls;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
@@ -19,14 +20,24 @@ import sicce.ui.manager.listeners.CloseTabListener;
  */
 public class JTabbedPaneExtended extends JTabbedPane{
     
+    /**
+     * Mantiene la instancia del tab actual
+     */
+    private ITabbedWindow currentTab;
+    
+    /** 
+     *  Constructor
+     */
     public JTabbedPaneExtended()
     {
         super();
         this.addMouseListener(new CloseTabListener(this));
     }
     
+    /**
+     * Contiene la lista de tabs que aloja el control
+     */
     private List<ITabbedWindow> tabs;
-
     public List<ITabbedWindow> getTabs() {
         if(tabs == null)
         {
@@ -35,15 +46,44 @@ public class JTabbedPaneExtended extends JTabbedPane{
         return tabs;
     }
 
-    public void setTabs(List<ITabbedWindow> tabs) {
-        this.tabs = tabs;
+   
+    /**
+     * Agrega un tab al panel
+     * @param tab
+     */
+    public void AddTab(JTabExtended tab)
+    {
+        tab.setParentPane(this);
+        this.addTab(tab.getTitle(), tab);
+        getTabs().add(tab);
     }
     
-    public void AddTab(ITabbedWindow tab)
+    /**
+     * Remueve un tab del panel
+     * @param index
+     */
+    public void RemoveTab(int index)
     {
-        JPanel pane = new JPanel();
-        JLabel l = new JLabel(tab.getTitle());
-        pane.add(l);
-        this.addTab(tab.getTitle(), pane);
+        JTabExtended tab = (JTabExtended)this.getTabComponentAt(index);
+        getTabs().remove(tab);
+        this.remove(index);
+    }
+    
+    /**
+     * Devuelve el tab actualmente visible
+     * @return
+     */
+    public ITabbedWindow getCurrentTab()
+    {
+        return currentTab;
+    }
+    
+    /**
+     * Setea el tab actual
+     * @param currentTab
+     */
+    public void setCurrentTab(ITabbedWindow currentTab)
+    {
+        this.currentTab = currentTab;
     }
 }

@@ -18,16 +18,57 @@
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="toolBarItemNew">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="jMenu1.text"/>
-            <Property name="name" type="java.lang.String" value="jMenu1" noResource="true"/>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemNew.icon"/>
+            <Property name="text" type="java.lang.String" resourceKey="toolBarItemNew.text"/>
+            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemNew.toolTipText"/>
+            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="name" type="java.lang.String" value="toolBarItemNew" noResource="true"/>
           </Properties>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu2">
+        <Menu class="javax.swing.JMenu" name="toolBarItemSave">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="jMenu2.text"/>
-            <Property name="name" type="java.lang.String" value="jMenu2" noResource="true"/>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemSave.icon"/>
+            <Property name="text" type="java.lang.String" resourceKey="toolBarItemSave.text"/>
+            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemSave.toolTipText"/>
+            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="name" type="java.lang.String" value="toolBarItemSave" noResource="true"/>
+          </Properties>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="toolBarItemEdit">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemEdit.icon"/>
+            <Property name="text" type="java.lang.String" resourceKey="toolBarItemEdit.text"/>
+            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemEdit.toolTipText"/>
+            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="name" type="java.lang.String" value="toolBarItemEdit" noResource="true"/>
+          </Properties>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="toolBarItemDelete">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemDelete.icon"/>
+            <Property name="text" type="java.lang.String" resourceKey="toolBarItemDelete.text"/>
+            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemDelete.toolTipText"/>
+            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="name" type="java.lang.String" value="toolBarItemDelete" noResource="true"/>
+          </Properties>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="toolBarItemSearch">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemSearch.icon"/>
+            <Property name="text" type="java.lang.String" resourceKey="toolBarItemSearch.text"/>
+            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemSearch.toolTipText"/>
+            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="name" type="java.lang.String" value="toolBarItemSearch" noResource="true"/>
+          </Properties>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="toolBarItemBack">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemBack.icon"/>
+            <Property name="text" type="java.lang.String" resourceKey="toolBarItemBack.text"/>
+            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemBack.toolTipText"/>
+            <Property name="name" type="java.lang.String" value="toolBarItemBack" noResource="true"/>
           </Properties>
         </Menu>
       </SubComponents>
@@ -36,12 +77,6 @@
   <Properties>
     <Property name="component" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
       <ComponentRef name="mainPanel"/>
-    </Property>
-    <Property name="menuBar" type="javax.swing.JMenuBar" editor="org.netbeans.modules.form.ComponentChooserEditor">
-      <ComponentRef name="default"/>
-    </Property>
-    <Property name="statusBar" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
-      <ComponentRef name="default"/>
     </Property>
   </Properties>
   <AuxValues>
