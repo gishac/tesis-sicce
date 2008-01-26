@@ -137,30 +137,71 @@ public class SicceuimanagerView extends FrameView {
 
         mainPanel = new javax.swing.JPanel();
         toolBar = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        toolBarItemNew = new javax.swing.JMenu();
+        toolBarItemSave = new javax.swing.JMenu();
+        toolBarItemEdit = new javax.swing.JMenu();
+        toolBarItemDelete = new javax.swing.JMenu();
+        toolBarItemSearch = new javax.swing.JMenu();
+        toolBarItemBack = new javax.swing.JMenu();
 
         mainPanel.setName("mainPanel"); // NOI18N
 
         toolBar.setName("toolBar"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(SicceuimanagerView.class);
-        jMenu1.setText(resourceMap.getString("jMenu1.text")); // NOI18N
-        jMenu1.setName("jMenu1"); // NOI18N
-        toolBar.add(jMenu1);
+        toolBarItemNew.setIcon(resourceMap.getIcon("toolBarItemNew.icon")); // NOI18N
+        toolBarItemNew.setText(resourceMap.getString("toolBarItemNew.text")); // NOI18N
+        toolBarItemNew.setToolTipText(resourceMap.getString("toolBarItemNew.toolTipText")); // NOI18N
+        toolBarItemNew.setEnabled(false);
+        toolBarItemNew.setName("toolBarItemNew"); // NOI18N
+        toolBar.add(toolBarItemNew);
 
-        jMenu2.setText(resourceMap.getString("jMenu2.text")); // NOI18N
-        jMenu2.setName("jMenu2"); // NOI18N
-        toolBar.add(jMenu2);
+        toolBarItemSave.setIcon(resourceMap.getIcon("toolBarItemSave.icon")); // NOI18N
+        toolBarItemSave.setText(resourceMap.getString("toolBarItemSave.text")); // NOI18N
+        toolBarItemSave.setToolTipText(resourceMap.getString("toolBarItemSave.toolTipText")); // NOI18N
+        toolBarItemSave.setEnabled(false);
+        toolBarItemSave.setName("toolBarItemSave"); // NOI18N
+        toolBar.add(toolBarItemSave);
+
+        toolBarItemEdit.setIcon(resourceMap.getIcon("toolBarItemEdit.icon")); // NOI18N
+        toolBarItemEdit.setText(resourceMap.getString("toolBarItemEdit.text")); // NOI18N
+        toolBarItemEdit.setToolTipText(resourceMap.getString("toolBarItemEdit.toolTipText")); // NOI18N
+        toolBarItemEdit.setEnabled(false);
+        toolBarItemEdit.setName("toolBarItemEdit"); // NOI18N
+        toolBar.add(toolBarItemEdit);
+
+        toolBarItemDelete.setIcon(resourceMap.getIcon("toolBarItemDelete.icon")); // NOI18N
+        toolBarItemDelete.setText(resourceMap.getString("toolBarItemDelete.text")); // NOI18N
+        toolBarItemDelete.setToolTipText(resourceMap.getString("toolBarItemDelete.toolTipText")); // NOI18N
+        toolBarItemDelete.setEnabled(false);
+        toolBarItemDelete.setName("toolBarItemDelete"); // NOI18N
+        toolBar.add(toolBarItemDelete);
+
+        toolBarItemSearch.setIcon(resourceMap.getIcon("toolBarItemSearch.icon")); // NOI18N
+        toolBarItemSearch.setText(resourceMap.getString("toolBarItemSearch.text")); // NOI18N
+        toolBarItemSearch.setToolTipText(resourceMap.getString("toolBarItemSearch.toolTipText")); // NOI18N
+        toolBarItemSearch.setEnabled(false);
+        toolBarItemSearch.setName("toolBarItemSearch"); // NOI18N
+        toolBar.add(toolBarItemSearch);
+
+        toolBarItemBack.setIcon(resourceMap.getIcon("toolBarItemBack.icon")); // NOI18N
+        toolBarItemBack.setText(resourceMap.getString("toolBarItemBack.text")); // NOI18N
+        toolBarItemBack.setToolTipText(resourceMap.getString("toolBarItemBack.toolTipText")); // NOI18N
+        toolBarItemBack.setName("toolBarItemBack"); // NOI18N
+        toolBar.add(toolBarItemBack);
 
         setComponent(mainPanel);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar toolBar;
+    private javax.swing.JMenu toolBarItemBack;
+    private javax.swing.JMenu toolBarItemDelete;
+    private javax.swing.JMenu toolBarItemEdit;
+    private javax.swing.JMenu toolBarItemNew;
+    private javax.swing.JMenu toolBarItemSave;
+    private javax.swing.JMenu toolBarItemSearch;
     // End of variables declaration//GEN-END:variables
     private final Timer messageTimer;
     private final Timer busyIconTimer;
