@@ -8,69 +8,163 @@
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
-    </Container>
-    <Container class="javax.swing.JMenuBar" name="toolBar">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="toolBar" noResource="true"/>
-      </Properties>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="toolBarItemNew">
+        <Container class="javax.swing.JToolBar" name="toolBar">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemNew.icon"/>
-            <Property name="text" type="java.lang.String" resourceKey="toolBarItemNew.text"/>
-            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemNew.toolTipText"/>
-            <Property name="enabled" type="boolean" value="false"/>
-            <Property name="name" type="java.lang.String" value="toolBarItemNew" noResource="true"/>
+            <Property name="rollover" type="boolean" value="true"/>
+            <Property name="name" type="java.lang.String" value="toolBar" noResource="true"/>
           </Properties>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="toolBarItemSave">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemSave.icon"/>
-            <Property name="text" type="java.lang.String" resourceKey="toolBarItemSave.text"/>
-            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemSave.toolTipText"/>
-            <Property name="enabled" type="boolean" value="false"/>
-            <Property name="name" type="java.lang.String" value="toolBarItemSave" noResource="true"/>
-          </Properties>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="toolBarItemEdit">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemEdit.icon"/>
-            <Property name="text" type="java.lang.String" resourceKey="toolBarItemEdit.text"/>
-            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemEdit.toolTipText"/>
-            <Property name="enabled" type="boolean" value="false"/>
-            <Property name="name" type="java.lang.String" value="toolBarItemEdit" noResource="true"/>
-          </Properties>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="toolBarItemDelete">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemDelete.icon"/>
-            <Property name="text" type="java.lang.String" resourceKey="toolBarItemDelete.text"/>
-            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemDelete.toolTipText"/>
-            <Property name="enabled" type="boolean" value="false"/>
-            <Property name="name" type="java.lang.String" value="toolBarItemDelete" noResource="true"/>
-          </Properties>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="toolBarItemSearch">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemSearch.icon"/>
-            <Property name="text" type="java.lang.String" resourceKey="toolBarItemSearch.text"/>
-            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemSearch.toolTipText"/>
-            <Property name="enabled" type="boolean" value="false"/>
-            <Property name="name" type="java.lang.String" value="toolBarItemSearch" noResource="true"/>
-          </Properties>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="toolBarItemBack">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemBack.icon"/>
-            <Property name="text" type="java.lang.String" resourceKey="toolBarItemBack.text"/>
-            <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemBack.toolTipText"/>
-            <Property name="name" type="java.lang.String" value="toolBarItemBack" noResource="true"/>
-          </Properties>
-        </Menu>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JButton" name="toolBarItemNew">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="New.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="toolBarItemNew.text"/>
+                <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemNew.toolTipText"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="iconTextGap" type="int" value="0"/>
+                <Property name="inheritsPopupMenu" type="boolean" value="true"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="toolBarItemNew" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toolBarItemNewActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="toolBarItemSave">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemSave.icon"/>
+                <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemSave.toolTipText"/>
+                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="iconTextGap" type="int" value="0"/>
+                <Property name="inheritsPopupMenu" type="boolean" value="true"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="toolBarItemSave" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toolBarItemSaveActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="toolBarItemEdit">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemEdit.icon"/>
+                <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemEdit.toolTipText"/>
+                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="iconTextGap" type="int" value="0"/>
+                <Property name="inheritsPopupMenu" type="boolean" value="true"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="toolBarItemEdit" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toolBarItemEditActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="toolBarItemDelete">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemDelete.icon"/>
+                <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemDelete.toolTipText"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="iconTextGap" type="int" value="0"/>
+                <Property name="inheritsPopupMenu" type="boolean" value="true"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="toolBarItemDelete" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toolBarItemDeleteActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="toolBarItemSearch">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemSearch.icon"/>
+                <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemSearch.toolTipText"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="iconTextGap" type="int" value="0"/>
+                <Property name="inheritsPopupMenu" type="boolean" value="true"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="toolBarItemSearch" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toolBarItemSearchActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="toolBarItemBack">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemBack.icon"/>
+                <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemBack.toolTipText"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="iconTextGap" type="int" value="0"/>
+                <Property name="inheritsPopupMenu" type="boolean" value="true"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="toolBarItemBack" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[29, 29]"/>
+                </Property>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toolBarItemBackActionPerformed"/>
+              </Events>
+            </Component>
+          </SubComponents>
+        </Container>
       </SubComponents>
     </Container>
   </NonVisualComponents>
