@@ -13,8 +13,11 @@ public interface ITabbedWindow {
 
     void setTitle(String title);
     String getTitle();
+    void New();
     void Save();
     void Search();
     void Delete();
     void Edit();
+    void Back();
+    boolean IsActive();
 }

@@ -21,4 +21,17 @@ public class ConstantsProvider {
         PowerMeter,
         Location
     }
+    
+    public enum ToolBarAction
+    {
+        None,
+        RegistryLoaded,
+        Edit,
+        New,
+        Save,
+        Delete,
+        Search,
+        Back
+                
+    }
 }
