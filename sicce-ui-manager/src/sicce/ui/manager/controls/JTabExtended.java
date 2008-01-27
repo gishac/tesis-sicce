@@ -9,13 +9,16 @@ package sicce.ui.manager.controls;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import javax.swing.JPanel;
+import sicce.api.info.ConstantsProvider.ToolBarAction;
+import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.ITabbedWindow;
+import sicce.api.info.interfaces.IToolBarStateListener;
 
 /**
  *
  * @author gish@c
  */
-public class JTabExtended extends JPanel implements ITabbedWindow{
+public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarStateListener{
 
     private String title;
     private FocusListener focusEventHandler;
@@ -67,6 +70,10 @@ public class JTabExtended extends JPanel implements ITabbedWindow{
         return title;
     }
 
+    public void New() {
+       
+    }
+    
     public void Save() {
        
     }
@@ -81,6 +88,23 @@ public class JTabExtended extends JPanel implements ITabbedWindow{
 
     public void Edit() {
         
+    }
+    
+    public void Back() {
+        
+    }
+    
+    public boolean IsActive()
+    {
+        return getParentPane().getCurrentTab().equals(this);
+    }
+
+    /**
+     * Evento generado cuando cambia el estado del toolbar
+     * @param event
+     */
+    public void ToolBarStateChanged(ToolBarEventObject event) {
+        ToolBarAction toolbarAction = event.getToolBarState();       
     }
     
     

@@ -31,6 +31,7 @@ import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.AbstractAction;
 import javax.swing.Timer;
 import javax.swing.Icon;
@@ -40,9 +41,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.DimensionUIResource;
+import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.TaskInfo;
+import sicce.api.info.eventobjects.ToolBarEventObject;
+import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.JTabbedPaneExtended;
+import sicce.ui.manager.handlers.ToolBarHandler;
 
 /**
  * The application's main frame.
@@ -50,68 +55,18 @@ import sicce.ui.manager.controls.JTabbedPaneExtended;
 public class SicceuimanagerView extends FrameView {
 
     public SicceuimanagerView(SingleFrameApplication app) {
-        super(app);
-
+       
+        super(app);                 
         ApplyLookAndFeel();
         initComponents();
-
+        toolBarHandler = new ToolBarHandler(toolBar);
+        
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
-        int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
-        messageTimer = new Timer(messageTimeout, new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-            //statusMessageLabel.setText("");
-            }
-        });
-
-        messageTimer.setRepeats(false);
-        int busyAnimationRate = resourceMap.getInteger("StatusBar.busyAnimationRate");
-        for (int i = 0; i < busyIcons.length; i++) {
-            busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
-        }
-        busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
-            //statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
-            }
-        });
-        idleIcon = resourceMap.getIcon("StatusBar.idleIcon");
+        
+       
         //statusAnimationLabel.setIcon(idleIcon);
         //progressBar.setVisible(false);
-
-        // connecting action tasks to status bar via TaskMonitor
-        TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
-        taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                String propertyName = evt.getPropertyName();
-                if ("started".equals(propertyName)) {
-                    if (!busyIconTimer.isRunning()) {
-                        //statusAnimationLabel.setIcon(busyIcons[0]);
-                        busyIconIndex = 0;
-                        busyIconTimer.start();
-                    }
-                //progressBar.setVisible(true);
-                //progressBar.setIndeterminate(true);
-                } else if ("done".equals(propertyName)) {
-                    busyIconTimer.stop();
-                //statusAnimationLabel.setIcon(idleIcon);
-                //progressBar.setVisible(false);
-                //progressBar.setValue(0);
-                } else if ("message".equals(propertyName)) {
-                    //String text = (String) (evt.getNewValue());
-                    //statusMessageLabel.setText((text == null) ? "" : text);
-                    messageTimer.restart();
-                } else if ("progress".equals(propertyName)) {
-                //int value = (Integer) (evt.getNewValue());
-                //progressBar.setVisible(true);
-                //progressBar.setIndeterminate(false);
-                //progressBar.setValue(value);
-                }
-            }
-        });
         OrganizeUIElements();
         CreateUIElements();
         SetFrameSize();
@@ -136,84 +91,185 @@ public class SicceuimanagerView extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        toolBar = new javax.swing.JMenuBar();
-        toolBarItemNew = new javax.swing.JMenu();
-        toolBarItemSave = new javax.swing.JMenu();
-        toolBarItemEdit = new javax.swing.JMenu();
-        toolBarItemDelete = new javax.swing.JMenu();
-        toolBarItemSearch = new javax.swing.JMenu();
-        toolBarItemBack = new javax.swing.JMenu();
+        toolBar = new javax.swing.JToolBar();
+        toolBarItemNew = new javax.swing.JButton();
+        toolBarItemSave = new javax.swing.JButton();
+        toolBarItemEdit = new javax.swing.JButton();
+        toolBarItemDelete = new javax.swing.JButton();
+        toolBarItemSearch = new javax.swing.JButton();
+        toolBarItemBack = new javax.swing.JButton();
 
         mainPanel.setName("mainPanel"); // NOI18N
 
+        toolBar.setRollover(true);
         toolBar.setName("toolBar"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(SicceuimanagerView.class);
-        toolBarItemNew.setIcon(resourceMap.getIcon("toolBarItemNew.icon")); // NOI18N
+        toolBarItemNew.setIcon(resourceMap.getIcon("New.icon")); // NOI18N
         toolBarItemNew.setText(resourceMap.getString("toolBarItemNew.text")); // NOI18N
         toolBarItemNew.setToolTipText(resourceMap.getString("toolBarItemNew.toolTipText")); // NOI18N
-        toolBarItemNew.setEnabled(false);
+        toolBarItemNew.setFocusable(false);
+        toolBarItemNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolBarItemNew.setIconTextGap(0);
+        toolBarItemNew.setInheritsPopupMenu(true);
+        toolBarItemNew.setMaximumSize(new java.awt.Dimension(29, 29));
+        toolBarItemNew.setMinimumSize(new java.awt.Dimension(29, 29));
         toolBarItemNew.setName("toolBarItemNew"); // NOI18N
+        toolBarItemNew.setPreferredSize(new java.awt.Dimension(29, 29));
+        toolBarItemNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolBarItemNewActionPerformed(evt);
+            }
+        });
         toolBar.add(toolBarItemNew);
 
         toolBarItemSave.setIcon(resourceMap.getIcon("toolBarItemSave.icon")); // NOI18N
-        toolBarItemSave.setText(resourceMap.getString("toolBarItemSave.text")); // NOI18N
         toolBarItemSave.setToolTipText(resourceMap.getString("toolBarItemSave.toolTipText")); // NOI18N
         toolBarItemSave.setEnabled(false);
+        toolBarItemSave.setFocusable(false);
+        toolBarItemSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolBarItemSave.setIconTextGap(0);
+        toolBarItemSave.setInheritsPopupMenu(true);
+        toolBarItemSave.setMaximumSize(new java.awt.Dimension(29, 29));
+        toolBarItemSave.setMinimumSize(new java.awt.Dimension(29, 29));
         toolBarItemSave.setName("toolBarItemSave"); // NOI18N
+        toolBarItemSave.setPreferredSize(new java.awt.Dimension(29, 29));
+        toolBarItemSave.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBarItemSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolBarItemSaveActionPerformed(evt);
+            }
+        });
         toolBar.add(toolBarItemSave);
 
         toolBarItemEdit.setIcon(resourceMap.getIcon("toolBarItemEdit.icon")); // NOI18N
-        toolBarItemEdit.setText(resourceMap.getString("toolBarItemEdit.text")); // NOI18N
         toolBarItemEdit.setToolTipText(resourceMap.getString("toolBarItemEdit.toolTipText")); // NOI18N
         toolBarItemEdit.setEnabled(false);
+        toolBarItemEdit.setFocusable(false);
+        toolBarItemEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolBarItemEdit.setIconTextGap(0);
+        toolBarItemEdit.setInheritsPopupMenu(true);
+        toolBarItemEdit.setMaximumSize(new java.awt.Dimension(29, 29));
+        toolBarItemEdit.setMinimumSize(new java.awt.Dimension(29, 29));
         toolBarItemEdit.setName("toolBarItemEdit"); // NOI18N
+        toolBarItemEdit.setPreferredSize(new java.awt.Dimension(29, 29));
+        toolBarItemEdit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBarItemEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolBarItemEditActionPerformed(evt);
+            }
+        });
         toolBar.add(toolBarItemEdit);
 
         toolBarItemDelete.setIcon(resourceMap.getIcon("toolBarItemDelete.icon")); // NOI18N
-        toolBarItemDelete.setText(resourceMap.getString("toolBarItemDelete.text")); // NOI18N
         toolBarItemDelete.setToolTipText(resourceMap.getString("toolBarItemDelete.toolTipText")); // NOI18N
-        toolBarItemDelete.setEnabled(false);
+        toolBarItemDelete.setFocusable(false);
+        toolBarItemDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolBarItemDelete.setIconTextGap(0);
+        toolBarItemDelete.setInheritsPopupMenu(true);
+        toolBarItemDelete.setMaximumSize(new java.awt.Dimension(29, 29));
+        toolBarItemDelete.setMinimumSize(new java.awt.Dimension(29, 29));
         toolBarItemDelete.setName("toolBarItemDelete"); // NOI18N
+        toolBarItemDelete.setPreferredSize(new java.awt.Dimension(29, 29));
+        toolBarItemDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBarItemDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolBarItemDeleteActionPerformed(evt);
+            }
+        });
         toolBar.add(toolBarItemDelete);
 
         toolBarItemSearch.setIcon(resourceMap.getIcon("toolBarItemSearch.icon")); // NOI18N
-        toolBarItemSearch.setText(resourceMap.getString("toolBarItemSearch.text")); // NOI18N
         toolBarItemSearch.setToolTipText(resourceMap.getString("toolBarItemSearch.toolTipText")); // NOI18N
-        toolBarItemSearch.setEnabled(false);
+        toolBarItemSearch.setFocusable(false);
+        toolBarItemSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolBarItemSearch.setIconTextGap(0);
+        toolBarItemSearch.setInheritsPopupMenu(true);
+        toolBarItemSearch.setMaximumSize(new java.awt.Dimension(29, 29));
+        toolBarItemSearch.setMinimumSize(new java.awt.Dimension(29, 29));
         toolBarItemSearch.setName("toolBarItemSearch"); // NOI18N
+        toolBarItemSearch.setPreferredSize(new java.awt.Dimension(29, 29));
+        toolBarItemSearch.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBarItemSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolBarItemSearchActionPerformed(evt);
+            }
+        });
         toolBar.add(toolBarItemSearch);
 
         toolBarItemBack.setIcon(resourceMap.getIcon("toolBarItemBack.icon")); // NOI18N
-        toolBarItemBack.setText(resourceMap.getString("toolBarItemBack.text")); // NOI18N
         toolBarItemBack.setToolTipText(resourceMap.getString("toolBarItemBack.toolTipText")); // NOI18N
+        toolBarItemBack.setFocusable(false);
+        toolBarItemBack.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolBarItemBack.setIconTextGap(0);
+        toolBarItemBack.setInheritsPopupMenu(true);
+        toolBarItemBack.setMaximumSize(new java.awt.Dimension(29, 29));
+        toolBarItemBack.setMinimumSize(new java.awt.Dimension(29, 29));
         toolBarItemBack.setName("toolBarItemBack"); // NOI18N
+        toolBarItemBack.setPreferredSize(new java.awt.Dimension(29, 29));
+        toolBarItemBack.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBarItemBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolBarItemBackActionPerformed(evt);
+            }
+        });
         toolBar.add(toolBarItemBack);
+
+        mainPanel.add(toolBar);
 
         setComponent(mainPanel);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void toolBarItemNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemNewActionPerformed
+       toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.New));
+}//GEN-LAST:event_toolBarItemNewActionPerformed
+
+    private void toolBarItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemSaveActionPerformed
+       toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Save));
+}//GEN-LAST:event_toolBarItemSaveActionPerformed
+
+    private void toolBarItemEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemEditActionPerformed
+        toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Edit));
+}//GEN-LAST:event_toolBarItemEditActionPerformed
+
+    private void toolBarItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemDeleteActionPerformed
+        
+        int result = joptionPaneExtended.ShowConfirmDialog(getResourceMap().getString("DeleteConfirmDialog"),getResourceMap().getString("ApplicationName"));
+        if(result == JOptionPaneExtended.YES_OPTION)
+        {
+            JOptionPane.showMessageDialog(null, "Yes");
+            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Delete));
+        }        
+}//GEN-LAST:event_toolBarItemDeleteActionPerformed
+
+    private void toolBarItemSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemSearchActionPerformed
+        toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Search));
+}//GEN-LAST:event_toolBarItemSearchActionPerformed
+
+    private void toolBarItemBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemBackActionPerformed
+         toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Back));
+}//GEN-LAST:event_toolBarItemBackActionPerformed
+
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JMenuBar toolBar;
-    private javax.swing.JMenu toolBarItemBack;
-    private javax.swing.JMenu toolBarItemDelete;
-    private javax.swing.JMenu toolBarItemEdit;
-    private javax.swing.JMenu toolBarItemNew;
-    private javax.swing.JMenu toolBarItemSave;
-    private javax.swing.JMenu toolBarItemSearch;
+    private javax.swing.JToolBar toolBar;
+    private javax.swing.JButton toolBarItemBack;
+    private javax.swing.JButton toolBarItemDelete;
+    private javax.swing.JButton toolBarItemEdit;
+    private javax.swing.JButton toolBarItemNew;
+    private javax.swing.JButton toolBarItemSave;
+    private javax.swing.JButton toolBarItemSearch;
     // End of variables declaration//GEN-END:variables
-    private final Timer messageTimer;
-    private final Timer busyIconTimer;
-    private final Icon idleIcon;
-    private final Icon[] busyIcons = new Icon[15];
-    private int busyIconIndex = 0;
+   
     private JDialog aboutBox;
     private JTabbedPaneExtended tabManager;
     private JTaskPane taskPaneManager;
     private List<TaskInfo> tasks;
-    
-
+    private ToolBarHandler toolBarHandler;
+    private JOptionPaneExtended joptionPaneExtended;
     
     /**
      * gish@c
@@ -265,6 +321,11 @@ public class SicceuimanagerView extends FrameView {
     private void CreateUIElements()
     {
         CreateTasks();
+        String[] optionsText = new String[3];
+        optionsText[0] = getResourceMap().getString("JOptionPaneYes");
+        optionsText[1] = getResourceMap().getString("JOptionPaneNo");
+        optionsText[2] = getResourceMap().getString("JOptionPaneCancel");
+        joptionPaneExtended = new JOptionPaneExtended(optionsText);
     }
     
     /**
@@ -338,5 +399,12 @@ public class SicceuimanagerView extends FrameView {
         //event.putValue(javax.swing.Action.SMALL_ICON, icon);
         return event;
     }
+
+    @Action
+    public void New() {
+        JOptionPane.showMessageDialog(null, "New");
+    }
+
+    
           
 }
