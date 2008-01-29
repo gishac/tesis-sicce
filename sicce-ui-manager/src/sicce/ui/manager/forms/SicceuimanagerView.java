@@ -163,6 +163,7 @@ public class SicceuimanagerView extends FrameView {
 
         toolBarItemDelete.setIcon(resourceMap.getIcon("toolBarItemDelete.icon")); // NOI18N
         toolBarItemDelete.setToolTipText(resourceMap.getString("toolBarItemDelete.toolTipText")); // NOI18N
+        toolBarItemDelete.setEnabled(false);
         toolBarItemDelete.setFocusable(false);
         toolBarItemDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolBarItemDelete.setIconTextGap(0);
@@ -243,7 +244,8 @@ public class SicceuimanagerView extends FrameView {
 }//GEN-LAST:event_toolBarItemDeleteActionPerformed
 
     private void toolBarItemSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemSearchActionPerformed
-        toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Search));
+        
+        toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.RegistryLoaded));
 }//GEN-LAST:event_toolBarItemSearchActionPerformed
 
     private void toolBarItemBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemBackActionPerformed
