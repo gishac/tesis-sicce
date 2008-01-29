@@ -7,9 +7,7 @@ package sicce.ui.manager.handlers;
 
 import java.util.List;
 import java.util.Vector;
-import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
-import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.ITabbedWindow;
 import sicce.api.info.interfaces.IToolBarStateListener;
