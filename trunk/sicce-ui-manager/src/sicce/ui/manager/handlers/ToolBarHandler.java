@@ -88,6 +88,10 @@ public class ToolBarHandler{
         }
     }
     
+    /**
+     * Activa o desactiva los los botones del toolbar segun el estado actual
+     * @param eventArgument
+     */
     private void HandleToolBarStates(ToolBarEventObject eventArgument)
     {
         switch(eventArgument.getToolBarState())
@@ -95,45 +99,52 @@ public class ToolBarHandler{
             case None:
                 break;
             case New:
-                    toolBar.getComponent(0).setEnabled(true);
-                    toolBar.getComponent(1).setEnabled(true);
-                    toolBar.getComponent(2).setEnabled(false);
-                    toolBar.getComponent(3).setEnabled(false);
-                    toolBar.getComponent(4).setEnabled(false);
+                SetToolBarItemsState(true, true, false, false, false);
                     break;
             case Save:
-                    SetDefaultState();
-                    break;
+                SetDefaultState();
+                break;
             case Edit:
-                    toolBar.getComponent(0).setEnabled(true);
-                    toolBar.getComponent(1).setEnabled(true);
-                    toolBar.getComponent(2).setEnabled(false);
-                    toolBar.getComponent(3).setEnabled(true);
-                    toolBar.getComponent(4).setEnabled(true);
-                    break;
+                SetToolBarItemsState(true, true, false, true, true);
+                break;
             case Delete:
-                    SetDefaultState();
-                    break;
+                SetDefaultState();
+                break;
             case Search:
                 break;
             case RegistryLoaded:
+                SetToolBarItemsState(true, false, true, true, true);
                 break;
             case Back:
-                    SetDefaultState();
-                    break;                
+                SetDefaultState();
+                break;                
         }
     }
     
     /**
-     * Coloca al toolbar en el estado por default
+     * Coloca al toolbar en el estado por default : true false false false true
      */
     private void SetDefaultState()
     {
-        toolBar.getComponent(0).setEnabled(true);
-        toolBar.getComponent(1).setEnabled(false);
-        toolBar.getComponent(2).setEnabled(false);
-        toolBar.getComponent(3).setEnabled(false);
-        toolBar.getComponent(4).setEnabled(true);
+        SetToolBarItemsState(true, false, false, false, true);
+    }
+    
+    /**
+     * Coloca el estado de activacion de los botones del toolbar
+     * @param newButtonState - Estado del boton nuevo
+     * @param saveButtonState - Estado del boton grabar
+     * @param editButtonState - Estado del boton editar
+     * @param deleteButtonState - Estado del boton eliminar
+     * @param searchButtonState - Estado del boton buscar
+     */
+    private void SetToolBarItemsState(boolean newButtonState, boolean saveButtonState, 
+            boolean editButtonState, boolean deleteButtonState, boolean searchButtonState)
+    {
+        toolBar.getComponent(0).setEnabled(newButtonState);
+        toolBar.getComponent(1).setEnabled(saveButtonState);
+        toolBar.getComponent(2).setEnabled(editButtonState);
+        toolBar.getComponent(3).setEnabled(deleteButtonState);
+        toolBar.getComponent(4).setEnabled(searchButtonState);
     }
        
 }

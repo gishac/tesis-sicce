@@ -95,6 +95,7 @@
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemDelete.icon"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemDelete.toolTipText"/>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="0"/>
