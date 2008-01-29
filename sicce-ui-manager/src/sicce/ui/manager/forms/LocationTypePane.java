@@ -6,11 +6,13 @@
 
 package sicce.ui.manager.forms;
 
+import sicce.ui.manager.controls.JTabExtended;
+
 /**
  *
  * @author  gish@c
  */
-public class LocationTypePane extends javax.swing.JPanel {
+public class LocationTypePane extends JTabExtended {
     
     /** Creates new form LocationTypePane */
     public LocationTypePane() {
