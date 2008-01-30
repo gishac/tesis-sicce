@@ -40,7 +40,7 @@
                       <Component id="jPanel2" min="-2" max="-2" attributes="1"/>
                   </Group>
               </Group>
-              <EmptySpace pref="34" max="32767" attributes="0"/>
+              <EmptySpace pref="111" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -67,12 +67,12 @@
                       <Component id="lblcodigo" min="-2" max="-2" attributes="0"/>
                       <Component id="lblDescription" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="20" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="txtCode" alignment="0" min="-2" pref="99" max="-2" attributes="1"/>
                       <Component id="jScrollPane2" alignment="0" min="-2" pref="207" max="-2" attributes="1"/>
                   </Group>
-                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

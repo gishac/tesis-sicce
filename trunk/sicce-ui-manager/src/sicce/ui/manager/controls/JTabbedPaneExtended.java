@@ -85,5 +85,17 @@ public class JTabbedPaneExtended extends JTabbedPane{
     public void setCurrentTab(ITabbedWindow currentTab)
     {
         this.currentTab = currentTab;
+        for(int i=0; i<=this.getComponentCount()-1;i++)
+        {
+            if(this.getComponent(i).equals(this.currentTab))
+            {
+                this.setSelectedIndex(i);
+            }
+        }
     }
 }
+
+
+
+
+

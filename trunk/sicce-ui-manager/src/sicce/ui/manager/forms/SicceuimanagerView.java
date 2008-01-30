@@ -3,14 +3,8 @@
  */
 package sicce.ui.manager.forms;
 
-import com.jgoodies.looks.Options;
 import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
-import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
-import com.jgoodies.looks.plastic.theme.AbstractSkyTheme;
-import com.jgoodies.looks.plastic.theme.DarkStar;
-import com.jgoodies.looks.plastic.theme.DesertBlue;
-import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 import com.l2fprod.common.swing.JTaskPane;
 import com.l2fprod.common.swing.JTaskPaneGroup;
 import com.l2fprod.common.swing.plaf.LookAndFeelAddons;
@@ -22,27 +16,23 @@ import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.UnsupportedLookAndFeelException;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
-import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import javax.swing.AbstractAction;
-import javax.swing.Timer;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.plaf.DimensionUIResource;
+import org.apache.cayenne.ObjectId;
+import sicce.api.info.ConstantsProvider.OptionsProvider;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
-import sicce.api.info.TaskInfo;
+import sicce.api.info.OptionSicceInfo;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.controls.JTabExtended;
@@ -269,9 +259,11 @@ public class SicceuimanagerView extends FrameView {
     private JDialog aboutBox;
     private JTabbedPaneExtended tabManager;
     private JTaskPane taskPaneManager;
-    private List<TaskInfo> tasks;
+    private List<OptionSicceInfo> options;
     private ToolBarHandler toolBarHandler;
     private JOptionPaneExtended joptionPaneExtended;
+    private RolePane rolePane;
+    private UserPane userPane;
     
     /**
      * gish@c
@@ -302,15 +294,26 @@ public class SicceuimanagerView extends FrameView {
      */
     private void CreateTasks()
     {
-        this.tasks = TaskInfo.getTasks();
+        OptionSicceInfo a = new OptionSicceInfo();
+        a.setDescription("Role");
+        ObjectId x = new ObjectId("Role");
+        a.setObjectId(x);
+        
+        OptionSicceInfo b = new OptionSicceInfo();
+        b.setDescription("User");
+        ObjectId y = new ObjectId("User");
+        b.setObjectId(x);
+        
+        this.options = new ArrayList<OptionSicceInfo>();
+        options.add(a);
+        options.add(b);
         JTaskPaneGroup mainGroup = new JTaskPaneGroup();
         mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
         mainGroup.setSpecial(true);
-        for(TaskInfo task : this.tasks)
+        for(OptionSicceInfo option : this.options)
         {
             ImageIcon icon = null;
-            task.setDescription(getResourceMap().getString(task.getDescription(), ""));
-            mainGroup.add(getAction(task.getDescription(), task.getName(), icon));
+            mainGroup.add(getAction(option.getDescription(), option.getDescription(), icon));
         }
         getTaskPaneManager().add(mainGroup);
         getTaskPaneManager().revalidate();
@@ -328,6 +331,7 @@ public class SicceuimanagerView extends FrameView {
         optionsText[1] = getResourceMap().getString("JOptionPaneNo");
         optionsText[2] = getResourceMap().getString("JOptionPaneCancel");
         joptionPaneExtended = new JOptionPaneExtended(optionsText);
+        CreateForms();
     }
     
     /**
@@ -393,7 +397,16 @@ public class SicceuimanagerView extends FrameView {
          javax.swing.Action event = new AbstractAction(text) {
             public void actionPerformed(ActionEvent e) {
                 
-                JOptionPane.showMessageDialog(null, "You clicked: " + e.getActionCommand(),"Message",JOptionPane.INFORMATION_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "You clicked: " + e.getActionCommand(),"Message",JOptionPane.INFORMATION_MESSAGE);
+                OptionsProvider option = Enum.valueOf(OptionsProvider.class, e.getActionCommand());
+                JTabExtended selectedOption = GetForm(option);
+                if(!getTabManager().getTabs().contains(selectedOption))
+                {
+                    getTabManager().AddTab(selectedOption);
+                }
+                getTabManager().setCurrentTab(selectedOption);
+                
+                
             }
         };
         event.putValue(javax.swing.Action.SHORT_DESCRIPTION, text);     
@@ -401,12 +414,34 @@ public class SicceuimanagerView extends FrameView {
         //event.putValue(javax.swing.Action.SMALL_ICON, icon);
         return event;
     }
-
-    @Action
-    public void New() {
-        JOptionPane.showMessageDialog(null, "New");
-    }
-
     
+    /**
+     * Crea las instancias de todos los formularios
+     */
+    private void CreateForms()
+    {
+        rolePane = new RolePane();
+        userPane = new UserPane();
+        toolBarHandler.AddToolBarStateListener(rolePane);
+        toolBarHandler.AddToolBarStateListener(userPane);
+    }
+    
+    /**
+     * 
+     */
+    private JTabExtended GetForm(OptionsProvider option)
+    {
+        JTabExtended result = null;
+        switch(option)
+        {
+            case Role:
+                result = rolePane;
+                break;
+            case User:
+                result = userPane;
+                break;
+        }
+        return result;
+    }
           
 }
