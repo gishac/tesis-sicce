@@ -5,21 +5,30 @@
 
 package sicce.api.info;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-
 /**
  *
  * @author gish@c
  */
 public class ConstantsProvider {
 
-    public enum TasksProvider
+    public enum OptionsProvider
     {
-        User,
-        PowerMeter,
-        Location
+        Role(1),
+        User(2),
+        PowerMeter(3),
+        Location(4);
+             
+        private int taskID;
+        
+        OptionsProvider(int taskID)
+        {
+            this.taskID = taskID;
+        }
+        
+        public int getTaskID()
+        {
+            return taskID;
+        }
     }
     
     public enum ToolBarAction

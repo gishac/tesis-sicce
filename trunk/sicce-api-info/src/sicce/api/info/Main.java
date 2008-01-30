@@ -6,10 +6,9 @@ package sicce.api.info;
  */
 
 
-import sicce.api.info.cayenne.PowerMeter;
+import sicce.api.info.PowerMeterInfo;
 import java.util.List;
 import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SelectQuery;
 
 /**
  * 
@@ -31,11 +30,11 @@ public class Main {
         DataContext con = DataContext.createDataContext();
         /*se crea el objeto*/
 
-//        PowerMeter objPowerMeter = new PowerMeter();
+//        PowerMeterInfo objPowerMeter = new PowerMeterInfo();
 //        /*se setean la informacion del nuevo objeto*/
 //                    con.registerNewObject(objPowerMeter);
 //                   /* las dos lineas de creacion y registro de objeto pueden ser abreviadas asi:
-                    PowerMeter objPowerMeter = (PowerMeter) con.newObject(PowerMeter.class);
+                    PowerMeterInfo objPowerMeter = (PowerMeterInfo) con.newObject(PowerMeterInfo.class);
                     
                     objPowerMeter.setDescription("PM500");
                     //CORREGIR EL IP_ADRESS :( ESTABA COMO INT.. DEBERIA SER UN VARCHAR
@@ -47,13 +46,13 @@ public class Main {
 //        /*modificar el objeto*/
 //                  /* hago un select vago a la tabla power meter pd:esto debe ser
 //                   por id solo q no me acuerdo..jeje y me da perecita buscar ;)*/  
-//                   SelectQuery sel = new SelectQuery(PowerMeter.class);
+//                   SelectQuery sel = new SelectQuery(PowerMeterInfo.class);
 //                  /*guardo los resultados en una lista*/
 //                   List listpmeter = con.performQuery(sel);
 //
 //                   for (int i = 0; i<listpmeter.size();i++)
 //                   {
-//                    PowerMeter modpmeter= (PowerMeter) listpmeter.get(i);
+//                    PowerMeterInfo modpmeter= (PowerMeterInfo) listpmeter.get(i);
 //                    /*modifico y comiteo :)*/    
 //                    modpmeter.setDescription("Power Meter PM500 MG");
 //                    con.modifiedObjects();
@@ -64,10 +63,10 @@ public class Main {
 ////           /*borrar objeto */
 ////                   /* hago un select a la tabla power meter*/  
 ////                   
-////                   SelectQuery sel1 = new SelectQuery(PowerMeter.class);
+////                   SelectQuery sel1 = new SelectQuery(PowerMeterInfo.class);
 ////                  /*guardo los resultados en una lista*/
 ////                   List listpmeterDel = con.performQuery(sel1);
-////                   PowerMeter delpmeter= (PowerMeter) listpmeterDel.get(0);
+////                   PowerMeterInfo delpmeter= (PowerMeterInfo) listpmeterDel.get(0);
 ////                   con.deleteObject(delpmeter);
 ////                   con.commitChanges();
                     

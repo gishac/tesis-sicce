@@ -59,10 +59,10 @@ public class _PowerMeter extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToLocationArray(sicce.api.info.cayenne.Location obj) {
+    public void addToLocationArray(sicce.api.info.LocationInfo obj) {
         addToManyTarget("locationArray", obj, true);
     }
-    public void removeFromLocationArray(sicce.api.info.cayenne.Location obj) {
+    public void removeFromLocationArray(sicce.api.info.LocationInfo obj) {
         removeToManyTarget("locationArray", obj, true);
     }
     public List getLocationArray() {
@@ -70,10 +70,10 @@ public class _PowerMeter extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToMeasureArray(sicce.api.info.cayenne.Measure obj) {
+    public void addToMeasureArray(sicce.api.info.MeasureInfo obj) {
         addToManyTarget("measureArray", obj, true);
     }
-    public void removeFromMeasureArray(sicce.api.info.cayenne.Measure obj) {
+    public void removeFromMeasureArray(sicce.api.info.MeasureInfo obj) {
         removeToManyTarget("measureArray", obj, true);
     }
     public List getMeasureArray() {

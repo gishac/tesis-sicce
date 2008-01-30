@@ -23,10 +23,10 @@ public class _Role extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToOptionRoleArray(sicce.api.info.cayenne.OptionRole obj) {
+    public void addToOptionRoleArray(sicce.api.info.OptionRoleInfo obj) {
         addToManyTarget("optionRoleArray", obj, true);
     }
-    public void removeFromOptionRoleArray(sicce.api.info.cayenne.OptionRole obj) {
+    public void removeFromOptionRoleArray(sicce.api.info.OptionRoleInfo obj) {
         removeToManyTarget("optionRoleArray", obj, true);
     }
     public List getOptionRoleArray() {
@@ -34,10 +34,10 @@ public class _Role extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToUserSicceArray(sicce.api.info.cayenne.UserSicce obj) {
+    public void addToUserSicceArray(sicce.api.info.UserSicceInfo obj) {
         addToManyTarget("userSicceArray", obj, true);
     }
-    public void removeFromUserSicceArray(sicce.api.info.cayenne.UserSicce obj) {
+    public void removeFromUserSicceArray(sicce.api.info.UserSicceInfo obj) {
         removeToManyTarget("userSicceArray", obj, true);
     }
     public List getUserSicceArray() {

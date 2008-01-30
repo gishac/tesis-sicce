@@ -11,21 +11,21 @@ public class _LocationZone extends org.apache.cayenne.CayenneDataObject {
     public static final String TO_ZONE_PROPERTY = "toZone";
 
 
-    public void setToLocation(sicce.api.info.cayenne.Location toLocation) {
+    public void setToLocation(sicce.api.info.LocationInfo toLocation) {
         setToOneTarget("toLocation", toLocation, true);
     }
 
-    public sicce.api.info.cayenne.Location getToLocation() {
-        return (sicce.api.info.cayenne.Location)readProperty("toLocation");
+    public sicce.api.info.LocationInfo getToLocation() {
+        return (sicce.api.info.LocationInfo)readProperty("toLocation");
     } 
     
     
-    public void setToZone(sicce.api.info.cayenne.Zone toZone) {
+    public void setToZone(sicce.api.info.ZoneInfo toZone) {
         setToOneTarget("toZone", toZone, true);
     }
 
-    public sicce.api.info.cayenne.Zone getToZone() {
-        return (sicce.api.info.cayenne.Zone)readProperty("toZone");
+    public sicce.api.info.ZoneInfo getToZone() {
+        return (sicce.api.info.ZoneInfo)readProperty("toZone");
     } 
     
     

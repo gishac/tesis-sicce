@@ -56,12 +56,12 @@ public class _UserSicce extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setToRole(sicce.api.info.cayenne.Role toRole) {
+    public void setToRole(sicce.api.info.RoleInfo toRole) {
         setToOneTarget("toRole", toRole, true);
     }
 
-    public sicce.api.info.cayenne.Role getToRole() {
-        return (sicce.api.info.cayenne.Role)readProperty("toRole");
+    public sicce.api.info.RoleInfo getToRole() {
+        return (sicce.api.info.RoleInfo)readProperty("toRole");
     } 
     
     

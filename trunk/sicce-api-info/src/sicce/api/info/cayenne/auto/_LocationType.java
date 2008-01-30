@@ -31,10 +31,10 @@ public class _LocationType extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToLocationArray(sicce.api.info.cayenne.Location obj) {
+    public void addToLocationArray(sicce.api.info.LocationInfo obj) {
         addToManyTarget("locationArray", obj, true);
     }
-    public void removeFromLocationArray(sicce.api.info.cayenne.Location obj) {
+    public void removeFromLocationArray(sicce.api.info.LocationInfo obj) {
         removeToManyTarget("locationArray", obj, true);
     }
     public List getLocationArray() {

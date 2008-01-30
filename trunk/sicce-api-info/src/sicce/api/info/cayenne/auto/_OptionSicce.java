@@ -31,10 +31,10 @@ public class _OptionSicce extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToOptionRoleArray(sicce.api.info.cayenne.OptionRole obj) {
+    public void addToOptionRoleArray(sicce.api.info.OptionRoleInfo obj) {
         addToManyTarget("optionRoleArray", obj, true);
     }
-    public void removeFromOptionRoleArray(sicce.api.info.cayenne.OptionRole obj) {
+    public void removeFromOptionRoleArray(sicce.api.info.OptionRoleInfo obj) {
         removeToManyTarget("optionRoleArray", obj, true);
     }
     public List getOptionRoleArray() {
