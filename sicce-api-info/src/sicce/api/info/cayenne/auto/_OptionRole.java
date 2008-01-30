@@ -11,21 +11,21 @@ public class _OptionRole extends org.apache.cayenne.CayenneDataObject {
     public static final String TO_ROLE_PROPERTY = "toRole";
 
 
-    public void setToOptionSicce(sicce.api.info.cayenne.OptionSicce toOptionSicce) {
+    public void setToOptionSicce(sicce.api.info.OptionSicceInfo toOptionSicce) {
         setToOneTarget("toOptionSicce", toOptionSicce, true);
     }
 
-    public sicce.api.info.cayenne.OptionSicce getToOptionSicce() {
-        return (sicce.api.info.cayenne.OptionSicce)readProperty("toOptionSicce");
+    public sicce.api.info.OptionSicceInfo getToOptionSicce() {
+        return (sicce.api.info.OptionSicceInfo)readProperty("toOptionSicce");
     } 
     
     
-    public void setToRole(sicce.api.info.cayenne.Role toRole) {
+    public void setToRole(sicce.api.info.RoleInfo toRole) {
         setToOneTarget("toRole", toRole, true);
     }
 
-    public sicce.api.info.cayenne.Role getToRole() {
-        return (sicce.api.info.cayenne.Role)readProperty("toRole");
+    public sicce.api.info.RoleInfo getToRole() {
+        return (sicce.api.info.RoleInfo)readProperty("toRole");
     } 
     
     

@@ -29,12 +29,12 @@ public class _UnitMeasure extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setToMeasure(sicce.api.info.cayenne.Measure toMeasure) {
+    public void setToMeasure(sicce.api.info.MeasureInfo toMeasure) {
         setToOneTarget("toMeasure", toMeasure, true);
     }
 
-    public sicce.api.info.cayenne.Measure getToMeasure() {
-        return (sicce.api.info.cayenne.Measure)readProperty("toMeasure");
+    public sicce.api.info.MeasureInfo getToMeasure() {
+        return (sicce.api.info.MeasureInfo)readProperty("toMeasure");
     } 
     
     

@@ -31,30 +31,30 @@ public class _Measure extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setToLocation(sicce.api.info.cayenne.Location toLocation) {
+    public void setToLocation(sicce.api.info.LocationInfo toLocation) {
         setToOneTarget("toLocation", toLocation, true);
     }
 
-    public sicce.api.info.cayenne.Location getToLocation() {
-        return (sicce.api.info.cayenne.Location)readProperty("toLocation");
+    public sicce.api.info.LocationInfo getToLocation() {
+        return (sicce.api.info.LocationInfo)readProperty("toLocation");
     } 
     
     
-    public void setToPowerMeter(sicce.api.info.cayenne.PowerMeter toPowerMeter) {
+    public void setToPowerMeter(sicce.api.info.PowerMeterInfo toPowerMeter) {
         setToOneTarget("toPowerMeter", toPowerMeter, true);
     }
 
-    public sicce.api.info.cayenne.PowerMeter getToPowerMeter() {
-        return (sicce.api.info.cayenne.PowerMeter)readProperty("toPowerMeter");
+    public sicce.api.info.PowerMeterInfo getToPowerMeter() {
+        return (sicce.api.info.PowerMeterInfo)readProperty("toPowerMeter");
     } 
     
     
-    public void setToUnitMeasure(sicce.api.info.cayenne.UnitMeasure toUnitMeasure) {
+    public void setToUnitMeasure(sicce.api.info.UnitMeasureInfo toUnitMeasure) {
         setToOneTarget("toUnitMeasure", toUnitMeasure, true);
     }
 
-    public sicce.api.info.cayenne.UnitMeasure getToUnitMeasure() {
-        return (sicce.api.info.cayenne.UnitMeasure)readProperty("toUnitMeasure");
+    public sicce.api.info.UnitMeasureInfo getToUnitMeasure() {
+        return (sicce.api.info.UnitMeasureInfo)readProperty("toUnitMeasure");
     } 
     
     

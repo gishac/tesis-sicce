@@ -45,10 +45,10 @@ public class _Location extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToLocationArray(sicce.api.info.cayenne.Location obj) {
+    public void addToLocationArray(sicce.api.info.LocationInfo obj) {
         addToManyTarget("locationArray", obj, true);
     }
-    public void removeFromLocationArray(sicce.api.info.cayenne.Location obj) {
+    public void removeFromLocationArray(sicce.api.info.LocationInfo obj) {
         removeToManyTarget("locationArray", obj, true);
     }
     public List getLocationArray() {
@@ -56,10 +56,10 @@ public class _Location extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToLocationZoneArray(sicce.api.info.cayenne.LocationZone obj) {
+    public void addToLocationZoneArray(sicce.api.info.LocationZoneInfo obj) {
         addToManyTarget("locationZoneArray", obj, true);
     }
-    public void removeFromLocationZoneArray(sicce.api.info.cayenne.LocationZone obj) {
+    public void removeFromLocationZoneArray(sicce.api.info.LocationZoneInfo obj) {
         removeToManyTarget("locationZoneArray", obj, true);
     }
     public List getLocationZoneArray() {
@@ -67,10 +67,10 @@ public class _Location extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToMeasureArray(sicce.api.info.cayenne.Measure obj) {
+    public void addToMeasureArray(sicce.api.info.MeasureInfo obj) {
         addToManyTarget("measureArray", obj, true);
     }
-    public void removeFromMeasureArray(sicce.api.info.cayenne.Measure obj) {
+    public void removeFromMeasureArray(sicce.api.info.MeasureInfo obj) {
         removeToManyTarget("measureArray", obj, true);
     }
     public List getMeasureArray() {
@@ -78,30 +78,30 @@ public class _Location extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setToLocation(sicce.api.info.cayenne.Location toLocation) {
+    public void setToLocation(sicce.api.info.LocationInfo toLocation) {
         setToOneTarget("toLocation", toLocation, true);
     }
 
-    public sicce.api.info.cayenne.Location getToLocation() {
-        return (sicce.api.info.cayenne.Location)readProperty("toLocation");
+    public sicce.api.info.LocationInfo getToLocation() {
+        return (sicce.api.info.LocationInfo)readProperty("toLocation");
     } 
     
     
-    public void setToLocationType(sicce.api.info.cayenne.LocationType toLocationType) {
+    public void setToLocationType(sicce.api.info.LocationTypeInfo toLocationType) {
         setToOneTarget("toLocationType", toLocationType, true);
     }
 
-    public sicce.api.info.cayenne.LocationType getToLocationType() {
-        return (sicce.api.info.cayenne.LocationType)readProperty("toLocationType");
+    public sicce.api.info.LocationTypeInfo getToLocationType() {
+        return (sicce.api.info.LocationTypeInfo)readProperty("toLocationType");
     } 
     
     
-    public void setToPowerMeter(sicce.api.info.cayenne.PowerMeter toPowerMeter) {
+    public void setToPowerMeter(sicce.api.info.PowerMeterInfo toPowerMeter) {
         setToOneTarget("toPowerMeter", toPowerMeter, true);
     }
 
-    public sicce.api.info.cayenne.PowerMeter getToPowerMeter() {
-        return (sicce.api.info.cayenne.PowerMeter)readProperty("toPowerMeter");
+    public sicce.api.info.PowerMeterInfo getToPowerMeter() {
+        return (sicce.api.info.PowerMeterInfo)readProperty("toPowerMeter");
     } 
     
     

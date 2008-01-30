@@ -31,10 +31,10 @@ public class _Zone extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToLocationZoneArray(sicce.api.info.cayenne.LocationZone obj) {
+    public void addToLocationZoneArray(sicce.api.info.LocationZoneInfo obj) {
         addToManyTarget("locationZoneArray", obj, true);
     }
-    public void removeFromLocationZoneArray(sicce.api.info.cayenne.LocationZone obj) {
+    public void removeFromLocationZoneArray(sicce.api.info.LocationZoneInfo obj) {
         removeToManyTarget("locationZoneArray", obj, true);
     }
     public List getLocationZoneArray() {
