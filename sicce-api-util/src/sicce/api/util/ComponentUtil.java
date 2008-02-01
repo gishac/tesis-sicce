@@ -6,7 +6,9 @@
 package sicce.api.util;
 
 import java.awt.Component;
+import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -16,7 +18,7 @@ import javax.swing.JTextField;
 public class ComponentUtil {
 
     /**
-     * Limpia la lista de components
+     * Limpia la lista de componentes
      * @param components
      */
     public static void Clear(Component[] components)
@@ -25,7 +27,11 @@ public class ComponentUtil {
         {
             if(IsTextField(component))
             {
-                ((JTextField) component).setText("");
+                if(component instanceof JTextField)
+                    ((JTextField) component).setText("");
+                if(component instanceof JTextArea)
+                    ((JTextArea) component).setText("");
+                
             }
             else if(IsComboBox(component))
             {
@@ -37,11 +43,25 @@ public class ComponentUtil {
     }
     
     /**
+     * Limpia la lista de componentes
+     * @param components
+     */
+    public static void Clear(List<Component> components)
+    {
+        Component[] toClear = new Component[components.size()];
+        for(int i=0; i<= components.size()-1; i++)
+        {
+            toClear[i] = components.get(i);
+        }
+        Clear(toClear);            
+    }
+    
+    /**
      * Setea el estado de los componentes
      * @param components
      * @param enabled
      */
-    public static void SetState(Component[] components, boolean enabled)
+    public static void SetState(boolean enabled,Component[] components)
     {
         for(Component component : components)
         {
@@ -57,7 +77,8 @@ public class ComponentUtil {
      */
     public static boolean IsTextField(Component component)
     {
-        return component instanceof JTextField;
+        boolean result = component instanceof JTextField || component instanceof JTextArea;
+        return result;
     }
     
     /**
