@@ -15,5 +15,5 @@ import sicce.api.info.eventobjects.ToolBarEventObject;
  * Interfaz para poder implementar el monitoreo de eventos del toolbar
  */
 public interface IToolBarStateListener  extends EventListener  {
-    public void ToolBarStateChanged(ToolBarEventObject event);
+    public void ToolBarStateChanged(ToolBarEventObject event) throws Exception;
 }

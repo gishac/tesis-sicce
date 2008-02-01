@@ -1,124 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-map project-version="2.0">
-	<property name="defaultPackage" value="sicce.api.info.cayenne"/>
+	<property name="defaultPackage" value="sicce.api.info"/>
 	<db-entity name="location" catalog="sicce">
-		<db-attribute name="CODE" type="VARCHAR" length="6"/>
 		<db-attribute name="DESCRIPTION" type="VARCHAR" length="255"/>
-		<db-attribute name="ID_LOCATION" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
-		<db-attribute name="ID_LOCATION_TYPE" type="BIGINT" isMandatory="true" length="10"/>
-		<db-attribute name="LOCATION" type="BIGINT" length="10"/>
-		<db-attribute name="PARENT_ID_LOCATION" type="BIGINT" isMandatory="true" length="10"/>
-		<db-attribute name="POWER_METER_ID_POWER_METER" type="BIGINT" isMandatory="true" length="10"/>
+		<db-attribute name="ID_LOCATION" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="11"/>
+		<db-attribute name="ID_LOCATION_TYPE" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="LOCATION" type="INTEGER" length="11"/>
+		<db-attribute name="PARENT_ID_LOCATION" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="POWER_METER_ID_POWER_METER" type="INTEGER" isMandatory="true" length="11"/>
 	</db-entity>
 	<db-entity name="location_type" catalog="sicce">
-		<db-attribute name="CODE" type="VARCHAR" length="6"/>
-		<db-attribute name="DESCRIPTION" type="BIGINT" length="10"/>
-		<db-attribute name="ID_LOCATION_TYPE" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="DESCRIPTION" type="INTEGER" length="11"/>
+		<db-attribute name="ID_LOCATION_TYPE" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="11"/>
 	</db-entity>
 	<db-entity name="location_zone" catalog="sicce">
-		<db-attribute name="ID_LOCATION" type="BIGINT" isMandatory="true" length="10"/>
+		<db-attribute name="ID_LOCATION" type="INTEGER" isMandatory="true" length="11"/>
 		<db-attribute name="ID_ZONE" type="BIGINT" isMandatory="true" length="10"/>
 	</db-entity>
 	<db-entity name="measure" catalog="sicce">
 		<db-attribute name="DATE_MEASURE" type="TIMESTAMP" length="19"/>
-		<db-attribute name="ID_MEASURE" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
-		<db-attribute name="ID_POWER_METER" type="BIGINT" isMandatory="true" length="10"/>
-		<db-attribute name="LOCATION_ID_LOCATION" type="BIGINT" isMandatory="true" length="10"/>
+		<db-attribute name="ID_MEASURE" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
+		<db-attribute name="ID_POWER_METER" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="LOCATION_ID_LOCATION" type="INTEGER" isMandatory="true" length="11"/>
 		<db-attribute name="VALUE" type="DECIMAL" length="10"/>
 	</db-entity>
 	<db-entity name="option_role" catalog="sicce">
-		<db-attribute name="ID_OPTION_SICCE" type="BIGINT" isMandatory="true" length="10"/>
-		<db-attribute name="ID_ROLE" type="BIGINT" isMandatory="true" length="10"/>
+		<db-attribute name="ID_OPTION_SICCE" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="ID_ROLE" type="INTEGER" isMandatory="true" length="11"/>
 	</db-entity>
 	<db-entity name="option_sicce" catalog="sicce">
 		<db-attribute name="DESCRIPTION" type="VARCHAR" length="30"/>
 		<db-attribute name="ICON" type="LONGVARBINARY" length="65535"/>
-		<db-attribute name="ID_OPTION_SICCE" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="ID_OPTION_SICCE" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="11"/>
 	</db-entity>
 	<db-entity name="parameter" catalog="sicce">
 		<db-attribute name="DESCRIPTION" type="VARCHAR" length="45"/>
-		<db-attribute name="ID_PARAMETER" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="ID_PARAMETER" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="11"/>
 		<db-attribute name="VALUE" type="DECIMAL" length="10"/>
 	</db-entity>
 	<db-entity name="power_meter" catalog="sicce">
 		<db-attribute name="DESCRIPTION" type="VARCHAR" length="255"/>
-		<db-attribute name="ID_POWER_METER" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
-		<db-attribute name="IP_ADDRESS" type="BIGINT" length="10"/>
+		<db-attribute name="ID_POWER_METER" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="11"/>
+		<db-attribute name="IP_ADDRESS" type="VARCHAR" length="20"/>
 		<db-attribute name="LOG_STATUS" type="BIT" length="1"/>
 		<db-attribute name="SERIAL" type="VARCHAR" length="20"/>
 		<db-attribute name="STATUS_2" type="BIT" length="1"/>
 	</db-entity>
 	<db-entity name="role" catalog="sicce">
 		<db-attribute name="DESCRIPTION" type="VARCHAR" length="20"/>
-		<db-attribute name="ID_ROLE" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="ID_ROLE" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="11"/>
 	</db-entity>
 	<db-entity name="unit_measure" catalog="sicce">
-		<db-attribute name="CODE" type="VARCHAR" length="6"/>
 		<db-attribute name="DESCRIPTION" type="VARCHAR" length="45"/>
-		<db-attribute name="ID_UNIT_MEASURE" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="ID_UNIT_MEASURE" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="11"/>
 	</db-entity>
 	<db-entity name="user_sicce" catalog="sicce">
-		<db-attribute name="CODE_UCSG" type="BIGINT" length="10"/>
-		<db-attribute name="ID_ROLE" type="BIGINT" isMandatory="true" length="10"/>
-		<db-attribute name="ID_USER_SICCE" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="CODE_UCSG" type="INTEGER" length="11"/>
+		<db-attribute name="ID_USER_SICCE" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="11"/>
 		<db-attribute name="NAME" type="VARCHAR" length="20"/>
-		<db-attribute name="PASSWORD_SICCE" type="VARCHAR" length="6"/>
+		<db-attribute name="PASSWORD_SICCE" type="VARCHAR" length="20"/>
+		<db-attribute name="ROLE_ID_ROLE" type="INTEGER" isMandatory="true" length="11"/>
 		<db-attribute name="SURNAME" type="VARCHAR" length="20"/>
 		<db-attribute name="USERNAME_SICCE" type="VARCHAR" length="20"/>
 	</db-entity>
 	<db-entity name="zone" catalog="sicce">
-		<db-attribute name="CODE" type="VARCHAR" length="6"/>
 		<db-attribute name="DESCRIPTION" type="VARCHAR" length="20"/>
 		<db-attribute name="ID_ZONE" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
 	</db-entity>
-	<obj-entity name="Location" className="sicce.api.info.cayenne.Location" dbEntityName="location">
-		<obj-attribute name="code" type="java.lang.String" db-attribute-path="CODE"/>
+	<obj-entity name="Location" className="sicce.api.info.Location" dbEntityName="location">
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="DESCRIPTION"/>
-		<obj-attribute name="location" type="java.lang.Long" db-attribute-path="LOCATION"/>
+		<obj-attribute name="location" type="java.lang.Integer" db-attribute-path="LOCATION"/>
 	</obj-entity>
-	<obj-entity name="LocationType" className="sicce.api.info.cayenne.LocationType" dbEntityName="location_type">
-		<obj-attribute name="code" type="java.lang.String" db-attribute-path="CODE"/>
-		<obj-attribute name="description" type="java.lang.Long" db-attribute-path="DESCRIPTION"/>
+	<obj-entity name="LocationType" className="sicce.api.info.LocationType" dbEntityName="location_type">
+		<obj-attribute name="description" type="java.lang.Integer" db-attribute-path="DESCRIPTION"/>
 	</obj-entity>
-	<obj-entity name="LocationZone" className="sicce.api.info.cayenne.LocationZone" dbEntityName="location_zone">
+	<obj-entity name="LocationZone" className="sicce.api.info.LocationZone" dbEntityName="location_zone">
 	</obj-entity>
-	<obj-entity name="Measure" className="sicce.api.info.cayenne.Measure" dbEntityName="measure">
+	<obj-entity name="Measure" className="sicce.api.info.Measure" dbEntityName="measure">
 		<obj-attribute name="dateMeasure" type="java.util.Date" db-attribute-path="DATE_MEASURE"/>
 		<obj-attribute name="value" type="java.math.BigDecimal" db-attribute-path="VALUE"/>
 	</obj-entity>
-	<obj-entity name="OptionRole" className="sicce.api.info.cayenne.OptionRole" dbEntityName="option_role">
+	<obj-entity name="OptionRole" className="sicce.api.info.OptionRole" dbEntityName="option_role">
 	</obj-entity>
-	<obj-entity name="OptionSicce" className="sicce.api.info.cayenne.OptionSicce" dbEntityName="option_sicce">
+	<obj-entity name="OptionSicce" className="sicce.api.info.OptionSicce" dbEntityName="option_sicce">
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="DESCRIPTION"/>
 		<obj-attribute name="icon" type="byte[]" db-attribute-path="ICON"/>
 	</obj-entity>
-	<obj-entity name="Parameter" className="sicce.api.info.cayenne.Parameter" dbEntityName="parameter">
+	<obj-entity name="Parameter" className="sicce.api.info.Parameter" dbEntityName="parameter">
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="DESCRIPTION"/>
 		<obj-attribute name="value" type="java.math.BigDecimal" db-attribute-path="VALUE"/>
 	</obj-entity>
-	<obj-entity name="PowerMeter" className="sicce.api.info.cayenne.PowerMeter" dbEntityName="power_meter">
+	<obj-entity name="PowerMeter" className="sicce.api.info.PowerMeter" dbEntityName="power_meter">
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="DESCRIPTION"/>
-		<obj-attribute name="ipAddress" type="java.lang.Long" db-attribute-path="IP_ADDRESS"/>
+		<obj-attribute name="ipAddress" type="java.lang.String" db-attribute-path="IP_ADDRESS"/>
 		<obj-attribute name="logStatus" type="java.lang.Boolean" db-attribute-path="LOG_STATUS"/>
 		<obj-attribute name="serial" type="java.lang.String" db-attribute-path="SERIAL"/>
 		<obj-attribute name="status2" type="java.lang.Boolean" db-attribute-path="STATUS_2"/>
 	</obj-entity>
-	<obj-entity name="Role" className="sicce.api.info.cayenne.Role" dbEntityName="role">
+	<obj-entity name="Role" className="sicce.api.info.Role" dbEntityName="role">
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="DESCRIPTION"/>
 	</obj-entity>
-	<obj-entity name="UnitMeasure" className="sicce.api.info.cayenne.UnitMeasure" dbEntityName="unit_measure">
-		<obj-attribute name="code" type="java.lang.String" db-attribute-path="CODE"/>
+	<obj-entity name="UnitMeasure" className="sicce.api.info.UnitMeasure" dbEntityName="unit_measure">
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="DESCRIPTION"/>
 	</obj-entity>
-	<obj-entity name="UserSicce" className="sicce.api.info.cayenne.UserSicce" dbEntityName="user_sicce">
-		<obj-attribute name="codeUcsg" type="java.lang.Long" db-attribute-path="CODE_UCSG"/>
+	<obj-entity name="UserSicce" className="sicce.api.info.UserSicce" dbEntityName="user_sicce">
+		<obj-attribute name="codeUcsg" type="java.lang.Integer" db-attribute-path="CODE_UCSG"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
 		<obj-attribute name="passwordSicce" type="java.lang.String" db-attribute-path="PASSWORD_SICCE"/>
 		<obj-attribute name="surname" type="java.lang.String" db-attribute-path="SURNAME"/>
 		<obj-attribute name="usernameSicce" type="java.lang.String" db-attribute-path="USERNAME_SICCE"/>
 	</obj-entity>
-	<obj-entity name="Zone" className="sicce.api.info.cayenne.Zone" dbEntityName="zone">
-		<obj-attribute name="code" type="java.lang.String" db-attribute-path="CODE"/>
+	<obj-entity name="Zone" className="sicce.api.info.Zone" dbEntityName="zone">
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="DESCRIPTION"/>
 	</obj-entity>
 	<db-relationship name="locationArray" source="location" target="location" toMany="true">
@@ -176,13 +168,13 @@
 		<db-attribute-pair source="ID_ROLE" target="ID_ROLE"/>
 	</db-relationship>
 	<db-relationship name="userSicceArray" source="role" target="user_sicce" toMany="true">
-		<db-attribute-pair source="ID_ROLE" target="ID_ROLE"/>
+		<db-attribute-pair source="ID_ROLE" target="ROLE_ID_ROLE"/>
 	</db-relationship>
 	<db-relationship name="toMeasure" source="unit_measure" target="measure" toDependentPK="true" toMany="false">
 		<db-attribute-pair source="ID_UNIT_MEASURE" target="ID_MEASURE"/>
 	</db-relationship>
 	<db-relationship name="toRole" source="user_sicce" target="role" toMany="false">
-		<db-attribute-pair source="ID_ROLE" target="ID_ROLE"/>
+		<db-attribute-pair source="ROLE_ID_ROLE" target="ID_ROLE"/>
 	</db-relationship>
 	<db-relationship name="locationZoneArray" source="zone" target="location_zone" toMany="true">
 		<db-attribute-pair source="ID_ZONE" target="ID_ZONE"/>
