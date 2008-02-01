@@ -5,8 +5,6 @@ package sicce.api.info;
  * and open the template in the editor.
  */
 
-
-import sicce.api.info.PowerMeterInfo;
 import java.util.List;
 import org.apache.cayenne.access.DataContext;
 
@@ -34,11 +32,11 @@ public class Main {
 //        /*se setean la informacion del nuevo objeto*/
 //                    con.registerNewObject(objPowerMeter);
 //                   /* las dos lineas de creacion y registro de objeto pueden ser abreviadas asi:
-                    PowerMeterInfo objPowerMeter = (PowerMeterInfo) con.newObject(PowerMeterInfo.class);
+                    PowerMeter objPowerMeter = (PowerMeter) con.newObject(PowerMeter.class);
                     
                     objPowerMeter.setDescription("PM500");
                     //CORREGIR EL IP_ADRESS :( ESTABA COMO INT.. DEBERIA SER UN VARCHAR
-                    objPowerMeter.setIpAddress(23l);
+                    objPowerMeter.setIpAddress("23l");
                     objPowerMeter.setLogStatus(false);
                     objPowerMeter.setSerial("15563565656");
                     /*se guarda*/
