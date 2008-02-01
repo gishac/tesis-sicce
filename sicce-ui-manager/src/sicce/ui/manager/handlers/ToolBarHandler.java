@@ -69,7 +69,7 @@ public class ToolBarHandler{
      * Notifica a todos los listeners que ha cambiado el estado del toolbar
      * @param eventArgument
      */
-    public void ToolBarStateChanged(ToolBarEventObject eventArgument)
+    public void ToolBarStateChanged(ToolBarEventObject eventArgument) throws Exception
     {
         HandleToolBarStates(eventArgument);
         List<IToolBarStateListener> listeners;
@@ -122,7 +122,7 @@ public class ToolBarHandler{
     /**
      * Coloca al toolbar en el estado por default : true false false false true
      */
-    private void SetDefaultState()
+    public void SetDefaultState()
     {
         SetToolBarItemsState(true, false, false, false, true);
     }

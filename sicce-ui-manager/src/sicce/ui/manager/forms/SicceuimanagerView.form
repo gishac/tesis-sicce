@@ -22,6 +22,7 @@
                 <Property name="icon" type="javax.swing.Icon" resourceKey="New.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="toolBarItemNew.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemNew.toolTipText"/>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="0"/>
@@ -120,6 +121,7 @@
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemSearch.icon"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemSearch.toolTipText"/>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="0"/>
@@ -144,6 +146,7 @@
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" resourceKey="toolBarItemBack.icon"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="toolBarItemBack.toolTipText"/>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="0"/>

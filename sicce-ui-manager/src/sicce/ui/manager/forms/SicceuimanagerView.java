@@ -30,10 +30,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import org.apache.cayenne.ObjectId;
+import sicce.api.businesslogic.ClassFactory;
 import sicce.api.info.ConstantsProvider.OptionsProvider;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
-import sicce.api.info.OptionSicceInfo;
 import sicce.api.info.eventobjects.ToolBarEventObject;
+import sicce.api.info.interfaces.IOptionSicce;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.JTabbedPaneExtended;
@@ -98,6 +99,7 @@ public class SicceuimanagerView extends FrameView {
         toolBarItemNew.setIcon(resourceMap.getIcon("New.icon")); // NOI18N
         toolBarItemNew.setText(resourceMap.getString("toolBarItemNew.text")); // NOI18N
         toolBarItemNew.setToolTipText(resourceMap.getString("toolBarItemNew.toolTipText")); // NOI18N
+        toolBarItemNew.setEnabled(false);
         toolBarItemNew.setFocusable(false);
         toolBarItemNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolBarItemNew.setIconTextGap(0);
@@ -172,6 +174,7 @@ public class SicceuimanagerView extends FrameView {
 
         toolBarItemSearch.setIcon(resourceMap.getIcon("toolBarItemSearch.icon")); // NOI18N
         toolBarItemSearch.setToolTipText(resourceMap.getString("toolBarItemSearch.toolTipText")); // NOI18N
+        toolBarItemSearch.setEnabled(false);
         toolBarItemSearch.setFocusable(false);
         toolBarItemSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolBarItemSearch.setIconTextGap(0);
@@ -190,6 +193,7 @@ public class SicceuimanagerView extends FrameView {
 
         toolBarItemBack.setIcon(resourceMap.getIcon("toolBarItemBack.icon")); // NOI18N
         toolBarItemBack.setToolTipText(resourceMap.getString("toolBarItemBack.toolTipText")); // NOI18N
+        toolBarItemBack.setEnabled(false);
         toolBarItemBack.setFocusable(false);
         toolBarItemBack.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolBarItemBack.setIconTextGap(0);
@@ -212,35 +216,60 @@ public class SicceuimanagerView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     private void toolBarItemNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemNewActionPerformed
-       toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.New));
-}//GEN-LAST:event_toolBarItemNewActionPerformed
+        try {
+            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.New));//GEN-LAST:event_toolBarItemNewActionPerformed
+        } catch (Exception ex) {
+            Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}                                              
 
     private void toolBarItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemSaveActionPerformed
-       toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Save));
-}//GEN-LAST:event_toolBarItemSaveActionPerformed
+        try {
+            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Save));//GEN-LAST:event_toolBarItemSaveActionPerformed
+            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Edit));
+        } catch (Exception ex) {
+            Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}                                               
 
     private void toolBarItemEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemEditActionPerformed
-        toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Edit));
-}//GEN-LAST:event_toolBarItemEditActionPerformed
+        try {
+            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Edit));//GEN-LAST:event_toolBarItemEditActionPerformed
+        } catch (Exception ex) {
+            Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}                                               
 
     private void toolBarItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemDeleteActionPerformed
         
         int result = joptionPaneExtended.ShowConfirmDialog(getResourceMap().getString("DeleteConfirmDialog"),getResourceMap().getString("ApplicationName"));
         if(result == JOptionPaneExtended.YES_OPTION)
         {
-            JOptionPane.showMessageDialog(null, "Yes");
-            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Delete));
+            try {
+                JOptionPane.showMessageDialog(null, "Yes");
+                toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Delete));
+            } catch (Exception ex) {
+                Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }        
 }//GEN-LAST:event_toolBarItemDeleteActionPerformed
 
     private void toolBarItemSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemSearchActionPerformed
-        
-        toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.RegistryLoaded));
+        try {
+
+            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.RegistryLoaded));
+        } catch (Exception ex) {
+            Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
+        }
 }//GEN-LAST:event_toolBarItemSearchActionPerformed
 
     private void toolBarItemBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemBackActionPerformed
-         toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Back));
-}//GEN-LAST:event_toolBarItemBackActionPerformed
+        try {
+            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Back));//GEN-LAST:event_toolBarItemBackActionPerformed
+        } catch (Exception ex) {
+            Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}                                               
 
     
     
@@ -259,7 +288,7 @@ public class SicceuimanagerView extends FrameView {
     private JDialog aboutBox;
     private JTabbedPaneExtended tabManager;
     private JTaskPane taskPaneManager;
-    private List<OptionSicceInfo> options;
+    private List<IOptionSicce> options;
     private ToolBarHandler toolBarHandler;
     private JOptionPaneExtended joptionPaneExtended;
     private RolePane rolePane;
@@ -294,23 +323,19 @@ public class SicceuimanagerView extends FrameView {
      */
     private void CreateTasks()
     {
-        OptionSicceInfo a = new OptionSicceInfo();
+        IOptionSicce a = ClassFactory.getOptionInstance();
         a.setDescription("Role");
-        ObjectId x = new ObjectId("Role");
-        a.setObjectId(x);
         
-        OptionSicceInfo b = new OptionSicceInfo();
+        IOptionSicce b = ClassFactory.getOptionInstance();
         b.setDescription("User");
-        ObjectId y = new ObjectId("User");
-        b.setObjectId(x);
         
-        this.options = new ArrayList<OptionSicceInfo>();
+        this.options = new ArrayList<IOptionSicce>();
         options.add(a);
         options.add(b);
         JTaskPaneGroup mainGroup = new JTaskPaneGroup();
         mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
         mainGroup.setSpecial(true);
-        for(OptionSicceInfo option : this.options)
+        for(IOptionSicce option : this.options)
         {
             ImageIcon icon = null;
             mainGroup.add(getAction(option.getDescription(), option.getDescription(), icon));
@@ -405,7 +430,7 @@ public class SicceuimanagerView extends FrameView {
                     getTabManager().AddTab(selectedOption);
                 }
                 getTabManager().setCurrentTab(selectedOption);
-                
+                toolBarHandler.SetDefaultState();;
                 
             }
         };

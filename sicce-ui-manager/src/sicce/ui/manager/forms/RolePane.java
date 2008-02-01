@@ -6,6 +6,12 @@
 
 package sicce.ui.manager.forms;
 
+import java.awt.Component;
+import java.util.List;
+import sicce.api.businesslogic.ClassFactory;
+import sicce.api.dataaccess.RoleDB;
+import sicce.api.info.interfaces.IRole;
+import sicce.api.util.ComponentUtil;
 import sicce.ui.manager.controls.JTabExtended;
 
 /**
@@ -14,9 +20,12 @@ import sicce.ui.manager.controls.JTabExtended;
  */
 public class RolePane extends JTabExtended {
     
+    private IRole role;    
+    
     /** Creates new form LocationTypePane */
     public RolePane() {
         initComponents();
+        getControlsToClear().add(txtDescription);
     }
     
     /** This method is called from within the constructor to
@@ -42,12 +51,15 @@ public class RolePane extends JTabExtended {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel2.border.title"))); // NOI18N
         jPanel2.setName("jPanel2"); // NOI18N
 
+        txtCode.setBackground(resourceMap.getColor("txtCode.background")); // NOI18N
+        txtCode.setEnabled(false);
         txtCode.setName("txtCode"); // NOI18N
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
         txtDescription.setColumns(20);
         txtDescription.setRows(5);
+        txtDescription.setEnabled(false);
         txtDescription.setName("txtDescription"); // NOI18N
         jScrollPane2.setViewportView(txtDescription);
 
@@ -83,7 +95,7 @@ public class RolePane extends JTabExtended {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDescription))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -127,15 +139,12 @@ public class RolePane extends JTabExtended {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(111, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     
@@ -150,5 +159,48 @@ public class RolePane extends JTabExtended {
     private javax.swing.JTextField txtCode;
     private javax.swing.JTextArea txtDescription;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void Back() {
+        super.Back();
+    }
+
+    @Override
+    public void Delete() throws Exception {
+        super.Delete();
+    }
+
+    @Override
+    public void New() {
+        super.New();
+        role = ClassFactory.getRoleInstance();
+        ComponentUtil.SetState(true, new Component[]{ txtDescription});
+        txtDescription.requestFocusInWindow();
+    }
+
+    @Override
+    public void Save() throws Exception {
+        
+        role.setDescription(txtDescription.getText().trim());
+        if(IsObjectLoaded())
+        {
+            Update();
+            return;
+        }
+        role = RoleDB.Save(role);
+    }
+
+    @Override
+    public void Search() {
+        super.Search();
+    }
+    
+     @Override
+    public void Update() throws Exception{
+        RoleDB.Update(role);
+    }
+    
+    
+    
     
 }
