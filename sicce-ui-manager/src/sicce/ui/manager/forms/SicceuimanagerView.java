@@ -29,7 +29,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import org.apache.cayenne.ObjectId;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.info.ConstantsProvider.OptionsProvider;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
@@ -46,16 +45,16 @@ import sicce.ui.manager.handlers.ToolBarHandler;
 public class SicceuimanagerView extends FrameView {
 
     public SicceuimanagerView(SingleFrameApplication app) {
-       
-        super(app);                 
+
+        super(app);
         ApplyLookAndFeel();
         initComponents();
         toolBarHandler = new ToolBarHandler(toolBar);
-        
+
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
-        
-       
+
+
         //statusAnimationLabel.setIcon(idleIcon);
         //progressBar.setVisible(false);
         OrganizeUIElements();
@@ -214,23 +213,27 @@ public class SicceuimanagerView extends FrameView {
 
         setComponent(mainPanel);
     }// </editor-fold>//GEN-END:initComponents
-
     private void toolBarItemNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemNewActionPerformed
         try {
             toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.New));//GEN-LAST:event_toolBarItemNewActionPerformed
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
         }
-}                                              
+    }
 
-    private void toolBarItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemSaveActionPerformed
+    private void toolBarItemSaveActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Save));//GEN-LAST:event_toolBarItemSaveActionPerformed
-            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Edit));
+            ToolBarEventObject saveEventObject = new ToolBarEventObject(toolBar, ToolBarAction.Save);
+            toolBarHandler.ToolBarStateChanged(saveEventObject);
+            if (!saveEventObject.getCancelEvent()) {
+                toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Edit));
+            } else {
+                joptionPaneExtended.showMessageDialog(null, "action canceled");
+            }
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
         }
-}                                               
+    }
 
     private void toolBarItemEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemEditActionPerformed
         try {
@@ -238,16 +241,15 @@ public class SicceuimanagerView extends FrameView {
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
         }
-}                                               
+    }
 
     private void toolBarItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemDeleteActionPerformed
-        
-        int result = joptionPaneExtended.ShowConfirmDialog(getResourceMap().getString("DeleteConfirmDialog"),getResourceMap().getString("ApplicationName"));
-        if(result == JOptionPaneExtended.YES_OPTION)
-        {
+
+        int result = joptionPaneExtended.ShowConfirmDialog(getResourceMap().getString("DeleteConfirmDialog"), getResourceMap().getString("ApplicationName"));
+        if (result == JOptionPaneExtended.YES_OPTION) {
             try {
-                JOptionPane.showMessageDialog(null, "Yes");
-                toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Delete));
+                ToolBarEventObject deleteEventObject = new ToolBarEventObject(toolBar, ToolBarAction.Delete);
+                toolBarHandler.ToolBarStateChanged(deleteEventObject);
             } catch (Exception ex) {
                 Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -269,11 +271,7 @@ public class SicceuimanagerView extends FrameView {
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
         }
-}                                               
-
-    
-    
-    
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel mainPanel;
     private javax.swing.JToolBar toolBar;
@@ -284,7 +282,6 @@ public class SicceuimanagerView extends FrameView {
     private javax.swing.JButton toolBarItemSave;
     private javax.swing.JButton toolBarItemSearch;
     // End of variables declaration//GEN-END:variables
-   
     private JDialog aboutBox;
     private JTabbedPaneExtended tabManager;
     private JTaskPane taskPaneManager;
@@ -293,50 +290,48 @@ public class SicceuimanagerView extends FrameView {
     private JOptionPaneExtended joptionPaneExtended;
     private RolePane rolePane;
     private UserPane userPane;
-    
+
     /**
      * gish@c
      * Retorna la instancia del control que administra los tabs
      */
     public JTabbedPaneExtended getTabManager() {
-        if(tabManager == null)
+        if (tabManager == null) {
             tabManager = new JTabbedPaneExtended();
+        }
         return tabManager;
     }
-    
+
     /**
      * gish@c
      * Retorna la instancia del control que administra el panel de tareas
      */
     public JTaskPane getTaskPaneManager() {
-        if(taskPaneManager == null)
-        {
+        if (taskPaneManager == null) {
             taskPaneManager = new JTaskPane();
-            taskPaneManager.setPreferredSize(new Dimension(200,Toolkit.getDefaultToolkit().getScreenSize().height));
+            taskPaneManager.setPreferredSize(new Dimension(200, Toolkit.getDefaultToolkit().getScreenSize().height));
         }
         return taskPaneManager;
     }
-    
+
     /**
      * gish@c
      * Crea y agrega las opciones en el panel de tareas
      */
-    private void CreateTasks()
-    {
+    private void CreateTasks() {
         IOptionSicce a = ClassFactory.getOptionInstance();
         a.setDescription("Role");
-        
+
         IOptionSicce b = ClassFactory.getOptionInstance();
         b.setDescription("User");
-        
+
         this.options = new ArrayList<IOptionSicce>();
         options.add(a);
         options.add(b);
         JTaskPaneGroup mainGroup = new JTaskPaneGroup();
         mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
         mainGroup.setSpecial(true);
-        for(IOptionSicce option : this.options)
-        {
+        for (IOptionSicce option : this.options) {
             ImageIcon icon = null;
             mainGroup.add(getAction(option.getDescription(), option.getDescription(), icon));
         }
@@ -344,12 +339,11 @@ public class SicceuimanagerView extends FrameView {
         getTaskPaneManager().revalidate();
         getTaskPaneManager().repaint();
     }
-    
+
     /**
      * Crea todos los elementos visuales del formulario
      */
-    private void CreateUIElements()
-    {
+    private void CreateUIElements() {
         CreateTasks();
         String[] optionsText = new String[3];
         optionsText[0] = getResourceMap().getString("JOptionPaneYes");
@@ -358,7 +352,7 @@ public class SicceuimanagerView extends FrameView {
         joptionPaneExtended = new JOptionPaneExtended(optionsText);
         CreateForms();
     }
-    
+
     /**
      * gish@c
      * Coloca el formulario del tamaño maximo de la pantalla
@@ -369,31 +363,30 @@ public class SicceuimanagerView extends FrameView {
         SicceuimanagerApp.getApplication().getMainFrame().setPreferredSize(dimension);
     }
 
-    
     /**
      * gish@c
      * Aplica el estilo visual a todos los controles de UI
      */
     private void ApplyLookAndFeel() {
         try {
-            
-            UIManager.put("TaskPane.useGradient", Boolean.TRUE);
+
+            /*UIManager.put("TaskPane.useGradient", Boolean.TRUE);
             UIManager.put("TaskPaneGroup.useGradient", Boolean.TRUE);
-            UIManager.put("TaskPane.backgroundGradientStart",  Color.LIGHT_GRAY);
+            UIManager.put("TaskPane.backgroundGradientStart", Color.LIGHT_GRAY);
             UIManager.put("TaskPane.backgroundGradientEnd", Color.WHITE);
             UIManager.put("TaskPaneGroup.backgroundGradientStart", Color.LIGHT_GRAY);
             UIManager.put("TaskPaneGroup.backgroundGradientEnd", Color.WHITE);
-            UIManager.put("TaskPaneGroup.background", Color.LIGHT_GRAY);
+            /*UIManager.put("TaskPaneGroup.background", Color.LIGHT_GRAY);
             UIManager.put("TaskPaneGroup.borderColor", Color.DARK_GRAY);
             UIManager.put("TaskPaneGroup.specialTitleForeground", Color.BLACK);
             UIManager.put("TaskPaneGroup.specialTitleBackground", Color.gray.brighter());
-            PlasticLookAndFeel.setPlasticTheme(new com.jgoodies.looks.plastic.theme.DarkStar());            
+            PlasticLookAndFeel.setPlasticTheme(new com.jgoodies.looks.plastic.theme.DarkStar());*/
             UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
             LookAndFeelAddons.setAddon(AquaLookAndFeelAddons.class);
             getTaskPaneManager().revalidate();
             getTaskPaneManager().repaint();
-            
-            
+
+
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -404,12 +397,12 @@ public class SicceuimanagerView extends FrameView {
      * Coloca los paneles principales en orden dentro del panel principal     
      */
     private void OrganizeUIElements() {
-       this.getFrame().getContentPane().add(toolBar,BorderLayout.NORTH);
-       this.getFrame().getContentPane().add(getTabManager(),BorderLayout.CENTER);
-       this.getFrame().getContentPane().add(getTaskPaneManager(),BorderLayout.WEST);
-       this.getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       
-    }       
-    
+        this.getFrame().getContentPane().add(toolBar, BorderLayout.NORTH);
+        this.getFrame().getContentPane().add(getTabManager(), BorderLayout.CENTER);
+        this.getFrame().getContentPane().add(getTaskPaneManager(), BorderLayout.WEST);
+        this.getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
     /**
      * 
      * @param text
@@ -417,48 +410,44 @@ public class SicceuimanagerView extends FrameView {
      * @param icon
      * @return
      */
-    private javax.swing.Action getAction(String text,String actionCommand,ImageIcon icon)
-    {
-         javax.swing.Action event = new AbstractAction(text) {
+    private javax.swing.Action getAction(String text, String actionCommand, ImageIcon icon) {
+        javax.swing.Action event = new AbstractAction(text) {
+
             public void actionPerformed(ActionEvent e) {
-                
-                //JOptionPane.showMessageDialog(null, "You clicked: " + e.getActionCommand(),"Message",JOptionPane.INFORMATION_MESSAGE);
                 OptionsProvider option = Enum.valueOf(OptionsProvider.class, e.getActionCommand());
                 JTabExtended selectedOption = GetForm(option);
-                if(!getTabManager().getTabs().contains(selectedOption))
-                {
+                if (!getTabManager().getTabs().contains(selectedOption)) {
                     getTabManager().AddTab(selectedOption);
+                    toolBarHandler.SetDefaultState();
                 }
-                getTabManager().setCurrentTab(selectedOption);
-                toolBarHandler.SetDefaultState();;
-                
+                if (!getTabManager().getCurrentTab().equals(selectedOption)) {
+                    getTabManager().setCurrentTab(selectedOption);
+                    toolBarHandler.SetDefaultState();
+                }
             }
         };
-        event.putValue(javax.swing.Action.SHORT_DESCRIPTION, text);     
+        event.putValue(javax.swing.Action.SHORT_DESCRIPTION, text);
         event.putValue(javax.swing.Action.ACTION_COMMAND_KEY, actionCommand);
         //event.putValue(javax.swing.Action.SMALL_ICON, icon);
         return event;
     }
-    
+
     /**
      * Crea las instancias de todos los formularios
      */
-    private void CreateForms()
-    {
+    private void CreateForms() {
         rolePane = new RolePane();
         userPane = new UserPane();
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
     }
-    
+
     /**
      * 
      */
-    private JTabExtended GetForm(OptionsProvider option)
-    {
+    private JTabExtended GetForm(OptionsProvider option) {
         JTabExtended result = null;
-        switch(option)
-        {
+        switch (option) {
             case Role:
                 result = rolePane;
                 break;
@@ -468,5 +457,4 @@ public class SicceuimanagerView extends FrameView {
         }
         return result;
     }
-          
 }

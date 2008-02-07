@@ -3,15 +3,19 @@
  *
  * Created on January 26, 2008, 7:34 PM
  */
-
 package sicce.ui.manager.forms;
 
-import java.awt.Component;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.exp.ExpressionParameter;
+import org.apache.cayenne.query.SelectQuery;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.dataaccess.RoleDB;
+import sicce.api.info.Role;
 import sicce.api.info.interfaces.IRole;
-import sicce.api.util.ComponentUtil;
 import sicce.ui.manager.controls.JTabExtended;
 
 /**
@@ -19,15 +23,17 @@ import sicce.ui.manager.controls.JTabExtended;
  * @author  gish@c
  */
 public class RolePane extends JTabExtended {
-    
-    private IRole role;    
-    
+
+    private IRole role;
+
     /** Creates new form LocationTypePane */
     public RolePane() {
         initComponents();
         getControlsToClear().add(txtDescription);
+        getControlsToClear().add(txtCode);
+        getControlsToEnable().add(txtDescription);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -147,8 +153,6 @@ public class RolePane extends JTabExtended {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable grdZone;
     private javax.swing.JPanel jPanel2;
@@ -159,48 +163,67 @@ public class RolePane extends JTabExtended {
     private javax.swing.JTextField txtCode;
     private javax.swing.JTextArea txtDescription;
     // End of variables declaration//GEN-END:variables
-
     @Override
     public void Back() {
         super.Back();
     }
 
     @Override
-    public void Delete() throws Exception {
-        super.Delete();
+    public boolean Delete() throws Exception {
+        cancelAction = false;
+        try {
+            super.Delete();            
+            /*Map map = new HashMap();
+            map.put("ID_ROLE", 10);
+            SelectQuery query = new SelectQuery(Role.class);
+            query = query.queryWithParameters(map);
+            List result = sicce.api.dataaccess.Connection.getDataContext().performQuery(query);
+            role = (IRole)result.get(0);*/
+            RoleDB.Delete(role);
+            
+        } catch (Exception ex) {
+            cancelAction = true;
+            throw ex;
+        }
+        return cancelAction;
     }
 
     @Override
     public void New() {
         super.New();
         role = ClassFactory.getRoleInstance();
-        ComponentUtil.SetState(true, new Component[]{ txtDescription});
         txtDescription.requestFocusInWindow();
     }
 
     @Override
-    public void Save() throws Exception {
-        
-        role.setDescription(txtDescription.getText().trim());
-        if(IsObjectLoaded())
-        {
-            Update();
-            return;
+    public boolean Save() throws Exception {
+        cancelAction = false;        
+        try {
+            role.setDescription(txtDescription.getText().trim());
+            if (IsObjectLoaded()) {
+                return Update();
+            }
+            role = RoleDB.Save(role);
+            txtCode.setText(String.valueOf(role.getID()));
+        } catch (Exception ex) {
+            cancelAction = true;
         }
-        role = RoleDB.Save(role);
+        return cancelAction;
     }
 
     @Override
     public void Search() {
         super.Search();
     }
-    
-     @Override
-    public void Update() throws Exception{
-        RoleDB.Update(role);
+
+    @Override
+    public boolean Update() throws Exception {
+        cancelAction = false;
+        try {
+            RoleDB.Update(role);
+        } catch (Exception ex) {
+            cancelAction = true;
+        }
+        return cancelAction;
     }
-    
-    
-    
-    
 }

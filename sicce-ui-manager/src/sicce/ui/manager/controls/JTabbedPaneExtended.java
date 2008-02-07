@@ -5,12 +5,12 @@
 
 package sicce.ui.manager.controls;
 
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.DefaultSingleSelectionModel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import sicce.api.info.interfaces.ITabbedWindow;
 import sicce.ui.manager.listeners.CloseTabListener;
 
@@ -32,6 +32,14 @@ public class JTabbedPaneExtended extends JTabbedPane{
     {
         super();
         this.addMouseListener(new CloseTabListener(this));
+        this.getModel().addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+               DefaultSingleSelectionModel selectionModel = (DefaultSingleSelectionModel)e.getSource();
+               int tabIndex = selectionModel.getSelectedIndex();
+               setCurrentTab(tabIndex);
+            }
+        });
+        
     }
     
     /**
@@ -54,8 +62,9 @@ public class JTabbedPaneExtended extends JTabbedPane{
     public void AddTab(JTabExtended tab)
     {
         tab.setParentPane(this);
-        this.addTab(tab.getTitle(), tab);
         getTabs().add(tab);
+        this.addTab(tab.getTitle(), tab);
+        
     }
     
     /**
@@ -64,8 +73,8 @@ public class JTabbedPaneExtended extends JTabbedPane{
      */
     public void RemoveTab(int index)
     {
-        JTabExtended tab = (JTabExtended)this.getTabComponentAt(index);
-        getTabs().remove(tab);
+        //JTabExtended tab = (JTabExtended)this.getTabComponentAt(index);        
+        getTabs().remove(index);
         this.remove(index);
     }
     
@@ -91,8 +100,23 @@ public class JTabbedPaneExtended extends JTabbedPane{
             {
                 this.setSelectedIndex(i);
             }
+        }      
+    }
+    
+    /**
+     * Setea el tab actual
+     * @param index
+     */
+    public void setCurrentTab(int index)
+    {
+        if(getTabs().size() > index && index >= 0)
+        {
+            this.setSelectedIndex(index);
+            this.currentTab = getTabs().get(index);
         }
     }
+    
+    
 }
 
 
