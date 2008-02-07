@@ -71,7 +71,7 @@ public class ToolBarHandler{
      */
     public void ToolBarStateChanged(ToolBarEventObject eventArgument) throws Exception
     {
-        HandleToolBarStates(eventArgument);
+        
         List<IToolBarStateListener> listeners;
         synchronized(this)
         {
@@ -84,6 +84,7 @@ public class ToolBarHandler{
                 listener.ToolBarStateChanged(eventArgument);            
             }
         }
+        HandleToolBarStates(eventArgument);
     }
     
     /**
@@ -92,6 +93,8 @@ public class ToolBarHandler{
      */
     private void HandleToolBarStates(ToolBarEventObject eventArgument)
     {
+        if(eventArgument.getCancelEvent())
+            return;
         switch(eventArgument.getToolBarState())
         {
             case None:
@@ -124,7 +127,7 @@ public class ToolBarHandler{
      */
     public void SetDefaultState()
     {
-        SetToolBarItemsState(true, false, false, false, true);
+        SetToolBarItemsState(true, false, false, false, true,true);
     }
     
     /**
@@ -143,6 +146,22 @@ public class ToolBarHandler{
         toolBar.getComponent(2).setEnabled(editButtonState);
         toolBar.getComponent(3).setEnabled(deleteButtonState);
         toolBar.getComponent(4).setEnabled(searchButtonState);
+    }
+    
+    /**
+     * Coloca el estado de activacion de los botones del toolbar
+     * @param newButtonState - Estado del boton nuevo
+     * @param saveButtonState - Estado del boton grabar
+     * @param editButtonState - Estado del boton editar
+     * @param deleteButtonState - Estado del boton eliminar
+     * @param searchButtonState - Estado del boton buscar
+     * @param backButtonState - Estado del boton regresar
+     */
+    private void SetToolBarItemsState(boolean newButtonState, boolean saveButtonState, 
+            boolean editButtonState, boolean deleteButtonState, boolean searchButtonState, boolean backButtonState)
+    {
+        SetToolBarItemsState(newButtonState,saveButtonState,editButtonState,deleteButtonState,searchButtonState);
+        toolBar.getComponent(5).setEnabled(searchButtonState);
     }
        
 }

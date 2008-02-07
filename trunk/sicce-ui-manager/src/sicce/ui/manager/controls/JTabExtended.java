@@ -12,6 +12,7 @@ import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
+import javax.swing.plaf.basic.BasicSliderUI.ComponentHandler;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.ITabbedWindow;
@@ -29,6 +30,9 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
     private JTabbedPaneExtended parentPane;
     private boolean objectLoaded;
     private List<Component> controlsToClear;
+    private List<Component> controlsToEnable;  
+    protected boolean cancelAction;
+    
 
     /**
      * Devuelve el panel que contiene al tab
@@ -47,6 +51,10 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
         return objectLoaded;
     }
     
+    /**
+     * Lista de controles que van a ser reseteados cuando el formulario ingresa a modo nuevo
+     * @return
+     */
     public List<Component> getControlsToClear()
     {
         if(controlsToClear == null)
@@ -54,6 +62,19 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
             controlsToClear = new ArrayList<Component>();
         }
         return controlsToClear;
+    }
+    
+    /**
+     * Lista de controles que van a ser habilitados o deshabilitados cuando el formulario ingresa a modo de edicion
+     * @return
+     */
+    public List<Component> getControlsToEnable()
+    {
+        if(controlsToEnable == null)
+        {
+            controlsToEnable = new ArrayList<Component>();
+        }
+        return controlsToEnable;
     }
     
     /**
@@ -93,18 +114,19 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
     public void New() {
        objectLoaded = false;
        ComponentUtil.Clear(getControlsToClear());
+       ComponentUtil.SetState(true, getControlsToEnable());
     }
     
-    public void Save() throws Exception {
-       
+    public boolean Save() throws Exception {
+       return true;
     }
 
     public void Search() {
        
     }
 
-    public void Delete() throws Exception {
-        
+    public boolean Delete() throws Exception {
+        return true;
     }
 
     public void Edit() {
@@ -112,11 +134,12 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
     }
     
     public void Back() {
-        
+        ComponentUtil.Clear(getControlsToClear());
+        ComponentUtil.SetState(false,getControlsToEnable());
     }
     
-    public void Update() throws Exception{
-    
+    public boolean Update() throws Exception{
+        return true;
     }
     
     /**
@@ -145,13 +168,15 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
                 Edit();
                 break;
             case Save:
-                Save();
+                event.setCancelEvent(Save());
                 break;
             case Delete:
-                Delete();
+                event.setCancelEvent(Delete());
                 break;
             case Search:
                 Search();
+            case Back:
+                Back();
         }
     }
     
