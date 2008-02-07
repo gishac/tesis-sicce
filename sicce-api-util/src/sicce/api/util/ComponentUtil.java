@@ -71,6 +71,21 @@ public class ComponentUtil {
     }
     
     /**
+     * Setea el estado de los componentes
+     * @param components
+     * @param enabled
+     */
+    public static void SetState(boolean enabled,List<Component> components)
+    {
+        Component[] toSetState = new Component[components.size()];
+        for(int i=0; i<= components.size()-1; i++)
+        {
+            toSetState[i] = components.get(i);
+        }
+        SetState(enabled, toSetState);
+    }
+    
+    /**
      * Indica si el componente es una instancia de JTextField
      * @param component
      * @return
