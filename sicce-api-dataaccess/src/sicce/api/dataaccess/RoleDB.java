@@ -42,4 +42,17 @@ public class RoleDB {
         }
     }
     
+    public static void Delete(IRole role) throws Exception
+    {
+      try
+        {
+            Connection.getDataContext().deleteObject((Role) role);
+            Connection.getDataContext().commitChanges();
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }  
+    }
+    
 }
