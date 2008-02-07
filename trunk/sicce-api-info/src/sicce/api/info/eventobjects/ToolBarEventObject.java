@@ -15,6 +15,15 @@ import sicce.api.info.ConstantsProvider.ToolBarAction;
 public class ToolBarEventObject extends EventObject {
 
     private ToolBarAction toolBarState;
+    private boolean cancelEvent;
+
+    public boolean getCancelEvent() {
+        return cancelEvent;
+    }
+
+    public void setCancelEvent(boolean cancelEvent) {
+        this.cancelEvent = cancelEvent;
+    }
 
     public ToolBarAction getToolBarState() {
         return toolBarState;

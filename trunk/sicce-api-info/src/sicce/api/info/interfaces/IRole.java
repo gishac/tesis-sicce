@@ -15,4 +15,5 @@ public interface IRole {
 
     void setDescription(String description);
     String getDescription();
+    int getID();
 }
