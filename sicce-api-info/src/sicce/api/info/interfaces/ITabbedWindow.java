@@ -14,11 +14,11 @@ public interface ITabbedWindow {
     void setTitle(String title);
     String getTitle();
     void New();
-    void Save() throws Exception;
+    boolean Save() throws Exception;
     void Search();
-    void Delete() throws Exception;
+    boolean Delete() throws Exception;
     void Edit();
     void Back();
-    void Update() throws Exception;
+    boolean Update() throws Exception;
     boolean IsActive();
 }
