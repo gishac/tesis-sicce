@@ -6,6 +6,15 @@
 
 package sicce.ui.manager.forms;
 
+import sicce.api.businesslogic.ClassFactory;
+import sicce.api.businesslogic.RoleBizObject;
+import sicce.api.businesslogic.SicceComboBoxModel;
+import sicce.api.businesslogic.SicceComboBoxRenderer;
+import sicce.api.dataaccess.UserDB;
+import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
+import sicce.api.info.interfaces.IRole;
+import sicce.api.info.interfaces.IUserSicce;
+import sicce.api.util.ComponentUtil;
 import sicce.ui.manager.controls.JTabExtended;
 
 /**
@@ -14,9 +23,31 @@ import sicce.ui.manager.controls.JTabExtended;
  */
 public class UserPane extends JTabExtended {
     
+    SicceComboBoxModel<IRole> roleComboBoxModel;
+    SicceComboBoxRenderer roleComboBoxRenderer;
+    RoleBizObject roleBizObject;
+    private IUserSicce user;
+    
+    
     /** Creates new form LocationPane */
     public UserPane() {
         initComponents();
+        roleBizObject = new RoleBizObject();
+        roleComboBoxModel = new SicceComboBoxModel<IRole>(roleBizObject.GetAllRoles());
+        roleComboBoxRenderer = new SicceComboBoxRenderer("getDescription",DisplayMemberRenderType.Method);
+        cmbRole.setModel(roleComboBoxModel);
+        cmbRole.setRenderer(roleComboBoxRenderer);
+        getControlsToClear().add(txtFirstName);
+        getControlsToClear().add(txtLastName);
+        getControlsToClear().add(txtName);
+        getControlsToClear().add(txtPassword);
+        getControlsToClear().add(cmbRole);
+        getControlsToEnable().add(txtFirstName);
+        getControlsToEnable().add(txtLastName);
+        getControlsToEnable().add(txtName);
+        getControlsToEnable().add(txtPassword);
+        getControlsToEnable().add(cmbRole);
+        ComponentUtil.SetState(false, getControlsToEnable());
     }
     
     /** This method is called from within the constructor to
@@ -28,62 +59,40 @@ public class UserPane extends JTabExtended {
     private void initComponents() {
 
         jPanel4 = new javax.swing.JPanel();
-        txtUbication = new javax.swing.JTextField();
-        btnSearchUbication = new javax.swing.JButton();
-        txtLocationType = new javax.swing.JTextField();
-        txtPowerMeter = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtPowerMeter1 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtLocationType1 = new javax.swing.JTextField();
-        txtPowerMeter2 = new javax.swing.JTextField();
+        txtFirstName = new javax.swing.JTextField();
+        txtLastName = new javax.swing.JTextField();
+        cmbRole = new javax.swing.JComboBox();
+        txtPassword = new javax.swing.JPasswordField();
         jScrollPane1 = new javax.swing.JScrollPane();
         grdLocation = new javax.swing.JTable();
 
         setName("Form"); // NOI18N
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Localización"));
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(UserPane.class);
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel4.border.title"))); // NOI18N
         jPanel4.setName("jPanel4"); // NOI18N
         jPanel4.setLayout(null);
 
-        txtUbication.setName("txtUbication"); // NOI18N
-        jPanel4.add(txtUbication);
-        txtUbication.setBounds(120, 30, 100, 20);
-
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(UserPane.class);
-        btnSearchUbication.setIcon(resourceMap.getIcon("btnSearchUbication.icon")); // NOI18N
-        btnSearchUbication.setAlignmentX(0.5F);
-        btnSearchUbication.setAlignmentY(1.5F);
-        btnSearchUbication.setName("btnSearchUbication"); // NOI18N
-        btnSearchUbication.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        btnSearchUbication.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel4.add(btnSearchUbication);
-        btnSearchUbication.setBounds(270, 50, 30, 30);
-
-        txtLocationType.setName("txtLocationType"); // NOI18N
-        jPanel4.add(txtLocationType);
-        txtLocationType.setBounds(120, 90, 140, 20);
-
-        txtPowerMeter.setName("txtPowerMeter"); // NOI18N
-        jPanel4.add(txtPowerMeter);
-        txtPowerMeter.setBounds(120, 120, 140, 20);
-
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
-        jPanel4.add(jLabel1);
-        jLabel1.setBounds(20, 120, 100, 14);
+        txtName.setName("txtName"); // NOI18N
+        jPanel4.add(txtName);
+        txtName.setBounds(120, 30, 150, 20);
 
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
         jPanel4.add(jLabel3);
         jLabel3.setBounds(20, 90, 100, 14);
 
+        jLabel4.setBackground(resourceMap.getColor("jLabel4.background")); // NOI18N
+        jLabel4.setForeground(resourceMap.getColor("jLabel4.foreground")); // NOI18N
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
+        jLabel4.setOpaque(true);
         jPanel4.add(jLabel4);
         jLabel4.setBounds(20, 30, 60, 14);
 
@@ -92,27 +101,33 @@ public class UserPane extends JTabExtended {
         jPanel4.add(jLabel2);
         jLabel2.setBounds(20, 60, 80, 14);
 
-        txtPowerMeter1.setName("txtPowerMeter1"); // NOI18N
-        jPanel4.add(txtPowerMeter1);
-        txtPowerMeter1.setBounds(120, 60, 140, 20);
-
         jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
         jPanel4.add(jLabel5);
-        jLabel5.setBounds(20, 180, 60, 14);
+        jLabel5.setBounds(20, 150, 60, 14);
 
         jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
         jLabel6.setName("jLabel6"); // NOI18N
         jPanel4.add(jLabel6);
-        jLabel6.setBounds(20, 150, 60, 14);
+        jLabel6.setBounds(20, 120, 60, 14);
 
-        txtLocationType1.setName("txtLocationType1"); // NOI18N
-        jPanel4.add(txtLocationType1);
-        txtLocationType1.setBounds(120, 150, 200, 20);
+        txtFirstName.setName("txtFirstName"); // NOI18N
+        jPanel4.add(txtFirstName);
+        txtFirstName.setBounds(120, 120, 200, 20);
 
-        txtPowerMeter2.setName("txtPowerMeter2"); // NOI18N
-        jPanel4.add(txtPowerMeter2);
-        txtPowerMeter2.setBounds(120, 180, 200, 20);
+        txtLastName.setName("txtLastName"); // NOI18N
+        jPanel4.add(txtLastName);
+        txtLastName.setBounds(120, 150, 200, 20);
+
+        cmbRole.setName("cmbRole"); // NOI18N
+        cmbRole.setOpaque(false);
+        jPanel4.add(cmbRole);
+        cmbRole.setBounds(120, 60, 200, 20);
+
+        txtPassword.setText(resourceMap.getString("txtPassword.text")); // NOI18N
+        txtPassword.setName("txtPassword"); // NOI18N
+        jPanel4.add(txtPassword);
+        txtPassword.setBounds(120, 90, 200, 20);
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -157,18 +172,22 @@ public class UserPane extends JTabExtended {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+                        .addContainerGap(17, Short.MAX_VALUE))))
         );
+
+        jPanel4.getAccessibleContext().setAccessibleName(resourceMap.getString("jPanel4.AccessibleContext.accessibleName")); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSearchUbication;
+    private javax.swing.JComboBox cmbRole;
     private javax.swing.JTable grdLocation;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -176,12 +195,67 @@ public class UserPane extends JTabExtended {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField txtLocationType;
-    private javax.swing.JTextField txtLocationType1;
-    private javax.swing.JTextField txtPowerMeter;
-    private javax.swing.JTextField txtPowerMeter1;
-    private javax.swing.JTextField txtPowerMeter2;
-    private javax.swing.JTextField txtUbication;
+    private javax.swing.JTextField txtFirstName;
+    private javax.swing.JTextField txtLastName;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public boolean Delete() throws Exception {
+        cancelAction = false;
+        try {
+            super.Delete();   
+            UserDB.Delete(user);
+            
+        } catch (Exception ex) {
+            cancelAction = true;
+            throw ex;
+        }
+        return cancelAction;
+    }
+
+    @Override
+    public void New() {
+        super.New();
+        user = ClassFactory.getUserInstance();
+        txtName.requestFocusInWindow();
+    }
+
+    @Override
+    public boolean Save() throws Exception {
+        cancelAction = false;
+        try {
+            user.setName(txtName.getText());
+            user.setRole((IRole)cmbRole.getSelectedItem());
+            user.setPasswordSicce(txtPassword.getPassword().toString());
+            user.setUsernameSicce(txtFirstName.getText());
+            user.setLastnameSicce(txtLastName.getText());
+            if (IsObjectLoaded()) {
+                return Update();
+            }
+            user = UserDB.Save(user);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            cancelAction = true;
+        }
+        return cancelAction;
+    }
+
+    @Override
+    public void Search() {
+        super.Search();
+    }
+
+    @Override
+    public boolean Update() throws Exception {
+        cancelAction = false;
+        try {
+            UserDB.Update(user);
+        } catch (Exception ex) {
+            cancelAction = true;
+        }
+        return cancelAction;
+    }
     
 }
