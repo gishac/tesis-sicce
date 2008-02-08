@@ -9,10 +9,12 @@ import sicce.api.info.LocationType;
 import sicce.api.info.OptionSicce;
 import sicce.api.info.PowerMeter;
 import sicce.api.info.Role;
+import sicce.api.info.UserSicce;
 import sicce.api.info.interfaces.ILocationType;
 import sicce.api.info.interfaces.IOptionSicce;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IRole;
+import sicce.api.info.interfaces.IUserSicce;
 
 /**
  *
@@ -28,6 +30,11 @@ public class ClassFactory {
     public static IOptionSicce getOptionInstance()
     {
         return new OptionSicce();
+    }
+    
+    public static IUserSicce getUserInstance()
+    {
+        return new UserSicce();
     }
     
     public static IPowerMeter getPowerMeterInstance()
