@@ -44,4 +44,10 @@ public class ConstantsProvider {
         Back
                 
     }
+    
+    public enum DisplayMemberRenderType
+    {
+        Method,
+        Field
+    }
 }
