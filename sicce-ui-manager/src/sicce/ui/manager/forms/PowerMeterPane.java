@@ -6,6 +6,12 @@
 
 package sicce.ui.manager.forms;
 
+import java.awt.Component;
+import sicce.api.businesslogic.ClassFactory;
+import sicce.api.dataaccess.PowerMeterDB;
+import sicce.api.info.interfaces.IPowerMeter;
+import sicce.api.util.ComponentUtil;
+import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.JTabExtended;
 
 /**
@@ -14,9 +20,16 @@ import sicce.ui.manager.controls.JTabExtended;
  */
 public class PowerMeterPane extends JTabExtended {
     
+       private IPowerMeter pmeter;    
+    
+    
     /** Creates new form PowerMeterPane */
     public PowerMeterPane() {
         initComponents();
+        getControlsToClear().add(txtSerial);
+        getControlsToClear().add(txtIpAddress);
+        getControlsToClear().add(txtDescription);
+         
     }
     
     /** Creates new form PowerMeterPane */
@@ -177,5 +190,72 @@ public class PowerMeterPane extends JTabExtended {
     private javax.swing.JTextField txtIpAddress;
     private javax.swing.JTextField txtSerial;
     // End of variables declaration//GEN-END:variables
+ 
+    @Override
+    public void Back() {
+        super.Back();
+    }
+
+    @Override
+    public boolean Delete() throws Exception {
+        cancelAction = false;
+        try {
+            super.Delete();            
+            PowerMeterDB.Delete(pmeter);
+            
+        } catch (Exception ex) {
+            cancelAction = true;
+            throw ex;
+        }
+        return cancelAction;
+    }
+
+    @Override
+    public void New() {
+        super.New();
+        pmeter = ClassFactory.getPowerMeterInstance();
+        ComponentUtil.SetState(true, new Component[]{ txtSerial});
+        txtSerial.requestFocusInWindow();
+    }
+
+    @Override
+    public boolean Save() throws Exception {
+          cancelAction = false;        
+        try {
+           pmeter.setSerial(txtSerial.getText().trim());
+        pmeter.setIpAddress(txtIpAddress.getText().trim());
+        pmeter.setDescription(txtDescription.getText().trim());
+        if(IsObjectLoaded())
+        {
+            Update();
+            
+        }
+        pmeter = PowerMeterDB.Save(pmeter);
+        } catch (Exception ex) {
+            cancelAction = true;
+        }
+        return cancelAction;
+        
+    }
+
+    @Override
+    public void Search() {
+        super.Search();
+    }
+    
+     @Override
+    public boolean Update() throws Exception{
+        cancelAction = false;
+        try {
+            PowerMeterDB.Update(pmeter);
+        } catch (Exception ex) {
+            cancelAction = true;
+        }
+        return cancelAction;
+    }
+    
+    
+    
+    
     
 }

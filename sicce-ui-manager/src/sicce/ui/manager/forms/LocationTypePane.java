@@ -6,6 +6,10 @@
 
 package sicce.ui.manager.forms;
 
+import sicce.api.businesslogic.ClassFactory;
+import sicce.api.dataaccess.LocationTypeDB;
+import sicce.api.info.LocationType;
+import sicce.api.info.interfaces.ILocationType;
 import sicce.ui.manager.controls.JTabExtended;
 
 /**
@@ -14,9 +18,14 @@ import sicce.ui.manager.controls.JTabExtended;
  */
 public class LocationTypePane extends JTabExtended {
     
+    private ILocationType locationType;
+    
     /** Creates new form LocationTypePane */
     public LocationTypePane() {
         initComponents();
+        getControlsToClear().add(txtDescription);
+        getControlsToClear().add(txtCode);
+        getControlsToEnable().add(txtDescription);
     }
     
     /** This method is called from within the constructor to
@@ -48,6 +57,7 @@ public class LocationTypePane extends JTabExtended {
         lblDescription.setText(resourceMap.getString("lblDescription.text")); // NOI18N
         lblDescription.setName("lblDescription"); // NOI18N
 
+        txtCode.setEditable(false);
         txtCode.setName("txtCode"); // NOI18N
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
@@ -149,5 +159,65 @@ public class LocationTypePane extends JTabExtended {
     private javax.swing.JTextField txtCode;
     private javax.swing.JTextArea txtDescription;
     // End of variables declaration//GEN-END:variables
+  
+    @Override
+    public void Back() {
+        super.Back();
+    }
+
+    @Override
+    public boolean Delete() throws Exception {
+        cancelAction = false;
+        try {
+            super.Delete();              
+            LocationTypeDB.Delete(locationType);
+            
+        } catch (Exception ex) {
+            cancelAction = true;
+            throw ex;
+        }
+        return cancelAction;
+    }
+
+    @Override
+    public void New() {
+        super.New();
+        locationType = ClassFactory.getLocationTypeInstance();
+        txtDescription.requestFocusInWindow();
+    }
+
+    @Override
+    public boolean Save() throws Exception {
+        cancelAction = false;        
+        try {
+            locationType.setDescription(txtDescription.getText().trim());
+            if (IsObjectLoaded()) {
+                return Update();
+            }
+            locationType = LocationTypeDB.Save(locationType);
+            txtCode.setText(String.valueOf(locationType.getID()));
+        } catch (Exception ex) {
+            cancelAction = true;
+        }
+        return cancelAction;
+    }
+
+    @Override
+    public void Search() {
+        super.Search();
+    }
+
+    @Override
+    public boolean Update() throws Exception {
+        cancelAction = false;
+        try {
+            LocationTypeDB.Update(locationType);
+        } catch (Exception ex) {
+            cancelAction = true;
+        }
+        return cancelAction;
+    }
+    
+    
     
 }
