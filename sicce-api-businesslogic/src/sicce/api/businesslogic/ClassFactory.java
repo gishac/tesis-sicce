@@ -5,9 +5,13 @@
 
 package sicce.api.businesslogic;
 
+import sicce.api.info.LocationType;
 import sicce.api.info.OptionSicce;
+import sicce.api.info.PowerMeter;
 import sicce.api.info.Role;
+import sicce.api.info.interfaces.ILocationType;
 import sicce.api.info.interfaces.IOptionSicce;
+import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IRole;
 
 /**
@@ -26,4 +30,13 @@ public class ClassFactory {
         return new OptionSicce();
     }
     
+    public static IPowerMeter getPowerMeterInstance()
+    {
+        return new PowerMeter();
+    }
+    
+    public static ILocationType getLocationTypeInstance()
+    {
+        return new LocationType();
+    }
 }
