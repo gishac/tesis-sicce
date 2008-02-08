@@ -4,6 +4,8 @@
  */
 
 package sicce.api.dataaccess;
+import java.util.List;
+import org.apache.cayenne.query.Query;
 import sicce.api.info.Role;
 import sicce.api.info.interfaces.IRole;
 
@@ -53,6 +55,11 @@ public class RoleDB {
         {
             throw ex;
         }  
+    }
+    
+    public static List GetRoles(Query query)
+    {
+        return Connection.getDataContext().performQuery(query);
     }
     
 }
