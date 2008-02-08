@@ -32,6 +32,8 @@ import javax.swing.UIManager;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.info.ConstantsProvider.OptionsProvider;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
+import sicce.api.info.LocationType;
+import sicce.api.info.PowerMeter;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.IOptionSicce;
 import sicce.ui.manager.controls.JOptionPaneExtended;
@@ -290,6 +292,8 @@ public class SicceuimanagerView extends FrameView {
     private JOptionPaneExtended joptionPaneExtended;
     private RolePane rolePane;
     private UserPane userPane;
+    private PowerMeterPane pmeterPane;
+    private LocationTypePane lTypePane;
 
     /**
      * gish@c
@@ -324,10 +328,17 @@ public class SicceuimanagerView extends FrameView {
 
         IOptionSicce b = ClassFactory.getOptionInstance();
         b.setDescription("User");
+        
+        IOptionSicce c = ClassFactory.getOptionInstance();
+        c.setDescription("PowerMeter");
 
+        IOptionSicce d = ClassFactory.getOptionInstance();
+        d.setDescription("LocationType");
         this.options = new ArrayList<IOptionSicce>();
         options.add(a);
         options.add(b);
+        options.add(c);
+        options.add(d);
         JTaskPaneGroup mainGroup = new JTaskPaneGroup();
         mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
         mainGroup.setSpecial(true);
@@ -438,8 +449,12 @@ public class SicceuimanagerView extends FrameView {
     private void CreateForms() {
         rolePane = new RolePane();
         userPane = new UserPane();
+        pmeterPane = new PowerMeterPane();
+        lTypePane = new LocationTypePane();
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
+        toolBarHandler.AddToolBarStateListener(pmeterPane);
+        toolBarHandler.AddToolBarStateListener(lTypePane);
     }
 
     /**
@@ -453,6 +468,12 @@ public class SicceuimanagerView extends FrameView {
                 break;
             case User:
                 result = userPane;
+                break;
+            case PowerMeter:
+                result = pmeterPane;
+                break;
+            case LocationType:
+                result = lTypePane;
                 break;
         }
         return result;
