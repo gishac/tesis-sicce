@@ -9,11 +9,20 @@ import java.util.List;
   */
 public class _Zone extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String CODE_PROPERTY = "code";
     public static final String DESCRIPTION_PROPERTY = "description";
     public static final String LOCATION_ZONE_ARRAY_PROPERTY = "locationZoneArray";
 
     public static final String ID_ZONE_PK_COLUMN = "ID_ZONE";
 
+    public void setCode(String code) {
+        writeProperty("code", code);
+    }
+    public String getCode() {
+        return (String)readProperty("code");
+    }
+    
+    
     public void setDescription(String description) {
         writeProperty("description", description);
     }

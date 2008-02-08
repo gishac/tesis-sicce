@@ -8,19 +8,27 @@ package sicce.api.info.auto;
 public class _UserSicce extends org.apache.cayenne.CayenneDataObject {
 
     public static final String CODE_UCSG_PROPERTY = "codeUcsg";
+    public static final String LASTNAME_PROPERTY = "lastname";
     public static final String NAME_PROPERTY = "name";
     public static final String PASSWORD_SICCE_PROPERTY = "passwordSicce";
-    public static final String SURNAME_PROPERTY = "surname";
     public static final String USERNAME_SICCE_PROPERTY = "usernameSicce";
     public static final String TO_ROLE_PROPERTY = "toRole";
 
     public static final String ID_USER_SICCE_PK_COLUMN = "ID_USER_SICCE";
 
-    public void setCodeUcsg(Integer codeUcsg) {
+    public void setCodeUcsg(Long codeUcsg) {
         writeProperty("codeUcsg", codeUcsg);
     }
-    public Integer getCodeUcsg() {
-        return (Integer)readProperty("codeUcsg");
+    public Long getCodeUcsg() {
+        return (Long)readProperty("codeUcsg");
+    }
+    
+    
+    public void setLastname(String lastname) {
+        writeProperty("lastname", lastname);
+    }
+    public String getLastname() {
+        return (String)readProperty("lastname");
     }
     
     
@@ -37,14 +45,6 @@ public class _UserSicce extends org.apache.cayenne.CayenneDataObject {
     }
     public String getPasswordSicce() {
         return (String)readProperty("passwordSicce");
-    }
-    
-    
-    public void setSurname(String surname) {
-        writeProperty("surname", surname);
-    }
-    public String getSurname() {
-        return (String)readProperty("surname");
     }
     
     

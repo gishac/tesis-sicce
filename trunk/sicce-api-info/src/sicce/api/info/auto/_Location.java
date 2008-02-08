@@ -9,6 +9,7 @@ import java.util.List;
   */
 public class _Location extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String CODE_PROPERTY = "code";
     public static final String DESCRIPTION_PROPERTY = "description";
     public static final String LOCATION_PROPERTY = "location";
     public static final String LOCATION_ARRAY_PROPERTY = "locationArray";
@@ -20,6 +21,14 @@ public class _Location extends org.apache.cayenne.CayenneDataObject {
 
     public static final String ID_LOCATION_PK_COLUMN = "ID_LOCATION";
 
+    public void setCode(String code) {
+        writeProperty("code", code);
+    }
+    public String getCode() {
+        return (String)readProperty("code");
+    }
+    
+    
     public void setDescription(String description) {
         writeProperty("description", description);
     }
@@ -28,11 +37,11 @@ public class _Location extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setLocation(Integer location) {
+    public void setLocation(Long location) {
         writeProperty("location", location);
     }
-    public Integer getLocation() {
-        return (Integer)readProperty("location");
+    public Long getLocation() {
+        return (Long)readProperty("location");
     }
     
     

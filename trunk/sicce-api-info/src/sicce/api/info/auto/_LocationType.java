@@ -9,16 +9,25 @@ import java.util.List;
   */
 public class _LocationType extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String CODE_PROPERTY = "code";
     public static final String DESCRIPTION_PROPERTY = "description";
     public static final String LOCATION_ARRAY_PROPERTY = "locationArray";
 
     public static final String ID_LOCATION_TYPE_PK_COLUMN = "ID_LOCATION_TYPE";
 
-    public void setDescription(Integer description) {
+    public void setCode(String code) {
+        writeProperty("code", code);
+    }
+    public String getCode() {
+        return (String)readProperty("code");
+    }
+    
+    
+    public void setDescription(String description) {
         writeProperty("description", description);
     }
-    public Integer getDescription() {
-        return (Integer)readProperty("description");
+    public String getDescription() {
+        return (String)readProperty("description");
     }
     
     

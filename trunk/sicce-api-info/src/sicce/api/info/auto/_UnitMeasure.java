@@ -7,11 +7,20 @@ package sicce.api.info.auto;
   */
 public class _UnitMeasure extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String CODE_PROPERTY = "code";
     public static final String DESCRIPTION_PROPERTY = "description";
     public static final String TO_MEASURE_PROPERTY = "toMeasure";
 
     public static final String ID_UNIT_MEASURE_PK_COLUMN = "ID_UNIT_MEASURE";
 
+    public void setCode(String code) {
+        writeProperty("code", code);
+    }
+    public String getCode() {
+        return (String)readProperty("code");
+    }
+    
+    
     public void setDescription(String description) {
         writeProperty("description", description);
     }
