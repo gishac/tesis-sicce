@@ -5,16 +5,8 @@
  */
 package sicce.ui.manager.forms;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.exp.ExpressionParameter;
-import org.apache.cayenne.query.SelectQuery;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.dataaccess.RoleDB;
-import sicce.api.info.Role;
 import sicce.api.info.interfaces.IRole;
 import sicce.ui.manager.controls.JTabExtended;
 
@@ -172,13 +164,7 @@ public class RolePane extends JTabExtended {
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            super.Delete();            
-            /*Map map = new HashMap();
-            map.put("ID_ROLE", 10);
-            SelectQuery query = new SelectQuery(Role.class);
-            query = query.queryWithParameters(map);
-            List result = sicce.api.dataaccess.Connection.getDataContext().performQuery(query);
-            role = (IRole)result.get(0);*/
+            super.Delete();   
             RoleDB.Delete(role);
             
         } catch (Exception ex) {
