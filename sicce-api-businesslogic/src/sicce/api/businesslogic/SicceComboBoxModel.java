@@ -1,0 +1,54 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package sicce.api.businesslogic;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.AbstractListModel;
+import javax.swing.ComboBoxModel;
+/**
+ *
+ * @author gish@c
+ */
+public class SicceComboBoxModel <T> extends AbstractListModel implements ComboBoxModel {
+
+    T current = null;
+    List<T> dataSource = null;
+
+    public SicceComboBoxModel(List<T> dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public List<T> getDataSource() {
+        if(dataSource == null)
+            dataSource = new ArrayList<T>();
+        return dataSource;
+    }
+
+    public void setDataSource(List<T> dataSource) {
+        this.dataSource = dataSource;
+    }
+    
+    public void setSelectedItem(Object item) {
+        current = (T) item;
+        fireContentsChanged(item, -1, -1);
+    }
+
+    public Object getSelectedItem() {
+        return current;
+    }
+
+    public int getSize() {
+       return getDataSource().size();             
+    }
+
+    public Object getElementAt(int index) {
+        if(getDataSource().size() > index)
+            return getDataSource().get(index);
+        return null;
+    }
+
+}
