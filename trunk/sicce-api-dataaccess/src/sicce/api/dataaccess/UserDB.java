@@ -19,7 +19,7 @@ public class UserDB {
     public static IUserSicce Save(IUserSicce user) throws Exception {
         try {
 
-            //Connection.getDataContext().rollbackChanges();
+            Connection.getDataContext().rollbackChanges();
             UserSicce userToSave = new UserSicce(); //(UserSicce) Connection.getDataContext().newObject(UserSicce.class);
             Connection.getDataContext().registerNewObject(userToSave);
             userToSave.setName(user.getName());
