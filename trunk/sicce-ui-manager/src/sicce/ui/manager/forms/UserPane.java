@@ -230,7 +230,7 @@ public class UserPane extends JTabExtended {
             user.setRole((IRole)cmbRole.getSelectedItem());
             user.setPasswordSicce(txtPassword.getPassword().toString());
             user.setUsernameSicce(txtFirstName.getText());
-            user.setLastnameSicce(txtLastName.getText());
+            user.setLastname(txtLastName.getText());
             if (IsObjectLoaded()) {
                 return Update();
             }
