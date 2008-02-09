@@ -26,7 +26,7 @@ public class UserDB {
             userToSave.setToRole((Role) user.getRole());
             userToSave.setPasswordSicce(user.getPasswordSicce());
             userToSave.setUsernameSicce(user.getUsernameSicce());
-            userToSave.setSurname(user.getLastnameSicce());
+            userToSave.setLastname(user.getLastname());
             Connection.getDataContext().commitChanges();
             return userToSave;
         } catch (Exception ex) {
