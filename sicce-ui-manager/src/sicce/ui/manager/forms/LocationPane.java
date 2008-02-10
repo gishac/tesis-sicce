@@ -6,6 +6,13 @@
 
 package sicce.ui.manager.forms;
 
+import sicce.api.businesslogic.ClassFactory;
+import sicce.api.businesslogic.LocationBizObject;
+import sicce.api.businesslogic.LocationTypeBizObject;
+import sicce.api.businesslogic.SicceComboBoxModel;
+import sicce.api.businesslogic.SicceComboBoxRenderer;
+import sicce.api.dataaccess.LocationDB;
+import sicce.api.info.interfaces.ILocation;
 import sicce.ui.manager.controls.JTabExtended;
 
 /**
@@ -13,10 +20,18 @@ import sicce.ui.manager.controls.JTabExtended;
  * @author  gish@c
  */
 public class LocationPane extends JTabExtended {
+    SicceComboBoxModel<ILocation> roleComboBoxModel;
+    SicceComboBoxRenderer roleComboBoxRenderer;
+    LocationTypeBizObject locationBizObject;
+    private ILocation location;
     
     /** Creates new form LocationPane */
     public LocationPane() {
         initComponents();
+        getControlsToClear().add(txtDescription);
+        getControlsToClear().add(txtUbication); 
+        getControlsToClear().add(txtPowerMeter);
+        getControlsToEnable().add(txtDescription);
     }
     
     /** This method is called from within the constructor to
@@ -31,15 +46,14 @@ public class LocationPane extends JTabExtended {
         lblUbication = new javax.swing.JLabel();
         txtUbication = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
-        txtDescription2 = new javax.swing.JTextArea();
+        txtDescription = new javax.swing.JTextArea();
         lblDescription2 = new javax.swing.JLabel();
         btnSearchUbication = new javax.swing.JButton();
         lblLocationType = new javax.swing.JLabel();
-        txtLocationType = new javax.swing.JTextField();
-        btnSearchLocationType = new javax.swing.JButton();
         lblPowerMeter = new javax.swing.JLabel();
         txtPowerMeter = new javax.swing.JTextField();
         btnSearchPowerMeter = new javax.swing.JButton();
+        cmbLocationType = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         grdLocation = new javax.swing.JTable();
 
@@ -61,13 +75,13 @@ public class LocationPane extends JTabExtended {
 
         jScrollPane4.setName("jScrollPane4"); // NOI18N
 
-        txtDescription2.setColumns(20);
-        txtDescription2.setRows(5);
-        txtDescription2.setName("txtDescription2"); // NOI18N
-        jScrollPane4.setViewportView(txtDescription2);
+        txtDescription.setColumns(20);
+        txtDescription.setRows(5);
+        txtDescription.setName("txtDescription"); // NOI18N
+        jScrollPane4.setViewportView(txtDescription);
 
         jPanel4.add(jScrollPane4);
-        jScrollPane4.setBounds(120, 140, 200, 19);
+        jScrollPane4.setBounds(120, 140, 200, 76);
 
         lblDescription2.setText(resourceMap.getString("lblDescription2.text")); // NOI18N
         lblDescription2.setName("lblDescription2"); // NOI18N
@@ -89,15 +103,6 @@ public class LocationPane extends JTabExtended {
         jPanel4.add(lblLocationType);
         lblLocationType.setBounds(10, 70, 120, 14);
 
-        txtLocationType.setName("txtLocationType"); // NOI18N
-        jPanel4.add(txtLocationType);
-        txtLocationType.setBounds(120, 70, 140, 20);
-
-        btnSearchLocationType.setIcon(resourceMap.getIcon("btnSearchLocationType.icon")); // NOI18N
-        btnSearchLocationType.setName("btnSearchLocationType"); // NOI18N
-        jPanel4.add(btnSearchLocationType);
-        btnSearchLocationType.setBounds(270, 60, 30, 30);
-
         lblPowerMeter.setText(resourceMap.getString("lblPowerMeter.text")); // NOI18N
         lblPowerMeter.setName("lblPowerMeter"); // NOI18N
         jPanel4.add(lblPowerMeter);
@@ -112,6 +117,10 @@ public class LocationPane extends JTabExtended {
         btnSearchPowerMeter.setName("btnSearchPowerMeter"); // NOI18N
         jPanel4.add(btnSearchPowerMeter);
         btnSearchPowerMeter.setBounds(270, 100, 30, 30);
+
+        cmbLocationType.setName("cmbLocationType"); // NOI18N
+        jPanel4.add(cmbLocationType);
+        cmbLocationType.setBounds(120, 60, 180, 20);
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -166,33 +175,83 @@ public class LocationPane extends JTabExtended {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSearchLocationType;
     private javax.swing.JButton btnSearchPowerMeter;
     private javax.swing.JButton btnSearchUbication;
+    private javax.swing.JComboBox cmbLocationType;
     private javax.swing.JTable grdLocation;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JLabel lblCode;
-    private javax.swing.JLabel lblCode1;
-    private javax.swing.JLabel lblDescription;
-    private javax.swing.JLabel lblDescription1;
     private javax.swing.JLabel lblDescription2;
     private javax.swing.JLabel lblLocationType;
     private javax.swing.JLabel lblPowerMeter;
     private javax.swing.JLabel lblUbication;
-    private javax.swing.JTextField txtCode;
-    private javax.swing.JTextField txtCode1;
     private javax.swing.JTextArea txtDescription;
-    private javax.swing.JTextArea txtDescription1;
-    private javax.swing.JTextArea txtDescription2;
-    private javax.swing.JTextField txtLocationType;
     private javax.swing.JTextField txtPowerMeter;
     private javax.swing.JTextField txtUbication;
     // End of variables declaration//GEN-END:variables
+   
+      @Override
+    public void Back() {
+        super.Back();
+    }
+
+    @Override
+    public boolean Delete() throws Exception {
+        cancelAction = false;
+        try {
+            super.Delete();              
+            LocationDB.Delete(location);
+            
+        } catch (Exception ex) {
+            cancelAction = true;
+            throw ex;
+        }
+        return cancelAction;
+    }
+
+    @Override
+    public void New() {
+        super.New();
+        location = ClassFactory.getLocationInstance();
+        txtDescription.requestFocusInWindow();
+    }
+
+    @Override
+    public boolean Save() throws Exception {
+        cancelAction = false;        
+        try {
+            location.setDescription(txtDescription.getText().trim());
+            if (IsObjectLoaded()) {
+                return Update();
+            }
+            location = LocationDB.Save(location);
+           // txtCode.setText(String.valueOf(locationType.getID()));
+        } catch (Exception ex) {
+            cancelAction = true;
+        }
+        return cancelAction;
+    }
+
+    @Override
+    public void Search() {
+        super.Search();
+    }
+
+    @Override
+    public boolean Update() throws Exception {
+        cancelAction = false;
+        try {
+            LocationDB.Update(location);
+        } catch (Exception ex) {
+            cancelAction = true;
+        }
+        return cancelAction;
+    }
+    
+    
+    
+    
+    
     
 }
