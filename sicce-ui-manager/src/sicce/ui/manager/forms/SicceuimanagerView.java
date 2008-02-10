@@ -32,6 +32,7 @@ import javax.swing.UIManager;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.info.ConstantsProvider.OptionsProvider;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
+import sicce.api.info.Location;
 import sicce.api.info.LocationType;
 import sicce.api.info.PowerMeter;
 import sicce.api.info.eventobjects.ToolBarEventObject;
@@ -294,6 +295,7 @@ public class SicceuimanagerView extends FrameView {
     private UserPane userPane;
     private PowerMeterPane pmeterPane;
     private LocationTypePane lTypePane;
+    private LocationPane locationPane;
 
     /**
      * gish@c
@@ -334,11 +336,15 @@ public class SicceuimanagerView extends FrameView {
 
         IOptionSicce d = ClassFactory.getOptionInstance();
         d.setDescription("LocationType");
+        
+        IOptionSicce e = ClassFactory.getOptionInstance();
+        e.setDescription("Location");
         this.options = new ArrayList<IOptionSicce>();
         options.add(a);
         options.add(b);
         options.add(c);
         options.add(d);
+        options.add(e);
         JTaskPaneGroup mainGroup = new JTaskPaneGroup();
         mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
         mainGroup.setSpecial(true);
@@ -451,10 +457,12 @@ public class SicceuimanagerView extends FrameView {
         userPane = new UserPane();
         pmeterPane = new PowerMeterPane();
         lTypePane = new LocationTypePane();
+        locationPane = new LocationPane();
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
         toolBarHandler.AddToolBarStateListener(pmeterPane);
         toolBarHandler.AddToolBarStateListener(lTypePane);
+         toolBarHandler.AddToolBarStateListener(locationPane);
     }
 
     /**
@@ -474,6 +482,9 @@ public class SicceuimanagerView extends FrameView {
                 break;
             case LocationType:
                 result = lTypePane;
+                break;
+            case Location:
+                result = locationPane;
                 break;
         }
         return result;
