@@ -7,8 +7,7 @@
 package sicce.ui.manager.forms;
 
 import sicce.api.businesslogic.ClassFactory;
-import sicce.api.businesslogic.LocationBizObject;
-import sicce.api.businesslogic.LocationTypeBizObject;
+
 import sicce.api.businesslogic.SicceComboBoxModel;
 import sicce.api.businesslogic.SicceComboBoxRenderer;
 import sicce.api.dataaccess.LocationDB;
@@ -20,9 +19,7 @@ import sicce.ui.manager.controls.JTabExtended;
  * @author  gish@c
  */
 public class LocationPane extends JTabExtended {
-    SicceComboBoxModel<ILocation> roleComboBoxModel;
-    SicceComboBoxRenderer roleComboBoxRenderer;
-    LocationTypeBizObject locationBizObject;
+    
     private ILocation location;
     
     /** Creates new form LocationPane */
