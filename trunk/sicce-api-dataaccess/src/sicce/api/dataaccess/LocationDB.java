@@ -6,24 +6,24 @@
 package sicce.api.dataaccess;
 import java.util.List;
 import org.apache.cayenne.query.Query;
-import sicce.api.info.LocationType;
-import sicce.api.info.interfaces.ILocationType;
+import sicce.api.info.Location;
+import sicce.api.info.interfaces.ILocation;
 
 /**
  *
  * @author karu
  */
-public class LocationTypeDB {
+public class LocationDB {
 
-    public static ILocationType Save(ILocationType locationType) throws Exception
+    public static ILocation Save(ILocation location) throws Exception
     {
         try
         {
             
-        LocationType locationTypeToSave = (LocationType)Connection.getDataContext().newObject(LocationType.class);
-        locationTypeToSave.setDescription(locationType.getDescription());        
+        Location locationToSave = (Location)Connection.getDataContext().newObject(Location.class);
+        locationToSave.setDescription(location.getDescription());        
         Connection.getDataContext().commitChanges();
-        return locationTypeToSave;
+        return locationToSave;
         }
         catch(Exception ex)
         {
@@ -31,7 +31,7 @@ public class LocationTypeDB {
         }
     }
     
-    public static void Update(ILocationType locationType) throws Exception
+    public static void Update(ILocation location) throws Exception
     {
         try
         {
@@ -44,11 +44,11 @@ public class LocationTypeDB {
         }
     }
     
-    public static void Delete(ILocationType locationType) throws Exception
+    public static void Delete(ILocation location) throws Exception
     {
       try
         {
-            Connection.getDataContext().deleteObject((LocationType) locationType);
+            Connection.getDataContext().deleteObject((Location) location);
             Connection.getDataContext().commitChanges();
         }
         catch(Exception ex)
@@ -57,9 +57,7 @@ public class LocationTypeDB {
         }  
     }
     
-      public static List GetLocations(Query query)
-    {
-        return Connection.getDataContext().performQuery(query);
-    }
+     
+  
     
 }
