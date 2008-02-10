@@ -6,6 +6,7 @@
 package sicce.api.info.interfaces;
 
 import java.util.EventListener;
+import javax.swing.event.ListSelectionListener;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 
 /**
@@ -16,4 +17,6 @@ import sicce.api.info.eventobjects.ToolBarEventObject;
  */
 public interface IToolBarStateListener  extends EventListener  {
     public void ToolBarStateChanged(ToolBarEventObject event) throws Exception;
+    void setListSelectionListener(ListSelectionListener selectionListener);
+    void RegisterSelectionListener();
 }

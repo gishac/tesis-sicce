@@ -16,6 +16,15 @@ public class ToolBarEventObject extends EventObject {
 
     private ToolBarAction toolBarState;
     private boolean cancelEvent;
+    private int selectedIndex;
+
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    public void setSelectedIndex(int selectedIndex) {
+        this.selectedIndex = selectedIndex;
+    }
 
     public boolean getCancelEvent() {
         return cancelEvent;

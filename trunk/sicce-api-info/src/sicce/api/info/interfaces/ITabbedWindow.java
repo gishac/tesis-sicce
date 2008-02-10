@@ -21,4 +21,5 @@ public interface ITabbedWindow {
     void Back();
     boolean Update() throws Exception;
     boolean IsActive();
+    void FillGrid();
 }
