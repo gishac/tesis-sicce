@@ -2,9 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sicce.ui.manager.controls;
-
 
 import java.awt.Component;
 import java.awt.event.FocusEvent;
@@ -12,7 +10,7 @@ import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
-import javax.swing.plaf.basic.BasicSliderUI.ComponentHandler;
+import javax.swing.event.ListSelectionListener;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.ITabbedWindow;
@@ -23,16 +21,16 @@ import sicce.api.util.ComponentUtil;
  *
  * @author gish@c
  */
-public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarStateListener{
+public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarStateListener {
 
     private String title;
     private FocusListener focusEventHandler;
+    protected ListSelectionListener selectionListener;
     private JTabbedPaneExtended parentPane;
     private boolean objectLoaded;
     private List<Component> controlsToClear;
-    private List<Component> controlsToEnable;  
+    private List<Component> controlsToEnable;
     protected boolean cancelAction;
-    
 
     /**
      * Devuelve el panel que contiene al tab
@@ -45,60 +43,55 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
     public void setParentPane(JTabbedPaneExtended parentPane) {
         this.parentPane = parentPane;
     }
-    
-    public boolean IsObjectLoaded()
-    {
+
+    public void setListSelectionListener(ListSelectionListener selectionListener) {
+        this.selectionListener = selectionListener;
+    }
+
+    public boolean IsObjectLoaded() {
         return objectLoaded;
     }
-    
+
     /**
      * Lista de controles que van a ser reseteados cuando el formulario ingresa a modo nuevo
      * @return
      */
-    public List<Component> getControlsToClear()
-    {
-        if(controlsToClear == null)
-        {
+    public List<Component> getControlsToClear() {
+        if (controlsToClear == null) {
             controlsToClear = new ArrayList<Component>();
         }
         return controlsToClear;
     }
-    
+
     /**
      * Lista de controles que van a ser habilitados o deshabilitados cuando el formulario ingresa a modo de edicion
      * @return
      */
-    public List<Component> getControlsToEnable()
-    {
-        if(controlsToEnable == null)
-        {
+    public List<Component> getControlsToEnable() {
+        if (controlsToEnable == null) {
             controlsToEnable = new ArrayList<Component>();
         }
         return controlsToEnable;
     }
-    
+
     /**
      * Constructor
      */
-    public JTabExtended()
-    {
+    public JTabExtended() {
         super();
         this.addFocusListener(focusEventHandler = new FocusListener() {
 
             public void focusGained(FocusEvent e) {
-                parentPane.setCurrentTab((ITabbedWindow)e.getComponent());
+                parentPane.setCurrentTab((ITabbedWindow) e.getComponent());
             }
 
             public void focusLost(FocusEvent e) {
-                
-            }
 
+            }
         });
     }
-    
-    
-    public JTabExtended(String title)
-    {
+
+    public JTabExtended(String title) {
         this();
         setTitle(title);
     }
@@ -112,44 +105,54 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
     }
 
     public void New() {
-       objectLoaded = false;
-       ComponentUtil.Clear(getControlsToClear());
-       ComponentUtil.SetState(true, getControlsToEnable());
+        objectLoaded = false;
+        ComponentUtil.Clear(getControlsToClear());
+        ComponentUtil.SetState(true, getControlsToEnable());
     }
-    
+
     public boolean Save() throws Exception {
-       return true;
+        return true;
     }
 
     public void Search() {
-       
+
     }
 
     public boolean Delete() throws Exception {
-        return true;
+        ComponentUtil.Clear(getControlsToClear());
+        ComponentUtil.SetState(false, getControlsToEnable());
+        return false;
     }
 
     public void Edit() {
         objectLoaded = true;
+        ComponentUtil.SetState(true, getControlsToEnable());
     }
-    
+
     public void Back() {
         ComponentUtil.Clear(getControlsToClear());
-        ComponentUtil.SetState(false,getControlsToEnable());
+        ComponentUtil.SetState(false, getControlsToEnable());
     }
-    
-    public boolean Update() throws Exception{
+
+    public boolean Update() throws Exception {
         return true;
     }
-    
+
+    public void ItemSelected(int selectedIndex) {
+        ComponentUtil.SetState(false, getControlsToEnable());
+    }
+
+    public void RegisterSelectionListener() {
+    }
+
     /**
      * Indica si el tab es el que se encuentra activo
      * @return
      */
-    public boolean IsActive()
-    {
-        if(getParentPane() == null)
+    public boolean IsActive() {
+        if (getParentPane() == null) {
             return false;
+        }
         return getParentPane().getCurrentTab().equals(this);
     }
 
@@ -159,8 +162,7 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
      */
     public void ToolBarStateChanged(ToolBarEventObject event) throws Exception {
         ToolBarAction toolbarAction = event.getToolBarState();
-        switch(toolbarAction)
-        {
+        switch (toolbarAction) {
             case New:
                 New();
                 break;
@@ -175,10 +177,17 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
                 break;
             case Search:
                 Search();
+                break;
             case Back:
                 Back();
+                break;
+            case RegistryLoaded:
+                ItemSelected(event.getSelectedIndex());
+                break;
         }
     }
-    
-    
+
+    public void FillGrid() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

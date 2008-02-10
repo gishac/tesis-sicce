@@ -5,7 +5,11 @@
  */
 package sicce.ui.manager.forms;
 
+import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
+import sicce.api.businesslogic.RoleBizObject;
+import sicce.api.businesslogic.RoleTableModel;
+import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.dataaccess.RoleDB;
 import sicce.api.info.interfaces.IRole;
 import sicce.ui.manager.controls.JTabExtended;
@@ -17,6 +21,8 @@ import sicce.ui.manager.controls.JTabExtended;
 public class RolePane extends JTabExtended {
 
     private IRole role;
+    private RoleTableModel roleTableModel;
+    private RoleBizObject roleBizObject;
 
     /** Creates new form LocationTypePane */
     public RolePane() {
@@ -24,6 +30,8 @@ public class RolePane extends JTabExtended {
         getControlsToClear().add(txtDescription);
         getControlsToClear().add(txtCode);
         getControlsToEnable().add(txtDescription);
+        roleBizObject = new RoleBizObject();
+        FillGrid();        
     }
 
     /** This method is called from within the constructor to
@@ -41,7 +49,7 @@ public class RolePane extends JTabExtended {
         lblcodigo = new javax.swing.JLabel();
         lblDescription = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        grdZone = new javax.swing.JTable();
+        gridRoles = new javax.swing.JTable();
 
         setName("Form"); // NOI18N
 
@@ -98,7 +106,7 @@ public class RolePane extends JTabExtended {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        grdZone.setModel(new javax.swing.table.DefaultTableModel(
+        gridRoles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null}
             },
@@ -121,8 +129,8 @@ public class RolePane extends JTabExtended {
                 return canEdit [columnIndex];
             }
         });
-        grdZone.setName("grdZone"); // NOI18N
-        jScrollPane1.setViewportView(grdZone);
+        gridRoles.setName("gridRoles"); // NOI18N
+        jScrollPane1.setViewportView(gridRoles);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -146,7 +154,7 @@ public class RolePane extends JTabExtended {
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable grdZone;
+    private javax.swing.JTable gridRoles;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -164,9 +172,10 @@ public class RolePane extends JTabExtended {
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            super.Delete();   
             RoleDB.Delete(role);
-            
+            super.Delete();
+            FillGrid();
+
         } catch (Exception ex) {
             cancelAction = true;
             throw ex;
@@ -183,7 +192,7 @@ public class RolePane extends JTabExtended {
 
     @Override
     public boolean Save() throws Exception {
-        cancelAction = false;        
+        cancelAction = false;
         try {
             role.setDescription(txtDescription.getText().trim());
             if (IsObjectLoaded()) {
@@ -191,6 +200,7 @@ public class RolePane extends JTabExtended {
             }
             role = RoleDB.Save(role);
             txtCode.setText(String.valueOf(role.getID()));
+            FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
         }
@@ -207,9 +217,32 @@ public class RolePane extends JTabExtended {
         cancelAction = false;
         try {
             RoleDB.Update(role);
+            FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
         }
         return cancelAction;
+    }
+
+    @Override
+    public void ItemSelected(int selectedIndex) {
+        super.ItemSelected(selectedIndex);
+        SicceTableModel<IRole> tableModel = (SicceTableModel<IRole>) gridRoles.getModel();
+        role = tableModel.getRow(selectedIndex);
+        txtCode.setText(String.valueOf(role.getID()));
+        txtDescription.setText(role.getDescription());
+    }
+
+    @Override
+    public void RegisterSelectionListener() {
+       gridRoles.getSelectionModel().addListSelectionListener(selectionListener);
+       gridRoles.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+    
+    
+    @Override
+    public void FillGrid() {
+        roleTableModel = new RoleTableModel(roleBizObject.GetAllRoles());
+        gridRoles.setModel(roleTableModel);
     }
 }

@@ -398,10 +398,10 @@ public class SicceuimanagerView extends FrameView {
             UIManager.put("TaskPaneGroup.specialTitleForeground", Color.BLACK);
             UIManager.put("TaskPaneGroup.specialTitleBackground", Color.gray.brighter());
             PlasticLookAndFeel.setPlasticTheme(new com.jgoodies.looks.plastic.theme.DarkStar());*/
-            UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
-            LookAndFeelAddons.setAddon(AquaLookAndFeelAddons.class);
-            getTaskPaneManager().revalidate();
-            getTaskPaneManager().repaint();
+            //UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
+            //LookAndFeelAddons.setAddon(AquaLookAndFeelAddons.class);
+            //getTaskPaneManager().revalidate();
+            //getTaskPaneManager().repaint();
 
 
         } catch (Exception ex) {

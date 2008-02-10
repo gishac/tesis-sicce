@@ -7,7 +7,13 @@ package sicce.ui.manager.handlers;
 
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JToolBar;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.ITabbedWindow;
 import sicce.api.info.interfaces.IToolBarStateListener;
@@ -16,7 +22,7 @@ import sicce.api.info.interfaces.IToolBarStateListener;
  *
  * @author gish@c
  */
-public class ToolBarHandler{
+public class ToolBarHandler implements ListSelectionListener{
     
     JToolBar toolBar;
     
@@ -53,6 +59,8 @@ public class ToolBarHandler{
      */
     public void AddToolBarStateListener(IToolBarStateListener listener)
     {
+        listener.setListSelectionListener(this);
+        listener.RegisterSelectionListener();
         getToolBarStateListeners().add(listener);
     }
     
@@ -162,6 +170,18 @@ public class ToolBarHandler{
     {
         SetToolBarItemsState(newButtonState,saveButtonState,editButtonState,deleteButtonState,searchButtonState);
         toolBar.getComponent(5).setEnabled(searchButtonState);
+    }
+
+    public void valueChanged(ListSelectionEvent e) {
+        try {
+            ListSelectionModel selectionModel = (ListSelectionModel) e.getSource();
+            ToolBarEventObject event = new ToolBarEventObject(e, ToolBarAction.RegistryLoaded);
+            event.setSelectedIndex(selectionModel.getMinSelectionIndex());
+            if(event.getSelectedIndex() >= 0)
+                ToolBarStateChanged(event);
+        } catch (Exception ex) {
+            Logger.getLogger(ToolBarHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
        
 }

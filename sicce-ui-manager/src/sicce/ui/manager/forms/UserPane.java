@@ -3,18 +3,22 @@
  *
  * Created on January 26, 2008, 7:43 PM
  */
-
 package sicce.ui.manager.forms;
 
+import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.businesslogic.RoleBizObject;
 import sicce.api.businesslogic.SicceComboBoxModel;
 import sicce.api.businesslogic.SicceComboBoxRenderer;
+import sicce.api.businesslogic.SicceTableModel;
+import sicce.api.businesslogic.UserBizObject;
+import sicce.api.businesslogic.UserTableModel;
 import sicce.api.dataaccess.UserDB;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 import sicce.api.info.interfaces.IRole;
 import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.util.ComponentUtil;
+import sicce.api.util.JTextFieldLimit;
 import sicce.ui.manager.controls.JTabExtended;
 
 /**
@@ -22,21 +26,17 @@ import sicce.ui.manager.controls.JTabExtended;
  * @author  gish@c
  */
 public class UserPane extends JTabExtended {
-    
+
     SicceComboBoxModel<IRole> roleComboBoxModel;
     SicceComboBoxRenderer roleComboBoxRenderer;
     RoleBizObject roleBizObject;
+    UserBizObject userBizObject;
     private IUserSicce user;
-    
-    
+    UserTableModel userTableModel;
+
     /** Creates new form LocationPane */
     public UserPane() {
         initComponents();
-        roleBizObject = new RoleBizObject();
-        roleComboBoxModel = new SicceComboBoxModel<IRole>(roleBizObject.GetAllRoles());
-        roleComboBoxRenderer = new SicceComboBoxRenderer("getDescription",DisplayMemberRenderType.Method);
-        cmbRole.setModel(roleComboBoxModel);
-        cmbRole.setRenderer(roleComboBoxRenderer);
         getControlsToClear().add(txtFirstName);
         getControlsToClear().add(txtLastName);
         getControlsToClear().add(txtName);
@@ -48,8 +48,11 @@ public class UserPane extends JTabExtended {
         getControlsToEnable().add(txtPassword);
         getControlsToEnable().add(cmbRole);
         ComponentUtil.SetState(false, getControlsToEnable());
+        txtPassword.setDocument(new JTextFieldLimit(20));
+        userBizObject = new UserBizObject();
+        FillGrid();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -70,9 +73,14 @@ public class UserPane extends JTabExtended {
         cmbRole = new javax.swing.JComboBox();
         txtPassword = new javax.swing.JPasswordField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        grdLocation = new javax.swing.JTable();
+        gridUsers = new javax.swing.JTable();
 
         setName("Form"); // NOI18N
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(UserPane.class);
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel4.border.title"))); // NOI18N
@@ -131,7 +139,7 @@ public class UserPane extends JTabExtended {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        grdLocation.setModel(new javax.swing.table.DefaultTableModel(
+        gridUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null}
             },
@@ -154,8 +162,8 @@ public class UserPane extends JTabExtended {
                 return canEdit [columnIndex];
             }
         });
-        grdLocation.setName("grdLocation"); // NOI18N
-        jScrollPane1.setViewportView(grdLocation);
+        gridUsers.setName("gridUsers"); // NOI18N
+        jScrollPane1.setViewportView(gridUsers);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -183,11 +191,16 @@ public class UserPane extends JTabExtended {
 
         jPanel4.getAccessibleContext().setAccessibleName(resourceMap.getString("jPanel4.AccessibleContext.accessibleName")); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        roleBizObject = new RoleBizObject();
+        roleComboBoxModel = new SicceComboBoxModel<IRole>(roleBizObject.GetAllRoles());
+        roleComboBoxRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method);
+        cmbRole.setModel(roleComboBoxModel);
+        cmbRole.setRenderer(roleComboBoxRenderer);
+    }//GEN-LAST:event_formComponentShown
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cmbRole;
-    private javax.swing.JTable grdLocation;
+    private javax.swing.JTable gridUsers;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -200,14 +213,14 @@ public class UserPane extends JTabExtended {
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
-
     @Override
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            super.Delete();   
             UserDB.Delete(user);
-            
+            super.Delete();
+            FillGrid();
+
         } catch (Exception ex) {
             cancelAction = true;
             throw ex;
@@ -227,14 +240,16 @@ public class UserPane extends JTabExtended {
         cancelAction = false;
         try {
             user.setName(txtName.getText());
-            user.setRole((IRole)cmbRole.getSelectedItem());
-            user.setPasswordSicce(txtPassword.getPassword().toString());
+            user.setRole((IRole) cmbRole.getSelectedItem());
+            System.out.println(new String(txtPassword.getPassword()));
+            user.setPasswordSicce(new String(txtPassword.getPassword()));
             user.setUsernameSicce(txtFirstName.getText());
             user.setLastname(txtLastName.getText());
             if (IsObjectLoaded()) {
                 return Update();
             }
             user = UserDB.Save(user);
+            FillGrid();
         } catch (Exception ex) {
             ex.printStackTrace();
             cancelAction = true;
@@ -252,10 +267,34 @@ public class UserPane extends JTabExtended {
         cancelAction = false;
         try {
             UserDB.Update(user);
+            FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
         }
         return cancelAction;
     }
-    
+
+    @Override
+    public void ItemSelected(int selectedIndex) {
+        super.ItemSelected(selectedIndex);
+        SicceTableModel<IUserSicce> tableModel = (SicceTableModel<IUserSicce>) gridUsers.getModel();
+        user = tableModel.getRow(selectedIndex);
+        txtName.setText(user.getName());
+        txtFirstName.setText(user.getUsernameSicce());
+        cmbRole.setSelectedItem(user.getRole());
+        txtPassword.setText(user.getPasswordSicce());
+        txtLastName.setText(user.getLastname());
+    }
+
+    @Override
+    public void RegisterSelectionListener() {
+        gridUsers.getSelectionModel().addListSelectionListener(selectionListener);
+        gridUsers.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    @Override
+    public void FillGrid() {
+        userTableModel = new UserTableModel(userBizObject.GetAllUsers());
+        gridUsers.setModel(userTableModel);
+    }
 }
