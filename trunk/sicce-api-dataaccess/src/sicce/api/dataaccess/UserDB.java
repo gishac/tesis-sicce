@@ -20,7 +20,7 @@ public class UserDB {
         try {
 
             Connection.getDataContext().rollbackChanges();
-            UserSicce userToSave = new UserSicce(); //(UserSicce) Connection.getDataContext().newObject(UserSicce.class);
+            UserSicce userToSave = new UserSicce();
             Connection.getDataContext().registerNewObject(userToSave);
             userToSave.setName(user.getName());
             userToSave.setToRole((Role) user.getRole());
