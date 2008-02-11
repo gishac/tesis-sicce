@@ -19,7 +19,8 @@ import sicce.api.info.interfaces.ITabbedWindow;
 import sicce.api.info.interfaces.IToolBarStateListener;
 
 /**
- *
+ * Clase que administra todos los eventos generados por el toolbar y notifica los estados
+ * generados por las acciones del toolbar
  * @author gish@c
  */
 public class ToolBarHandler implements ListSelectionListener{
@@ -172,6 +173,10 @@ public class ToolBarHandler implements ListSelectionListener{
         toolBar.getComponent(5).setEnabled(searchButtonState);
     }
 
+    /**
+     * Metodo implementado de la interfaz ListSelectionListener
+     * @param e
+     */
     public void valueChanged(ListSelectionEvent e) {
         try {
             ListSelectionModel selectionModel = (ListSelectionModel) e.getSource();
