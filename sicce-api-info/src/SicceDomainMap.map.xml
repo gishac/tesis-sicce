@@ -16,8 +16,8 @@
 		<db-attribute name="ID_LOCATION_TYPE" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
 	</db-entity>
 	<db-entity name="location_zone" catalog="sicce">
-		<db-attribute name="ID_LOCATION" type="BIGINT" isMandatory="true" length="10"/>
-		<db-attribute name="ID_ZONE" type="BIGINT" isMandatory="true" length="10"/>
+		<db-attribute name="ID_LOCATION" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="ID_ZONE" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="10"/>
 	</db-entity>
 	<db-entity name="measure" catalog="sicce">
 		<db-attribute name="DATE_MEASURE" type="TIMESTAMP" length="19"/>
@@ -27,8 +27,8 @@
 		<db-attribute name="VALUE" type="DECIMAL" length="10"/>
 	</db-entity>
 	<db-entity name="option_role" catalog="sicce">
-		<db-attribute name="ID_OPTION_SICCE" type="BIGINT" isMandatory="true" length="10"/>
-		<db-attribute name="ID_ROLE" type="BIGINT" isMandatory="true" length="10"/>
+		<db-attribute name="ID_OPTION_SICCE" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="ID_ROLE" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="10"/>
 	</db-entity>
 	<db-entity name="option_sicce" catalog="sicce">
 		<db-attribute name="DESCRIPTION" type="VARCHAR" length="30"/>
@@ -124,7 +124,7 @@
 	<db-relationship name="locationArray" source="location" target="location" toMany="true">
 		<db-attribute-pair source="ID_LOCATION" target="PARENT_ID_LOCATION"/>
 	</db-relationship>
-	<db-relationship name="locationZoneArray" source="location" target="location_zone" toMany="true">
+	<db-relationship name="locationZoneArray" source="location" target="location_zone" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="ID_LOCATION" target="ID_LOCATION"/>
 	</db-relationship>
 	<db-relationship name="measureArray" source="location" target="measure" toMany="true">
@@ -163,7 +163,7 @@
 	<db-relationship name="toRole" source="option_role" target="role" toMany="false">
 		<db-attribute-pair source="ID_ROLE" target="ID_ROLE"/>
 	</db-relationship>
-	<db-relationship name="optionRoleArray" source="option_sicce" target="option_role" toMany="true">
+	<db-relationship name="optionRoleArray" source="option_sicce" target="option_role" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="ID_OPTION_SICCE" target="ID_OPTION_SICCE"/>
 	</db-relationship>
 	<db-relationship name="locationArray" source="power_meter" target="location" toMany="true">
@@ -172,7 +172,7 @@
 	<db-relationship name="measureArray" source="power_meter" target="measure" toMany="true">
 		<db-attribute-pair source="ID_POWER_METER" target="ID_POWER_METER"/>
 	</db-relationship>
-	<db-relationship name="optionRoleArray" source="role" target="option_role" toMany="true">
+	<db-relationship name="optionRoleArray" source="role" target="option_role" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="ID_ROLE" target="ID_ROLE"/>
 	</db-relationship>
 	<db-relationship name="userSicceArray" source="role" target="user_sicce" toMany="true">
@@ -184,7 +184,7 @@
 	<db-relationship name="toRole" source="user_sicce" target="role" toMany="false">
 		<db-attribute-pair source="ID_ROLE" target="ID_ROLE"/>
 	</db-relationship>
-	<db-relationship name="locationZoneArray" source="zone" target="location_zone" toMany="true">
+	<db-relationship name="locationZoneArray" source="zone" target="location_zone" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="ID_ZONE" target="ID_ZONE"/>
 	</db-relationship>
 	<obj-relationship name="locationArray" source="Location" target="Location" db-relationship-path="locationArray"/>
