@@ -296,6 +296,7 @@ public class SicceuimanagerView extends FrameView {
     private PowerMeterPane pmeterPane;
     private LocationTypePane lTypePane;
     private LocationPane locationPane;
+    private MeasurePane measurePane;
 
     /**
      * gish@c
@@ -339,12 +340,17 @@ public class SicceuimanagerView extends FrameView {
         
         IOptionSicce e = ClassFactory.getOptionInstance();
         e.setDescription("Location");
+        
+        IOptionSicce f = ClassFactory.getOptionInstance();
+        f.setDescription("Measure");
+        
         this.options = new ArrayList<IOptionSicce>();
         options.add(a);
         options.add(b);
         options.add(c);
         options.add(d);
         options.add(e);
+        options.add(f);
         JTaskPaneGroup mainGroup = new JTaskPaneGroup();
         mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
         mainGroup.setSpecial(true);
@@ -458,11 +464,13 @@ public class SicceuimanagerView extends FrameView {
         pmeterPane = new PowerMeterPane();
         lTypePane = new LocationTypePane();
         locationPane = new LocationPane();
+        measurePane = new MeasurePane();
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
         toolBarHandler.AddToolBarStateListener(pmeterPane);
         toolBarHandler.AddToolBarStateListener(lTypePane);
-         toolBarHandler.AddToolBarStateListener(locationPane);
+        toolBarHandler.AddToolBarStateListener(locationPane);
+        toolBarHandler.AddToolBarStateListener(measurePane);
     }
 
     /**
@@ -485,6 +493,8 @@ public class SicceuimanagerView extends FrameView {
                 break;
             case Location:
                 result = locationPane;
+            case Measure:
+                result = measurePane;
                 break;
         }
         return result;

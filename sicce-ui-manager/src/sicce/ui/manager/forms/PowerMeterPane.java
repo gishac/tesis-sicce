@@ -7,13 +7,17 @@
 package sicce.ui.manager.forms;
 
 import java.awt.Component;
+import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.dataaccess.PowerMeterDB;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.util.ComponentUtil;
+import sicce.api.util.JTextFieldLimit;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.JTabExtended;
-
+import sicce.api.businesslogic.PowerMeterBizObject;
+import sicce.api.businesslogic.PowerMeterTableModel;
+import sicce.api.businesslogic.SicceTableModel;
 /**
  *
  * @author  gish@c
@@ -21,7 +25,8 @@ import sicce.ui.manager.controls.JTabExtended;
 public class PowerMeterPane extends JTabExtended {
     
        private IPowerMeter pmeter;    
-    
+       PowerMeterBizObject pmeterBizObject;
+       PowerMeterTableModel pmeterTableModel;
     
     /** Creates new form PowerMeterPane */
     public PowerMeterPane() {
@@ -29,7 +34,14 @@ public class PowerMeterPane extends JTabExtended {
         getControlsToClear().add(txtSerial);
         getControlsToClear().add(txtIpAddress);
         getControlsToClear().add(txtDescription);
-         
+        getControlsToEnable().add(txtSerial);
+        getControlsToEnable().add(txtIpAddress);
+        getControlsToEnable().add(txtDescription);
+        txtIpAddress.setDocument(new JTextFieldLimit(16));
+        txtDescription.setDocument(new JTextFieldLimit(24));
+        ComponentUtil.SetState(false, getControlsToEnable());
+        pmeterBizObject = new PowerMeterBizObject();
+        FillGrid();
     }
     
     /** Creates new form PowerMeterPane */
@@ -202,7 +214,7 @@ public class PowerMeterPane extends JTabExtended {
         try {
             super.Delete();            
             PowerMeterDB.Delete(pmeter);
-            
+            FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
             throw ex;
@@ -222,7 +234,7 @@ public class PowerMeterPane extends JTabExtended {
     public boolean Save() throws Exception {
           cancelAction = false;        
         try {
-           pmeter.setSerial(txtSerial.getText().trim());
+        pmeter.setSerial(txtSerial.getText().trim());
         pmeter.setIpAddress(txtIpAddress.getText().trim());
         pmeter.setDescription(txtDescription.getText().trim());
         if(IsObjectLoaded())
@@ -248,12 +260,33 @@ public class PowerMeterPane extends JTabExtended {
         cancelAction = false;
         try {
             PowerMeterDB.Update(pmeter);
+            FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
         }
         return cancelAction;
     }
+     @Override
+    public void ItemSelected(int selectedIndex) {
+        super.ItemSelected(selectedIndex);
+        SicceTableModel<IPowerMeter> tableModel = (SicceTableModel<IPowerMeter>) grdPowerMeter.getModel();
+        pmeter = tableModel.getRow(selectedIndex);
+        txtSerial.setText(pmeter.getSerial());
+        txtIpAddress.setText(pmeter.getIpAddress());
+        txtDescription.setText(pmeter.getDescription());    
+    }
+
+    @Override
+    public void RegisterSelectionListener() {
+        grdPowerMeter.getSelectionModel().addListSelectionListener(selectionListener);
+        grdPowerMeter.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
     
+    @Override
+    public void FillGrid() {
+        pmeterTableModel = new PowerMeterTableModel(pmeterBizObject.GetAllPowerMeter());
+        grdPowerMeter.setModel(pmeterTableModel);
+    }
     
     
     
