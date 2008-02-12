@@ -17,7 +17,8 @@ public class ConstantsProvider {
         User(2),
         PowerMeter(3),
         LocationType(4),
-        Location(5);
+        Location(5),
+        Measure(6);
              
         private int taskID;
         
