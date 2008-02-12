@@ -6,24 +6,24 @@
 package sicce.api.dataaccess;
 import java.util.List;
 import org.apache.cayenne.query.Query;
-import sicce.api.info.Location;
-import sicce.api.info.interfaces.ILocation;
+import sicce.api.info.Measure;
+import sicce.api.info.interfaces.IMeasure;
 
 /**
  *
  * @author karu
  */
-public class LocationDB {
+public class MeasureDB {
 
-    public static ILocation Save(ILocation location) throws Exception
+    public static IMeasure Save(IMeasure measure) throws Exception
     {
         try
         {
             
-        Location locationToSave = (Location)Connection.getDataContext().newObject(Location.class);
-        locationToSave.setDescription(location.getDescription());        
+        Measure measureToSave = (Measure)Connection.getDataContext().newObject(Measure.class);
+        measureToSave.setDateMeasure(measure.getDateMeasure());        
         Connection.getDataContext().commitChanges();
-        return locationToSave;
+        return measureToSave;
         }
         catch(Exception ex)
         {
@@ -31,7 +31,7 @@ public class LocationDB {
         }
     }
     
-    public static void Update(ILocation location) throws Exception
+    public static void Update(IMeasure measure) throws Exception
     {
         try
         {
@@ -44,11 +44,11 @@ public class LocationDB {
         }
     }
     
-    public static void Delete(ILocation location) throws Exception
+    public static void Delete(IMeasure measure) throws Exception
     {
       try
         {
-            Connection.getDataContext().deleteObject((Location) location);
+            Connection.getDataContext().deleteObject((Measure) measure);
             Connection.getDataContext().commitChanges();
         }
         catch(Exception ex)
@@ -57,7 +57,7 @@ public class LocationDB {
         }  
     }
     
-   public static List GetLocations(Query query)
+    public static List GetMeasures(Query query)
     {
         return Connection.getDataContext().performQuery(query);
     }

@@ -4,6 +4,8 @@
  */
 
 package sicce.api.dataaccess;
+import java.util.List;
+import org.apache.cayenne.query.Query;
 import sicce.api.info.PowerMeter;
 import sicce.api.info.interfaces.IPowerMeter;
 
@@ -17,7 +19,7 @@ public class PowerMeterDB {
     {
         try
         {
-            
+        Connection.getDataContext().rollbackChanges();    
         PowerMeter pmeterToSave = (PowerMeter)Connection.getDataContext().newObject(PowerMeter.class);
         pmeterToSave.setSerial(pmeter.getSerial());
         pmeterToSave.setIpAddress(pmeter.getIpAddress());
@@ -57,5 +59,9 @@ public class PowerMeterDB {
         }  
     }
     
+    public static List GetPowerMeter(Query query)
+    {
+        return Connection.getDataContext().performQuery(query);
+    }
     
 }

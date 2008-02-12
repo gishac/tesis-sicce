@@ -19,7 +19,7 @@ public class LocationTypeDB {
     {
         try
         {
-            
+        Connection.getDataContext().rollbackChanges();    
         LocationType locationTypeToSave = (LocationType)Connection.getDataContext().newObject(LocationType.class);
         locationTypeToSave.setDescription(locationType.getDescription());        
         Connection.getDataContext().commitChanges();
