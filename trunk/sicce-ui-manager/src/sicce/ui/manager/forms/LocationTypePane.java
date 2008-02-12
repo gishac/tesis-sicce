@@ -6,12 +6,16 @@
 
 package sicce.ui.manager.forms;
 
+import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.dataaccess.LocationTypeDB;
-import sicce.api.info.LocationType;
 import sicce.api.info.interfaces.ILocationType;
+import sicce.api.util.ComponentUtil;
+import sicce.api.util.JTextFieldLimit;
 import sicce.ui.manager.controls.JTabExtended;
-
+import sicce.api.businesslogic.LocationTypeBizObject;
+import sicce.api.businesslogic.LocationTypeTableModel;
+import sicce.api.businesslogic.SicceTableModel;
 /**
  *
  * @author  gish@c
@@ -19,13 +23,19 @@ import sicce.ui.manager.controls.JTabExtended;
 public class LocationTypePane extends JTabExtended {
     
     private ILocationType locationType;
-    
+    LocationTypeBizObject ltypeBizObject;
+    LocationTypeTableModel ltypeTableModel;
     /** Creates new form LocationTypePane */
     public LocationTypePane() {
         initComponents();
-        getControlsToClear().add(txtDescription);
-        getControlsToClear().add(txtCode);
+        getControlsToClear().add(txtDescription); 
         getControlsToEnable().add(txtDescription);
+      
+        ComponentUtil.SetState(false, getControlsToEnable());
+       // grdLocationType.cColumnSize(grdLocationType.getColumn(1),15);
+        txtDescription.setDocument(new JTextFieldLimit(24));
+        ltypeBizObject = new LocationTypeBizObject();
+        FillGrid();
     }
     
     /** This method is called from within the constructor to
@@ -37,11 +47,8 @@ public class LocationTypePane extends JTabExtended {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        lblCode = new javax.swing.JLabel();
         lblDescription = new javax.swing.JLabel();
-        txtCode = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtDescription = new javax.swing.JTextArea();
+        txtDescription = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         grdLocationType = new javax.swing.JTable();
 
@@ -51,80 +58,46 @@ public class LocationTypePane extends JTabExtended {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel2.border.title"))); // NOI18N
         jPanel2.setName("jPanel2"); // NOI18N
 
-        lblCode.setText(resourceMap.getString("lblCode.text")); // NOI18N
-        lblCode.setName("lblCode"); // NOI18N
-
         lblDescription.setText(resourceMap.getString("lblDescription.text")); // NOI18N
         lblDescription.setName("lblDescription"); // NOI18N
 
-        txtCode.setEditable(false);
-        txtCode.setName("txtCode"); // NOI18N
-
-        jScrollPane2.setName("jScrollPane2"); // NOI18N
-
-        txtDescription.setColumns(20);
-        txtDescription.setRows(5);
+        txtDescription.setText(resourceMap.getString("txtDescription.text")); // NOI18N
         txtDescription.setName("txtDescription"); // NOI18N
-        jScrollPane2.setViewportView(txtDescription);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblDescription)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(lblDescription)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(lblCode, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCode)
-                    .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDescription)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                    .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         grdLocationType.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null}
+                {null, null}
             },
             new String [] {
-                "Object", "Código", "Descripción"
+                "Código", "Descripción"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, true, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         grdLocationType.setName("grdLocationType"); // NOI18N
         jScrollPane1.setViewportView(grdLocationType);
+        grdLocationType.getColumnModel().getColumn(0).setPreferredWidth(15);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -133,18 +106,21 @@ public class LocationTypePane extends JTabExtended {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(114, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     
@@ -153,11 +129,8 @@ public class LocationTypePane extends JTabExtended {
     private javax.swing.JTable grdLocationType;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lblCode;
     private javax.swing.JLabel lblDescription;
-    private javax.swing.JTextField txtCode;
-    private javax.swing.JTextArea txtDescription;
+    private javax.swing.JTextField txtDescription;
     // End of variables declaration//GEN-END:variables
   
     @Override
@@ -169,8 +142,9 @@ public class LocationTypePane extends JTabExtended {
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            super.Delete();              
             LocationTypeDB.Delete(locationType);
+            super.Delete();              
+             FillGrid();
             
         } catch (Exception ex) {
             cancelAction = true;
@@ -195,7 +169,7 @@ public class LocationTypePane extends JTabExtended {
                 return Update();
             }
             locationType = LocationTypeDB.Save(locationType);
-            txtCode.setText(String.valueOf(locationType.getID()));
+          
         } catch (Exception ex) {
             cancelAction = true;
         }
@@ -212,12 +186,31 @@ public class LocationTypePane extends JTabExtended {
         cancelAction = false;
         try {
             LocationTypeDB.Update(locationType);
+            FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
         }
         return cancelAction;
     }
     
+     @Override
+    public void ItemSelected(int selectedIndex) {
+        super.ItemSelected(selectedIndex);
+        SicceTableModel<ILocationType> tableModel = (SicceTableModel<ILocationType>) grdLocationType.getModel();
+        locationType = tableModel.getRow(selectedIndex);
+        txtDescription.setText(locationType.getDescription());
+        
+    }
+
+    @Override
+    public void RegisterSelectionListener() {
+        grdLocationType.getSelectionModel().addListSelectionListener(selectionListener);
+        grdLocationType.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
     
-    
+    @Override
+    public void FillGrid() {
+        ltypeTableModel = new LocationTypeTableModel(ltypeBizObject.GetAllLocationsType());
+        grdLocationType.setModel(ltypeTableModel);
+    }
 }
