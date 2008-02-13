@@ -239,10 +239,14 @@ public class PowerMeterPane extends JTabExtended {
         pmeter.setDescription(txtDescription.getText().trim());
         if(IsObjectLoaded())
         {
-            Update();
+          return Update();
             
         }
         pmeter = PowerMeterDB.Save(pmeter);
+        txtSerial.setText(pmeter.getSerial());
+        txtIpAddress.setText(pmeter.getIpAddress());
+        txtSerial.setText(pmeter.getSerial());
+        FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
         }

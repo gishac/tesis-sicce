@@ -8,10 +8,14 @@ package sicce.ui.manager.forms;
 
 import sicce.api.businesslogic.ClassFactory;
 
+import sicce.api.businesslogic.LocationTypeBizObject;
 import sicce.api.businesslogic.SicceComboBoxModel;
 import sicce.api.businesslogic.SicceComboBoxRenderer;
 import sicce.api.dataaccess.LocationDB;
+import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 import sicce.api.info.interfaces.ILocation;
+import sicce.api.info.interfaces.ILocationType;
+import sicce.api.util.ComponentUtil;
 import sicce.ui.manager.controls.JTabExtended;
 
 /**
@@ -20,6 +24,9 @@ import sicce.ui.manager.controls.JTabExtended;
  */
 public class LocationPane extends JTabExtended {
     
+    SicceComboBoxModel<ILocationType> locationTypeComboBoxModel;
+    SicceComboBoxRenderer locationTypeComboBoxRenderer;
+    LocationTypeBizObject locationTypeBizObject;
     private ILocation location;
     
     /** Creates new form LocationPane */
@@ -28,7 +35,17 @@ public class LocationPane extends JTabExtended {
         getControlsToClear().add(txtDescription);
         getControlsToClear().add(txtUbication); 
         getControlsToClear().add(txtPowerMeter);
+        getControlsToClear().add(btnSearchPowerMeter);
+        getControlsToClear().add(btnSearchUbication);
+        getControlsToClear().add(cmbLocationType);
         getControlsToEnable().add(txtDescription);
+        getControlsToEnable().add(txtUbication);
+        getControlsToEnable().add(txtPowerMeter);
+        getControlsToEnable().add(btnSearchPowerMeter);
+        getControlsToEnable().add(btnSearchUbication);
+        getControlsToEnable().add(cmbLocationType);
+        ComponentUtil.SetState(false, getControlsToEnable());
+       
     }
     
     /** This method is called from within the constructor to
@@ -55,6 +72,11 @@ public class LocationPane extends JTabExtended {
         grdLocation = new javax.swing.JTable();
 
         setName("Form"); // NOI18N
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(LocationPane.class);
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel4.border.title"))); // NOI18N
@@ -169,6 +191,15 @@ public class LocationPane extends JTabExtended {
                 .addContainerGap(28, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+         locationTypeBizObject = new LocationTypeBizObject();
+        locationTypeComboBoxModel = new SicceComboBoxModel<ILocationType>(locationTypeBizObject.GetAllLocationsType());
+        locationTypeComboBoxRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method);
+        cmbLocationType.setModel(locationTypeComboBoxModel);
+        cmbLocationType.setRenderer(locationTypeComboBoxRenderer);
+    }//GEN-LAST:event_formComponentShown
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
