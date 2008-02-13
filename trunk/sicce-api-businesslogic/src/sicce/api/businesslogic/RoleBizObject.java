@@ -17,6 +17,10 @@ import sicce.api.info.interfaces.IRole;
  */
 public class RoleBizObject {
 
+    /**
+     * 
+     * @return Devuelve todos los roles
+     */
     public List<IRole> GetAllRoles()
     {
         Query query = new SelectQuery(sicce.api.info.Role.class);
