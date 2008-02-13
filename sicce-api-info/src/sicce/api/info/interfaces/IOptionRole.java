@@ -9,9 +9,11 @@ package sicce.api.info.interfaces;
  *
  * @author gish@c
  */
-public interface IOptionSicce {
+public interface IOptionRole {
 
-    void setDescription(String description);
-    String getDescription();
-    int getID();
+    IRole getRole();
+    void setRole(IRole role);
+    IOptionSicce getOption();
+    void setOption(IOptionSicce option);
+    
 }
