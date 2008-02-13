@@ -7,14 +7,12 @@ package sicce.api.businesslogic;
 
 import sicce.api.info.Location;
 import sicce.api.info.LocationType;
-import sicce.api.info.Measure;
 import sicce.api.info.OptionSicce;
 import sicce.api.info.PowerMeter;
 import sicce.api.info.Role;
 import sicce.api.info.UserSicce;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
-import sicce.api.info.interfaces.IMeasure;
 import sicce.api.info.interfaces.IOptionSicce;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IRole;
@@ -51,13 +49,10 @@ public class ClassFactory {
         return new LocationType();
     }
     
-      public static ILocation getLocationInstance()
+    public static ILocation getLocationInstance()
     {
         return new Location();
     }
       
-        public static IMeasure getMeasureInstance()
-    {
-        return new Measure();
-    }
+  
 }
