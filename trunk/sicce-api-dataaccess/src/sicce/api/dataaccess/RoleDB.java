@@ -21,7 +21,7 @@ public class RoleDB {
         {
             
         Role roleToSave = (Role)Connection.getDataContext().newObject(Role.class);
-        roleToSave.setDescription(role.getDescription());        
+        roleToSave.setDescription(role.getDescription());
         Connection.getDataContext().commitChanges();
         return roleToSave;
         }
