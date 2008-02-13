@@ -6,7 +6,6 @@
 package sicce.api.businesslogic;
 
 import java.util.List;
-import javax.swing.table.TableColumn;
 import sicce.api.info.interfaces.IPowerMeter;
 
 /**
@@ -37,16 +36,5 @@ public class PowerMeterTableModel extends SicceTableModel<IPowerMeter> {
                 return null;
         }
     }
-     /**
-     * Ajusta el Tamaño de una columna específica, dentro de un jgrid
-     * @param pColumna Posición de la Columna a Ajustar
-     * @param pTamanio Tamaño de la columna.
-     */
-    public static void ColumnSize(TableColumn pColumna, int pTamanio)
-    {
-        pColumna.setMinWidth(pTamanio);
-        pColumna.setPreferredWidth(pTamanio);
-        pColumna.setResizable(true);
-    };
     
 }
