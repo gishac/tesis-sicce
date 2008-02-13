@@ -25,9 +25,6 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SelectQuery;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.dataaccess.Connection;
 import sicce.api.info.ConstantsProvider.OptionsProvider;
@@ -374,7 +371,7 @@ public class SicceuimanagerView extends FrameView {
 
     /**
      * gish@c
-     * Coloca el formulario del tamaño maximo de la pantalla
+     * Coloca el formulario del tamaÃ±o maximo de la pantalla
      */
     private void SetFrameSize() throws HeadlessException {
         Toolkit tk = Toolkit.getDefaultToolkit();
