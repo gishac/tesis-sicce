@@ -3,14 +3,9 @@
  */
 package sicce.ui.manager.forms;
 
-import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.l2fprod.common.swing.JTaskPane;
 import com.l2fprod.common.swing.JTaskPaneGroup;
-import com.l2fprod.common.swing.plaf.LookAndFeelAddons;
-import com.l2fprod.common.swing.plaf.aqua.AquaLookAndFeelAddons;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -22,19 +17,23 @@ import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SelectQuery;
 import sicce.api.businesslogic.ClassFactory;
+import sicce.api.dataaccess.Connection;
 import sicce.api.info.ConstantsProvider.OptionsProvider;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
-import sicce.api.info.Location;
-import sicce.api.info.LocationType;
-import sicce.api.info.PowerMeter;
+import sicce.api.info.OptionRole;
+import sicce.api.info.OptionRole;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.IOptionSicce;
 import sicce.ui.manager.controls.JOptionPaneExtended;
@@ -296,7 +295,7 @@ public class SicceuimanagerView extends FrameView {
     private PowerMeterPane pmeterPane;
     private LocationTypePane lTypePane;
     private LocationPane locationPane;
-    private MeasurePane measurePane;
+   
 
     /**
      * gish@c
@@ -341,16 +340,13 @@ public class SicceuimanagerView extends FrameView {
         IOptionSicce e = ClassFactory.getOptionInstance();
         e.setDescription("Location");
         
-        IOptionSicce f = ClassFactory.getOptionInstance();
-        f.setDescription("Measure");
-        
         this.options = new ArrayList<IOptionSicce>();
         options.add(a);
         options.add(b);
         options.add(c);
         options.add(d);
         options.add(e);
-        options.add(f);
+      
         JTaskPaneGroup mainGroup = new JTaskPaneGroup();
         mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
         mainGroup.setSpecial(true);
@@ -439,6 +435,7 @@ public class SicceuimanagerView extends FrameView {
             public void actionPerformed(ActionEvent e) {
                 OptionsProvider option = Enum.valueOf(OptionsProvider.class, e.getActionCommand());
                 JTabExtended selectedOption = GetForm(option);
+               
                 if (!getTabManager().getTabs().contains(selectedOption)) {
                     getTabManager().AddTab(selectedOption);
                     toolBarHandler.SetDefaultState();
@@ -464,13 +461,13 @@ public class SicceuimanagerView extends FrameView {
         pmeterPane = new PowerMeterPane();
         lTypePane = new LocationTypePane();
         locationPane = new LocationPane();
-        measurePane = new MeasurePane();
+       
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
         toolBarHandler.AddToolBarStateListener(pmeterPane);
         toolBarHandler.AddToolBarStateListener(lTypePane);
         toolBarHandler.AddToolBarStateListener(locationPane);
-        toolBarHandler.AddToolBarStateListener(measurePane);
+        
     }
 
     /**
@@ -493,10 +490,10 @@ public class SicceuimanagerView extends FrameView {
                 break;
             case Location:
                 result = locationPane;
-            case Measure:
-                result = measurePane;
                 break;
+            
         }
         return result;
     }
+   
 }

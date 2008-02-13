@@ -30,9 +30,7 @@ public class LocationTypePane extends JTabExtended {
         initComponents();
         getControlsToClear().add(txtDescription); 
         getControlsToEnable().add(txtDescription);
-      
-        ComponentUtil.SetState(false, getControlsToEnable());
-       // grdLocationType.cColumnSize(grdLocationType.getColumn(1),15);
+        ComponentUtil.SetState(false, getControlsToEnable());  
         txtDescription.setDocument(new JTextFieldLimit(24));
         ltypeBizObject = new LocationTypeBizObject();
         FillGrid();
@@ -169,6 +167,8 @@ public class LocationTypePane extends JTabExtended {
                 return Update();
             }
             locationType = LocationTypeDB.Save(locationType);
+            txtDescription.setText(locationType.getDescription());
+            FillGrid();
           
         } catch (Exception ex) {
             cancelAction = true;
