@@ -5,13 +5,19 @@
  */
 package sicce.ui.manager.forms;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
+import sicce.api.businesslogic.OptionBizObject;
+import sicce.api.businesslogic.OptionRoleBizObject;
+import sicce.api.businesslogic.OptionRoleTableModel;
 import sicce.api.businesslogic.RoleBizObject;
 import sicce.api.businesslogic.RoleTableModel;
 import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.dataaccess.RoleDB;
 import sicce.api.info.interfaces.IRole;
+import sicce.api.util.ComponentUtil;
 import sicce.ui.manager.controls.JTabExtended;
 
 /**
@@ -22,16 +28,23 @@ public class RolePane extends JTabExtended {
 
     private IRole role;
     private RoleTableModel roleTableModel;
+    private OptionRoleTableModel optionRoleTableModel;
     private RoleBizObject roleBizObject;
+    private OptionBizObject optionBizObject;
+    private OptionRoleBizObject optionRoleBizObject;
 
     /** Creates new form LocationTypePane */
     public RolePane() {
         initComponents();
         getControlsToClear().add(txtDescription);
-        getControlsToClear().add(txtCode);
         getControlsToEnable().add(txtDescription);
+        getControlsToEnable().add(gridScrollPane);
         roleBizObject = new RoleBizObject();
-        FillGrid();        
+        optionBizObject = new OptionBizObject();
+        optionRoleBizObject = new OptionRoleBizObject();
+        FillGrid();
+        FillPermissionsGrid();
+        ComponentUtil.SetState(false, getControlsToEnable());
     }
 
     /** This method is called from within the constructor to
@@ -43,11 +56,12 @@ public class RolePane extends JTabExtended {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        txtCode = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDescription = new javax.swing.JTextArea();
-        lblcodigo = new javax.swing.JLabel();
         lblDescription = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        gridScrollPane = new javax.swing.JScrollPane();
+        gridPermissions = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         gridRoles = new javax.swing.JTable();
 
@@ -57,10 +71,6 @@ public class RolePane extends JTabExtended {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel2.border.title"))); // NOI18N
         jPanel2.setName("jPanel2"); // NOI18N
 
-        txtCode.setBackground(resourceMap.getColor("txtCode.background")); // NOI18N
-        txtCode.setEnabled(false);
-        txtCode.setName("txtCode"); // NOI18N
-
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
         txtDescription.setColumns(20);
@@ -69,39 +79,53 @@ public class RolePane extends JTabExtended {
         txtDescription.setName("txtDescription"); // NOI18N
         jScrollPane2.setViewportView(txtDescription);
 
-        lblcodigo.setText(resourceMap.getString("lblcodigo.text")); // NOI18N
-        lblcodigo.setName("lblcodigo"); // NOI18N
-
         lblDescription.setText(resourceMap.getString("lblDescription.text")); // NOI18N
         lblDescription.setName("lblDescription"); // NOI18N
+
+        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jScrollPane3.border.title"))); // NOI18N
+        jScrollPane3.setName("jScrollPane3"); // NOI18N
+
+        gridScrollPane.setName("gridScrollPane"); // NOI18N
+
+        gridPermissions.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        gridPermissions.setName("gridPermissions"); // NOI18N
+        gridScrollPane.setViewportView(gridPermissions);
+
+        jScrollPane3.setViewportView(gridScrollPane);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblcodigo)
-                    .addComponent(lblDescription))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lblDescription)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblcodigo))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDescription))
-                .addContainerGap(136, Short.MAX_VALUE))
+                    .addComponent(lblDescription)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -139,28 +163,29 @@ public class RolePane extends JTabExtended {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(8, 8, 8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable gridPermissions;
     private javax.swing.JTable gridRoles;
+    private javax.swing.JScrollPane gridScrollPane;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblDescription;
-    private javax.swing.JLabel lblcodigo;
-    private javax.swing.JTextField txtCode;
     private javax.swing.JTextArea txtDescription;
     // End of variables declaration//GEN-END:variables
     @Override
@@ -188,6 +213,7 @@ public class RolePane extends JTabExtended {
         super.New();
         role = ClassFactory.getRoleInstance();
         txtDescription.requestFocusInWindow();
+        FillPermissionsGrid();
     }
 
     @Override
@@ -199,7 +225,7 @@ public class RolePane extends JTabExtended {
                 return Update();
             }
             role = RoleDB.Save(role);
-            txtCode.setText(String.valueOf(role.getID()));
+            SavePermissions();
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -217,6 +243,7 @@ public class RolePane extends JTabExtended {
         cancelAction = false;
         try {
             RoleDB.Update(role);
+            SavePermissions();
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -229,20 +256,45 @@ public class RolePane extends JTabExtended {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IRole> tableModel = (SicceTableModel<IRole>) gridRoles.getModel();
         role = tableModel.getRow(selectedIndex);
-        txtCode.setText(String.valueOf(role.getID()));
         txtDescription.setText(role.getDescription());
+        FillPermissionsGrid();
     }
 
     @Override
     public void RegisterSelectionListener() {
-       gridRoles.getSelectionModel().addListSelectionListener(selectionListener);
-       gridRoles.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        gridRoles.getSelectionModel().addListSelectionListener(selectionListener);
+        gridRoles.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
-    
-    
+
     @Override
     public void FillGrid() {
         roleTableModel = new RoleTableModel(roleBizObject.GetAllRoles());
         gridRoles.setModel(roleTableModel);
+
+    }
+
+    /**
+     * Carga el grid con los permisos asignados al rol
+     */
+    private void FillPermissionsGrid() {
+        optionRoleTableModel = null;
+        optionRoleTableModel = new OptionRoleTableModel(optionBizObject.GetAllOptions(), role);
+        gridPermissions.setModel(optionRoleTableModel);
+        gridPermissions.setEnabled(true);
+    }
+
+    /**
+     * Guarda los permisos que se asignaron al rol
+     */
+    public void SavePermissions() {
+        try {
+            optionRoleBizObject.SavePermissionsToRole(gridPermissions,role);
+        } catch (Exception ex) {
+            Logger.getLogger(RolePane.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
+
+
+
+
