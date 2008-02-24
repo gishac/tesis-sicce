@@ -5,7 +5,9 @@
 package sicce.api.businesslogic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import sicce.api.info.interfaces.IOptionRole;
 import sicce.api.info.interfaces.IOptionSicce;
 import sicce.api.info.interfaces.IRole;
@@ -18,6 +20,7 @@ public class OptionRoleTableModel extends SicceTableModel<IOptionRole> {
 
     private List<IOptionSicce> optionsList;
     private IRole role;
+    private Map<Integer,Integer> permissions;
 
     /**
      * Devuelve la lista de opciones
@@ -39,14 +42,13 @@ public class OptionRoleTableModel extends SicceTableModel<IOptionRole> {
         
         if (role == null) {
             role = ClassFactory.getRoleInstance();
-            role.generateID();
         }
         else{
             this.role = (IRole)role.clone();
             copyOptionsToDataSource(this.role);
         }
         columns = new String[]{"Opción", "Estado"};
-        
+        permissions = new HashMap<Integer, Integer>();
         this.optionsList = optionsList;
         
     }
@@ -71,26 +73,7 @@ public class OptionRoleTableModel extends SicceTableModel<IOptionRole> {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         synchronized (this) {
-            boolean value = Boolean.parseBoolean(aValue.toString());
-            IOptionSicce option = getOptionsList().get(rowIndex);            
-            if (value) {
-                IOptionRole optionRole = ClassFactory.getOptionRoleInstance();
-                optionRole.setOption(option);
-                optionRole.setRole(role);
-                this.getDataSource().add(optionRole);
-            } else {
-                int index = 0;
-                boolean delete = false;
-                for (IOptionRole item : getDataSource()) {
-                    if (item.getOption().getID() == option.getID()) {
-                        delete = true;
-                        break;
-                    }
-                    index++;
-                }
-                if(delete)
-                    this.getDataSource().remove(index);
-            }
+           
         }
     }
 
@@ -130,9 +113,11 @@ public class OptionRoleTableModel extends SicceTableModel<IOptionRole> {
         dataSource = null;
         if(role.getPermissions() == null)
             return;
-        for(IOptionRole optionRole : role.getPermissions())
-        {
-            getDataSource().add(optionRole);
-        }
+        
+    }
+    
+    public Map<Integer,Integer> getPermissions()
+    {
+        return permissions;
     }
 }

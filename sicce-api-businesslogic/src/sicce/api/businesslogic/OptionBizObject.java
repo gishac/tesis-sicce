@@ -4,10 +4,11 @@
  */
 package sicce.api.businesslogic;
 
+import java.util.HashMap;
 import java.util.List;
-import org.apache.cayenne.query.Query;
-import org.apache.cayenne.query.SelectQuery;
+import java.util.Map;
 import sicce.api.dataaccess.OptionDB;
+import sicce.api.info.OptionSicce;
 import sicce.api.info.interfaces.IOptionSicce;
 
 /**
@@ -21,9 +22,15 @@ public class OptionBizObject {
      * @return Devuelve todas las opciones
      */
     public List<IOptionSicce> GetAllOptions() {
-        Query query = new SelectQuery(sicce.api.info.OptionSicce.class);
-        List<IOptionSicce> result = null;
-        result = OptionDB.GetOptions(query);
-        return result;
+        return OptionDB.GetAllOptions();
+    }
+
+    /**
+     * Devuelve una opcion
+     * @param optionID
+     * @return
+     */
+    public IOptionSicce GetOptionByID(int optionID) {
+       return OptionDB.FindOptionByID(optionID);
     }
 }

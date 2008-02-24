@@ -5,8 +5,6 @@
 package sicce.api.businesslogic;
 
 import java.util.List;
-import org.apache.cayenne.query.Query;
-import org.apache.cayenne.query.SelectQuery;
 import sicce.api.dataaccess.UserDB;
 import sicce.api.info.interfaces.IUserSicce;
 
@@ -17,9 +15,6 @@ import sicce.api.info.interfaces.IUserSicce;
 public class UserBizObject {
 
     public List<IUserSicce> GetAllUsers() {
-        Query query = new SelectQuery(sicce.api.info.UserSicce.class);
-        List<IUserSicce> result = null;
-        result = UserDB.GetUsers(query);
-        return result;
+        return UserDB.GetAllUsers();
     }
 }

@@ -15,7 +15,7 @@ public class RoleTableModel extends SicceTableModel<IRole> {
 
     public RoleTableModel(List<IRole> dataSource) {
         super(dataSource);
-        columns = new String[]{"Codigo", "Descripcion"};
+        columns = new String[]{"Código", "Descripcion"};
     }
 
     @Override
