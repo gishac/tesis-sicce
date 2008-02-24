@@ -2,11 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sicce.api.dataaccess;
+
 import java.util.List;
-import org.apache.cayenne.query.Query;
-import sicce.api.info.Role;
 import sicce.api.info.interfaces.IRole;
 
 /**
@@ -15,51 +13,35 @@ import sicce.api.info.interfaces.IRole;
  */
 public class RoleDB {
 
-    public static IRole Save(IRole role) throws Exception
-    {
-        try
-        {
-            
-        Role roleToSave = (Role)Connection.getDataContext().newObject(Role.class);
-        roleToSave.setDescription(role.getDescription());
-        Connection.getDataContext().commitChanges();
-        return roleToSave;
-        }
-        catch(Exception ex)
-        {
+    public static void Save(IRole role) throws Exception {
+        try {
+            DataAccessManager.getInstance().getRoleDB().save(role);
+        } catch (Exception ex) {
             throw ex;
         }
     }
-    
-    public static void Update(IRole role) throws Exception
-    {
-        try
-        {
-            Connection.getDataContext().modifiedObjects();        
-            Connection.getDataContext().commitChanges();
-        }
-        catch(Exception ex)
-        {
+
+    public static void Update(IRole role) throws Exception {
+        try {
+            DataAccessManager.getInstance().getRoleDB().update(role);
+        } catch (Exception ex) {
             throw ex;
         }
     }
-    
-    public static void Delete(IRole role) throws Exception
-    {
-      try
-        {
-            Connection.getDataContext().deleteObject((Role) role);
-            Connection.getDataContext().commitChanges();
-        }
-        catch(Exception ex)
-        {
+
+    public static void Delete(IRole role) throws Exception {
+        try {
+            DataAccessManager.getInstance().getRoleDB().delete(role);
+        } catch (Exception ex) {
             throw ex;
-        }  
+        }
     }
-    
-    public static List GetRoles(Query query)
-    {
-        return Connection.getDataContext().performQuery(query);
+
+    public static List GetAllRoles() {
+        return DataAccessManager.getInstance().getRoleDB().findAll();
     }
-    
+
+    public static IRole FindRoleByID(int id) {
+        return DataAccessManager.getInstance().getRoleDB().findById(id);
+    }
 }

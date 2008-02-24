@@ -2,11 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sicce.api.dataaccess;
+
 import java.util.List;
-import org.apache.cayenne.query.Query;
-import sicce.api.info.LocationType;
 import sicce.api.info.interfaces.ILocationType;
 
 /**
@@ -15,51 +13,31 @@ import sicce.api.info.interfaces.ILocationType;
  */
 public class LocationTypeDB {
 
-    public static ILocationType Save(ILocationType locationType) throws Exception
-    {
-        try
-        {
-        Connection.getDataContext().rollbackChanges();    
-        LocationType locationTypeToSave = (LocationType)Connection.getDataContext().newObject(LocationType.class);
-        locationTypeToSave.setDescription(locationType.getDescription());        
-        Connection.getDataContext().commitChanges();
-        return locationTypeToSave;
-        }
-        catch(Exception ex)
-        {
+    public static void Save(ILocationType locationType) throws Exception {
+        try {
+            DataAccessManager.getInstance().getLocationTypeDB().save(locationType);
+        } catch (Exception ex) {
             throw ex;
         }
     }
-    
-    public static void Update(ILocationType locationType) throws Exception
-    {
-        try
-        {
-            Connection.getDataContext().modifiedObjects();        
-            Connection.getDataContext().commitChanges();
-        }
-        catch(Exception ex)
-        {
+
+    public static void Update(ILocationType locationType) throws Exception {
+        try {
+            DataAccessManager.getInstance().getLocationTypeDB().update(locationType);
+        } catch (Exception ex) {
             throw ex;
         }
     }
-    
-    public static void Delete(ILocationType locationType) throws Exception
-    {
-      try
-        {
-            Connection.getDataContext().deleteObject((LocationType) locationType);
-            Connection.getDataContext().commitChanges();
-        }
-        catch(Exception ex)
-        {
+
+    public static void Delete(ILocationType locationType) throws Exception {
+        try {
+            DataAccessManager.getInstance().getLocationTypeDB().delete(locationType);
+        } catch (Exception ex) {
             throw ex;
-        }  
+        }
     }
-    
-      public static List GetLocations(Query query)
-    {
-        return Connection.getDataContext().performQuery(query);
+
+    public static List GetAllLocations() {
+        return DataAccessManager.getInstance().getLocationTypeDB().findAll();
     }
-    
 }
