@@ -253,7 +253,7 @@ public class LocationPane extends JTabExtended {
             if (IsObjectLoaded()) {
                 return Update();
             }
-            location = LocationDB.Save(location);
+            LocationDB.Save(location);
            // txtCode.setText(String.valueOf(locationType.getID()));
         } catch (Exception ex) {
             cancelAction = true;

@@ -5,12 +5,9 @@
  */
 package sicce.ui.manager.forms;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.businesslogic.OptionBizObject;
-import sicce.api.businesslogic.OptionRoleBizObject;
 import sicce.api.businesslogic.OptionRoleTableModel;
 import sicce.api.businesslogic.RoleBizObject;
 import sicce.api.businesslogic.RoleTableModel;
@@ -31,7 +28,6 @@ public class RolePane extends JTabExtended {
     private OptionRoleTableModel optionRoleTableModel;
     private RoleBizObject roleBizObject;
     private OptionBizObject optionBizObject;
-    private OptionRoleBizObject optionRoleBizObject;
 
     /** Creates new form LocationTypePane */
     public RolePane() {
@@ -41,7 +37,6 @@ public class RolePane extends JTabExtended {
         getControlsToEnable().add(gridScrollPane);
         roleBizObject = new RoleBizObject();
         optionBizObject = new OptionBizObject();
-        optionRoleBizObject = new OptionRoleBizObject();
         FillGrid();
         FillPermissionsGrid();
         ComponentUtil.SetState(false, getControlsToEnable());
@@ -224,8 +219,7 @@ public class RolePane extends JTabExtended {
             if (IsObjectLoaded()) {
                 return Update();
             }
-            role = RoleDB.Save(role);
-            SavePermissions();
+            RoleDB.Save(role);
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -242,8 +236,7 @@ public class RolePane extends JTabExtended {
     public boolean Update() throws Exception {
         cancelAction = false;
         try {
-            RoleDB.Update(role);
-            SavePermissions();
+            RoleDB.Update(role);            
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -277,22 +270,13 @@ public class RolePane extends JTabExtended {
      * Carga el grid con los permisos asignados al rol
      */
     private void FillPermissionsGrid() {
-        optionRoleTableModel = null;
+        /*optionRoleTableModel = null;
         optionRoleTableModel = new OptionRoleTableModel(optionBizObject.GetAllOptions(), role);
         gridPermissions.setModel(optionRoleTableModel);
-        gridPermissions.setEnabled(true);
+        gridPermissions.setEnabled(true);*/
     }
 
-    /**
-     * Guarda los permisos que se asignaron al rol
-     */
-    public void SavePermissions() {
-        try {
-            optionRoleBizObject.SavePermissionsToRole(gridPermissions,role);
-        } catch (Exception ex) {
-            Logger.getLogger(RolePane.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    
 }
 
 

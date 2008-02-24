@@ -242,7 +242,7 @@ public class PowerMeterPane extends JTabExtended {
           return Update();
             
         }
-        pmeter = PowerMeterDB.Save(pmeter);
+        PowerMeterDB.Save(pmeter);
         txtSerial.setText(pmeter.getSerial());
         txtIpAddress.setText(pmeter.getIpAddress());
         txtSerial.setText(pmeter.getSerial());
