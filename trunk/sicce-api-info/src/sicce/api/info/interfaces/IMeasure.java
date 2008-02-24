@@ -9,9 +9,6 @@ package sicce.api.info.interfaces;
  *
  * @author gish@c
  */
-public interface ILocationType {
+public interface IMeasure {
 
-    void setDescription(String description);
-    String getDescription();
-    int getID();
 }

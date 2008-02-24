@@ -5,7 +5,7 @@
 
 package sicce.api.info.interfaces;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -16,8 +16,10 @@ public interface IRole extends Cloneable {
     void setDescription(String description);
     String getDescription();
     int getID();
-    void setID(Object id);
-    void generateID();
-    List<IOptionRole> getPermissions();
+    void setID(int id);
+    Set<IOptionSicce> getPermissions();
+    Set<IUserSicce> getUsersInRole();
+    void addPermission(IOptionSicce permission);
+    void removePermission(IOptionSicce permission);
     Object clone();
 }
