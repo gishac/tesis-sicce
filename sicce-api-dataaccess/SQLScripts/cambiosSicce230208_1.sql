@@ -14,6 +14,7 @@ drop table measure;
 
 alter table `sicce`.`location` drop column `CODE`, drop column `LOCATION`;
 
+
 CREATE TABLE MEASURE (
   ID_MEASURE INTEGER UNSIGNED NOT NULL,
   ID_LOCATION INTEGER UNSIGNED NOT NULL,
