@@ -5,8 +5,6 @@
 
 package sicce.api.info.interfaces;
 
-import org.apache.cayenne.PersistenceState;
-
 /**
  *
  * @author gish@c
@@ -18,8 +16,8 @@ public interface ILocation {
     int getID();
     void setIdLocation (Integer idLocation);
     Integer getIdLocation(); 
-    void setIdLocationType (Integer idLocationType);
-    Integer getIdLocationType(); 
-    void setIdPowerMeter (Integer idPowerMeter);
-    Integer getIdPowerMeter();
+    void setLocationType (ILocationType locationType);
+    ILocationType getLocationType(); 
+    void setPowerMeter (IPowerMeter powerMeter);
+    IPowerMeter getPowerMeter();
 }
