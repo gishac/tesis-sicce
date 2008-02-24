@@ -6,6 +6,7 @@ package sicce.ui.manager.forms;
 
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
+import sicce.api.util.EncryptionProvider;
 
 /**
  * The main class of the application.
@@ -39,6 +40,7 @@ public class SicceuimanagerApp extends SingleFrameApplication {
      * Main method launching the application.
      */
     public static void main(String[] args) {
+        EncryptionProvider.RegisterHibernateEncryptor();
         launch(SicceuimanagerApp.class, args);
     }
 }

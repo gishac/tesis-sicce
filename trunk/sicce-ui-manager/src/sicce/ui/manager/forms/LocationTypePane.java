@@ -166,8 +166,7 @@ public class LocationTypePane extends JTabExtended {
             if (IsObjectLoaded()) {
                 return Update();
             }
-            locationType = LocationTypeDB.Save(locationType);
-            txtDescription.setText(locationType.getDescription());
+            LocationTypeDB.Save(locationType);
             FillGrid();
           
         } catch (Exception ex) {

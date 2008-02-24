@@ -248,7 +248,7 @@ public class UserPane extends JTabExtended {
             if (IsObjectLoaded()) {
                 return Update();
             }
-            user = UserDB.Save(user);
+            UserDB.Save(user);
             FillGrid();
         } catch (Exception ex) {
             ex.printStackTrace();
