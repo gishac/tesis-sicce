@@ -16,7 +16,7 @@ public class UserTableModel extends SicceTableModel<IUserSicce> {
 
     public UserTableModel(List<IUserSicce> dataSource) {
         this.dataSource = dataSource;
-        columns = new String[]{"Usuario", "Rol", "Nombre"};
+        columns = new String[]{"No.", "Usuario", "Rol", "Nombre"};
     }
 
     @Override
@@ -25,10 +25,12 @@ public class UserTableModel extends SicceTableModel<IUserSicce> {
         switch(columnIndex)
         {
             case 0:
+                return rowIndex + 1;
+            case 1:
                 return user.getName();
-            case 1: 
+            case 2: 
                 return user.getRole().getDescription();
-            case 2:
+            case 3:
                 return user.getUsernameSicce() + " " + user.getLastname();
             default: 
                 return null;

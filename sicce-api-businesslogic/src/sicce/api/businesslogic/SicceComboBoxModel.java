@@ -7,6 +7,8 @@ package sicce.api.businesslogic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 /**
@@ -32,9 +34,27 @@ public class SicceComboBoxModel <T> extends AbstractListModel implements ComboBo
         this.dataSource = dataSource;
     }
     
-    public void setSelectedItem(Object item) {
+    public void setSelectedItem(Object item) {        
         current = (T) item;
         fireContentsChanged(item, -1, -1);
+    }
+    
+    /**
+     * 
+     * @param item
+     * @param renderer
+     */
+    public void setSelectedItem(Object item, SicceComboBoxRenderer renderer) {
+        for(Object value : getDataSource()){
+            try {
+                if (renderer.GetValueMemberValue(value).toString().equals(renderer.GetValueMemberValue(item))) {
+                    setSelectedItem(item);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(SicceComboBoxModel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
     }
 
     public Object getSelectedItem() {

@@ -26,7 +26,7 @@ public class LocationTypeTableModel extends SicceTableModel<ILocationType> {
         switch(columnIndex)
         {
             case 0:
-                return rowIndex;
+                return rowIndex + 1;
             case 1: 
                 return ltype.getDescription();         
             default: 
