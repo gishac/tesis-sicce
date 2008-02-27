@@ -8,8 +8,11 @@ package sicce.api.util;
 import java.awt.Component;
 import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.table.TableModel;
+import sicce.api.info.interfaces.ISicceTableModel;
 
 /**
  *
@@ -39,6 +42,14 @@ public class ComponentUtil {
                 if(comboBox.getItemCount() > 0)
                     comboBox.setSelectedIndex(0);
             }
+            else if(IsTable(component)){
+                JTable table = (JTable) component;
+                if(IsSicceTableModel(table.getModel()))
+                {
+                    ((ISicceTableModel) table.getModel()).setDataSource(null);
+                    table.repaint();
+                }
+            }
         }
     }
     
@@ -65,8 +76,15 @@ public class ComponentUtil {
     {
         for(Component component : components)
         {
-            if(IsTextField(component) || IsComboBox(component))
+            if(IsTextField(component) || IsComboBox(component)){
                 component.setEnabled(enabled);
+            }
+            else if(IsTable(component))
+            {
+                TableModel model = ((JTable) component).getModel();
+                if(IsSicceTableModel(model))
+                    ((ISicceTableModel) model).setReadOnly(!enabled);
+            }
         }
     }
     
@@ -104,6 +122,26 @@ public class ComponentUtil {
     public static boolean IsComboBox(Component component)
     {
         return component instanceof JComboBox;
+    }
+    
+    /**
+     * Indica si el componente es una instancia de JTable
+     * @param component
+     * @return
+     */
+    public static boolean IsTable(Component component)
+    {
+        return component instanceof JTable;
+    }
+    
+    /**
+     * Indica si el componente es una instancia de ISicceTableModel
+     * @param component
+     * @return
+     */
+    public static boolean IsSicceTableModel(TableModel component)
+    {
+        return component instanceof ISicceTableModel;
     }
     
 }
