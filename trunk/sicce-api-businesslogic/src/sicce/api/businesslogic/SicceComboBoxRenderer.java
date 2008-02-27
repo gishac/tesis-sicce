@@ -4,7 +4,6 @@
  */
 package sicce.api.businesslogic;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -22,7 +21,18 @@ import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 public class SicceComboBoxRenderer extends JLabel implements ListCellRenderer {
     
     private String displayMember;
+    private String valueMember;   
     private DisplayMemberRenderType displayMemberType;
+    private DisplayMemberRenderType valueMemberType;
+
+    public String getValueMember() {
+        return valueMember;
+    }
+
+    public void setValueMember(String valueMember) {
+        this.valueMember = valueMember;
+    }
+    
 
     /**
      * 
@@ -51,18 +61,51 @@ public class SicceComboBoxRenderer extends JLabel implements ListCellRenderer {
         this.setOpaque(true);
     }
     
+   /**
+    * 
+    * @param displayMember Metodo o campo que define de donde se va a tomar el valor a mostrar en el combo
+     *@param displayMemberType Tipo de displayMember: Metodo o campo
+    * @param valueMember Metodo o campo que define de donde se va a tomar el valor que identifica al objeto
+    * @param valueMemberType Tipo de valueMember: Metodo o campo
+    */
+    public SicceComboBoxRenderer(String displayMember, DisplayMemberRenderType displayMemberType, String valueMember, DisplayMemberRenderType valueMemberType) {
+        this(displayMember,displayMemberType);
+        setValueMember(valueMember);
+        this.valueMemberType = valueMemberType;
+    }
+    
     /**
      * 
      * @param item
      * @return
      */
-    private String GetDisplayMemberValue(Object item) throws Exception
+    public String GetDisplayMemberValue(Object item) throws Exception
+    {
+       return GetMemberValue(item, displayMember).toString();
+    }
+    
+     /**
+     * 
+     * @param item
+     * @return
+     */
+    public String GetValueMemberValue(Object item) throws Exception
+    {
+       return GetMemberValue(item, valueMember).toString();
+    }
+    
+     /**
+     * 
+     * @param item
+     * @return
+     */
+    private String GetMemberValue(Object item, String member) throws Exception
     {
         Object result = null;
         if(displayMemberType == DisplayMemberRenderType.Method)
-            result = GetByMethod(item);
+            result = GetByMethod(item, member);
         else
-            result = GetByField(item);
+            result = GetByField(item, member);
         return (result != null)? result.toString() : "null";
     }
     
@@ -71,9 +114,9 @@ public class SicceComboBoxRenderer extends JLabel implements ListCellRenderer {
      * @param item
      * @return
      */
-    private Object GetByMethod(Object item) throws Exception
+    private Object GetByMethod(Object item, String methodToCall) throws Exception
     {
-        Method method = item.getClass().getMethod(displayMember, null);
+        Method method = item.getClass().getMethod(methodToCall, null);
         return method.invoke(item,new Object[0]);
     }
     
@@ -83,9 +126,9 @@ public class SicceComboBoxRenderer extends JLabel implements ListCellRenderer {
      * @return
      * @throws java.lang.Exception
      */
-    private Object GetByField(Object item) throws Exception
+    private Object GetByField(Object item, String fieldToGet) throws Exception
     {
-        Field field = item.getClass().getField(displayMember);
+        Field field = item.getClass().getField(fieldToGet);
         return field.get(item);
     }
     

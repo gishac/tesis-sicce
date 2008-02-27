@@ -6,6 +6,7 @@ package sicce.api.businesslogic;
 
 import java.util.List;
 import sicce.api.dataaccess.RoleDB;
+import sicce.api.info.interfaces.IOptionSicce;
 import sicce.api.info.interfaces.IRole;
 
 /**
@@ -24,5 +25,14 @@ public class RoleBizObject {
 
     public IRole GetRoleByID(int roleID) {
         return RoleDB.FindRoleByID(roleID);
+    }
+    
+    public boolean PermissionExists(int optionID, IRole role){
+        for(IOptionSicce permission : role.getPermissions())
+        {
+            if(permission.getID() == optionID)
+                return true;
+        }
+        return false;
     }
 }

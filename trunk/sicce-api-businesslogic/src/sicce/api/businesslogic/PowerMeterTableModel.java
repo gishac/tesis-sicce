@@ -25,7 +25,7 @@ public class PowerMeterTableModel extends SicceTableModel<IPowerMeter> {
         switch(columnIndex)
         {
             case 0:
-                return rowIndex;
+                return rowIndex + 1;
             case 1: 
                 return pmeter.getSerial();
             case 2: 

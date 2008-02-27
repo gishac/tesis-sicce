@@ -8,26 +8,38 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
+import sicce.api.info.interfaces.ISicceTableModel;
 
 /**
  * Modelo generico para el manejo de JTables
  * @author gish@c
  */
-public abstract class SicceTableModel<T> extends AbstractTableModel {
+public abstract class SicceTableModel<T> extends AbstractTableModel implements ISicceTableModel {
 
-    List<T> dataSource;
+   List<T> dataSource;
     protected String[] columns = null;
+    protected boolean readOnly;
 
     /**
      * Devuelve la fuente de datos asignada para el modelo
      * @return
      */
-    protected List<T> getDataSource() {
+    public List<T> getDataSource() {
         if (dataSource == null) {
             dataSource = new ArrayList<T>();
         }
         return dataSource;
     }
+    
+    /**
+     * Setea la fuente de datos del modelo
+     * @param dataSource
+     */
+    public void setDataSource(List dataSource) {
+        this.dataSource = dataSource;
+    }
+    
+    
 
     /**
      * Constructor
@@ -90,16 +102,31 @@ public abstract class SicceTableModel<T> extends AbstractTableModel {
         }
         return null;
     }
-     /**
+
+    /**
      * Ajusta el Tamaño de una columna específica, dentro de un jgrid
      * @param column Columna a Ajustar
      * @param size Tamaño de la columna.
      */
-    public static void ColumnSize(TableColumn column, int size)
-    {
+    public void SetColumnSize(TableColumn column, int size) {
         column.setMinWidth(size);
         column.setPreferredWidth(size);
         column.setResizable(true);
-    };
-    
+    }
+
+    /**
+     * Indica si la tabla es de solo lectura
+     * @return
+     */
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    /**
+     * Setea el estado de lectura de la tabla
+     * @param readOnly
+     */
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
 }

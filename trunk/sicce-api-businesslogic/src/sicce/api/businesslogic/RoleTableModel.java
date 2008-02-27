@@ -15,7 +15,7 @@ public class RoleTableModel extends SicceTableModel<IRole> {
 
     public RoleTableModel(List<IRole> dataSource) {
         super(dataSource);
-        columns = new String[]{"Código", "Descripcion"};
+        columns = new String[]{"No.","Código", "Descripcion"};
     }
 
     @Override
@@ -23,8 +23,10 @@ public class RoleTableModel extends SicceTableModel<IRole> {
         IRole role = getDataSource().get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return role.getID();
+                return rowIndex + 1;
             case 1:
+                return role.getID();
+            case 2:
                 return role.getDescription();
             default:
                 return null;
