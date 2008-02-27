@@ -45,7 +45,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Roles">
+            <TitledBorder title="Rol">
               <Property name="titleX" resourceKey="jPanel2.border.title"/>
             </TitledBorder>
           </Border>

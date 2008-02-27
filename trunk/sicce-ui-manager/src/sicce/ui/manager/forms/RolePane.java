@@ -8,7 +8,7 @@ package sicce.ui.manager.forms;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.businesslogic.OptionBizObject;
-import sicce.api.businesslogic.OptionRoleTableModel;
+import sicce.api.businesslogic.PermissionsTableModel;
 import sicce.api.businesslogic.RoleBizObject;
 import sicce.api.businesslogic.RoleTableModel;
 import sicce.api.businesslogic.SicceTableModel;
@@ -25,7 +25,7 @@ public class RolePane extends JTabExtended {
 
     private IRole role;
     private RoleTableModel roleTableModel;
-    private OptionRoleTableModel optionRoleTableModel;
+    private PermissionsTableModel permissionsTableModel;
     private RoleBizObject roleBizObject;
     private OptionBizObject optionBizObject;
 
@@ -33,8 +33,10 @@ public class RolePane extends JTabExtended {
     public RolePane() {
         initComponents();
         getControlsToClear().add(txtDescription);
+        getControlsToClear().add(gridPermissions);
         getControlsToEnable().add(txtDescription);
         getControlsToEnable().add(gridScrollPane);
+        getControlsToEnable().add(gridPermissions);
         roleBizObject = new RoleBizObject();
         optionBizObject = new OptionBizObject();
         FillGrid();
@@ -270,10 +272,10 @@ public class RolePane extends JTabExtended {
      * Carga el grid con los permisos asignados al rol
      */
     private void FillPermissionsGrid() {
-        /*optionRoleTableModel = null;
-        optionRoleTableModel = new OptionRoleTableModel(optionBizObject.GetAllOptions(), role);
-        gridPermissions.setModel(optionRoleTableModel);
-        gridPermissions.setEnabled(true);*/
+        permissionsTableModel = null;
+        permissionsTableModel = new PermissionsTableModel(optionBizObject.GetAllOptions(), role);
+        gridPermissions.setModel(permissionsTableModel);
+        gridPermissions.setEnabled(true);
     }
 
     

@@ -3,9 +3,14 @@
  */
 package sicce.ui.manager.forms;
 
+import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.l2fprod.common.swing.JTaskPane;
 import com.l2fprod.common.swing.JTaskPaneGroup;
+import com.l2fprod.common.swing.plaf.LookAndFeelAddons;
+import com.l2fprod.common.swing.plaf.aqua.AquaLookAndFeelAddons;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -25,6 +30,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.info.ConstantsProvider.OptionsProvider;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
@@ -289,6 +295,7 @@ public class SicceuimanagerView extends FrameView {
     private PowerMeterPane pmeterPane;
     private LocationTypePane lTypePane;
     private LocationPane locationPane;
+    private ZonePane zonePane;
    
 
     /**
@@ -334,12 +341,16 @@ public class SicceuimanagerView extends FrameView {
         IOptionSicce e = ClassFactory.getOptionInstance();
         e.setDescription("Location");
         
+        IOptionSicce f = ClassFactory.getOptionInstance();
+        f.setDescription("Zone");
+        
         this.options = new ArrayList<IOptionSicce>();
         options.add(a);
         options.add(b);
         options.add(c);
         options.add(d);
         options.add(e);
+        options.add(f);
       
         JTaskPaneGroup mainGroup = new JTaskPaneGroup();
         mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
@@ -382,23 +393,23 @@ public class SicceuimanagerView extends FrameView {
      */
     private void ApplyLookAndFeel() {
         try {
-
+           
             /*UIManager.put("TaskPane.useGradient", Boolean.TRUE);
             UIManager.put("TaskPaneGroup.useGradient", Boolean.TRUE);
             UIManager.put("TaskPane.backgroundGradientStart", Color.LIGHT_GRAY);
             UIManager.put("TaskPane.backgroundGradientEnd", Color.WHITE);
             UIManager.put("TaskPaneGroup.backgroundGradientStart", Color.LIGHT_GRAY);
             UIManager.put("TaskPaneGroup.backgroundGradientEnd", Color.WHITE);
-            /*UIManager.put("TaskPaneGroup.background", Color.LIGHT_GRAY);
-            UIManager.put("TaskPaneGroup.borderColor", Color.DARK_GRAY);
-            UIManager.put("TaskPaneGroup.specialTitleForeground", Color.BLACK);
-            UIManager.put("TaskPaneGroup.specialTitleBackground", Color.gray.brighter());
-            PlasticLookAndFeel.setPlasticTheme(new com.jgoodies.looks.plastic.theme.DarkStar());*/
-            //UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
-            //LookAndFeelAddons.setAddon(AquaLookAndFeelAddons.class);
+            UIManager.put("TaskPaneGroup.background", Color.LIGHT_GRAY);
+            UIManager.put("TaskPaneGroup.borderColor", Color.LIGHT_GRAY);
+            //UIManager.put("TaskPaneGroup.specialTitleForeground", Color.BLACK);
+            //UIManager.put("TaskPaneGroup.specialTitleBackground", Color.LIGHT_GRAY);
+            //PlasticLookAndFeel.setPlasticTheme(new com.jgoodies.looks.plastic.theme.DarkStar());
+            UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
+            LookAndFeelAddons.setAddon(AquaLookAndFeelAddons.class);
             //getTaskPaneManager().revalidate();
             //getTaskPaneManager().repaint();
-
+            */
 
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
@@ -455,12 +466,14 @@ public class SicceuimanagerView extends FrameView {
         pmeterPane = new PowerMeterPane();
         lTypePane = new LocationTypePane();
         locationPane = new LocationPane();
+        zonePane = new ZonePane();
        
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
         toolBarHandler.AddToolBarStateListener(pmeterPane);
         toolBarHandler.AddToolBarStateListener(lTypePane);
         toolBarHandler.AddToolBarStateListener(locationPane);
+        toolBarHandler.AddToolBarStateListener(zonePane);
         
     }
 
@@ -484,6 +497,9 @@ public class SicceuimanagerView extends FrameView {
                 break;
             case Location:
                 result = locationPane;
+                break;
+            case Zone:
+                result = zonePane;
                 break;
             
         }
