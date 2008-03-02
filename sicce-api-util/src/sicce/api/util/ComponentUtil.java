@@ -6,6 +6,8 @@
 package sicce.api.util;
 
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
@@ -142,6 +144,19 @@ public class ComponentUtil {
     public static boolean IsSicceTableModel(TableModel component)
     {
         return component instanceof ISicceTableModel;
+    }
+    
+    /**
+     * Coloca un formulario o dialogo en el centro de la pantalla
+     * @param component
+     * @param toolkit
+     */
+    public static void CenterFormInScreen(Component component, Toolkit toolkit){
+        Dimension dimension = component.getSize();
+        Dimension screenSize = toolkit.getScreenSize();
+        component.setLocation(
+                (screenSize.width - dimension.width) / 2,
+                (screenSize.height - dimension.height) / 2);
     }
     
 }
