@@ -5,6 +5,8 @@
 
 package sicce.api.info.interfaces;
 
+import sicce.api.info.ConstantsProvider.DialogResult;
+
 /**
  *
  * @author gish@c
@@ -15,11 +17,13 @@ public interface ITabbedWindow {
     String getTitle();
     void New();
     boolean Save() throws Exception;
-    void Search();
+    DialogResult Search();
     boolean Delete() throws Exception;
     void Edit();
     void Back();
     boolean Update() throws Exception;
     boolean IsActive();
     void FillGrid();
+    void RegisterSelectionListener();
+    void SetUIElements();
 }

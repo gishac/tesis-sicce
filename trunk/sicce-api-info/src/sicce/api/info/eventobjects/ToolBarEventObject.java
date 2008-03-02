@@ -6,6 +6,7 @@
 package sicce.api.info.eventobjects;
 
 import java.util.EventObject;
+import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
 
 /**
@@ -17,6 +18,7 @@ public class ToolBarEventObject extends EventObject {
     private ToolBarAction toolBarState;
     private boolean cancelEvent;
     private int selectedIndex;
+    private DialogResult searchDialogResult;
 
     public int getSelectedIndex() {
         return selectedIndex;
@@ -42,5 +44,13 @@ public class ToolBarEventObject extends EventObject {
     {
         super(source);
         this.toolBarState = state;
+    }
+    
+    public DialogResult getSearchDialogResult() {
+        return searchDialogResult;
+    }
+
+    public void setSearchDialogResult(DialogResult searchDialogResult) {
+        this.searchDialogResult = searchDialogResult;
     }
 }
