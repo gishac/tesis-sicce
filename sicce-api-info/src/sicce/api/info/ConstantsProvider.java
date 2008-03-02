@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sicce.api.info;
 
 /**
@@ -11,31 +10,27 @@ package sicce.api.info;
  */
 public class ConstantsProvider {
 
-    public enum OptionsProvider
-    {
+    public enum OptionsProvider {
+
         Role(1),
         User(2),
         PowerMeter(3),
         LocationType(4),
         Location(5),
         Zone(6);
-     
-             
         private int taskID;
-        
-        OptionsProvider(int taskID)
-        {
+
+        OptionsProvider(int taskID) {
             this.taskID = taskID;
         }
-        
-        public int getTaskID()
-        {
+
+        public int getTaskID() {
             return taskID;
         }
     }
-    
-    public enum ToolBarAction
-    {
+
+    public enum ToolBarAction {
+
         None,
         RegistryLoaded,
         Edit,
@@ -44,12 +39,18 @@ public class ConstantsProvider {
         Delete,
         Search,
         Back
-                
     }
-    
-    public enum DisplayMemberRenderType
-    {
+
+    public enum DisplayMemberRenderType {
+
         Method,
         Field
     }
+
+    public enum DialogResult {
+        
+        Ok,
+        Cancel
+    }
+
 }
