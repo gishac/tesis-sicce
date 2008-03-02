@@ -12,6 +12,7 @@ import sicce.api.businesslogic.LocationTypeBizObject;
 import sicce.api.businesslogic.SicceComboBoxModel;
 import sicce.api.businesslogic.SicceComboBoxRenderer;
 import sicce.api.dataaccess.LocationDB;
+import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
@@ -299,8 +300,8 @@ public class LocationPane extends JTabExtended {
     }
 
     @Override
-    public void Search() {
-        super.Search();
+    public DialogResult Search() {
+        return super.Search();
     }
 
     @Override

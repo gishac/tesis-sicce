@@ -5,6 +5,8 @@
  */
 package sicce.ui.manager.forms;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.businesslogic.OptionBizObject;
@@ -13,9 +15,11 @@ import sicce.api.businesslogic.RoleBizObject;
 import sicce.api.businesslogic.RoleTableModel;
 import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.dataaccess.RoleDB;
+import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.interfaces.IRole;
 import sicce.api.util.ComponentUtil;
 import sicce.ui.manager.controls.JTabExtended;
+import sicce.ui.manager.controls.SearchDialog;
 
 /**
  *
@@ -230,15 +234,22 @@ public class RolePane extends JTabExtended {
     }
 
     @Override
-    public void Search() {
-        super.Search();
+    public DialogResult Search() {
+        SearchDialog<IRole> searchRolesDialog = new SearchDialog<IRole>(new JFrame(), true, new RoleTableModel(roleBizObject.GetAllRoles()));
+        searchRolesDialog.setVisible(true);
+        DialogResult result = searchRolesDialog.getDialogResult();
+        if (result == DialogResult.Ok) {
+            role = searchRolesDialog.getSearchResult();
+            SetUIElements();
+        }
+        return result;
     }
 
     @Override
     public boolean Update() throws Exception {
         cancelAction = false;
         try {
-            RoleDB.Update(role);            
+            RoleDB.Update(role);
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -251,14 +262,20 @@ public class RolePane extends JTabExtended {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IRole> tableModel = (SicceTableModel<IRole>) gridRoles.getModel();
         role = tableModel.getRow(selectedIndex);
-        txtDescription.setText(role.getDescription());
-        FillPermissionsGrid();
+        SetUIElements();
+
     }
 
     @Override
     public void RegisterSelectionListener() {
         gridRoles.getSelectionModel().addListSelectionListener(selectionListener);
         gridRoles.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    @Override
+    public void SetUIElements() {
+        txtDescription.setText(role.getDescription());
+        FillPermissionsGrid();
     }
 
     @Override
@@ -277,8 +294,6 @@ public class RolePane extends JTabExtended {
         gridPermissions.setModel(permissionsTableModel);
         gridPermissions.setEnabled(true);
     }
-
-    
 }
 
 

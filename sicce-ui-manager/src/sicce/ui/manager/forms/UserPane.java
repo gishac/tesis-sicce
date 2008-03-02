@@ -14,6 +14,7 @@ import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.businesslogic.UserBizObject;
 import sicce.api.businesslogic.UserTableModel;
 import sicce.api.dataaccess.UserDB;
+import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 import sicce.api.info.interfaces.IRole;
 import sicce.api.info.interfaces.IUserSicce;
@@ -255,8 +256,8 @@ public class UserPane extends JTabExtended {
     }
 
     @Override
-    public void Search() {
-        super.Search();
+    public DialogResult Search() {
+       return DialogResult.Cancel;
     }
 
     @Override

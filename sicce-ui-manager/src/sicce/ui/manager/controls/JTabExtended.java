@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionListener;
+import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.ITabbedWindow;
@@ -114,8 +115,8 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
         return true;
     }
 
-    public void Search() {
-
+    public DialogResult Search() {
+        return DialogResult.Cancel;
     }
 
     public boolean Delete() throws Exception {
@@ -141,10 +142,18 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
     public void ItemSelected(int selectedIndex) {
         ComponentUtil.SetState(false, getControlsToEnable());
     }
-
+    
     public void RegisterSelectionListener() {
     }
 
+    public void SetUIElements(){
+        
+    }
+    
+    public void FillGrid() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
     /**
      * Indica si el tab es el que se encuentra activo
      * @return
@@ -176,7 +185,7 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
                 event.setCancelEvent(Delete());
                 break;
             case Search:
-                Search();
+                event.setSearchDialogResult(Search());
                 break;
             case Back:
                 Back();
@@ -187,7 +196,5 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
         }
     }
 
-    public void FillGrid() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    
 }

@@ -13,6 +13,7 @@ import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.ITabbedWindow;
@@ -121,6 +122,8 @@ public class ToolBarHandler implements ListSelectionListener{
                 SetDefaultState();
                 break;
             case Search:
+                if(eventArgument.getSearchDialogResult() == DialogResult.Ok)
+                    SetToolBarItemsState(true, false, true, true, true);
                 break;
             case RegistryLoaded:
                 SetToolBarItemsState(true, false, true, true, true);

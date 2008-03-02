@@ -261,7 +261,7 @@ public class SicceuimanagerView extends FrameView {
     private void toolBarItemSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolBarItemSearchActionPerformed
         try {
 
-            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.RegistryLoaded));
+            toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Search));
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
         }
