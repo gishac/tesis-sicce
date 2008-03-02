@@ -263,7 +263,7 @@ public class RolePane extends JTabExtended {
         SicceTableModel<IRole> tableModel = (SicceTableModel<IRole>) gridRoles.getModel();
         role = tableModel.getRow(selectedIndex);
         SetUIElements();
-
+        permissionsTableModel.setReadOnly(true);
     }
 
     @Override
