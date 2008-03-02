@@ -16,6 +16,7 @@ import sicce.ui.manager.controls.JTabExtended;
 import sicce.api.businesslogic.LocationTypeBizObject;
 import sicce.api.businesslogic.LocationTypeTableModel;
 import sicce.api.businesslogic.SicceTableModel;
+import sicce.api.info.ConstantsProvider.DialogResult;
 /**
  *
  * @author  gish@c
@@ -172,8 +173,8 @@ public class LocationTypePane extends JTabExtended {
     }
 
     @Override
-    public void Search() {
-        super.Search();
+    public DialogResult Search() {
+        return super.Search();
     }
 
     @Override
