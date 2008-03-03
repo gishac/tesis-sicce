@@ -79,7 +79,7 @@ public class PermissionsTableModel extends SicceTableModel<IOptionSicce> {
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         if (columnIndex == 1) {
-            return isReadOnly();
+            return !isReadOnly();
         }
         return false;
     }
