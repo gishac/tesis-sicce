@@ -52,9 +52,6 @@ public class SearchPane<T> extends javax.swing.JPanel {
      * @return
      */
     public T getSearchResult() {
-        if (searchResult == null) {
-            JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar un elemento de la lista");
-        }
         return searchResult;
     }
 
@@ -154,11 +151,15 @@ public class SearchPane<T> extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        dialogResult = DialogResult.Ok;
-        if (tableResults.getSelectedRow() > 0) {
+        if (tableResults.getSelectedRow() >= 0) {
+            dialogResult = DialogResult.Ok;
             searchResult = ((SicceTableModel<T>) tableResults.getModel()).getRow(tableResults.getSelectedRow());
+            parentDialog.dispose();
         }
-        parentDialog.dispose();
+        else{
+            JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar un elemento de la lista");
+        }
+        
     }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed

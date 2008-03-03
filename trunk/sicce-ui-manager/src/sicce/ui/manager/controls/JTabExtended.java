@@ -186,6 +186,9 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
                 break;
             case Search:
                 event.setSearchDialogResult(Search());
+                if(event.getSearchDialogResult() == DialogResult.Ok){
+                    ComponentUtil.SetState(false, getControlsToEnable());
+                }
                 break;
             case Back:
                 Back();
