@@ -5,6 +5,7 @@
  */
 package sicce.ui.manager.forms;
 
+import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.businesslogic.RoleBizObject;
@@ -21,6 +22,7 @@ import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.util.ComponentUtil;
 import sicce.api.util.JTextFieldLimit;
 import sicce.ui.manager.controls.JTabExtended;
+import sicce.ui.manager.controls.SearchDialog;
 
 /**
  *
@@ -257,7 +259,14 @@ public class UserPane extends JTabExtended {
 
     @Override
     public DialogResult Search() {
-       return DialogResult.Cancel;
+       SearchDialog<IUserSicce> searchRolesDialog = new SearchDialog<IUserSicce>(new JFrame(), true, new UserTableModel(userBizObject.GetAllUsers()));
+        searchRolesDialog.setVisible(true);
+        DialogResult result = searchRolesDialog.getDialogResult();
+        if (result == DialogResult.Ok) {
+            user = searchRolesDialog.getSearchResult();
+            SetUIElements();
+        }
+        return result;
     }
 
     @Override
@@ -277,12 +286,19 @@ public class UserPane extends JTabExtended {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IUserSicce> tableModel = (SicceTableModel<IUserSicce>) gridUsers.getModel();
         user = tableModel.getRow(selectedIndex);
+        SetUIElements();
+    }
+
+    @Override
+    public void SetUIElements() {
         txtName.setText(user.getName());
         txtFirstName.setText(user.getUsernameSicce());
         roleComboBoxModel.setSelectedItem(user.getRole(),roleComboBoxRenderer);
         txtPassword.setText(user.getPasswordSicce());
         txtLastName.setText(user.getLastname());
     }
+    
+    
 
     @Override
     public void RegisterSelectionListener() {
