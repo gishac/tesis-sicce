@@ -11,7 +11,7 @@ import java.util.Set;
  *
  * @author gish@c
  */
-public interface IZone {
+public interface IZone extends Cloneable {
 
     void setID(int id);
     int getID();
@@ -19,6 +19,10 @@ public interface IZone {
     String getDescription();
     String getCode();
     void setCode(String code);
+    //Set<ILocation> getLocationsInZone();
+    Set<IOptionSicce> getLocationsZone();
     Set<ILocation> getLocationsInZone();
+    void addLocations(IOptionSicce locations);
+    void removeLocations(IOptionSicce locations);
     void setLocationsInZone(Set<ILocation> locationsInZone);
 }
