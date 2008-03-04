@@ -14,7 +14,7 @@
             <column name="ID_LOCATION_TYPE" not-null="true" />
         </many-to-one>
         <many-to-one name="location" class="sicce.api.info.Location" fetch="select" lazy="false">
-            <column name="PARENT_ID_LOCATION" not-null="true" />
+            <column name="PARENT_ID_LOCATION" />
         </many-to-one>
         <many-to-one name="powerMeter" class="sicce.api.info.PowerMeter" fetch="select" lazy="false">
             <column name="POWER_METER_ID_POWER_METER" not-null="true" />
@@ -25,7 +25,7 @@
         
         <set name="locations" inverse="true" table="location">
             <key>
-                <column name="PARENT_ID_LOCATION" not-null="true" />
+                <column name="PARENT_ID_LOCATION" />
             </key>
             <one-to-many class="sicce.api.info.Location" />
         </set>
