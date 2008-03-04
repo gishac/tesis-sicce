@@ -3,38 +3,51 @@
  *
  * Created on January 26, 2008, 7:43 PM
  */
-
 package sicce.ui.manager.forms;
 
+import javax.swing.JFrame;
+import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 
+import sicce.api.businesslogic.LocationBizObject;
+import sicce.api.businesslogic.LocationTableModel;
 import sicce.api.businesslogic.LocationTypeBizObject;
+import sicce.api.businesslogic.PowerMeterBizObject;
+import sicce.api.businesslogic.PowerMeterTableModel;
 import sicce.api.businesslogic.SicceComboBoxModel;
 import sicce.api.businesslogic.SicceComboBoxRenderer;
+import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.dataaccess.LocationDB;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
+import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.util.ComponentUtil;
 import sicce.ui.manager.controls.JTabExtended;
+import sicce.ui.manager.controls.SearchDialog;
 
 /**
  *
  * @author  gish@c
  */
 public class LocationPane extends JTabExtended {
-    
+
     SicceComboBoxModel<ILocationType> locationTypeComboBoxModel;
     SicceComboBoxRenderer locationTypeComboBoxRenderer;
     LocationTypeBizObject locationTypeBizObject;
+    LocationBizObject locationBizObject;
+    LocationTableModel locationTableModel;
+    PowerMeterBizObject pmeterBizObject;
     private ILocation location;
-    
+    private ILocation plocation;
+    private IPowerMeter pmeter;
+    private ILocationType ltype;
     /** Creates new form LocationPane */
     public LocationPane() {
         initComponents();
         getControlsToClear().add(txtDescription);
-        getControlsToClear().add(txtUbication); 
+        getControlsToClear().add(txtUbication);
         getControlsToClear().add(txtPowerMeter);
         getControlsToClear().add(btnSearchPowerMeter);
         getControlsToClear().add(btnSearchUbication);
@@ -46,9 +59,13 @@ public class LocationPane extends JTabExtended {
         getControlsToEnable().add(btnSearchUbication);
         getControlsToEnable().add(cmbLocationType);
         ComponentUtil.SetState(false, getControlsToEnable());
-       
+
+        pmeterBizObject = new PowerMeterBizObject();
+        locationBizObject = new LocationBizObject();
+        
+        FillGrid();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -106,6 +123,11 @@ public class LocationPane extends JTabExtended {
         btnSearchUbication.setPreferredSize(new java.awt.Dimension(50, 21));
         btnSearchUbication.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         btnSearchUbication.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSearchUbication.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchUbicationActionPerformed(evt);
+            }
+        });
 
         lblLocationType.setText(resourceMap.getString("lblLocationType.text")); // NOI18N
         lblLocationType.setName("lblLocationType"); // NOI18N
@@ -118,6 +140,11 @@ public class LocationPane extends JTabExtended {
         btnSearchPowerMeter.setIcon(resourceMap.getIcon("btnSearchPowerMeter.icon")); // NOI18N
         btnSearchPowerMeter.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         btnSearchPowerMeter.setName("btnSearchPowerMeter"); // NOI18N
+        btnSearchPowerMeter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchPowerMeterActionPerformed(evt);
+            }
+        });
 
         cmbLocationType.setName("cmbLocationType"); // NOI18N
 
@@ -126,9 +153,9 @@ public class LocationPane extends JTabExtended {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblLocationType, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblUbication))
@@ -139,7 +166,6 @@ public class LocationPane extends JTabExtended {
                         .addGap(6, 6, 6)
                         .addComponent(btnSearchUbication, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPowerMeter, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblDescription2))
@@ -229,17 +255,40 @@ public class LocationPane extends JTabExtended {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
-         locationTypeBizObject = new LocationTypeBizObject();
+        locationTypeBizObject = new LocationTypeBizObject();
         locationTypeComboBoxModel = new SicceComboBoxModel<ILocationType>(locationTypeBizObject.GetAllLocationsType());
         locationTypeComboBoxRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method);
         cmbLocationType.setModel(locationTypeComboBoxModel);
         cmbLocationType.setRenderer(locationTypeComboBoxRenderer);
     }//GEN-LAST:event_formComponentShown
-    
-    
+
+    private void btnSearchPowerMeterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPowerMeterActionPerformed
+        SearchDialog<IPowerMeter> searchPowerMeterDialog = new SearchDialog<IPowerMeter>(new JFrame(), true, new PowerMeterTableModel(pmeterBizObject.GetAllPowerMeter()));
+        searchPowerMeterDialog.setVisible(true);
+        DialogResult result = searchPowerMeterDialog.getDialogResult();
+        if (result == DialogResult.Ok) {
+            pmeter = searchPowerMeterDialog.getSearchResult();
+            if (pmeter != null) {
+                txtPowerMeter.setText(pmeter.getDescription());
+            }
+        }
+    }//GEN-LAST:event_btnSearchPowerMeterActionPerformed
+
+    private void btnSearchUbicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchUbicationActionPerformed
+        SearchDialog<ILocation> searchLocationDialog = new SearchDialog<ILocation>(new JFrame(), true, new LocationTableModel(locationBizObject.GetAllLocations()));
+        searchLocationDialog.setVisible(true);
+        DialogResult result = searchLocationDialog.getDialogResult();
+        if (result == DialogResult.Ok) {
+            plocation = searchLocationDialog.getSearchResult();
+            if (plocation != null) {
+                txtUbication.setText(plocation.getDescription());
+            }
+        }
+        
+    }//GEN-LAST:event_btnSearchUbicationActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearchPowerMeter;
     private javax.swing.JButton btnSearchUbication;
@@ -256,8 +305,7 @@ public class LocationPane extends JTabExtended {
     private javax.swing.JTextField txtPowerMeter;
     private javax.swing.JTextField txtUbication;
     // End of variables declaration//GEN-END:variables
-   
-      @Override
+    @Override
     public void Back() {
         super.Back();
     }
@@ -266,9 +314,10 @@ public class LocationPane extends JTabExtended {
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            super.Delete();              
+            super.Delete();
             LocationDB.Delete(location);
-            
+            FillGrid();
+
         } catch (Exception ex) {
             cancelAction = true;
             throw ex;
@@ -285,14 +334,20 @@ public class LocationPane extends JTabExtended {
 
     @Override
     public boolean Save() throws Exception {
-        cancelAction = false;        
+        cancelAction = false;
         try {
-            location.setDescription(txtDescription.getText().trim());
+           // if (cmbLocationType.getSelectedItem()!=null)
+            ltype = (ILocationType) cmbLocationType.getSelectedItem();
+            location.setLocationType(ltype);
+            if (pmeter!=null)
+                location.setPowerMeter(pmeter);
+            location.setDescription(txtDescription.getText());
+            location.setLocation(plocation);
             if (IsObjectLoaded()) {
                 return Update();
             }
             LocationDB.Save(location);
-           // txtCode.setText(String.valueOf(locationType.getID()));
+            FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
         }
@@ -300,19 +355,51 @@ public class LocationPane extends JTabExtended {
     }
 
     @Override
-    public DialogResult Search() {
-        return super.Search();
+   
+ public DialogResult Search() {
+       SearchDialog<ILocation> searchLocationDialog = new SearchDialog<ILocation>(new JFrame(), true, new LocationTableModel(locationBizObject.GetAllLocations()));
+        searchLocationDialog.setVisible(true);
+        DialogResult result = searchLocationDialog.getDialogResult();
+        if (result == DialogResult.Ok) {
+            location = searchLocationDialog.getSearchResult();
+            //SetUIElements();
+        }
+        return result;
     }
-
     @Override
     public boolean Update() throws Exception {
         cancelAction = false;
         try {
             LocationDB.Update(location);
+            FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
         }
         return cancelAction;
+    }
+    
+    
+     @Override
+    public void ItemSelected(int selectedIndex) {
+        super.ItemSelected(selectedIndex);
+        SicceTableModel<ILocation> tableModel = (SicceTableModel<ILocation>) grdLocation.getModel();
+        location = tableModel.getRow(selectedIndex);
+        txtDescription.setText(location.getDescription());
+        txtPowerMeter.setText(location.getPowerMeter().getDescription());
+        if (location.getLocation()!=null)
+            txtUbication.setText(location.getLocation().getDescription());
+      }
+
+    @Override
+    public void RegisterSelectionListener() {
+        grdLocation.getSelectionModel().addListSelectionListener(selectionListener);
+        grdLocation.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    @Override
+    public void FillGrid() {
+        locationTableModel = new LocationTableModel(locationBizObject.GetAllLocations());
+        grdLocation.setModel(locationTableModel);
     }
     
     
