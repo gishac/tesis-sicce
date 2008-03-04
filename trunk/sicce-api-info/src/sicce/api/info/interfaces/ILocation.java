@@ -20,4 +20,6 @@ public interface ILocation {
     ILocationType getLocationType(); 
     void setPowerMeter (IPowerMeter powerMeter);
     IPowerMeter getPowerMeter();
+    void setLocation(ILocation location);
+    ILocation getLocation();
 }
