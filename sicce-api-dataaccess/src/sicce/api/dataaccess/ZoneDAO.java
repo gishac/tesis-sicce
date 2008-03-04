@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import sicce.api.info.Zone;
+import sicce.api.info.interfaces.IZone;
 
 /**
  * Data access object (DAO) for domain model class Zone.
@@ -27,10 +28,10 @@ public class ZoneDAO extends HibernateDaoSupport {
     // do nothing
     }
 
-    public void save(Zone transientInstance) {
+    public void save(IZone zone) {
         log.debug("saving Zone instance");
         try {
-            getHibernateTemplate().save(transientInstance);
+            getHibernateTemplate().save(zone);
             log.debug("save successful");
         } catch (RuntimeException re) {
             log.error("save failed", re);
@@ -38,10 +39,21 @@ public class ZoneDAO extends HibernateDaoSupport {
         }
     }
 
-    public void delete(Zone persistentInstance) {
+        public void update(IZone zone) {
+        log.debug("updating UserSicce instance");
+        try {
+            getHibernateTemplate().update(zone);
+        } catch (RuntimeException re) {
+            log.error("update failed", re);
+            throw re;
+        }
+    }
+
+        
+    public void delete(IZone zone) {
         log.debug("deleting Zone instance");
         try {
-            getHibernateTemplate().delete(persistentInstance);
+            getHibernateTemplate().delete(zone);
             log.debug("delete successful");
         } catch (RuntimeException re) {
             log.error("delete failed", re);
@@ -61,10 +73,10 @@ public class ZoneDAO extends HibernateDaoSupport {
         }
     }
 
-    public List findByExample(Zone instance) {
+    public List findByExample(IZone zone) {
         log.debug("finding Zone instance by example");
         try {
-            List results = getHibernateTemplate().findByExample(instance);
+            List results = getHibernateTemplate().findByExample(zone);
             log.debug("find by example successful, result size: " + results.size());
             return results;
         } catch (RuntimeException re) {
@@ -115,10 +127,10 @@ public class ZoneDAO extends HibernateDaoSupport {
         }
     }
 
-    public void attachDirty(Zone instance) {
+    public void attachDirty(IZone zone) {
         log.debug("attaching dirty Zone instance");
         try {
-            getHibernateTemplate().saveOrUpdate(instance);
+            getHibernateTemplate().saveOrUpdate(zone);
             log.debug("attach successful");
         } catch (RuntimeException re) {
             log.error("attach failed", re);
@@ -126,10 +138,10 @@ public class ZoneDAO extends HibernateDaoSupport {
         }
     }
 
-    public void attachClean(Zone instance) {
+    public void attachClean(IZone zone) {
         log.debug("attaching clean Zone instance");
         try {
-            getHibernateTemplate().lock(instance, LockMode.NONE);
+            getHibernateTemplate().lock(zone, LockMode.NONE);
             log.debug("attach successful");
         } catch (RuntimeException re) {
             log.error("attach failed", re);

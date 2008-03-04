@@ -95,7 +95,10 @@
         </property>
         <property name="unitMeasureDB">
             <ref bean="UnitMeasureDAO" />
-        </property>		
+        </property>	
+         <property name="zoneDB">
+            <ref bean="ZoneDAO" />
+        </property>
     </bean>
     
     
