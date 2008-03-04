@@ -10,12 +10,14 @@ import sicce.api.info.OptionSicce;
 import sicce.api.info.PowerMeter;
 import sicce.api.info.Role;
 import sicce.api.info.UserSicce;
+import sicce.api.info.Zone;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
 import sicce.api.info.interfaces.IOptionSicce;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IRole;
 import sicce.api.info.interfaces.IUserSicce;
+import sicce.api.info.interfaces.IZone;
 
 /**
  *
@@ -45,5 +47,9 @@ public class ClassFactory {
 
     public static ILocation getLocationInstance() {
         return new Location();
+    }
+    
+     public static IZone getZoneInstance() {
+        return new Zone();
     }
 }
