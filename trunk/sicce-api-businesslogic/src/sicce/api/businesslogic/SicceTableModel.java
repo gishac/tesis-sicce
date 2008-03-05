@@ -6,6 +6,7 @@ package sicce.api.businesslogic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import sicce.api.info.interfaces.ISicceTableModel;
@@ -53,6 +54,17 @@ public abstract class SicceTableModel<T> extends AbstractTableModel implements I
      */
     public SicceTableModel(List<T> dataSource) {
         this.dataSource = dataSource;
+    }
+    
+     /**
+     * Constructor
+     * @param dataSource Fuente de datos para el modelo
+     */
+    public SicceTableModel(Set<T> dataSource) {
+        if(dataSource != null){
+            for(T item : dataSource)
+                getDataSource().add(item);
+        }
     }
 
     /**
