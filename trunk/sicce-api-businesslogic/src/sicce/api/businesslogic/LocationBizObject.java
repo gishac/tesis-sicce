@@ -17,4 +17,5 @@ public class LocationBizObject {
     public List<ILocation> GetAllLocations() {
         return LocationDB.GetAllLocations();
     }
+    
 }

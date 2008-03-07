@@ -6,7 +6,7 @@ package sicce.api.businesslogic;
 
 import java.util.List;
 import sicce.api.dataaccess.ZoneDB;
-import sicce.api.info.interfaces.IOptionSicce;
+import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.IZone;
 
 /**
@@ -26,13 +26,14 @@ public class ZoneBizObject {
     public IZone GetZoneByID(int zoneID) {
         return ZoneDB.FindRoleByID(zoneID);
     }
+
+    public boolean LocationsExists(int optionID, IZone zone) {
     
-    public boolean LocationsExists(int optionID, IZone zone){
-        for(IOptionSicce locations : zone.getLocationsZone())
-        {
-            if(locations.getID() == optionID)
-                return true;
-        }
+            for (ILocation locations : zone.getLocationsInZone()) {
+                if (locations.getID() == optionID) {
+                    return true;
+                }
+            }   
         return false;
     }
 }
