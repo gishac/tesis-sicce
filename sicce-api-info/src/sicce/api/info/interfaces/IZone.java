@@ -18,11 +18,9 @@ public interface IZone extends Cloneable {
     void setDescription(String description);
     String getDescription();
     String getCode();
-    void setCode(String code);
-    //Set<ILocation> getLocationsInZone();
-    Set<IOptionSicce> getLocationsZone();
+    void setCode(String code); 
     Set<ILocation> getLocationsInZone();
-    void addLocations(IOptionSicce locations);
-    void removeLocations(IOptionSicce locations);
+    void addLocations(ILocation locations);
+    void removeLocations(ILocation locations);
     void setLocationsInZone(Set<ILocation> locationsInZone);
 }

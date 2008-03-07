@@ -6,7 +6,6 @@ import java.util.Set;
 
 import sicce.api.info.auto.AbstractZone;
 import sicce.api.info.interfaces.ILocation;
-import sicce.api.info.interfaces.IOptionSicce;
 import sicce.api.info.interfaces.IZone;
 
 /**
@@ -48,16 +47,12 @@ public class Zone extends AbstractZone implements java.io.Serializable, IZone {
         this.locations = locationsInZone;
     }
 
-    public Set<IOptionSicce> getLocationsZone() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void addLocations(ILocation locationsInZone) {
+        locations.add(locationsInZone);
     }
 
-    public void addLocations(IOptionSicce locations) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void removeLocations(IOptionSicce locations) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void removeLocations(ILocation locationsInZone) {
+       locations.remove(locationsInZone);
     }
 
 
