@@ -36,6 +36,17 @@ public class ParameterDAO extends HibernateDaoSupport {
             throw re;
         }
     }
+    
+    public void update(Parameter parameter){
+        log.debug("updating Parameter instance");
+        try {
+            getHibernateTemplate().update(parameter);
+            log.debug("update successful");
+        } catch (RuntimeException re) {
+            log.error("updated failed", re);
+            throw re;
+        }
+    }
 
     public void delete(Parameter persistentInstance) {
         log.debug("deleting Parameter instance");
