@@ -40,7 +40,7 @@ public class ZoneDAO extends HibernateDaoSupport {
     }
 
         public void update(IZone zone) {
-        log.debug("updating UserSicce instance");
+        log.debug("updating Zone instance");
         try {
             getHibernateTemplate().update(zone);
         } catch (RuntimeException re) {
