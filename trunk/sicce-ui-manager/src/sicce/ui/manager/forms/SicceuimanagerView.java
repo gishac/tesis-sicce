@@ -52,16 +52,17 @@ public class SicceuimanagerView extends FrameView {
         ApplyLookAndFeel();
         initComponents();
         toolBarHandler = new ToolBarHandler(toolBar);
-
+        
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
-
 
         //statusAnimationLabel.setIcon(idleIcon);
         //progressBar.setVisible(false);
         OrganizeUIElements();
         CreateUIElements();
         SetFrameSize();
+        tabManager.setOptionsText(optionsText);
+        tabManager.setResourceMap(resourceMap);
     }
 
     @Action
@@ -230,7 +231,7 @@ public class SicceuimanagerView extends FrameView {
             if (!saveEventObject.getCancelEvent()) {
                 toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Edit));
             } else {
-                joptionPaneExtended.showMessageDialog(null, "action canceled");
+                //joptionPaneExtended.showMessageDialog(null, "action canceled");
             }
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
@@ -296,6 +297,8 @@ public class SicceuimanagerView extends FrameView {
     private LocationTypePane lTypePane;
     private LocationPane locationPane;
     private ZonePane zonePane;
+    private ParameterPane parameterPane;
+    private String[] optionsText;
    
 
     /**
@@ -344,6 +347,9 @@ public class SicceuimanagerView extends FrameView {
         IOptionSicce f = ClassFactory.getOptionInstance();
         f.setDescription("Zone");
         
+        IOptionSicce g = ClassFactory.getOptionInstance();
+        f.setDescription("Parameter");
+        
         this.options = new ArrayList<IOptionSicce>();
         options.add(a);
         options.add(b);
@@ -351,6 +357,7 @@ public class SicceuimanagerView extends FrameView {
         options.add(d);
         options.add(e);
         options.add(f);
+        options.add(g);
       
         JTaskPaneGroup mainGroup = new JTaskPaneGroup();
         mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
@@ -369,7 +376,7 @@ public class SicceuimanagerView extends FrameView {
      */
     private void CreateUIElements() {
         CreateTasks();
-        String[] optionsText = new String[3];
+        optionsText = new String[3];
         optionsText[0] = getResourceMap().getString("JOptionPaneYes");
         optionsText[1] = getResourceMap().getString("JOptionPaneNo");
         optionsText[2] = getResourceMap().getString("JOptionPaneCancel");
@@ -467,6 +474,7 @@ public class SicceuimanagerView extends FrameView {
         lTypePane = new LocationTypePane();
         locationPane = new LocationPane();
         zonePane = new ZonePane();
+        parameterPane = new ParameterPane();
        
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
@@ -474,6 +482,7 @@ public class SicceuimanagerView extends FrameView {
         toolBarHandler.AddToolBarStateListener(lTypePane);
         toolBarHandler.AddToolBarStateListener(locationPane);
         toolBarHandler.AddToolBarStateListener(zonePane);
+        toolBarHandler.AddToolBarStateListener(parameterPane);
         
     }
 
@@ -500,6 +509,9 @@ public class SicceuimanagerView extends FrameView {
                 break;
             case Zone:
                 result = zonePane;
+                break;
+            case Parameter:
+                result = parameterPane;
                 break;
             
         }

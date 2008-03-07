@@ -28,13 +28,12 @@ import sicce.ui.manager.controls.SearchDialog;
  *
  * @author  gish@c
  */
-public class UserPane extends JTabExtended {
+public class UserPane extends JTabExtended<IUserSicce> {
 
     SicceComboBoxModel<IRole> roleComboBoxModel;
     SicceComboBoxRenderer roleComboBoxRenderer;
     RoleBizObject roleBizObject;
     UserBizObject userBizObject;
-    private IUserSicce user;
     UserTableModel userTableModel;
 
     /** Creates new form LocationPane */
@@ -192,11 +191,14 @@ public class UserPane extends JTabExtended {
         jPanel4.getAccessibleContext().setAccessibleName(resourceMap.getString("jPanel4.AccessibleContext.accessibleName")); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        roleBizObject = new RoleBizObject();
-        roleComboBoxModel = new SicceComboBoxModel<IRole>(roleBizObject.GetAllRoles());
-        roleComboBoxRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method, "getIdRole", DisplayMemberRenderType.Method);
-        cmbRole.setModel(roleComboBoxModel);
-        cmbRole.setRenderer(roleComboBoxRenderer);
+        
+        if(!IsObjectLoaded()){
+            roleBizObject = new RoleBizObject();
+            roleComboBoxModel = new SicceComboBoxModel<IRole>(roleBizObject.GetAllRoles());
+            roleComboBoxRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method, "getIdRole", DisplayMemberRenderType.Method);
+            cmbRole.setModel(roleComboBoxModel);
+            cmbRole.setRenderer(roleComboBoxRenderer);
+        }
     }//GEN-LAST:event_formComponentShown
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cmbRole;
@@ -217,7 +219,7 @@ public class UserPane extends JTabExtended {
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            UserDB.Delete(user);
+            UserDB.Delete(currentObject);
             super.Delete();
             FillGrid();
 
@@ -231,7 +233,7 @@ public class UserPane extends JTabExtended {
     @Override
     public void New() {
         super.New();
-        user = ClassFactory.getUserInstance();
+        currentObject = ClassFactory.getUserInstance();
         txtName.requestFocusInWindow();
     }
 
@@ -239,16 +241,15 @@ public class UserPane extends JTabExtended {
     public boolean Save() throws Exception {
         cancelAction = false;
         try {
-            user.setName(txtName.getText());
-            user.setRole((IRole) cmbRole.getSelectedItem());
-            System.out.println(new String(txtPassword.getPassword()));
-            user.setPasswordSicce(new String(txtPassword.getPassword()));
-            user.setUsernameSicce(txtFirstName.getText());
-            user.setLastname(txtLastName.getText());
+            currentObject.setName(txtName.getText());
+            currentObject.setRole((IRole) cmbRole.getSelectedItem());
+            currentObject.setPasswordSicce(new String(txtPassword.getPassword()));
+            currentObject.setUsernameSicce(txtFirstName.getText());
+            currentObject.setLastname(txtLastName.getText());
             if (IsObjectLoaded()) {
                 return Update();
             }
-            UserDB.Save(user);
+            UserDB.Save(currentObject);
             FillGrid();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -263,7 +264,7 @@ public class UserPane extends JTabExtended {
         searchRolesDialog.setVisible(true);
         DialogResult result = searchRolesDialog.getDialogResult();
         if (result == DialogResult.Ok) {
-            user = searchRolesDialog.getSearchResult();
+            currentObject = searchRolesDialog.getSearchResult();
             SetUIElements();
         }
         return result;
@@ -273,7 +274,7 @@ public class UserPane extends JTabExtended {
     public boolean Update() throws Exception {
         cancelAction = false;
         try {
-            UserDB.Update(user);
+            UserDB.Update(currentObject);
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -285,17 +286,19 @@ public class UserPane extends JTabExtended {
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IUserSicce> tableModel = (SicceTableModel<IUserSicce>) gridUsers.getModel();
-        user = tableModel.getRow(selectedIndex);
+        currentObject = tableModel.getRow(selectedIndex);
         SetUIElements();
     }
 
     @Override
     public void SetUIElements() {
-        txtName.setText(user.getName());
-        txtFirstName.setText(user.getUsernameSicce());
-        roleComboBoxModel.setSelectedItem(user.getRole(),roleComboBoxRenderer);
-        txtPassword.setText(user.getPasswordSicce());
-        txtLastName.setText(user.getLastname());
+        if(currentObject == null)
+            return;
+        txtName.setText(currentObject.getName());
+        txtFirstName.setText(currentObject.getUsernameSicce());
+        roleComboBoxModel.setSelectedItem(currentObject.getRole(),roleComboBoxRenderer);
+        txtPassword.setText(currentObject.getPasswordSicce());
+        txtLastName.setText(currentObject.getLastname());
     }
     
     

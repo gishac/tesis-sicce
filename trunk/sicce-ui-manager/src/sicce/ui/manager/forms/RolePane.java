@@ -6,7 +6,6 @@
 package sicce.ui.manager.forms;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.businesslogic.OptionBizObject;
@@ -25,9 +24,8 @@ import sicce.ui.manager.controls.SearchDialog;
  *
  * @author  gish@c
  */
-public class RolePane extends JTabExtended {
+public class RolePane extends JTabExtended<IRole> {
 
-    private IRole role;
     private RoleTableModel roleTableModel;
     private PermissionsTableModel permissionsTableModel;
     private RoleBizObject roleBizObject;
@@ -198,7 +196,7 @@ public class RolePane extends JTabExtended {
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            RoleDB.Delete(role);
+            RoleDB.Delete(currentObject);
             super.Delete();
             FillGrid();
 
@@ -212,7 +210,7 @@ public class RolePane extends JTabExtended {
     @Override
     public void New() {
         super.New();
-        role = ClassFactory.getRoleInstance();
+        currentObject = ClassFactory.getRoleInstance();
         txtDescription.requestFocusInWindow();
         FillPermissionsGrid();
     }
@@ -221,11 +219,11 @@ public class RolePane extends JTabExtended {
     public boolean Save() throws Exception {
         cancelAction = false;
         try {
-            role.setDescription(txtDescription.getText().trim());
+            currentObject.setDescription(txtDescription.getText().trim());
             if (IsObjectLoaded()) {
                 return Update();
             }
-            RoleDB.Save(role);
+            RoleDB.Save(currentObject);
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -239,7 +237,7 @@ public class RolePane extends JTabExtended {
         searchRolesDialog.setVisible(true);
         DialogResult result = searchRolesDialog.getDialogResult();
         if (result == DialogResult.Ok) {
-            role = searchRolesDialog.getSearchResult();
+            currentObject = searchRolesDialog.getSearchResult();
             SetUIElements();
         }
         return result;
@@ -249,7 +247,7 @@ public class RolePane extends JTabExtended {
     public boolean Update() throws Exception {
         cancelAction = false;
         try {
-            RoleDB.Update(role);
+            RoleDB.Update(currentObject);
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -261,7 +259,7 @@ public class RolePane extends JTabExtended {
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IRole> tableModel = (SicceTableModel<IRole>) gridRoles.getModel();
-        role = tableModel.getRow(selectedIndex);
+        currentObject = tableModel.getRow(selectedIndex);
         SetUIElements();
     }
 
@@ -273,7 +271,9 @@ public class RolePane extends JTabExtended {
 
     @Override
     public void SetUIElements() {
-        txtDescription.setText(role.getDescription());
+        if(currentObject == null)
+            return;
+        txtDescription.setText(currentObject.getDescription());
         FillPermissionsGrid();
         permissionsTableModel.setReadOnly(true);
     }
@@ -290,7 +290,7 @@ public class RolePane extends JTabExtended {
      */
     private void FillPermissionsGrid() {
         permissionsTableModel = null;
-        permissionsTableModel = new PermissionsTableModel(optionBizObject.GetAllOptions(), role);
+        permissionsTableModel = new PermissionsTableModel(optionBizObject.GetAllOptions(), currentObject);
         gridPermissions.setModel(permissionsTableModel);
         gridPermissions.setEnabled(true);
     }
