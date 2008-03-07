@@ -6,6 +6,7 @@
 package sicce.api.info.interfaces;
 
 import sicce.api.info.ConstantsProvider.DialogResult;
+import sicce.api.info.ConstantsProvider.ToolBarAction;
 
 /**
  *
@@ -26,4 +27,10 @@ public interface ITabbedWindow {
     void FillGrid();
     void RegisterSelectionListener();
     void SetUIElements();
+    void RegisterToolBarStateInfo();
+    void SetDefaultState();
+    void RefreshToolBarState();
+    ToolBarAction getTabState();
+    void Clear();
+    void Close();
 }

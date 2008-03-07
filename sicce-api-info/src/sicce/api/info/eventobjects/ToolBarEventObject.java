@@ -19,6 +19,15 @@ public class ToolBarEventObject extends EventObject {
     private boolean cancelEvent;
     private int selectedIndex;
     private DialogResult searchDialogResult;
+    private boolean handleToolBarStates;
+
+    public boolean getHandleToolBarStates() {
+        return handleToolBarStates;
+    }
+
+    public void setHandleToolBarStates(boolean handleToolBarStates) {
+        this.handleToolBarStates = handleToolBarStates;
+    }
 
     public int getSelectedIndex() {
         return selectedIndex;
@@ -43,6 +52,7 @@ public class ToolBarEventObject extends EventObject {
     public ToolBarEventObject(Object source, ToolBarAction state)    
     {
         super(source);
+        this.handleToolBarStates = true;
         this.toolBarState = state;
     }
     

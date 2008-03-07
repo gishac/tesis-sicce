@@ -17,7 +17,8 @@ public class ConstantsProvider {
         PowerMeter(3),
         LocationType(4),
         Location(5),
-        Zone(6);
+        Zone(6),
+        Parameter(7);
         private int taskID;
 
         OptionsProvider(int taskID) {
