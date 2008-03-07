@@ -13,16 +13,18 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionListener;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
+import sicce.api.info.ToolBarStateInfo;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.ITabbedWindow;
 import sicce.api.info.interfaces.IToolBarStateListener;
 import sicce.api.util.ComponentUtil;
+import sicce.ui.manager.handlers.ToolBarHandler;
 
 /**
  *
  * @author gish@c
  */
-public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarStateListener {
+public class JTabExtended<T> extends JPanel implements ITabbedWindow, IToolBarStateListener {
 
     private String title;
     private FocusListener focusEventHandler;
@@ -32,6 +34,30 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
     private List<Component> controlsToClear;
     private List<Component> controlsToEnable;
     protected boolean cancelAction;
+    private boolean handleToolBarStates;
+    private ToolBarStateInfo toolBarStateInfo;
+    private ToolBarAction tabState;
+    protected T currentObject;
+
+    public T getCurrentObject() {
+        return currentObject;
+    }
+
+    public void setCurrentObject(T currentObject) {
+        this.currentObject = currentObject;
+    }
+
+    
+    public ToolBarStateInfo getToolBarStateInfo() {
+        if(toolBarStateInfo == null)
+            toolBarStateInfo = new ToolBarStateInfo();
+        return toolBarStateInfo;
+    }
+
+    public void setToolBarStateInfo(ToolBarStateInfo toolBarStateInfo) {
+        this.toolBarStateInfo = toolBarStateInfo;
+    }
+   
 
     /**
      * Devuelve el panel que contiene al tab
@@ -47,7 +73,23 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
 
     public void setListSelectionListener(ListSelectionListener selectionListener) {
         this.selectionListener = selectionListener;
+        
     }
+    
+    public void RegisterToolBarStateInfo(){
+        if(this.selectionListener != null){
+            ((ToolBarHandler) selectionListener).setToolBarStateInfo(this.getToolBarStateInfo());
+        }
+    }
+    
+     public boolean getHandleToolBarStates() {
+        return handleToolBarStates;
+    }
+
+    public void setHandleToolBarStates(boolean handleToolBarStates) {
+        this.handleToolBarStates = handleToolBarStates;
+    }
+    
 
     public boolean IsObjectLoaded() {
         return objectLoaded;
@@ -80,6 +122,8 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
      */
     public JTabExtended() {
         super();
+        this.handleToolBarStates = true;
+        this.tabState = ToolBarAction.None;
         this.addFocusListener(focusEventHandler = new FocusListener() {
 
             public void focusGained(FocusEvent e) {
@@ -87,7 +131,6 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
             }
 
             public void focusLost(FocusEvent e) {
-
             }
         });
     }
@@ -122,6 +165,8 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
     public boolean Delete() throws Exception {
         ComponentUtil.Clear(getControlsToClear());
         ComponentUtil.SetState(false, getControlsToEnable());
+        objectLoaded = false;
+        currentObject = null;
         return false;
     }
 
@@ -131,8 +176,7 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
     }
 
     public void Back() {
-        ComponentUtil.Clear(getControlsToClear());
-        ComponentUtil.SetState(false, getControlsToEnable());
+        Clear();
     }
 
     public boolean Update() throws Exception {
@@ -140,6 +184,7 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
     }
 
     public void ItemSelected(int selectedIndex) {
+        objectLoaded = true;
         ComponentUtil.SetState(false, getControlsToEnable());
     }
     
@@ -171,33 +216,81 @@ public class JTabExtended extends JPanel implements ITabbedWindow, IToolBarState
      */
     public void ToolBarStateChanged(ToolBarEventObject event) throws Exception {
         ToolBarAction toolbarAction = event.getToolBarState();
+        event.setHandleToolBarStates(getHandleToolBarStates());
         switch (toolbarAction) {
             case New:
                 New();
+                tabState = ToolBarAction.New;
                 break;
             case Edit:
                 Edit();
+                tabState = ToolBarAction.Edit;
                 break;
             case Save:
                 event.setCancelEvent(Save());
+                tabState = ToolBarAction.None;
                 break;
             case Delete:
                 event.setCancelEvent(Delete());
+                tabState = ToolBarAction.None;
                 break;
             case Search:
                 event.setSearchDialogResult(Search());
                 if(event.getSearchDialogResult() == DialogResult.Ok){
                     ComponentUtil.SetState(false, getControlsToEnable());
+                    tabState = ToolBarAction.RegistryLoaded;
                 }
                 break;
             case Back:
                 Back();
+                tabState = ToolBarAction.None;
                 break;
             case RegistryLoaded:
-                ItemSelected(event.getSelectedIndex());
+                if(tabState != ToolBarAction.New)
+                    ItemSelected(event.getSelectedIndex());
+                tabState = ToolBarAction.RegistryLoaded;
                 break;
         }
     }
 
+    public ToolBarAction getTabState(){
+        return this.tabState;
+    }
+    
+    /**
+     * 
+     */
+    public void SetDefaultState(){
+        tabState = ToolBarAction.None;
+        ComponentUtil.SetState(false, getControlsToEnable());
+        ((ToolBarHandler) selectionListener).SetDefaultState();
+    }
+    
+    public void RefreshToolBarState(){
+        //Reemplaza los estado de edicion por estados neutrales
+        //ya que los estados de edicion no se mantienen
+        if(tabState == ToolBarAction.Edit)
+            tabState = ToolBarAction.RegistryLoaded;
+        if(tabState == ToolBarAction.New)
+            tabState = ToolBarAction.None;
+        SetUIElements();
+        ComponentUtil.SetState(false, getControlsToEnable());
+        ((ToolBarHandler) selectionListener).RefreshState(tabState);
+    }
+    
+    public void Clear(){
+        tabState = ToolBarAction.None;
+        this.currentObject = null;
+        objectLoaded = false;
+        ComponentUtil.Clear(getControlsToClear());
+        ComponentUtil.SetState(false, getControlsToEnable());
+    }
+    
+    public void Close(){
+        Clear();
+        RefreshToolBarState();
+    }
+    
+    
     
 }

@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import sicce.ui.manager.controls.JTabbedPaneExtended;
@@ -41,7 +44,17 @@ public class CloseTabListener implements ActionListener, MouseListener {
          {
             Rectangle rect = tabManager.getUI().getTabBounds(tabManager, i);
             if(rect.contains(clickPoint)){
-                tabManager.RemoveTab(i);
+                try {
+                    boolean cancelClose = tabManager.HandleTabChanging(-1, true);
+                    if(cancelClose)
+                        return;
+                    if (tabManager.getCurrentTab() != null) {                        
+                        tabManager.getCurrentTab().Close();
+                    }
+                    tabManager.RemoveTab(i);
+                } catch (Exception ex) {
+                    Logger.getLogger(CloseTabListener.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }
