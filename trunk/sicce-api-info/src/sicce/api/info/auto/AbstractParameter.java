@@ -10,7 +10,7 @@ public abstract class AbstractParameter implements java.io.Serializable {
 
 	protected Integer idParameter;
 	protected String description;
-	protected Long value;
+	protected String value;
 
 	// Constructors
 
@@ -24,7 +24,7 @@ public abstract class AbstractParameter implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public AbstractParameter(Integer idParameter, String description, Long value) {
+	public AbstractParameter(Integer idParameter, String description, String value) {
 		this.idParameter = idParameter;
 		this.description = description;
 		this.value = value;
@@ -48,11 +48,11 @@ public abstract class AbstractParameter implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public Long getValue() {
+	public String getValue() {
 		return this.value;
 	}
 
-	public void setValue(Long value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

@@ -13,8 +13,8 @@
         <property name="description" type="java.lang.String">
             <column name="DESCRIPTION" length="45" />
         </property>
-        <property name="value" type="java.lang.Long">
-            <column name="VALUE" precision="10" scale="0" />
+        <property name="value" type="java.lang.String">
+            <column name="VALUE" length="200" />
         </property>
     </class>
 </hibernate-mapping>
