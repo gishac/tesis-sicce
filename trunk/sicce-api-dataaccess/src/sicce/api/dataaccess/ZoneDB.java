@@ -41,7 +41,7 @@ public class ZoneDB {
         return DataAccessManager.getInstance().getZoneDB().findAll();
     }
 
-    public static IZone FindRoleByID(int id) {
+    public static IZone FindZoneByID(Integer id) {
         return DataAccessManager.getInstance().getZoneDB().findById(id);
     }
 }

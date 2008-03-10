@@ -40,4 +40,8 @@ public class LocationDB {
     public static List GetAllLocations() {
         return DataAccessManager.getInstance().getLocationDB().findAll();
     }
+    
+    public static ILocation FindLocationByID(Integer id) {
+        return DataAccessManager.getInstance().getLocationDB().findById(id);
+    }
 }
