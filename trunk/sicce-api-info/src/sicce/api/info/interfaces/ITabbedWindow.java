@@ -34,4 +34,5 @@ public interface ITabbedWindow {
     void Clear();
     void Close();
     void AfterSave();
+    void CancelSave();
 }

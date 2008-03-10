@@ -30,7 +30,7 @@ public class Role extends AbstractRole implements java.io.Serializable, IRole {
         super(idRole, description, userSicces, permissions);
     }
 
-    public int getID() {
+    public Integer getID() {
         return super.getIdRole();
     }
 
