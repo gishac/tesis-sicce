@@ -4,8 +4,6 @@
  */
 package sicce.ui.manager.controls;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultSingleSelectionModel;
@@ -89,33 +87,68 @@ public class JTabbedPaneExtended extends JTabbedPane {
      * @throws java.lang.Exception
      */
     public boolean HandleTabChanging(int newTabIndex, boolean tabClosing) throws Exception {
-
-        if (getCurrentTab() != null && (getCurrentTab().getTabState() == ToolBarAction.Edit || getCurrentTab().getTabState() == ToolBarAction.New)) {
-            JOptionPaneExtended confirmDialog = new JOptionPaneExtended(optionsText);
-            int result = confirmDialog.ShowConfirmDialog(getResourceMap().getString("SaveConfirmDialog"), getResourceMap().getString("ApplicationName"));
-            switch (result) {
-                case JOptionPaneExtended.YES_OPTION:
-                    boolean cancelAction = getCurrentTab().Save();
-                    if (cancelAction) {
-                        CancelTabChanging();
-                        return true;
-                    }
-                    getCurrentTab().SetDefaultState();
-                    break;
-                case JOptionPaneExtended.NO_OPTION:
-                    getCurrentTab().RefreshToolBarState();
-                    break;
-                case JOptionPaneExtended.CANCEL_OPTION:
-                    CancelTabChanging();
-                    return true;
-            }
-        }
+        boolean result = HandleTabChanging();
+        if(result)
+            return result;
         if (!tabClosing)
             setCurrentTab(newTabIndex);
         if(getCurrentTab() != null)
             getCurrentTab().RefreshToolBarState();
-        return false;
+        return result;
     }
+    
+    /**
+     * Administra el cambio de tabs
+     * @param newSelectedTab
+     * @return
+     * @throws java.lang.Exception
+     */
+    public boolean HandleTabChanging(ITabbedWindow newSelectedTab) throws Exception {
+        boolean result = HandleTabChanging();
+        if(result)
+            return result;
+        internalEvent = true;
+        setCurrentTab(newSelectedTab);
+        internalEvent = false;
+        newSelectedTab.RefreshToolBarState();
+        return result;
+    }
+    
+    /**
+     * Administra el cambio de tabs
+     * @return
+     * @throws java.lang.Exception
+     */
+    private boolean HandleTabChanging() throws Exception{
+        boolean result = false;
+        if (getCurrentTab() != null && (getCurrentTab().getTabState() == ToolBarAction.Edit || getCurrentTab().getTabState() == ToolBarAction.New)) {
+            JOptionPaneExtended confirmDialog = new JOptionPaneExtended(optionsText);
+            int dialogResult = confirmDialog.ShowConfirmDialog(getResourceMap().getString("SaveConfirmDialog"), getResourceMap().getString("ApplicationName"));
+            switch (dialogResult) {
+                case JOptionPaneExtended.YES_OPTION:
+                    boolean cancelAction = getCurrentTab().Save();
+                    if (cancelAction) {
+                        CancelTabChanging();
+                        result = true;
+                        break;
+                    }
+                    result = false;
+                    break;
+                case JOptionPaneExtended.NO_OPTION:
+                    getCurrentTab().RefreshToolBarState();
+                    result = false;
+                    break;
+                case JOptionPaneExtended.CANCEL_OPTION:
+                    CancelTabChanging();
+                    result = true;
+                    break;
+            }
+        }
+        return result;
+    }
+    
+    
+    
     /**
      * Contiene la lista de tabs que aloja el control
      */
@@ -144,7 +177,6 @@ public class JTabbedPaneExtended extends JTabbedPane {
      * @param index
      */
     public void RemoveTab(int index) {
-        //JTabExtended tab = (JTabExtended)this.getTabComponentAt(index);        
         getTabs().remove(index);
         this.remove(index);
     }
@@ -188,8 +220,17 @@ public class JTabbedPaneExtended extends JTabbedPane {
      * @return
      */
     public int getCurrentTabIndex() {
+        return getTabIndex(this.currentTab);
+    }
+    
+    /**
+     * Devuelve el indice de un tab en el panel
+     * @param tab
+     * @return
+     */
+    public int getTabIndex(ITabbedWindow tab){
         for (int i = 0; i <= this.getComponentCount() - 1; i++) {
-            if (this.getComponent(i).equals(this.currentTab)) {
+            if (this.getComponent(i).equals(tab)) {
                 return i;
             }
         }
