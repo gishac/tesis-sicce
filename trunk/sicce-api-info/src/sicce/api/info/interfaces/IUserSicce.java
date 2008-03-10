@@ -21,5 +21,6 @@ public interface IUserSicce {
     String getUsernameSicce();
     void setLastname(String lastnameSicce);
     String getLastname();
+    Integer getID();
     
 }
