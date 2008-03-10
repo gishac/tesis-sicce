@@ -31,7 +31,7 @@ import sicce.ui.manager.controls.SearchDialog;
  *
  * @author  gish@c
  */
-public class LocationPane extends JTabExtended {
+public class LocationPane extends JTabExtended<ILocation> {
 
     SicceComboBoxModel<ILocationType> locationTypeComboBoxModel;
     SicceComboBoxRenderer locationTypeComboBoxRenderer;
@@ -315,7 +315,7 @@ public class LocationPane extends JTabExtended {
         cancelAction = false;
         try {
             super.Delete();
-            LocationDB.Delete(location);
+            LocationDB.Delete(currentObject);
             FillGrid();
 
         } catch (Exception ex) {
@@ -328,7 +328,7 @@ public class LocationPane extends JTabExtended {
     @Override
     public void New() {
         super.New();
-        location = ClassFactory.getLocationInstance();
+        currentObject = ClassFactory.getLocationInstance();
         txtDescription.requestFocusInWindow();
     }
 
@@ -338,15 +338,15 @@ public class LocationPane extends JTabExtended {
         try {
            // if (cmbLocationType.getSelectedItem()!=null)
             ltype = (ILocationType) cmbLocationType.getSelectedItem();
-            location.setLocationType(ltype);
+            currentObject.setLocationType(ltype);
             if (pmeter!=null)
-                location.setPowerMeter(pmeter);
-            location.setDescription(txtDescription.getText());
-            location.setLocation(plocation);
+                currentObject.setPowerMeter(pmeter);
+            currentObject.setDescription(txtDescription.getText());
+            currentObject.setLocation(plocation);
             if (IsObjectLoaded()) {
                 return Update();
             }
-            LocationDB.Save(location);
+            LocationDB.Save(currentObject);
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -361,7 +361,7 @@ public class LocationPane extends JTabExtended {
         searchLocationDialog.setVisible(true);
         DialogResult result = searchLocationDialog.getDialogResult();
         if (result == DialogResult.Ok) {
-            location = searchLocationDialog.getSearchResult();
+            currentObject = searchLocationDialog.getSearchResult();
             //SetUIElements();
         }
         return result;
@@ -370,7 +370,7 @@ public class LocationPane extends JTabExtended {
     public boolean Update() throws Exception {
         cancelAction = false;
         try {
-            LocationDB.Update(location);
+            LocationDB.Update(currentObject);
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -383,11 +383,11 @@ public class LocationPane extends JTabExtended {
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<ILocation> tableModel = (SicceTableModel<ILocation>) grdLocation.getModel();
-        location = tableModel.getRow(selectedIndex);
-        txtDescription.setText(location.getDescription());
-        txtPowerMeter.setText(location.getPowerMeter().getDescription());
-        if (location.getLocation()!=null)
-            txtUbication.setText(location.getLocation().getDescription());
+        currentObject = tableModel.getRow(selectedIndex);
+        txtDescription.setText(currentObject.getDescription());
+        txtPowerMeter.setText(currentObject.getPowerMeter().getDescription());
+        if (currentObject.getLocation()!=null)
+            txtUbication.setText(currentObject.getLocation().getDescription());
       }
 
     @Override
@@ -402,9 +402,18 @@ public class LocationPane extends JTabExtended {
         grdLocation.setModel(locationTableModel);
     }
     
+     @Override
+    public void CancelSave() {
+        if (currentObject != null) {
+            if (currentObject.getID() != null) {
+                ILocation originalInstance = LocationDB.FindLocationByID(currentObject.getID());
+                this.currentObject = originalInstance;
+            } else {
+                this.currentObject = ClassFactory.getLocationInstance();
+            }
+        }
+    }
     
-    
-    
-    
+ 
     
 }
