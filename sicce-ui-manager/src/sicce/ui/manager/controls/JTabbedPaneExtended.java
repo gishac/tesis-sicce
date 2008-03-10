@@ -135,6 +135,7 @@ public class JTabbedPaneExtended extends JTabbedPane {
                     result = false;
                     break;
                 case JOptionPaneExtended.NO_OPTION:
+                    getCurrentTab().CancelSave();
                     getCurrentTab().RefreshToolBarState();
                     result = false;
                     break;

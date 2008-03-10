@@ -298,6 +298,9 @@ public class JTabExtended<T> extends JPanel implements ITabbedWindow, IToolBarSt
         RefreshToolBarState();
     }
     
+    public void CancelSave(){
+        
+    }
     
     
 }

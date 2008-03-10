@@ -271,11 +271,24 @@ public class RolePane extends JTabExtended<IRole> {
 
     @Override
     public void SetUIElements() {
-        if(currentObject == null)
+        if (currentObject == null) {
             return;
+        }
         txtDescription.setText(currentObject.getDescription());
         FillPermissionsGrid();
         permissionsTableModel.setReadOnly(true);
+    }
+
+    @Override
+    public void CancelSave() {
+        if (currentObject != null) {
+            if (currentObject.getID() != null) {
+                IRole originalInstance = RoleDB.FindRoleByID(currentObject.getID());
+                this.currentObject = originalInstance;
+            } else {
+                this.currentObject = ClassFactory.getRoleInstance();
+            }
+        }
     }
 
     @Override
