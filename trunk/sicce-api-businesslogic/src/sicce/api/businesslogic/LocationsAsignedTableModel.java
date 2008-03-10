@@ -45,57 +45,15 @@ public class LocationsAsignedTableModel extends SicceTableModel<ILocation> {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-                return String.class;
-            case 1:
-                return String.class;
-            case 2:
-                return String.class;
-            default:
-                return String.class;
-        }
+        return String.class;
     }
 
-    @Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        synchronized (this) {
-            if(getDataSource().size() <= rowIndex)
-                return;
-           
-//            IZone pzone = (IZone)value;
-//            
-//            ILocation location = getDataSource().get(rowIndex);
-//            if (pzone != null) {                
-//                AddLocationToZone(location, pzone);
-//            }
-//                     
-            
-        }
-    }
-
- 
     
-    
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (columnIndex == 1) {
-            return !isReadOnly();
-        }
-        return false;
-    }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         ILocation location = getDataSource().get(rowIndex);
-        
-//        for (ILocation activeLocation : zone.getLocationsInZone()) {
-//            if (location.getID() == activeLocation.getID()) {
-//                state = true;
-//                break;
-//            }
-//        }
+    
         switch (columnIndex) {
             case 0:
                 return rowIndex + 1;
