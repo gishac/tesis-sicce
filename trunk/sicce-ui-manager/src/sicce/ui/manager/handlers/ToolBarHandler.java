@@ -115,21 +115,22 @@ public class ToolBarHandler implements ListSelectionListener {
                 SetToolBarItemsState(true, true, false, false, false);
                 break;
             case Save:
-                SetDefaultState();
+                if(!eventArgument.getCancelEvent())
+                    SetToolBarItemsState(true, false, true, true, true,true);
                 break;
             case Edit:
-                SetToolBarItemsState(true, true, false, true, true);
+                SetToolBarItemsState(true, true, false, true, true,true);
                 break;
             case Delete:
                 SetDefaultState();
                 break;
             case Search:
                 if (eventArgument.getSearchDialogResult() == DialogResult.Ok) {
-                    SetToolBarItemsState(true, false, true, true, true);
+                    SetToolBarItemsState(true, false, true, true, true,true);
                 }
                 break;
             case RegistryLoaded:
-                SetToolBarItemsState(true, false, true, true, true);
+                SetToolBarItemsState(true, false, true, true, true,true);
                 break;
             case Back:
                 SetDefaultState();

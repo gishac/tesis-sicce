@@ -227,12 +227,7 @@ public class SicceuimanagerView extends FrameView {
     private void toolBarItemSaveActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             ToolBarEventObject saveEventObject = new ToolBarEventObject(toolBar, ToolBarAction.Save);
-            toolBarHandler.ToolBarStateChanged(saveEventObject);
-            if (!saveEventObject.getCancelEvent()) {
-                toolBarHandler.ToolBarStateChanged(new ToolBarEventObject(toolBar, ToolBarAction.Edit));
-            } else {
-                //joptionPaneExtended.showMessageDialog(null, "action canceled");
-            }
+            toolBarHandler.ToolBarStateChanged(saveEventObject);           
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -446,15 +441,18 @@ public class SicceuimanagerView extends FrameView {
 
             public void actionPerformed(ActionEvent e) {
                 OptionsProvider option = Enum.valueOf(OptionsProvider.class, e.getActionCommand());
-                JTabExtended selectedOption = GetForm(option);
-               
+                JTabExtended selectedOption = GetForm(option);               
                 if (!getTabManager().getTabs().contains(selectedOption)) {
                     getTabManager().AddTab(selectedOption);
-                    toolBarHandler.SetDefaultState();
                 }
                 if (!getTabManager().getCurrentTab().equals(selectedOption)) {
-                    getTabManager().setCurrentTab(selectedOption);
-                    toolBarHandler.SetDefaultState();
+                    try {
+                        //getTabManager().setCurrentTab(selectedOption);
+                        //toolBarHandler.SetDefaultState();
+                        getTabManager().HandleTabChanging(selectedOption);
+                    } catch (Exception ex) {
+                        Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         };

@@ -157,6 +157,11 @@ public class JTabExtended<T> extends JPanel implements ITabbedWindow, IToolBarSt
     public boolean Save() throws Exception {
         return true;
     }
+    
+    public void AfterSave(){
+        tabState = ToolBarAction.RegistryLoaded;
+        ComponentUtil.SetState(false, this.getControlsToEnable());
+    }
 
     public DialogResult Search() {
         return DialogResult.Cancel;
@@ -228,7 +233,9 @@ public class JTabExtended<T> extends JPanel implements ITabbedWindow, IToolBarSt
                 break;
             case Save:
                 event.setCancelEvent(Save());
-                tabState = ToolBarAction.None;
+                if(!event.getCancelEvent()){
+                    AfterSave();                    
+                }                
                 break;
             case Delete:
                 event.setCancelEvent(Delete());
