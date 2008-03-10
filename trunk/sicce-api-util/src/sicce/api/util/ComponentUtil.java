@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JButton;
 import javax.swing.table.TableModel;
 import sicce.api.info.interfaces.ISicceTableModel;
 
@@ -78,7 +79,7 @@ public class ComponentUtil {
     {
         for(Component component : components)
         {
-            if(IsTextField(component) || IsComboBox(component)){
+            if(IsTextField(component) || IsComboBox(component) || IsButton(component)){
                 component.setEnabled(enabled);
             }
             else if(IsTable(component))
@@ -135,6 +136,17 @@ public class ComponentUtil {
     {
         return component instanceof JTable;
     }
+    
+    /**
+     * Indica si el componente es una instancia de JButton
+     * @param component
+     * @return
+     */
+    public static boolean IsButton(Component component)
+    {
+        return component instanceof JButton;
+    }
+    
     
     /**
      * Indica si el componente es una instancia de ISicceTableModel
