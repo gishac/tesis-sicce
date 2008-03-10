@@ -33,4 +33,5 @@ public interface ITabbedWindow {
     ToolBarAction getTabState();
     void Clear();
     void Close();
+    void AfterSave();
 }
