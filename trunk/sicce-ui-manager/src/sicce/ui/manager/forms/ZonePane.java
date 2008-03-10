@@ -22,12 +22,13 @@ import sicce.api.info.interfaces.IZone;
 import sicce.api.util.ComponentUtil;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.SearchDialog;
+import sicce.api.info.ToolBarStateInfo;
 
 /**
  *
  * @author  gish@c
  */
-public class ZonePane extends JTabExtended {
+public class ZonePane extends JTabExtended<IZone>  {
 
     ZoneBizObject zoneBizObject;
     LocationBizObject locationBizObject;
@@ -40,15 +41,20 @@ public class ZonePane extends JTabExtended {
     /** Creates new form LocationTypePane */
     public ZonePane() {
         initComponents();
+        this.setHandleToolBarStates(false);
+        this.setToolBarStateInfo(new ToolBarStateInfo(true, true, true, true, true, true));
         getControlsToClear().add(txtDescription);
         getControlsToEnable().add(txtDescription);
+        getControlsToEnable().add(grdLocationAsigned);
+        getControlsToEnable().add(btnAddUbication);
+        getControlsToEnable().add(btnDeleteUbication);
         ComponentUtil.SetState(false, getControlsToEnable());
         zoneBizObject = new ZoneBizObject();
         locationBizObject = new LocationBizObject();
-        lasignedTableModel = null;
-           
-            
+        lasignedTableModel = null; 
+        
         FillGrid();
+        FillLocationsAsignedGrid();
     }
 
     /** This method is called from within the constructor to
@@ -251,8 +257,8 @@ public class ZonePane extends JTabExtended {
 
             location = searchLocationDialog.getSearchResult();
             if (location != null) {
-              lasignedTableModel.AddLocationToZone(location, zone);
-              lasignedTableModel = new LocationsAsignedTableModel(zone.getLocationsInZone(), zone);
+              lasignedTableModel.AddLocationToZone(location, currentObject);
+              lasignedTableModel = new LocationsAsignedTableModel(currentObject.getLocationsInZone(), currentObject);
               grdLocationAsigned.setModel(lasignedTableModel);
             }
         //  SetUIElements();
@@ -283,9 +289,10 @@ public class ZonePane extends JTabExtended {
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            ZoneDB.Delete(zone);
+            ZoneDB.Delete(currentObject);
             super.Delete();
             FillGrid();
+
 
         } catch (Exception ex) {
             cancelAction = true;
@@ -297,8 +304,10 @@ public class ZonePane extends JTabExtended {
     @Override
     public void New() {
         super.New();
-        zone = ClassFactory.getZoneInstance();
+        currentObject = ClassFactory.getZoneInstance();
         txtDescription.requestFocusInWindow();
+        btnAddUbication.setEnabled(true);
+        btnDeleteUbication.setEnabled(true);
         
     }
 
@@ -306,12 +315,15 @@ public class ZonePane extends JTabExtended {
     public boolean Save() throws Exception {
         cancelAction = false;
         try {
-            zone.setDescription(txtDescription.getText());
-            zone.setLocationsInZone(lasignedTableModel.getLocationsZone());
+            currentObject.setDescription(txtDescription.getText());
+            for(ILocation l : currentObject.getLocationsInZone()){
+                System.out.print(l.getDescription());
+            }
+            
             if (IsObjectLoaded()) {
                 return Update();
             }
-            ZoneDB.Save(zone);
+            ZoneDB.Save(currentObject);
             FillGrid();
 
         } catch (Exception ex) {
@@ -327,7 +339,7 @@ public class ZonePane extends JTabExtended {
         searchZoneDialog.setVisible(true);
         DialogResult result = searchZoneDialog.getDialogResult();
         if (result == DialogResult.Ok) {
-            zone = searchZoneDialog.getSearchResult();
+            currentObject = searchZoneDialog.getSearchResult();
             SetUIElements();
         }
         return result;
@@ -338,7 +350,7 @@ public class ZonePane extends JTabExtended {
         cancelAction = false;
         try {
          
-            ZoneDB.Update(zone);
+            ZoneDB.Update(currentObject);
             FillGrid();
       
         } catch (Exception ex) {
@@ -351,8 +363,8 @@ public class ZonePane extends JTabExtended {
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IZone> tableModel = (SicceTableModel<IZone>) gridZones.getModel();
-        zone = tableModel.getRow(selectedIndex);
-        txtDescription.setText(zone.getDescription());
+        currentObject = tableModel.getRow(selectedIndex);
+        txtDescription.setText(currentObject.getDescription());
         FillLocationsAsignedGrid();
     }
 
@@ -361,7 +373,7 @@ public class ZonePane extends JTabExtended {
         SicceTableModel<ILocation> tableModel = (SicceTableModel<ILocation>) grdLocationAsigned.getModel();
         location = tableModel.getRow(selectedIndex);
         if (location != null) {
-            lasignedTableModel.RemoveLocationZone(location, zone);
+            lasignedTableModel.RemoveLocationZone(location, currentObject);
             FillLocationsAsignedGrid();
         }
     }
@@ -382,8 +394,8 @@ public class ZonePane extends JTabExtended {
      * Carga el grid con los permisos asignados al rol
      */
     private void FillLocationsAsignedGrid() {
-        //lasignedTableModel = null
-        lasignedTableModel = new LocationsAsignedTableModel(zone.getLocationsInZone(), zone);
+        lasignedTableModel = null;
+        lasignedTableModel = new LocationsAsignedTableModel((currentObject != null)?currentObject.getLocationsInZone():null, currentObject);
         grdLocationAsigned.setModel(lasignedTableModel);
         grdLocationAsigned.setEnabled(true);
     }

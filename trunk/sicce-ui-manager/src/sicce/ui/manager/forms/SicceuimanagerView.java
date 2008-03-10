@@ -348,7 +348,7 @@ public class SicceuimanagerView extends FrameView {
         f.setDescription("Zone");
         
         IOptionSicce g = ClassFactory.getOptionInstance();
-        f.setDescription("Parameter");
+        g.setDescription("Parameter");
         
         this.options = new ArrayList<IOptionSicce>();
         options.add(a);
