@@ -15,7 +15,7 @@ public interface IRole extends Cloneable {
 
     void setDescription(String description);
     String getDescription();
-    int getID();
+    Integer getID();
     void setID(int id);
     Set<IOptionSicce> getPermissions();
     Set<IUserSicce> getUsersInRole();
