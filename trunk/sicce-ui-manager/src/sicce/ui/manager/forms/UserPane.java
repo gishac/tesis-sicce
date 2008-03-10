@@ -314,4 +314,16 @@ public class UserPane extends JTabExtended<IUserSicce> {
         userTableModel = new UserTableModel(userBizObject.GetAllUsers());
         gridUsers.setModel(userTableModel);
     }
+    
+    @Override
+    public void CancelSave() {
+        if (currentObject != null) {
+            if (currentObject.getID() != null) {
+                IUserSicce originalInstance = UserDB.FindUserByID(currentObject.getID());
+                this.currentObject = originalInstance;
+            } else {
+                this.currentObject = ClassFactory.getUserInstance();
+            }
+        }
+    }
 }
