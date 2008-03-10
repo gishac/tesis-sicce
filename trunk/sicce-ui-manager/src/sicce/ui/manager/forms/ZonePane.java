@@ -23,6 +23,7 @@ import sicce.api.util.ComponentUtil;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.SearchDialog;
 import sicce.api.info.ToolBarStateInfo;
+import sicce.ui.manager.controls.JOptionPaneExtended;
 
 /**
  *
@@ -41,8 +42,6 @@ public class ZonePane extends JTabExtended<IZone>  {
     /** Creates new form LocationTypePane */
     public ZonePane() {
         initComponents();
-        this.setHandleToolBarStates(false);
-        this.setToolBarStateInfo(new ToolBarStateInfo(true, true, true, true, true, true));
         getControlsToClear().add(txtDescription);
         getControlsToEnable().add(txtDescription);
         getControlsToEnable().add(grdLocationAsigned);
@@ -261,7 +260,7 @@ public class ZonePane extends JTabExtended<IZone>  {
               lasignedTableModel = new LocationsAsignedTableModel(currentObject.getLocationsInZone(), currentObject);
               grdLocationAsigned.setModel(lasignedTableModel);
             }
-        //  SetUIElements();
+          SetUIElements();
             
         }
         
@@ -269,8 +268,13 @@ public class ZonePane extends JTabExtended<IZone>  {
 }//GEN-LAST:event_btnAddUbicationActionPerformed
 
     private void btnDeleteUbicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUbicationActionPerformed
-
+    if (grdLocationAsigned.getSelectedRow()>-1)
         ItemSelectedLocation(grdLocationAsigned.getSelectedRow());
+    else
+        JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar la ubicación que desea eliminar");
+        return;
+        
+        
 }//GEN-LAST:event_btnDeleteUbicationActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddUbication;
@@ -357,15 +361,27 @@ public class ZonePane extends JTabExtended<IZone>  {
             cancelAction = true;
         }
         return cancelAction;
+    
     }
+    
+    @Override
+    public void SetUIElements() {
+        if(currentObject == null)
+            return;
+        txtDescription.setText(currentObject.getDescription());
+        FillLocationsAsignedGrid();
+         lasignedTableModel.setReadOnly(true);
+    }
+    
+        
+        
 
     @Override
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IZone> tableModel = (SicceTableModel<IZone>) gridZones.getModel();
         currentObject = tableModel.getRow(selectedIndex);
-        txtDescription.setText(currentObject.getDescription());
-        FillLocationsAsignedGrid();
+       SetUIElements();
     }
 
     public void ItemSelectedLocation(int selectedIndex) {
@@ -399,4 +415,19 @@ public class ZonePane extends JTabExtended<IZone>  {
         grdLocationAsigned.setModel(lasignedTableModel);
         grdLocationAsigned.setEnabled(true);
     }
+    
+      @Override
+    public void CancelSave() {
+        if (currentObject != null) {
+            if (currentObject.getID() != null) {
+                IZone originalInstance = ZoneDB.FindZoneByID(currentObject.getID());
+                this.currentObject = originalInstance;
+            } else {
+                this.currentObject = ClassFactory.getZoneInstance();
+            }
+           
+        }
+    }
+    
+    
 }
