@@ -29,4 +29,8 @@ public class UserSicce extends AbstractUserSicce implements
         super(idUserSicce, role, name, lastname, codeUcsg, usernameSicce,
                 passwordSicce);
     }
+
+    public Integer getID() {
+        return super.getIdUserSicce();
+    }
 }
