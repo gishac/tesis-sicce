@@ -36,7 +36,7 @@ public class Location extends AbstractLocation implements java.io.Serializable, 
 				locations, zones, measures);
 	}
 
-    public int getID() {
+    public Integer getID() {
         return this.idLocation;
     }
 

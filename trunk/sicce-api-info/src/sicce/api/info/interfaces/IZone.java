@@ -14,7 +14,7 @@ import java.util.Set;
 public interface IZone extends Cloneable {
 
     void setID(int id);
-    int getID();
+    Integer getID();
     void setDescription(String description);
     String getDescription();
     String getCode();
