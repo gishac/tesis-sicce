@@ -34,7 +34,7 @@ public class Zone extends AbstractZone implements java.io.Serializable, IZone {
         this.idZone = id;
     }
 
-    public int getID() {
+    public Integer getID() {
         return this.idZone;
     }
 

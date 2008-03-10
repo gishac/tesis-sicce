@@ -13,7 +13,7 @@ public interface ILocation {
 
     void setDescription(String description);
     String getDescription();
-    int getID();
+    Integer getID();
     void setIdLocation (Integer idLocation);
     Integer getIdLocation(); 
     void setLocationType (ILocationType locationType);
