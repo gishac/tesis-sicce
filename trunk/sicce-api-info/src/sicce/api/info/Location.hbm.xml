@@ -29,7 +29,7 @@
             </key>
             <one-to-many class="sicce.api.info.Location" />
         </set>
-        <set name="zones" table="location_zone" lazy="false">
+        <set name="zones" table="location_zone" lazy="false" inverse="true">
             <key>
                 <column name="ID_LOCATION" not-null="true" />
             </key>
