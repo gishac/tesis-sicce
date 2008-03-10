@@ -24,7 +24,7 @@ public class ZoneBizObject {
     }
 
     public IZone GetZoneByID(int zoneID) {
-        return ZoneDB.FindRoleByID(zoneID);
+        return ZoneDB.FindZoneByID(zoneID);
     }
 
     public boolean LocationsExists(int optionID, IZone zone) {
