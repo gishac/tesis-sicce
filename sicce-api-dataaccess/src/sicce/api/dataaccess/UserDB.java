@@ -41,4 +41,8 @@ public class UserDB {
     public static List GetAllUsers() {
         return DataAccessManager.getInstance().getUserDB().findAll();
     }
+    
+    public static IUserSicce FindUserByID(int id){
+        return DataAccessManager.getInstance().getUserDB().findById(id);
+    }
 }
