@@ -17,11 +17,12 @@ import sicce.api.businesslogic.LocationTypeBizObject;
 import sicce.api.businesslogic.LocationTypeTableModel;
 import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
+import sicce.api.util.Validator;
 /**
  *
  * @author  gish@c
  */
-public class LocationTypePane extends JTabExtended {
+public class LocationTypePane extends JTabExtended<ILocationType> {
     
     private ILocationType locationType;
     LocationTypeBizObject ltypeBizObject;
@@ -137,7 +138,7 @@ public class LocationTypePane extends JTabExtended {
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            LocationTypeDB.Delete(locationType);
+            LocationTypeDB.Delete(currentObject);
             super.Delete();              
              FillGrid();
             
@@ -151,19 +152,24 @@ public class LocationTypePane extends JTabExtended {
     @Override
     public void New() {
         super.New();
-        locationType = ClassFactory.getLocationTypeInstance();
+        currentObject = ClassFactory.getLocationTypeInstance();
         txtDescription.requestFocusInWindow();
     }
 
     @Override
     public boolean Save() throws Exception {
-        cancelAction = false;        
+        cancelAction = false;            
+            
+        if (!CheckFields()) {
+            return true;
+        }
+        
         try {
-            locationType.setDescription(txtDescription.getText().trim());
+            currentObject.setDescription(txtDescription.getText().trim());
             if (IsObjectLoaded()) {
                 return Update();
             }
-            LocationTypeDB.Save(locationType);
+            LocationTypeDB.Save(currentObject);
             FillGrid();
           
         } catch (Exception ex) {
@@ -181,7 +187,7 @@ public class LocationTypePane extends JTabExtended {
     public boolean Update() throws Exception {
         cancelAction = false;
         try {
-            LocationTypeDB.Update(locationType);
+            LocationTypeDB.Update(currentObject);
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -193,8 +199,8 @@ public class LocationTypePane extends JTabExtended {
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<ILocationType> tableModel = (SicceTableModel<ILocationType>) grdLocationType.getModel();
-        locationType = tableModel.getRow(selectedIndex);
-        txtDescription.setText(locationType.getDescription());
+        currentObject = tableModel.getRow(selectedIndex);
+        txtDescription.setText(currentObject.getDescription());
         
     }
 
@@ -209,4 +215,14 @@ public class LocationTypePane extends JTabExtended {
         ltypeTableModel = new LocationTypeTableModel(ltypeBizObject.GetAllLocationsType());
         grdLocationType.setModel(ltypeTableModel);
     }
+    
+     @Override
+       public boolean CheckFields() {
+         
+          if (!Validator.ValidateField(null,null,0, txtDescription, true, "la descripción del tipo de Ubicación",10)) {
+            return false;
+        }
+         return true;
+       }
+    
 }

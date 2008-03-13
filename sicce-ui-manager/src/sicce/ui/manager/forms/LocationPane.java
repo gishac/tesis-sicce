@@ -24,6 +24,7 @@ import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.util.ComponentUtil;
+import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.SearchDialog;
 
@@ -334,6 +335,11 @@ public class LocationPane extends JTabExtended<ILocation> {
 
     @Override
     public boolean Save() throws Exception {
+         
+        if (!CheckFields()) {
+            return true;
+        }
+        
         cancelAction = false;
         try {
            // if (cmbLocationType.getSelectedItem()!=null)
@@ -404,6 +410,7 @@ public class LocationPane extends JTabExtended<ILocation> {
     
      @Override
     public void CancelSave() {
+      
         if (currentObject != null) {
             if (currentObject.getID() != null) {
                 ILocation originalInstance = LocationDB.FindLocationByID(currentObject.getID());
@@ -413,6 +420,24 @@ public class LocationPane extends JTabExtended<ILocation> {
             }
         }
     }
+     
+     
+    @Override
+       public boolean CheckFields() {
+
+         if (!Validator.ValidateField(null,null,0, txtUbication, true, "la ubicación principal",1)) {
+            return false;
+        }
+         
+          if (!Validator.ValidateField(null,null,0, txtPowerMeter, true, "el medidor asignado",1)) {
+            return false;
+        }
+         
+          if (!Validator.ValidateField(null,null,0, txtDescription, true, "la descripción de la ubicación",10)) {
+            return false;
+        }
+         return true;
+       }
     
  
     

@@ -304,8 +304,15 @@ public class JTabExtended<T> extends JPanel implements ITabbedWindow, IToolBarSt
         
     }
     
+    public boolean CheckFields()
+    {
+     return true;
+    }
+
     public void ItemSelectionCanceled(int previousIndexSelected){
         
     }
+
+    
     
 }
