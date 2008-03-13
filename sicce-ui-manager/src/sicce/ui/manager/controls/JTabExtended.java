@@ -155,6 +155,7 @@ public class JTabExtended<T> extends JPanel implements ITabbedWindow, IToolBarSt
     }
 
     public boolean Save() throws Exception {
+        tabState = ToolBarAction.Save;
         return true;
     }
     
@@ -231,7 +232,7 @@ public class JTabExtended<T> extends JPanel implements ITabbedWindow, IToolBarSt
                 Edit();
                 tabState = ToolBarAction.Edit;
                 break;
-            case Save:
+            case Save:                
                 event.setCancelEvent(Save());
                 if(!event.getCancelEvent()){
                     AfterSave();                    
@@ -294,7 +295,8 @@ public class JTabExtended<T> extends JPanel implements ITabbedWindow, IToolBarSt
     }
     
     public void Close(){
-        Clear();
+        Clear();        
+        FillGrid();
         RefreshToolBarState();
     }
     
@@ -302,5 +304,8 @@ public class JTabExtended<T> extends JPanel implements ITabbedWindow, IToolBarSt
         
     }
     
+    public void ItemSelectionCanceled(int previousIndexSelected){
+        
+    }
     
 }
