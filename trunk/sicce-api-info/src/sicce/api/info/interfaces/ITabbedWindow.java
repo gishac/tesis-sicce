@@ -35,4 +35,5 @@ public interface ITabbedWindow {
     void Close();
     void AfterSave();
     void CancelSave();
+    void ItemSelectionCanceled(int previousIndexSelected);
 }
