@@ -19,6 +19,7 @@ import sicce.api.info.ToolBarStateInfo;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.ITabbedWindow;
 import sicce.api.info.interfaces.IToolBarStateListener;
+import sicce.ui.manager.controls.JTabbedPaneExtended;
 
 /**
  * Clase que administra todos los eventos generados por el toolbar y notifica los estados
@@ -28,7 +29,9 @@ import sicce.api.info.interfaces.IToolBarStateListener;
 public class ToolBarHandler implements ListSelectionListener {
 
     JToolBar toolBar;
+    JTabbedPaneExtended tabManager;
     private ToolBarStateInfo toolBarStateInfo;
+    private boolean internalEvent;
 
     public ToolBarStateInfo getToolBarStateInfo() {
         return toolBarStateInfo;
@@ -59,8 +62,10 @@ public class ToolBarHandler implements ListSelectionListener {
      * Constructor
      * @param toolBar
      */
-    public ToolBarHandler(JToolBar toolBar) {
+    public ToolBarHandler(JToolBar toolBar, JTabbedPaneExtended tabManager) {
         this.toolBar = toolBar;
+        this.tabManager = tabManager;
+
     }
 
     /**
@@ -115,22 +120,23 @@ public class ToolBarHandler implements ListSelectionListener {
                 SetToolBarItemsState(true, true, false, false, false);
                 break;
             case Save:
-                if(!eventArgument.getCancelEvent())
-                    SetToolBarItemsState(true, false, true, true, true,true);
+                if (!eventArgument.getCancelEvent()) {
+                    SetToolBarItemsState(true, false, true, true, true, true);
+                }
                 break;
             case Edit:
-                SetToolBarItemsState(true, true, false, true, true,true);
+                SetToolBarItemsState(true, true, false, true, true, true);
                 break;
             case Delete:
                 SetDefaultState();
                 break;
             case Search:
                 if (eventArgument.getSearchDialogResult() == DialogResult.Ok) {
-                    SetToolBarItemsState(true, false, true, true, true,true);
+                    SetToolBarItemsState(true, false, true, true, true, true);
                 }
                 break;
             case RegistryLoaded:
-                SetToolBarItemsState(true, false, true, true, true,true);
+                SetToolBarItemsState(true, false, true, true, true, true);
                 break;
             case Back:
                 SetDefaultState();
@@ -194,11 +200,38 @@ public class ToolBarHandler implements ListSelectionListener {
      */
     public void valueChanged(ListSelectionEvent e) {
         try {
+            if (internalEvent) {
+                return;
+            }
+            if(tabManager.getCurrentTab().getTabState() == ToolBarAction.Save)
+                return;            
             ListSelectionModel selectionModel = (ListSelectionModel) e.getSource();
-            ToolBarEventObject event = new ToolBarEventObject(e, ToolBarAction.RegistryLoaded);
-            event.setSelectedIndex(selectionModel.getMinSelectionIndex());
-            if (event.getSelectedIndex() >= 0) {
-                ToolBarStateChanged(event);
+            int selectedIndex = selectionModel.getMinSelectionIndex();
+            boolean cancelSelection = tabManager.HandleTabChanging();
+            if (!cancelSelection) {
+                ToolBarEventObject event = new ToolBarEventObject(e, ToolBarAction.RegistryLoaded);
+                event.setSelectedIndex(selectedIndex);
+                if (event.getSelectedIndex() >= 0) {
+                    ToolBarStateChanged(event);
+                    internalEvent = true;
+                    selectionModel.setSelectionInterval(selectedIndex, selectedIndex);
+                    internalEvent = false;
+                }
+            } else {
+                internalEvent = true;
+                if (e.getLastIndex() == e.getFirstIndex()) {
+                    selectionModel.clearSelection();
+                } 
+                else {
+                    int rowIndex = 0;
+                    if (selectionModel.getMinSelectionIndex() == e.getLastIndex()) {
+                        rowIndex = e.getFirstIndex();
+                    } else {
+                        rowIndex = e.getLastIndex();
+                    }
+                    selectionModel.setSelectionInterval(rowIndex, rowIndex);
+                }
+                internalEvent = false;
             }
         } catch (Exception ex) {
             Logger.getLogger(ToolBarHandler.class.getName()).log(Level.SEVERE, null, ex);

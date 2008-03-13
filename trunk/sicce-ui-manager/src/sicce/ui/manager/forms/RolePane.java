@@ -217,6 +217,7 @@ public class RolePane extends JTabExtended<IRole> {
 
     @Override
     public boolean Save() throws Exception {
+        super.Save();
         cancelAction = false;
         try {
             currentObject.setDescription(txtDescription.getText().trim());
@@ -284,7 +285,8 @@ public class RolePane extends JTabExtended<IRole> {
         if (currentObject != null) {
             if (currentObject.getID() != null) {
                 IRole originalInstance = RoleDB.FindRoleByID(currentObject.getID());
-                this.currentObject = originalInstance;
+                this.currentObject.getPermissions().clear();
+                this.currentObject.getPermissions().addAll(originalInstance.getPermissions());
             } else {
                 this.currentObject = ClassFactory.getRoleInstance();
             }
@@ -307,6 +309,10 @@ public class RolePane extends JTabExtended<IRole> {
         gridPermissions.setModel(permissionsTableModel);
         gridPermissions.setEnabled(true);
     }
+
+   
+    
+    
 }
 
 

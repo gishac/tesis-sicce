@@ -119,19 +119,20 @@ public class JTabbedPaneExtended extends JTabbedPane {
      * @return
      * @throws java.lang.Exception
      */
-    private boolean HandleTabChanging() throws Exception{
+    public boolean HandleTabChanging() throws Exception{
         boolean result = false;
         if (getCurrentTab() != null && (getCurrentTab().getTabState() == ToolBarAction.Edit || getCurrentTab().getTabState() == ToolBarAction.New)) {
             JOptionPaneExtended confirmDialog = new JOptionPaneExtended(optionsText);
             int dialogResult = confirmDialog.ShowConfirmDialog(getResourceMap().getString("SaveConfirmDialog"), getResourceMap().getString("ApplicationName"));
             switch (dialogResult) {
                 case JOptionPaneExtended.YES_OPTION:
-                    boolean cancelAction = getCurrentTab().Save();
+                    boolean cancelAction = getCurrentTab().Save();                    
                     if (cancelAction) {
                         CancelTabChanging();
                         result = true;
                         break;
                     }
+                    getCurrentTab().AfterSave();
                     result = false;
                     break;
                 case JOptionPaneExtended.NO_OPTION:

@@ -1,5 +1,5 @@
 /*
- * LocationPane.java
+ * UserPane.java
  *
  * Created on January 26, 2008, 7:43 PM
  */
@@ -192,13 +192,6 @@ public class UserPane extends JTabExtended<IUserSicce> {
     }// </editor-fold>//GEN-END:initComponents
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         
-        if(!IsObjectLoaded()){
-            roleBizObject = new RoleBizObject();
-            roleComboBoxModel = new SicceComboBoxModel<IRole>(roleBizObject.GetAllRoles());
-            roleComboBoxRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method, "getIdRole", DisplayMemberRenderType.Method);
-            cmbRole.setModel(roleComboBoxModel);
-            cmbRole.setRenderer(roleComboBoxRenderer);
-        }
     }//GEN-LAST:event_formComponentShown
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cmbRole;
@@ -239,6 +232,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
 
     @Override
     public boolean Save() throws Exception {
+        super.Save();
         cancelAction = false;
         try {
             currentObject.setName(txtName.getText());

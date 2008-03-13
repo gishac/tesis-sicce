@@ -51,7 +51,7 @@ public class SicceuimanagerView extends FrameView {
         super(app);
         ApplyLookAndFeel();
         initComponents();
-        toolBarHandler = new ToolBarHandler(toolBar);
+        toolBarHandler = new ToolBarHandler(toolBar,getTabManager());
         
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
@@ -384,9 +384,8 @@ public class SicceuimanagerView extends FrameView {
      * Coloca el formulario del tamaÃ±o maximo de la pantalla
      */
     private void SetFrameSize() throws HeadlessException {
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        Dimension dimension = tk.getScreenSize();
-        SicceuimanagerApp.getApplication().getMainFrame().setPreferredSize(dimension);
+        Dimension dimension = this.getFrame().getToolkit().getScreenSize();
+        this.getFrame().setSize(dimension);
     }
 
     /**
