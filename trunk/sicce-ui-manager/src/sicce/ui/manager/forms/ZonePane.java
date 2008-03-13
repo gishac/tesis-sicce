@@ -23,6 +23,7 @@ import sicce.api.util.ComponentUtil;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.SearchDialog;
 import sicce.api.info.ToolBarStateInfo;
+import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 
 /**
@@ -318,6 +319,12 @@ public class ZonePane extends JTabExtended<IZone>  {
     @Override
     public boolean Save() throws Exception {
         cancelAction = false;
+            
+        if (!CheckFields()) {
+            return true;
+        }
+        
+        
         try {
             currentObject.setDescription(txtDescription.getText());
             for(ILocation l : currentObject.getLocationsInZone()){
@@ -428,6 +435,16 @@ public class ZonePane extends JTabExtended<IZone>  {
            
         }
     }
+    
+      
+       @Override
+       public boolean CheckFields() {
+         
+          if (!Validator.ValidateField(null,null,0, txtDescription, true, "la descripción de la zona",10)) {
+            return false;
+        }
+         return true;
+       }
     
     
 }

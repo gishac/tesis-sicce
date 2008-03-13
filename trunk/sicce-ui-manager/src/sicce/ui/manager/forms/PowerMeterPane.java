@@ -3,10 +3,10 @@
  *
  * Created on January 23, 2008, 12:39 AM
  */
-
 package sicce.ui.manager.forms;
 
 import java.awt.Component;
+import java.util.regex.Pattern;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.dataaccess.PowerMeterDB;
@@ -19,16 +19,18 @@ import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.businesslogic.PowerMeterTableModel;
 import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
+import sicce.api.util.Validator;
+
 /**
  *
  * @author  gish@c
  */
-public class PowerMeterPane extends JTabExtended {
-    
-       private IPowerMeter pmeter;    
-       PowerMeterBizObject pmeterBizObject;
-       PowerMeterTableModel pmeterTableModel;
-    
+public class PowerMeterPane extends JTabExtended<IPowerMeter> {
+
+    private IPowerMeter pmeter;
+    PowerMeterBizObject pmeterBizObject;
+    PowerMeterTableModel pmeterTableModel;
+
     /** Creates new form PowerMeterPane */
     public PowerMeterPane() {
         initComponents();
@@ -44,12 +46,12 @@ public class PowerMeterPane extends JTabExtended {
         pmeterBizObject = new PowerMeterBizObject();
         FillGrid();
     }
-    
+
     /** Creates new form PowerMeterPane */
     public PowerMeterPane(Object option) {
         initComponents();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -188,8 +190,6 @@ public class PowerMeterPane extends JTabExtended {
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable grdPowerMeter;
     private javax.swing.JPanel jPanel1;
@@ -203,7 +203,6 @@ public class PowerMeterPane extends JTabExtended {
     private javax.swing.JTextField txtIpAddress;
     private javax.swing.JTextField txtSerial;
     // End of variables declaration//GEN-END:variables
- 
     @Override
     public void Back() {
         super.Back();
@@ -213,8 +212,8 @@ public class PowerMeterPane extends JTabExtended {
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            super.Delete();            
-            PowerMeterDB.Delete(pmeter);
+            super.Delete();
+            PowerMeterDB.Delete(currentObject);
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -226,59 +225,64 @@ public class PowerMeterPane extends JTabExtended {
     @Override
     public void New() {
         super.New();
-        pmeter = ClassFactory.getPowerMeterInstance();
-        ComponentUtil.SetState(true, new Component[]{ txtSerial});
+        currentObject = ClassFactory.getPowerMeterInstance();
+        ComponentUtil.SetState(true, new Component[]{txtSerial});
         txtSerial.requestFocusInWindow();
     }
 
     @Override
     public boolean Save() throws Exception {
-          cancelAction = false;        
-        try {
-        pmeter.setSerial(txtSerial.getText().trim());
-        pmeter.setIpAddress(txtIpAddress.getText().trim());
-        pmeter.setDescription(txtDescription.getText().trim());
-        if(IsObjectLoaded())
-        {
-          return Update();
-            
+        cancelAction = false;
+
+        if (!CheckFields()) {
+            return true;
         }
-        PowerMeterDB.Save(pmeter);
-        txtSerial.setText(pmeter.getSerial());
-        txtIpAddress.setText(pmeter.getIpAddress());
-        txtSerial.setText(pmeter.getSerial());
-        FillGrid();
+
+        try {
+            currentObject.setSerial(txtSerial.getText().trim());
+            currentObject.setIpAddress(txtIpAddress.getText().trim());
+            currentObject.setDescription(txtDescription.getText().trim());
+            if (IsObjectLoaded()) {
+                return Update();
+
+            }
+            PowerMeterDB.Save(currentObject);
+            txtSerial.setText(currentObject.getSerial());
+            txtIpAddress.setText(currentObject.getIpAddress());
+            txtSerial.setText(currentObject.getSerial());
+            FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
         }
         return cancelAction;
-        
+
     }
 
     @Override
     public DialogResult Search() {
         return super.Search();
     }
-    
-     @Override
-    public boolean Update() throws Exception{
+
+    @Override
+    public boolean Update() throws Exception {
         cancelAction = false;
         try {
-            PowerMeterDB.Update(pmeter);
+            PowerMeterDB.Update(currentObject);
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
         }
         return cancelAction;
     }
-     @Override
+
+    @Override
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IPowerMeter> tableModel = (SicceTableModel<IPowerMeter>) grdPowerMeter.getModel();
-        pmeter = tableModel.getRow(selectedIndex);
-        txtSerial.setText(pmeter.getSerial());
-        txtIpAddress.setText(pmeter.getIpAddress());
-        txtDescription.setText(pmeter.getDescription());    
+        currentObject = tableModel.getRow(selectedIndex);
+        txtSerial.setText(currentObject.getSerial());
+        txtIpAddress.setText(currentObject.getIpAddress());
+        txtDescription.setText(currentObject.getDescription());
     }
 
     @Override
@@ -286,14 +290,35 @@ public class PowerMeterPane extends JTabExtended {
         grdPowerMeter.getSelectionModel().addListSelectionListener(selectionListener);
         grdPowerMeter.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
-    
+
     @Override
     public void FillGrid() {
         pmeterTableModel = new PowerMeterTableModel(pmeterBizObject.GetAllPowerMeter());
         grdPowerMeter.setModel(pmeterTableModel);
     }
-    
-    
-    
-    
+
+    @Override
+    public boolean CheckFields() {
+
+        if (!Validator.ValidateField(null, null, 0, txtSerial, true, "el serial del Medidor", 5)) {
+            return false;
+        }
+        if (!Validator.ValidateField(null, null, 0, txtIpAddress, true, "la dirección IP ", 12)) {
+            return false;
+        }
+//        if (!Validator.validateAnIpAddressWithRegularExpression(null, txtIpAddress.getText())) {
+//            return false;
+//        }
+        if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción del medidor", 10)) {
+            return false;
+        }
+
+
+        return true;
+    }
 }
+    
+    
+    
+    
+
