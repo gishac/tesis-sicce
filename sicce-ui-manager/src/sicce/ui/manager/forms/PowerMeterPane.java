@@ -233,11 +233,10 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
     @Override
     public boolean Save() throws Exception {
         cancelAction = false;
-
         if (!CheckFields()) {
             return true;
         }
-
+        super.Save();
         try {
             currentObject.setSerial(txtSerial.getText().trim());
             currentObject.setIpAddress(txtIpAddress.getText().trim());

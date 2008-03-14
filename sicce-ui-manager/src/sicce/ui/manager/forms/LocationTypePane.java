@@ -158,12 +158,11 @@ public class LocationTypePane extends JTabExtended<ILocationType> {
 
     @Override
     public boolean Save() throws Exception {
-        cancelAction = false;            
-            
+        cancelAction = false;
         if (!CheckFields()) {
             return true;
         }
-        
+        super.Save();
         try {
             currentObject.setDescription(txtDescription.getText().trim());
             if (IsObjectLoaded()) {
