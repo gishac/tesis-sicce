@@ -141,6 +141,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtUbication">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="txtUbication" noResource="true"/>
           </Properties>
         </Component>
@@ -200,6 +201,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtPowerMeter">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="txtPowerMeter" noResource="true"/>
           </Properties>
         </Component>

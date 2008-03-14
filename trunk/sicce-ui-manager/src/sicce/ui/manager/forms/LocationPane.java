@@ -44,6 +44,7 @@ public class LocationPane extends JTabExtended<ILocation> {
     private ILocation plocation;
     private IPowerMeter pmeter;
     private ILocationType ltype;
+
     /** Creates new form LocationPane */
     public LocationPane() {
         initComponents();
@@ -54,8 +55,6 @@ public class LocationPane extends JTabExtended<ILocation> {
         getControlsToClear().add(btnSearchUbication);
         getControlsToClear().add(cmbLocationType);
         getControlsToEnable().add(txtDescription);
-        getControlsToEnable().add(txtUbication);
-        getControlsToEnable().add(txtPowerMeter);
         getControlsToEnable().add(btnSearchPowerMeter);
         getControlsToEnable().add(btnSearchUbication);
         getControlsToEnable().add(cmbLocationType);
@@ -63,7 +62,11 @@ public class LocationPane extends JTabExtended<ILocation> {
 
         pmeterBizObject = new PowerMeterBizObject();
         locationBizObject = new LocationBizObject();
-        
+        locationTypeBizObject = new LocationTypeBizObject();
+        locationTypeComboBoxModel = new SicceComboBoxModel<ILocationType>(locationTypeBizObject.GetAllLocationsType());
+        locationTypeComboBoxRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method, "getID", DisplayMemberRenderType.Method);
+        cmbLocationType.setModel(locationTypeComboBoxModel);
+        cmbLocationType.setRenderer(locationTypeComboBoxRenderer);
         FillGrid();
     }
 
@@ -104,6 +107,7 @@ public class LocationPane extends JTabExtended<ILocation> {
         lblUbication.setText(resourceMap.getString("lblUbication.text")); // NOI18N
         lblUbication.setName("lblUbication"); // NOI18N
 
+        txtUbication.setEditable(false);
         txtUbication.setName("txtUbication"); // NOI18N
 
         jScrollPane4.setName("jScrollPane4"); // NOI18N
@@ -136,6 +140,7 @@ public class LocationPane extends JTabExtended<ILocation> {
         lblPowerMeter.setText(resourceMap.getString("lblPowerMeter.text")); // NOI18N
         lblPowerMeter.setName("lblPowerMeter"); // NOI18N
 
+        txtPowerMeter.setEditable(false);
         txtPowerMeter.setName("txtPowerMeter"); // NOI18N
 
         btnSearchPowerMeter.setIcon(resourceMap.getIcon("btnSearchPowerMeter.icon")); // NOI18N
@@ -258,11 +263,7 @@ public class LocationPane extends JTabExtended<ILocation> {
     }// </editor-fold>//GEN-END:initComponents
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
-        locationTypeBizObject = new LocationTypeBizObject();
-        locationTypeComboBoxModel = new SicceComboBoxModel<ILocationType>(locationTypeBizObject.GetAllLocationsType());
-        locationTypeComboBoxRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method);
-        cmbLocationType.setModel(locationTypeComboBoxModel);
-        cmbLocationType.setRenderer(locationTypeComboBoxRenderer);
+        
     }//GEN-LAST:event_formComponentShown
 
     private void btnSearchPowerMeterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPowerMeterActionPerformed
@@ -335,18 +336,19 @@ public class LocationPane extends JTabExtended<ILocation> {
 
     @Override
     public boolean Save() throws Exception {
-         
+
         if (!CheckFields()) {
             return true;
         }
-        
+        super.Save();
         cancelAction = false;
         try {
-           // if (cmbLocationType.getSelectedItem()!=null)
+            // if (cmbLocationType.getSelectedItem()!=null)
             ltype = (ILocationType) cmbLocationType.getSelectedItem();
             currentObject.setLocationType(ltype);
-            if (pmeter!=null)
+            if (pmeter != null) {
                 currentObject.setPowerMeter(pmeter);
+            }
             currentObject.setDescription(txtDescription.getText());
             currentObject.setLocation(plocation);
             if (IsObjectLoaded()) {
@@ -361,17 +363,17 @@ public class LocationPane extends JTabExtended<ILocation> {
     }
 
     @Override
-   
- public DialogResult Search() {
-       SearchDialog<ILocation> searchLocationDialog = new SearchDialog<ILocation>(new JFrame(), true, new LocationTableModel(locationBizObject.GetAllLocations()));
+    public DialogResult Search() {
+        SearchDialog<ILocation> searchLocationDialog = new SearchDialog<ILocation>(new JFrame(), true, new LocationTableModel(locationBizObject.GetAllLocations()));
         searchLocationDialog.setVisible(true);
         DialogResult result = searchLocationDialog.getDialogResult();
         if (result == DialogResult.Ok) {
             currentObject = searchLocationDialog.getSearchResult();
-            //SetUIElements();
+        //SetUIElements();
         }
         return result;
     }
+
     @Override
     public boolean Update() throws Exception {
         cancelAction = false;
@@ -383,18 +385,14 @@ public class LocationPane extends JTabExtended<ILocation> {
         }
         return cancelAction;
     }
-    
-    
-     @Override
+
+    @Override
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<ILocation> tableModel = (SicceTableModel<ILocation>) grdLocation.getModel();
         currentObject = tableModel.getRow(selectedIndex);
-        txtDescription.setText(currentObject.getDescription());
-        txtPowerMeter.setText(currentObject.getPowerMeter().getDescription());
-        if (currentObject.getLocation()!=null)
-            txtUbication.setText(currentObject.getLocation().getDescription());
-      }
+        SetUIElements();
+    }
 
     @Override
     public void RegisterSelectionListener() {
@@ -407,38 +405,53 @@ public class LocationPane extends JTabExtended<ILocation> {
         locationTableModel = new LocationTableModel(locationBizObject.GetAllLocations());
         grdLocation.setModel(locationTableModel);
     }
-    
-     @Override
+
+    @Override
     public void CancelSave() {
-      
+
         if (currentObject != null) {
             if (currentObject.getID() != null) {
                 ILocation originalInstance = LocationDB.FindLocationByID(currentObject.getID());
                 this.currentObject = originalInstance;
+                SetUIElements();
             } else {
                 this.currentObject = ClassFactory.getLocationInstance();
             }
         }
     }
-     
-     
-    @Override
-       public boolean CheckFields() {
 
-         if (!Validator.ValidateField(null,null,0, txtUbication, true, "la ubicación principal",1)) {
-            return false;
+    @Override
+    public void SetUIElements() {
+        if (currentObject == null) {
+            return;
         }
-         
-          if (!Validator.ValidateField(null,null,0, txtPowerMeter, true, "el medidor asignado",1)) {
-            return false;
+        txtDescription.setText(currentObject.getDescription());
+        txtPowerMeter.setText(currentObject.getPowerMeter().getDescription());
+        if (currentObject.getLocation() != null) {
+            txtUbication.setText(currentObject.getLocation().getDescription());
         }
-         
-          if (!Validator.ValidateField(null,null,0, txtDescription, true, "la descripción de la ubicación",10)) {
-            return false;
+        else{
+            txtUbication.setText("");
         }
-         return true;
-       }
+        locationTypeComboBoxModel.setSelectedItem(currentObject.getLocationType(),locationTypeComboBoxRenderer);
+    }
     
- 
     
+
+    @Override
+    public boolean CheckFields() {
+
+        if (!Validator.ValidateField(null, null, 0, txtUbication, true, "la ubicación principal", 1)) {
+            return false;
+        }
+
+        if (!Validator.ValidateField(null, null, 0, txtPowerMeter, true, "el medidor asignado", 1)) {
+            return false;
+        }
+
+        if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción de la ubicación", 10)) {
+            return false;
+        }
+        return true;
+    }
 }

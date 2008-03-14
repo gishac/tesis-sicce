@@ -52,6 +52,11 @@ public class UserPane extends JTabExtended<IUserSicce> {
         ComponentUtil.SetState(false, getControlsToEnable());
         txtPassword.setDocument(new JTextFieldLimit(20));
         userBizObject = new UserBizObject();
+        roleBizObject = new RoleBizObject();
+        roleComboBoxModel = new SicceComboBoxModel<IRole>(roleBizObject.GetAllRoles());
+        roleComboBoxRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method, "getIdRole", DisplayMemberRenderType.Method);
+        cmbRole.setModel(roleComboBoxModel);
+        cmbRole.setRenderer(roleComboBoxRenderer);
         FillGrid();
     }
 
