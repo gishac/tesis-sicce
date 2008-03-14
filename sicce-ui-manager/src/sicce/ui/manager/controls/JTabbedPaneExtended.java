@@ -126,6 +126,7 @@ public class JTabbedPaneExtended extends JTabbedPane {
             int dialogResult = confirmDialog.ShowConfirmDialog(getResourceMap().getString("SaveConfirmDialog"), getResourceMap().getString("ApplicationName"));
             switch (dialogResult) {
                 case JOptionPaneExtended.YES_OPTION:
+                    ToolBarAction currentState = getCurrentTab().getTabState();
                     boolean cancelAction = getCurrentTab().Save();                    
                     if (cancelAction) {
                         CancelTabChanging();
