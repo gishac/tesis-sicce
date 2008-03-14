@@ -25,30 +25,21 @@ public class LocationsAsignedTableModel extends SicceTableModel<ILocation> {
     public LocationsAsignedTableModel(Set<ILocation> dataSource, IZone zone) {
 
         super(dataSource);
-        int c = getDataSource().size();
         if (zone == null) {
             this.zone = ClassFactory.getZoneInstance();
         } else {
             this.zone = zone;
         }
-        this.columns = new String[]{"No.", "Zona", "Ubicación Asignada"};
-        
+        this.columns = new String[]{"No.", "Descripción"};
         this.zoneBizObject = new ZoneBizObject();
     }
     
-    
-
-    @Override
-    public int getRowCount() {
-        return getDataSource().size();
-    }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return String.class;
     }
 
-    
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -59,8 +50,6 @@ public class LocationsAsignedTableModel extends SicceTableModel<ILocation> {
                 return rowIndex + 1;
             case 1:
                 return location.getDescription();
-            case 2:
-                return zone.getDescription();
             default:
                 return null;
         }
