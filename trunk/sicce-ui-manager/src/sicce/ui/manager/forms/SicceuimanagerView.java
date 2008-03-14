@@ -36,6 +36,7 @@ import sicce.api.info.ConstantsProvider.OptionsProvider;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.IOptionSicce;
+import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.JTabbedPaneExtended;
@@ -63,6 +64,7 @@ public class SicceuimanagerView extends FrameView {
         SetFrameSize();
         tabManager.setOptionsText(optionsText);
         tabManager.setResourceMap(resourceMap);
+        Validator.Initialize(resourceMap.getString("ApplicationName"));
     }
 
     @Action

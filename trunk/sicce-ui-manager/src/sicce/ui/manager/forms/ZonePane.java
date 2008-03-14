@@ -30,13 +30,12 @@ import sicce.ui.manager.controls.JOptionPaneExtended;
  *
  * @author  gish@c
  */
-public class ZonePane extends JTabExtended<IZone>  {
+public class ZonePane extends JTabExtended<IZone> {
 
     ZoneBizObject zoneBizObject;
     LocationBizObject locationBizObject;
     LocationTableModel locationTableModel;
     LocationsAsignedTableModel lasignedTableModel;
-    private IZone zone;
     private ILocation location;
     ZoneTableModel zoneTableModel;
 
@@ -44,6 +43,7 @@ public class ZonePane extends JTabExtended<IZone>  {
     public ZonePane() {
         initComponents();
         getControlsToClear().add(txtDescription);
+        getControlsToClear().add(grdLocationAsigned);
         getControlsToEnable().add(txtDescription);
         getControlsToEnable().add(grdLocationAsigned);
         getControlsToEnable().add(btnAddUbication);
@@ -51,8 +51,8 @@ public class ZonePane extends JTabExtended<IZone>  {
         ComponentUtil.SetState(false, getControlsToEnable());
         zoneBizObject = new ZoneBizObject();
         locationBizObject = new LocationBizObject();
-        lasignedTableModel = null; 
-        
+        lasignedTableModel = null;
+
         FillGrid();
         FillLocationsAsignedGrid();
     }
@@ -150,7 +150,7 @@ public class ZonePane extends JTabExtended<IZone>  {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnAddUbication, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -160,13 +160,13 @@ public class ZonePane extends JTabExtended<IZone>  {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(btnAddUbication, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnDeleteUbication, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(74, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
-                .addGap(49, 49, 49))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnAddUbication, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnDeleteUbication, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -175,14 +175,13 @@ public class ZonePane extends JTabExtended<IZone>  {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblDescription)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(97, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(41, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lblDescription)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,7 +192,7 @@ public class ZonePane extends JTabExtended<IZone>  {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -232,18 +231,18 @@ public class ZonePane extends JTabExtended<IZone>  {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -257,22 +256,22 @@ public class ZonePane extends JTabExtended<IZone>  {
 
             location = searchLocationDialog.getSearchResult();
             if (location != null) {
-              lasignedTableModel.AddLocationToZone(location, currentObject);
-              lasignedTableModel = new LocationsAsignedTableModel(currentObject.getLocationsInZone(), currentObject);
-              grdLocationAsigned.setModel(lasignedTableModel);
+                lasignedTableModel.AddLocationToZone(location, currentObject);
+                lasignedTableModel = new LocationsAsignedTableModel(currentObject.getLocationsInZone(), currentObject);
+                grdLocationAsigned.setModel(lasignedTableModel);
             }
-          SetUIElements();
-            
         }
         
         
 }//GEN-LAST:event_btnAddUbicationActionPerformed
 
     private void btnDeleteUbicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUbicationActionPerformed
-    if (grdLocationAsigned.getSelectedRow()>-1)
-        ItemSelectedLocation(grdLocationAsigned.getSelectedRow());
-    else
-        JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar la ubicación que desea eliminar");
+        if (grdLocationAsigned.getSelectedRow() > -1) {
+            ItemSelectedLocation(grdLocationAsigned.getSelectedRow());
+            ComponentUtil.SetState(true, getControlsToEnable());
+        } else {
+            JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar la ubicación que desea eliminar");
+        }
         return;
         
         
@@ -297,8 +296,7 @@ public class ZonePane extends JTabExtended<IZone>  {
             ZoneDB.Delete(currentObject);
             super.Delete();
             FillGrid();
-
-
+            FillLocationsAsignedGrid();
         } catch (Exception ex) {
             cancelAction = true;
             throw ex;
@@ -313,24 +311,19 @@ public class ZonePane extends JTabExtended<IZone>  {
         txtDescription.requestFocusInWindow();
         btnAddUbication.setEnabled(true);
         btnDeleteUbication.setEnabled(true);
-        
+
     }
 
     @Override
     public boolean Save() throws Exception {
-        cancelAction = false;
-            
         if (!CheckFields()) {
             return true;
         }
-        
+        super.Save();
+        cancelAction = false;
         
         try {
             currentObject.setDescription(txtDescription.getText());
-            for(ILocation l : currentObject.getLocationsInZone()){
-                System.out.print(l.getDescription());
-            }
-            
             if (IsObjectLoaded()) {
                 return Update();
             }
@@ -360,35 +353,33 @@ public class ZonePane extends JTabExtended<IZone>  {
     public boolean Update() throws Exception {
         cancelAction = false;
         try {
-         
+
             ZoneDB.Update(currentObject);
             FillGrid();
-      
+
         } catch (Exception ex) {
             cancelAction = true;
         }
         return cancelAction;
-    
+
     }
-    
+
     @Override
     public void SetUIElements() {
-        if(currentObject == null)
+        if (currentObject == null) {
             return;
+        }
         txtDescription.setText(currentObject.getDescription());
         FillLocationsAsignedGrid();
-         lasignedTableModel.setReadOnly(true);
+        lasignedTableModel.setReadOnly(true);
     }
-    
-        
-        
 
     @Override
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IZone> tableModel = (SicceTableModel<IZone>) gridZones.getModel();
         currentObject = tableModel.getRow(selectedIndex);
-       SetUIElements();
+        SetUIElements();
     }
 
     public void ItemSelectedLocation(int selectedIndex) {
@@ -418,33 +409,31 @@ public class ZonePane extends JTabExtended<IZone>  {
      */
     private void FillLocationsAsignedGrid() {
         lasignedTableModel = null;
-        lasignedTableModel = new LocationsAsignedTableModel((currentObject != null)?currentObject.getLocationsInZone():null, currentObject);
+        lasignedTableModel = new LocationsAsignedTableModel((currentObject != null) ? currentObject.getLocationsInZone() : null, currentObject);
         grdLocationAsigned.setModel(lasignedTableModel);
         grdLocationAsigned.setEnabled(true);
     }
-    
-      @Override
+
+    @Override
     public void CancelSave() {
         if (currentObject != null) {
             if (currentObject.getID() != null) {
                 IZone originalInstance = ZoneDB.FindZoneByID(currentObject.getID());
-                this.currentObject = originalInstance;
+                this.currentObject.getLocationsInZone().clear();
+                this.currentObject.getLocationsInZone().addAll(originalInstance.getLocationsInZone());
             } else {
                 this.currentObject = ClassFactory.getZoneInstance();
             }
-           
+
         }
     }
-    
-      
-       @Override
-       public boolean CheckFields() {
-         
-          if (!Validator.ValidateField(null,null,0, txtDescription, true, "la descripción de la zona",10)) {
+
+    @Override
+    public boolean CheckFields() {
+
+        if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción de la zona", 1)) {
             return false;
         }
-         return true;
-       }
-    
-    
+        return true;
+    }
 }
