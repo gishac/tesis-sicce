@@ -27,6 +27,12 @@ import javax.swing.text.JTextComponent;
 public class Validator
 {
     
+    private static String productName;
+    
+    public static void Initialize(String applicationName){
+        productName = applicationName;
+    }
+    
     /**
      * Valida el ingreso de Información aplicable a un JTextComponent
      * @param componentePadre Referencia del Componente Padre,
@@ -94,7 +100,7 @@ public class Validator
             if (tmp.doubleValue()<=0.0 )
             {
                 
-                JOptionPane.showMessageDialog(masterComponent, pFieldDescription + " debe ser Mayor a Cero." ,null,JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(masterComponent, pFieldDescription + " debe ser Mayor a Cero.",productName,JOptionPane.WARNING_MESSAGE);
                 if (pPanel!=null)
                 { pPanel.setSelectedIndex(pIndiceTab);
                   FocusHelper.patchTabFocus(pTxt);
@@ -133,7 +139,7 @@ public class Validator
             
             if (tmp.doubleValue()<=0.0 )
             { 
-                JOptionPane.showMessageDialog(masterComponent, pFieldDescription + " debe ser Mayor a Cero." ,null,JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(masterComponent, pFieldDescription + " debe ser Mayor a Cero." ,productName,JOptionPane.WARNING_MESSAGE);
                 return false;    
             }
             
@@ -243,7 +249,7 @@ public class Validator
             
             if (pRequired)
             {   //SI EL CAMPO ES OBLIGATORIO.. MUESTRO MENSAJE
-                JOptionPane.showMessageDialog(masterComponent,"Debe ingresar " + pFieldDescription ,null,JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(masterComponent,"Debe ingresar " + pFieldDescription ,productName,JOptionPane.WARNING_MESSAGE);
                 
                 if (pPanel!=null)
                 { pPanel.setSelectedIndex(pTabIndex);
@@ -258,7 +264,7 @@ public class Validator
         } //SI EL TAMANIO ES MENOR AL MINIMO REQUERIDO
         else if (textSize < pMinRequired)
         {
-            JOptionPane.showMessageDialog(masterComponent, pFieldDescription + " debe tener al Menos " + Integer.toString(pMinRequired)+ " Caracter(es)" ,null,JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(masterComponent, pFieldDescription + " debe tener al Menos " + Integer.toString(pMinRequired)+ " Caracter(es)" ,productName,JOptionPane.WARNING_MESSAGE);
             
             if (pPanel!=null)
             { pPanel.setSelectedIndex(pTabIndex);
@@ -322,7 +328,7 @@ public class Validator
     {
         if(pList.getModel().getSize()==0)
         {
-            JOptionPane.showMessageDialog(masterComponent,"No ha ingresado " + pFieldDescription, null,JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(masterComponent,"No ha ingresado " + pFieldDescription, productName,JOptionPane.WARNING_MESSAGE);
             return false;
         }
         else
@@ -350,7 +356,7 @@ public class Validator
         if (pRequired)
             if (pCbo.getSelectedIndex()==-1)
             {
-            JOptionPane.showMessageDialog(masterComponent,"No ha seleccionado " + pFieldDescription, null,JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(masterComponent,"No ha seleccionado " + pFieldDescription, productName,JOptionPane.WARNING_MESSAGE);
             
             if (pPanel!=null)
             { pPanel.setSelectedIndex(pTabIndex);
@@ -412,7 +418,7 @@ public class Validator
     {
         if (!isValidYear(pDtp) && (pRequired))
         {
-            JOptionPane.showMessageDialog(masterComponent,"Debe ingresar " + pFieldDescription,null,JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(masterComponent,"Debe ingresar " + pFieldDescription,productName,JOptionPane.WARNING_MESSAGE);
             
             if (pPanel!=null)
             { pPanel.setSelectedIndex(pTabIndex);
@@ -509,7 +515,7 @@ public class Validator
     {
         if ((pDtp.getDate() == null) && (pRequired))
         {
-            JOptionPane.showMessageDialog(masterComponent,"Debe ingresar " + pFieldDescription,null,JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(masterComponent,"Debe ingresar " + pFieldDescription,productName,JOptionPane.WARNING_MESSAGE);
             
             if (pPanel!=null)
             { pPanel.setSelectedIndex(pTabIndex);
@@ -571,7 +577,7 @@ public class Validator
     {
         if ((!pChkBox.isSelected()) && (pRequired))
         {
-            JOptionPane.showMessageDialog(masterComponent,"Debe seleccionar " + pFieldDescription,null,JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(masterComponent,"Debe seleccionar " + pFieldDescription,productName,JOptionPane.WARNING_MESSAGE);
             
             if (pPanel!=null)
             { pPanel.setSelectedIndex(pTabIndex);
@@ -778,7 +784,7 @@ public class Validator
      
        if (!IP_PATTERN.matcher(iPaddress).matches())
         {
-            JOptionPane.showMessageDialog(masterComponent,"La dirección IP no es válida",null,JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(masterComponent,"La dirección IP no es válida",productName,JOptionPane.WARNING_MESSAGE);
             return false;
        }
        else
