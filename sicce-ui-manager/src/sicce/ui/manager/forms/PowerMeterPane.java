@@ -7,6 +7,7 @@ package sicce.ui.manager.forms;
 
 import java.awt.Component;
 import java.util.regex.Pattern;
+import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.dataaccess.PowerMeterDB;
@@ -20,6 +21,7 @@ import sicce.api.businesslogic.PowerMeterTableModel;
 import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.Validator;
+import sicce.ui.manager.controls.SearchDialog;
 
 /**
  *
@@ -259,7 +261,14 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
 
     @Override
     public DialogResult Search() {
-        return super.Search();
+         SearchDialog<IPowerMeter> searchPmeterDialog = new SearchDialog<IPowerMeter>(new JFrame(), true, new PowerMeterTableModel(pmeterBizObject.GetAllPowerMeter()));
+        searchPmeterDialog.setVisible(true);
+        DialogResult result = searchPmeterDialog.getDialogResult();
+        if (result == DialogResult.Ok) {
+            currentObject = searchPmeterDialog.getSearchResult();
+        //SetUIElements();
+        }
+        return result;
     }
 
     @Override
