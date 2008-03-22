@@ -6,6 +6,7 @@
 
 package sicce.ui.manager.forms;
 
+import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.dataaccess.LocationTypeDB;
@@ -18,6 +19,7 @@ import sicce.api.businesslogic.LocationTypeTableModel;
 import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.Validator;
+import sicce.ui.manager.controls.SearchDialog;
 /**
  *
  * @author  gish@c
@@ -179,7 +181,14 @@ public class LocationTypePane extends JTabExtended<ILocationType> {
 
     @Override
     public DialogResult Search() {
-        return super.Search();
+        SearchDialog<ILocationType> searchLTypeDialog = new SearchDialog<ILocationType>(new JFrame(), true, new LocationTypeTableModel(ltypeBizObject.GetAllLocationsType()));
+        searchLTypeDialog.setVisible(true);
+        DialogResult result = searchLTypeDialog.getDialogResult();
+        if (result == DialogResult.Ok) {
+            currentObject = searchLTypeDialog.getSearchResult();
+        //SetUIElements();
+        }
+        return result;
     }
 
     @Override
