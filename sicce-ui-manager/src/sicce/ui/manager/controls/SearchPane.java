@@ -153,7 +153,7 @@ public class SearchPane<T> extends javax.swing.JPanel {
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         if (tableResults.getSelectedRow() >= 0) {
             dialogResult = DialogResult.Ok;
-            searchResult = ((SicceTableModel<T>) tableResults.getModel()).getRow(tableResults.getSelectedRow());
+            searchResult = ((SicceTableModel<T>) tableResults.getModel()).getRow(rowSorter.convertRowIndexToModel(tableResults.getSelectedRow()));
             parentDialog.dispose();
         }
         else{
