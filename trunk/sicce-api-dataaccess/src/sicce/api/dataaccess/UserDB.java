@@ -45,4 +45,24 @@ public class UserDB {
     public static IUserSicce FindUserByID(int id){
         return DataAccessManager.getInstance().getUserDB().findById(id);
     }
+    
+     public static IUserSicce FindUserByLogin(String login){
+         List<IUserSicce> result = DataAccessManager.getInstance().getUserDB().findByUsernameSicce(login);
+         if(result != null && result.size() > 0)
+             return result.get(0);
+        return null;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
