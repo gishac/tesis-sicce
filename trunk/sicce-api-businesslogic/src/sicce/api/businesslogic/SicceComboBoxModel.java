@@ -45,6 +45,8 @@ public class SicceComboBoxModel <T> extends AbstractListModel implements ComboBo
      * @param renderer
      */
     public void setSelectedItem(Object item, SicceComboBoxRenderer renderer) {
+        if(item == null)
+            return;
         for(Object value : getDataSource()){
             try {
                 if (renderer.GetValueMemberValue(value).toString().equals(renderer.GetValueMemberValue(item))) {

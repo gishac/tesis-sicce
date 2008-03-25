@@ -27,11 +27,11 @@ public class UserTableModel extends SicceTableModel<IUserSicce> {
             case 0:
                 return rowIndex + 1;
             case 1:
-                return user.getName();
+                return user.getUsernameSicce();
             case 2: 
                 return user.getRole().getDescription();
             case 3:
-                return user.getUsernameSicce() + " " + user.getLastname();
+                return user.getName() + " " + user.getLastname();
             default: 
                 return null;
         }

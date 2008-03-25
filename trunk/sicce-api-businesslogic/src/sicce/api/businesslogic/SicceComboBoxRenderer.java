@@ -154,7 +154,8 @@ public class SicceComboBoxRenderer extends JLabel implements ListCellRenderer {
                     this.setBackground(list.getBackground());
                     this.setForeground(list.getSelectionForeground());
                 }                
-                this.setText(GetDisplayMemberValue(value));
+                if(!(value instanceof String))
+                    this.setText(GetDisplayMemberValue(value));
             }
         } 
         catch (Exception ex) {
