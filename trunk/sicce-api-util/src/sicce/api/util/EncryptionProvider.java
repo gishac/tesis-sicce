@@ -13,11 +13,27 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  */
 public class EncryptionProvider {
 
+    private static String password = "sicce";
+    
+    private static StandardPBEStringEncryptor getEncryptor(){
+        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+        encryptor.setPassword(password);
+        return encryptor;
+    }
+    
     public static void RegisterHibernateEncryptor() {
-        StandardPBEStringEncryptor hibernateEncryptor = new StandardPBEStringEncryptor();
-        hibernateEncryptor.setPassword("sicce");
+        
         HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();
         registry.registerPBEStringEncryptor("configurationHibernateEncryptor",
-                hibernateEncryptor);
+                getEncryptor());
+    }
+    
+    public static String Encrypt(String value){ 
+        String result = getEncryptor().encrypt(value);
+        return result;
+    }
+    
+    public static String Decrypt(String value){
+        return getEncryptor().decrypt(value);
     }
 }
