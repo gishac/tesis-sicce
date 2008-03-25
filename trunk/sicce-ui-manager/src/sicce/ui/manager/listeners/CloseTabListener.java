@@ -52,6 +52,7 @@ public class CloseTabListener implements ActionListener, MouseListener {
                         tabManager.getCurrentTab().Close();
                     }
                     tabManager.RemoveTab(i);
+                    break;
                 } catch (Exception ex) {
                     Logger.getLogger(CloseTabListener.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -65,12 +66,19 @@ public class CloseTabListener implements ActionListener, MouseListener {
 
     public void mousePressed(MouseEvent e) {
       
-            showPopup(e);
+            //showPopup(e);
     }
 
     public void mouseReleased(MouseEvent e) {
-        
-            showPopup(e);
+        clickPoint = e.getPoint();
+        for(int i = 0; i < tabManager.getTabCount(); i++)
+         {
+            Rectangle rect = tabManager.getUI().getTabBounds(tabManager, i);
+            if(rect.contains(clickPoint)){
+                showPopup(e);
+            }
+        }
+            
     }
 
     public void mouseEntered(MouseEvent e) {

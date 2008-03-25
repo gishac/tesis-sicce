@@ -426,7 +426,8 @@ public class LocationPane extends JTabExtended<ILocation> {
             return;
         }
         txtDescription.setText(currentObject.getDescription());
-        txtPowerMeter.setText(currentObject.getPowerMeter().getDescription());
+        if(currentObject.getPowerMeter() != null)
+            txtPowerMeter.setText(currentObject.getPowerMeter().getDescription());
         if (currentObject.getLocation() != null) {
             txtUbication.setText(currentObject.getLocation().getDescription());
         }

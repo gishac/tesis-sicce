@@ -82,7 +82,8 @@ public class JTabbedPaneExtended extends JTabbedPane {
 
     /**
      * Administra el cambio de tabs
-     * @param newTabIndex
+     * @param newTabIndex -1 si el evento no es un cambio de tab
+     * @param tabClosing true si se esta cerrando el tab
      * @return
      * @throws java.lang.Exception
      */

@@ -20,6 +20,7 @@ import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 import sicce.api.info.interfaces.IRole;
 import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.util.ComponentUtil;
+import sicce.api.util.EncryptionProvider;
 import sicce.api.util.JTextFieldLimit;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.SearchDialog;
@@ -240,10 +241,10 @@ public class UserPane extends JTabExtended<IUserSicce> {
         super.Save();
         cancelAction = false;
         try {
-            currentObject.setName(txtName.getText());
+            currentObject.setName(txtFirstName.getText());
             currentObject.setRole((IRole) cmbRole.getSelectedItem());
-            currentObject.setPasswordSicce(new String(txtPassword.getPassword()));
-            currentObject.setUsernameSicce(txtFirstName.getText());
+            currentObject.setPasswordSicce(EncryptionProvider.Encrypt(new String(txtPassword.getPassword())));
+            currentObject.setUsernameSicce(txtName.getText());
             currentObject.setLastname(txtLastName.getText());
             if (IsObjectLoaded()) {
                 return Update();
@@ -293,10 +294,10 @@ public class UserPane extends JTabExtended<IUserSicce> {
     public void SetUIElements() {
         if(currentObject == null)
             return;
-        txtName.setText(currentObject.getName());
-        txtFirstName.setText(currentObject.getUsernameSicce());
+        txtName.setText(currentObject.getUsernameSicce());
+        txtFirstName.setText(currentObject.getName());
         roleComboBoxModel.setSelectedItem(currentObject.getRole(),roleComboBoxRenderer);
-        txtPassword.setText(currentObject.getPasswordSicce());
+        txtPassword.setText(EncryptionProvider.Decrypt(currentObject.getPasswordSicce()));
         txtLastName.setText(currentObject.getLastname());
     }
     
