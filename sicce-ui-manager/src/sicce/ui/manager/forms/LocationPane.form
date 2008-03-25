@@ -48,7 +48,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Localizaci&#xf3;n">
+            <TitledBorder title="Dependencia">
               <Property name="titleX" resourceKey="jPanel4.border.title"/>
             </TitledBorder>
           </Border>

@@ -36,6 +36,7 @@ import sicce.api.info.ConstantsProvider.OptionsProvider;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.IOptionSicce;
+import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.controls.JTabExtended;
@@ -47,11 +48,11 @@ import sicce.ui.manager.handlers.ToolBarHandler;
  */
 public class SicceuimanagerView extends FrameView {
 
-    public SicceuimanagerView(SingleFrameApplication app) {
-
-        super(app);
-        ApplyLookAndFeel();
-        initComponents();
+    private IUserSicce currentUser;
+    
+    public SicceuimanagerView(SingleFrameApplication app, IUserSicce user){        
+        this(app);
+        this.currentUser = user;
         toolBarHandler = new ToolBarHandler(toolBar,getTabManager());
         
         // status bar initialization - message timeout, idle icon and busy animation, etc
@@ -60,11 +61,20 @@ public class SicceuimanagerView extends FrameView {
         //statusAnimationLabel.setIcon(idleIcon);
         //progressBar.setVisible(false);
         OrganizeUIElements();
-        CreateUIElements();
-        SetFrameSize();
+        CreateUIElements();        
         tabManager.setOptionsText(optionsText);
         tabManager.setResourceMap(resourceMap);
         Validator.Initialize(resourceMap.getString("ApplicationName"));
+    }
+    
+    public SicceuimanagerView(SingleFrameApplication app) {
+
+        super(app);
+        ApplyLookAndFeel();
+        SetFrameSize();
+        initComponents();
+        SetFrameSize();
+        
     }
 
     @Action
@@ -326,7 +336,18 @@ public class SicceuimanagerView extends FrameView {
      * Crea y agrega las opciones en el panel de tareas
      */
     private void CreateTasks() {
-        IOptionSicce a = ClassFactory.getOptionInstance();
+        JTaskPaneGroup mainGroup = new JTaskPaneGroup();
+        mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
+        mainGroup.setSpecial(true);
+        for(IOptionSicce option : currentUser.getRole().getPermissions()){
+            ImageIcon icon = null;
+            mainGroup.add(getAction(option.getDescription(), option.getActionCommand(), icon));
+        }
+        getTaskPaneManager().add(mainGroup);
+        getTaskPaneManager().revalidate();
+        getTaskPaneManager().repaint();
+        
+        /*IOptionSicce a = ClassFactory.getOptionInstance();
         a.setDescription("Role");
 
         IOptionSicce b = ClassFactory.getOptionInstance();
@@ -356,16 +377,14 @@ public class SicceuimanagerView extends FrameView {
         options.add(f);
         options.add(g);
       
-        JTaskPaneGroup mainGroup = new JTaskPaneGroup();
-        mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
-        mainGroup.setSpecial(true);
+        
         for (IOptionSicce option : this.options) {
             ImageIcon icon = null;
             mainGroup.add(getAction(option.getDescription(), option.getDescription(), icon));
         }
         getTaskPaneManager().add(mainGroup);
         getTaskPaneManager().revalidate();
-        getTaskPaneManager().repaint();
+        getTaskPaneManager().repaint();*/
     }
 
     /**
@@ -437,13 +456,14 @@ public class SicceuimanagerView extends FrameView {
      * @param icon
      * @return
      */
-    private javax.swing.Action getAction(String text, String actionCommand, ImageIcon icon) {
+    private javax.swing.Action getAction(final String text, String actionCommand, ImageIcon icon) {
         javax.swing.Action event = new AbstractAction(text) {
 
             public void actionPerformed(ActionEvent e) {
                 OptionsProvider option = Enum.valueOf(OptionsProvider.class, e.getActionCommand());
                 JTabExtended selectedOption = GetForm(option);               
                 if (!getTabManager().getTabs().contains(selectedOption)) {
+                    selectedOption.setTitle(text);
                     getTabManager().AddTab(selectedOption);
                 }
                 if (!getTabManager().getCurrentTab().equals(selectedOption)) {

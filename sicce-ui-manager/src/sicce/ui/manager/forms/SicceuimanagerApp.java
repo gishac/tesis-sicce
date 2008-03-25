@@ -4,8 +4,10 @@
 
 package sicce.ui.manager.forms;
 
+import javax.swing.JFrame;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
+import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.EncryptionProvider;
 
 /**
@@ -16,8 +18,16 @@ public class SicceuimanagerApp extends SingleFrameApplication {
     /**
      * At startup create and show the main frame of the application.
      */
-    @Override protected void startup() {
-        show(new SicceuimanagerView(this));
+    @Override protected void startup() {        
+        SicceuimanagerView sicceUIManagerView = new SicceuimanagerView(this);
+        LoginForm loginForm = new LoginForm(sicceUIManagerView.getResourceMap());
+        loginForm.setVisible(true);
+        if(loginForm.getDialogResult() == DialogResult.Ok){
+            show(new SicceuimanagerView(this,loginForm.getCurrentUser()));
+        }
+        else{
+            getApplication().exit(null);
+        }
     }
 
     /**
