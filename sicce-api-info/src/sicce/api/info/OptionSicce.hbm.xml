@@ -11,7 +11,11 @@
             <generator class="increment" />
         </id>
         <property name="description" type="java.lang.String">
-            <column name="DESCRIPTION" length="30" />
+            <column name="DESCRIPTION" length="50" />
+        </property>
+        
+        <property name="actionCommand" type="java.lang.String">
+            <column name="ACTION_COMMANd" length="50" />
         </property>
         
         <property name="icon" type="java.lang.String">

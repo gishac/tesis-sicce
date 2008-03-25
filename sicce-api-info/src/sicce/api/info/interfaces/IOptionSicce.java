@@ -13,5 +13,6 @@ public interface IOptionSicce {
 
     void setDescription(String description);
     String getDescription();
+    String getActionCommand();
     int getID();
 }
