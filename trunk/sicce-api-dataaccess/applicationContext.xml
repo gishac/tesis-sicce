@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+    
+    <bean id="sessionFactory"
+   class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="configLocation"
+    value="classpath:../hibernate.cfg.xml">
+        </property>
+    </bean>
+    
+    <bean id="ZoneDAO" class="sicce.api.dataaccess.ZoneDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="UserSicceDAO" class="sicce.api.dataaccess.UserSicceDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="RoleDAO" class="sicce.api.dataaccess.RoleDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="UnitMeasureDAO" class="sicce.api.dataaccess.UnitMeasureDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="ParameterDAO" class="sicce.api.dataaccess.ParameterDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="OptionRoleDAO" class="sicce.api.dataaccess.OptionRoleDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="LocationTypeDAO" class="sicce.api.dataaccess.LocationTypeDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="PowerMeterDAO" class="sicce.api.dataaccess.PowerMeterDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="MeasureDAO" class="sicce.api.dataaccess.MeasureDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="OptionSicceDAO" class="sicce.api.dataaccess.OptionSicceDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="LocationDAO" class="sicce.api.dataaccess.LocationDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
+    <bean id="DataAccessManager" class="sicce.api.dataaccess.DataAccessManager" abstract="false" lazy-init="default"
+   autowire="default" dependency-check="default">
+        <property name="roleDB">
+            <ref bean="RoleDAO" />
+        </property>
+        <property name="userDB">
+            <ref bean="UserSicceDAO" />
+        </property>
+        <property name="locationDB">
+            <ref bean="LocationDAO" />
+        </property>
+        <property name="locationTypeDB">
+            <ref bean="LocationTypeDAO" />
+        </property>
+        <property name="measureDB">
+            <ref bean="MeasureDAO" />
+        </property>
+        <property name="optionDB">
+            <ref bean="OptionSicceDAO" />
+        </property>
+        <property name="parameterDB">
+            <ref bean="ParameterDAO" />
+        </property>
+        <property name="powerMeterDB">
+            <ref bean="PowerMeterDAO" />
+        </property>
+        <property name="unitMeasureDB">
+            <ref bean="UnitMeasureDAO" />
+        </property>	
+         <property name="zoneDB">
+            <ref bean="ZoneDAO" />
+        </property>
+    </bean>
+    
+    
+</beans>
