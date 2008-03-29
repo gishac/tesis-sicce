@@ -6,6 +6,7 @@
 package sicce.ui.manager.forms;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.businesslogic.OptionBizObject;
@@ -17,8 +18,11 @@ import sicce.api.dataaccess.RoleDB;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.interfaces.IRole;
 import sicce.api.util.ComponentUtil;
+import sicce.api.util.JTextFieldLimit;
+import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.SearchDialog;
+import sicce.ui.manager.handlers.ExceptionHandler;
 
 /**
  *
@@ -34,6 +38,7 @@ public class RolePane extends JTabExtended<IRole> {
     /** Creates new form LocationTypePane */
     public RolePane() {
         initComponents();
+        txtDescription.setDocument(new JTextFieldLimit(20));
         getControlsToClear().add(txtDescription);
         getControlsToClear().add(gridPermissions);
         getControlsToEnable().add(txtDescription);
@@ -219,6 +224,9 @@ public class RolePane extends JTabExtended<IRole> {
     public boolean Save() throws Exception {
         super.Save();
         cancelAction = false;
+        if (!CheckFields()) {
+            return true;
+        }
         try {
             currentObject.setDescription(txtDescription.getText().trim());
             if (IsObjectLoaded()) {
@@ -227,6 +235,7 @@ public class RolePane extends JTabExtended<IRole> {
             RoleDB.Save(currentObject);
             FillGrid();
         } catch (Exception ex) {
+            ExceptionHandler.DisplayException(ex);
             cancelAction = true;
         }
         return cancelAction;
@@ -308,6 +317,14 @@ public class RolePane extends JTabExtended<IRole> {
         permissionsTableModel = new PermissionsTableModel(optionBizObject.GetAllOptions(), currentObject);
         gridPermissions.setModel(permissionsTableModel);
         gridPermissions.setEnabled(true);
+    }
+
+    @Override
+    public boolean CheckFields() {
+        if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción del rol", 3)) {
+            return false;
+        }
+        return true;
     }
 
    

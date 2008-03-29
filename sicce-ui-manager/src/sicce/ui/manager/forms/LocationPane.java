@@ -24,9 +24,11 @@ import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.util.ComponentUtil;
+import sicce.api.util.JTextFieldLimit;
 import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.SearchDialog;
+import sicce.ui.manager.handlers.ExceptionHandler;
 
 /**
  *
@@ -48,6 +50,7 @@ public class LocationPane extends JTabExtended<ILocation> {
     /** Creates new form LocationPane */
     public LocationPane() {
         initComponents();
+        txtDescription.setDocument(new JTextFieldLimit(200));
         getControlsToClear().add(txtDescription);
         getControlsToClear().add(txtUbication);
         getControlsToClear().add(txtPowerMeter);
@@ -57,17 +60,23 @@ public class LocationPane extends JTabExtended<ILocation> {
         getControlsToEnable().add(txtDescription);
         getControlsToEnable().add(btnSearchPowerMeter);
         getControlsToEnable().add(btnSearchUbication);
+        getControlsToEnable().add(btnClearLocation);;
+        getControlsToEnable().add(btnClearPowerMeter);;
         getControlsToEnable().add(cmbLocationType);
         ComponentUtil.SetState(false, getControlsToEnable());
 
         pmeterBizObject = new PowerMeterBizObject();
         locationBizObject = new LocationBizObject();
         locationTypeBizObject = new LocationTypeBizObject();
+        LoadComboBoxes();
+        FillGrid();
+    }
+
+    private void LoadComboBoxes() {
         locationTypeComboBoxModel = new SicceComboBoxModel<ILocationType>(locationTypeBizObject.GetAllLocationsType());
         locationTypeComboBoxRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method, "getID", DisplayMemberRenderType.Method);
         cmbLocationType.setModel(locationTypeComboBoxModel);
         cmbLocationType.setRenderer(locationTypeComboBoxRenderer);
-        FillGrid();
     }
 
     /** This method is called from within the constructor to
@@ -90,6 +99,8 @@ public class LocationPane extends JTabExtended<ILocation> {
         txtPowerMeter = new javax.swing.JTextField();
         btnSearchPowerMeter = new javax.swing.JButton();
         cmbLocationType = new javax.swing.JComboBox();
+        btnClearLocation = new javax.swing.JButton();
+        btnClearPowerMeter = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         grdLocation = new javax.swing.JTable();
 
@@ -154,6 +165,24 @@ public class LocationPane extends JTabExtended<ILocation> {
 
         cmbLocationType.setName("cmbLocationType"); // NOI18N
 
+        btnClearLocation.setIcon(resourceMap.getIcon("btnClearLocation.icon")); // NOI18N
+        btnClearLocation.setText(resourceMap.getString("btnClearLocation.text")); // NOI18N
+        btnClearLocation.setName("btnClearLocation"); // NOI18N
+        btnClearLocation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearLocationActionPerformed(evt);
+            }
+        });
+
+        btnClearPowerMeter.setIcon(resourceMap.getIcon("btnClearPowerMeter.icon")); // NOI18N
+        btnClearPowerMeter.setText(resourceMap.getString("btnClearPowerMeter.text")); // NOI18N
+        btnClearPowerMeter.setName("btnClearPowerMeter"); // NOI18N
+        btnClearPowerMeter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearPowerMeterActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -167,27 +196,33 @@ public class LocationPane extends JTabExtended<ILocation> {
                             .addComponent(lblUbication))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtUbication, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                            .addComponent(cmbLocationType, 0, 216, Short.MAX_VALUE))
-                        .addGap(6, 6, 6)
-                        .addComponent(btnSearchUbication, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbLocationType, 0, 212, Short.MAX_VALUE)
+                            .addComponent(txtUbication, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSearchUbication, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnClearLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPowerMeter, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblDescription2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(txtPowerMeter)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(txtPowerMeter, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnSearchPowerMeter, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnClearPowerMeter, javax.swing.GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE)
+                                .addGap(6, 6, 6))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -196,20 +231,24 @@ public class LocationPane extends JTabExtended<ILocation> {
                         .addGap(10, 10, 10)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblLocationType)
-                            .addComponent(cmbLocationType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(11, 11, 11)
+                            .addComponent(cmbLocationType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnSearchUbication, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnClearLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblPowerMeter)
-                            .addComponent(txtPowerMeter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnSearchUbication, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
-                        .addComponent(btnSearchPowerMeter)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtPowerMeter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnSearchPowerMeter)
+                        .addComponent(btnClearPowerMeter, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(11, 11, 11)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDescription2))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -244,11 +283,11 @@ public class LocationPane extends JTabExtended<ILocation> {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -256,14 +295,16 @@ public class LocationPane extends JTabExtended<ILocation> {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        // TODO add your handling code here:
-        
+        if(currentObject == null){
+            LoadComboBoxes();
+            FillGrid();
+        }
     }//GEN-LAST:event_formComponentShown
 
     private void btnSearchPowerMeterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPowerMeterActionPerformed
@@ -291,7 +332,19 @@ public class LocationPane extends JTabExtended<ILocation> {
         
     }//GEN-LAST:event_btnSearchUbicationActionPerformed
 
+    private void btnClearLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearLocationActionPerformed
+        plocation = null;
+        txtUbication.setText("");
+    }//GEN-LAST:event_btnClearLocationActionPerformed
+
+    private void btnClearPowerMeterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPowerMeterActionPerformed
+        pmeter = null;
+        txtPowerMeter.setText("");
+    }//GEN-LAST:event_btnClearPowerMeterActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClearLocation;
+    private javax.swing.JButton btnClearPowerMeter;
     private javax.swing.JButton btnSearchPowerMeter;
     private javax.swing.JButton btnSearchUbication;
     private javax.swing.JComboBox cmbLocationType;
@@ -346,9 +399,7 @@ public class LocationPane extends JTabExtended<ILocation> {
             // if (cmbLocationType.getSelectedItem()!=null)
             ltype = (ILocationType) cmbLocationType.getSelectedItem();
             currentObject.setLocationType(ltype);
-            if (pmeter != null) {
-                currentObject.setPowerMeter(pmeter);
-            }
+            currentObject.setPowerMeter(pmeter);
             currentObject.setDescription(txtDescription.getText());
             currentObject.setLocation(plocation);
             if (IsObjectLoaded()) {
@@ -357,6 +408,7 @@ public class LocationPane extends JTabExtended<ILocation> {
             LocationDB.Save(currentObject);
             FillGrid();
         } catch (Exception ex) {
+            ExceptionHandler.DisplayException(ex);
             cancelAction = true;
         }
         return cancelAction;
@@ -442,15 +494,11 @@ public class LocationPane extends JTabExtended<ILocation> {
     @Override
     public boolean CheckFields() {
 
-        if (!Validator.ValidateField(null, null, 0, txtUbication, true, "la ubicación principal", 1)) {
+        if (!Validator.ValidateField(null, cmbLocationType, true, "el tipo de dependencia")) {
             return false;
         }
 
-        if (!Validator.ValidateField(null, null, 0, txtPowerMeter, true, "el medidor asignado", 1)) {
-            return false;
-        }
-
-        if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción de la ubicación", 10)) {
+        if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción de la ubicación", 1)) {
             return false;
         }
         return true;

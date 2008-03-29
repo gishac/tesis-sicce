@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdesktop.application.Action;
@@ -22,6 +23,8 @@ import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +33,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.UIManager;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.info.ConstantsProvider.OptionsProvider;
@@ -41,6 +45,7 @@ import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.JTabbedPaneExtended;
+import sicce.ui.manager.handlers.ExceptionHandler;
 import sicce.ui.manager.handlers.ToolBarHandler;
 
 /**
@@ -65,6 +70,7 @@ public class SicceuimanagerView extends FrameView {
         tabManager.setOptionsText(optionsText);
         tabManager.setResourceMap(resourceMap);
         Validator.Initialize(resourceMap.getString("ApplicationName"));
+        ExceptionHandler.Initialize(resourceMap.getString("ApplicationName"), resourceMap.getString("ErrorMessage"));
     }
     
     public SicceuimanagerView(SingleFrameApplication app) {
@@ -305,9 +311,19 @@ public class SicceuimanagerView extends FrameView {
     private LocationPane locationPane;
     private ZonePane zonePane;
     private ParameterPane parameterPane;
+    private JLabel statusLabel;
     private String[] optionsText;
    
 
+    private JLabel getStatusLabel(){
+        if(statusLabel == null){
+            statusLabel = new JLabel();
+            statusLabel.setHorizontalAlignment(JLabel.RIGHT);
+            statusLabel.setIcon(getResourceMap().getIcon("UserIcon"));
+        }
+        return statusLabel;
+    }
+    
     /**
      * gish@c
      * Retorna la instancia del control que administra los tabs
@@ -339,7 +355,9 @@ public class SicceuimanagerView extends FrameView {
         JTaskPaneGroup mainGroup = new JTaskPaneGroup();
         mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
         mainGroup.setSpecial(true);
-        for(IOptionSicce option : currentUser.getRole().getPermissions()){
+        List permissions = Arrays.asList(currentUser.getRole().getPermissions().toArray());
+        Collections.sort(permissions);
+        for(IOptionSicce option : (List<IOptionSicce>)permissions){
             ImageIcon icon = null;
             mainGroup.add(getAction(option.getDescription(), option.getActionCommand(), icon));
         }
@@ -392,6 +410,7 @@ public class SicceuimanagerView extends FrameView {
      */
     private void CreateUIElements() {
         CreateTasks();
+        getStatusLabel().setText(currentUser.getName());
         optionsText = new String[3];
         optionsText[0] = getResourceMap().getString("JOptionPaneYes");
         optionsText[1] = getResourceMap().getString("JOptionPaneNo");
@@ -444,6 +463,7 @@ public class SicceuimanagerView extends FrameView {
      */
     private void OrganizeUIElements() {
         this.getFrame().getContentPane().add(toolBar, BorderLayout.NORTH);
+        this.getFrame().getContentPane().add(getStatusLabel(), BorderLayout.SOUTH);
         this.getFrame().getContentPane().add(getTabManager(), BorderLayout.CENTER);
         this.getFrame().getContentPane().add(getTaskPaneManager(), BorderLayout.WEST);
         this.getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

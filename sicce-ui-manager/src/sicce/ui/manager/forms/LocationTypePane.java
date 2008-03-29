@@ -20,6 +20,7 @@ import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.Validator;
 import sicce.ui.manager.controls.SearchDialog;
+import sicce.ui.manager.handlers.ExceptionHandler;
 /**
  *
  * @author  gish@c
@@ -35,7 +36,7 @@ public class LocationTypePane extends JTabExtended<ILocationType> {
         getControlsToClear().add(txtDescription); 
         getControlsToEnable().add(txtDescription);
         ComponentUtil.SetState(false, getControlsToEnable());  
-        txtDescription.setDocument(new JTextFieldLimit(24));
+        txtDescription.setDocument(new JTextFieldLimit(30));
         ltypeBizObject = new LocationTypeBizObject();
         FillGrid();
     }
@@ -174,6 +175,7 @@ public class LocationTypePane extends JTabExtended<ILocationType> {
             FillGrid();
           
         } catch (Exception ex) {
+            ExceptionHandler.DisplayException(ex);
             cancelAction = true;
         }
         return cancelAction;
@@ -227,7 +229,7 @@ public class LocationTypePane extends JTabExtended<ILocationType> {
      @Override
        public boolean CheckFields() {
          
-          if (!Validator.ValidateField(null,null,0, txtDescription, true, "la descripción del tipo de Ubicación",10)) {
+          if (!Validator.ValidateField(null,null,0, txtDescription, true, "la descripción",1)) {
             return false;
         }
          return true;

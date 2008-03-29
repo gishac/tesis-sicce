@@ -22,14 +22,14 @@ import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.Validator;
 import sicce.ui.manager.controls.SearchDialog;
+import sicce.ui.manager.handlers.ExceptionHandler;
 
 /**
  *
  * @author  gish@c
  */
 public class PowerMeterPane extends JTabExtended<IPowerMeter> {
-
-    private IPowerMeter pmeter;
+    
     PowerMeterBizObject pmeterBizObject;
     PowerMeterTableModel pmeterTableModel;
 
@@ -42,8 +42,9 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
         getControlsToEnable().add(txtSerial);
         getControlsToEnable().add(txtIpAddress);
         getControlsToEnable().add(txtDescription);
+        txtSerial.setDocument(new JTextFieldLimit(20));
         txtIpAddress.setDocument(new JTextFieldLimit(16));
-        txtDescription.setDocument(new JTextFieldLimit(24));
+        txtDescription.setDocument(new JTextFieldLimit(200));
         ComponentUtil.SetState(false, getControlsToEnable());
         pmeterBizObject = new PowerMeterBizObject();
         FillGrid();
@@ -253,6 +254,7 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
             txtSerial.setText(currentObject.getSerial());
             FillGrid();
         } catch (Exception ex) {
+            ExceptionHandler.DisplayException(ex);
             cancelAction = true;
         }
         return cancelAction;
@@ -308,16 +310,13 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
     @Override
     public boolean CheckFields() {
 
-        if (!Validator.ValidateField(null, null, 0, txtSerial, true, "el serial del Medidor", 5)) {
+        if (!Validator.ValidateField(null, null, 0, txtSerial, true, "el serial del medidor", 3)) {
             return false;
         }
-        if (!Validator.ValidateField(null, null, 0, txtIpAddress, true, "la dirección IP ", 12)) {
+        if (!Validator.validateIpAddress(null, txtIpAddress.getText())) {
             return false;
         }
-//        if (!Validator.validateAnIpAddressWithRegularExpression(null, txtIpAddress.getText())) {
-//            return false;
-//        }
-        if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción del medidor", 10)) {
+        if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción del medidor", 2)) {
             return false;
         }
 
