@@ -14,7 +14,7 @@
             <column name="DESCRIPTION" length="20" />
         </property>
         
-        <set name="usersInRole" inverse="true">
+        <set name="usersInRole" inverse="true" cascade="delete">
             <key>
                 <column name="ID_ROLE" not-null="true" />
             </key>
