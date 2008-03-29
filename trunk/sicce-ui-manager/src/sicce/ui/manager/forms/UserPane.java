@@ -22,6 +22,7 @@ import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.util.ComponentUtil;
 import sicce.api.util.EncryptionProvider;
 import sicce.api.util.JTextFieldLimit;
+import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.SearchDialog;
 
@@ -51,14 +52,21 @@ public class UserPane extends JTabExtended<IUserSicce> {
         getControlsToEnable().add(txtPassword);
         getControlsToEnable().add(cmbRole);
         ComponentUtil.SetState(false, getControlsToEnable());
+        txtName.setDocument(new JTextFieldLimit(20));
+        txtLastName.setDocument(new JTextFieldLimit(20));
+        txtFirstName.setDocument(new JTextFieldLimit(20));
         txtPassword.setDocument(new JTextFieldLimit(20));
         userBizObject = new UserBizObject();
         roleBizObject = new RoleBizObject();
+        LoadComboBoxes();
+        FillGrid();
+    }
+
+    private void LoadComboBoxes() {
         roleComboBoxModel = new SicceComboBoxModel<IRole>(roleBizObject.GetAllRoles());
         roleComboBoxRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method, "getIdRole", DisplayMemberRenderType.Method);
         cmbRole.setModel(roleComboBoxModel);
         cmbRole.setRenderer(roleComboBoxRenderer);
-        FillGrid();
     }
 
     /** This method is called from within the constructor to
@@ -197,7 +205,10 @@ public class UserPane extends JTabExtended<IUserSicce> {
         jPanel4.getAccessibleContext().setAccessibleName(resourceMap.getString("jPanel4.AccessibleContext.accessibleName")); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        
+        if (currentObject == null) {
+            LoadComboBoxes();
+            FillGrid();
+        }
     }//GEN-LAST:event_formComponentShown
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cmbRole;
@@ -240,6 +251,9 @@ public class UserPane extends JTabExtended<IUserSicce> {
     public boolean Save() throws Exception {
         super.Save();
         cancelAction = false;
+        if (!CheckFields()) {
+            return true;
+        }
         try {
             currentObject.setName(txtFirstName.getText());
             currentObject.setRole((IRole) cmbRole.getSelectedItem());
@@ -260,7 +274,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
 
     @Override
     public DialogResult Search() {
-       SearchDialog<IUserSicce> searchRolesDialog = new SearchDialog<IUserSicce>(new JFrame(), true, new UserTableModel(userBizObject.GetAllUsers()));
+        SearchDialog<IUserSicce> searchRolesDialog = new SearchDialog<IUserSicce>(new JFrame(), true, new UserTableModel(userBizObject.GetAllUsers()));
         searchRolesDialog.setVisible(true);
         DialogResult result = searchRolesDialog.getDialogResult();
         if (result == DialogResult.Ok) {
@@ -292,16 +306,15 @@ public class UserPane extends JTabExtended<IUserSicce> {
 
     @Override
     public void SetUIElements() {
-        if(currentObject == null)
+        if (currentObject == null) {
             return;
+        }
         txtName.setText(currentObject.getUsernameSicce());
         txtFirstName.setText(currentObject.getName());
-        roleComboBoxModel.setSelectedItem(currentObject.getRole(),roleComboBoxRenderer);
+        roleComboBoxModel.setSelectedItem(currentObject.getRole(), roleComboBoxRenderer);
         txtPassword.setText(EncryptionProvider.Decrypt(currentObject.getPasswordSicce()));
         txtLastName.setText(currentObject.getLastname());
     }
-    
-    
 
     @Override
     public void RegisterSelectionListener() {
@@ -314,7 +327,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
         userTableModel = new UserTableModel(userBizObject.GetAllUsers());
         gridUsers.setModel(userTableModel);
     }
-    
+
     @Override
     public void CancelSave() {
         if (currentObject != null) {
@@ -325,5 +338,22 @@ public class UserPane extends JTabExtended<IUserSicce> {
                 this.currentObject = ClassFactory.getUserInstance();
             }
         }
+    }
+
+    @Override
+    public boolean CheckFields() {
+        if (!Validator.ValidateField(null, null, 0, txtName, true, "el login del usuario", 3)) {
+            return false;
+        }
+        if (!Validator.ValidateField(null, null, 0, txtFirstName, true, "el nombre del usuario", 3)) {
+            return false;
+        }
+        if (!Validator.ValidateField(null, null, 0, txtLastName, true, "el apellido del usuario", 3)) {
+            return false;
+        }
+        if (!Validator.ValidateField(null, null, 0, txtPassword, true, "la contraseña del usuario", 3)) {
+            return false;
+        }
+        return true;
     }
 }
