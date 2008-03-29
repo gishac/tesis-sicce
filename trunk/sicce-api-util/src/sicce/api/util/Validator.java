@@ -326,7 +326,7 @@ public class Validator
      */
     public static boolean ValidateField(Component masterComponent, JList pList, boolean pRequired, String pFieldDescription)
     {
-        if(pList.getModel().getSize()==0)
+        if(pList.getModel().getSize() <=0 || pList.getSelectedIndex() < 0 )
         {
             JOptionPane.showMessageDialog(masterComponent,"No ha ingresado " + pFieldDescription, productName,JOptionPane.WARNING_MESSAGE);
             return false;
@@ -354,7 +354,7 @@ public class Validator
     public static boolean ValidateField(Component masterComponent,JTabbedPane pPanel,int pTabIndex, JComboBox pCbo, boolean pRequired, String pFieldDescription)
     {
         if (pRequired)
-            if (pCbo.getSelectedIndex()==-1)
+            if (pCbo.getSelectedItem() == null)
             {
             JOptionPane.showMessageDialog(masterComponent,"No ha seleccionado " + pFieldDescription, productName,JOptionPane.WARNING_MESSAGE);
             
@@ -777,12 +777,8 @@ public class Validator
     }
     
     
-     public static boolean validateAnIpAddressWithRegularExpression(Component masterComponent, String iPaddress){
-        final Pattern IP_PATTERN =
-              Pattern.compile("b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).)"
-                                    + "{3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)b");
-     
-       if (!IP_PATTERN.matcher(iPaddress).matches())
+     public static boolean validateIpAddress(Component masterComponent, String iPaddress){     
+       if (RegexValidator.ValidateIPAddress(iPaddress) <= 0)
         {
             JOptionPane.showMessageDialog(masterComponent,"La dirección IP no es válida",productName,JOptionPane.WARNING_MESSAGE);
             return false;
