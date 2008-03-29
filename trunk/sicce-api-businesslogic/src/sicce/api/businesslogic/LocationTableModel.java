@@ -32,7 +32,10 @@ public class LocationTableModel extends SicceTableModel<ILocation> {
             case 2:
                 return location.getLocationType().getDescription();
             case 3:
-                return location.getPowerMeter().getDescription();
+                if(location.getPowerMeter() != null)
+                    return location.getPowerMeter().getDescription();
+                else
+                    return null;
             case 4:
                 if (location.getLocation()!=null)
                     return location.getLocation().getDescription();
