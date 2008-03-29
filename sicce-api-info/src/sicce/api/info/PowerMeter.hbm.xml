@@ -31,7 +31,7 @@
             </key>
             <one-to-many class="sicce.api.info.Measure" />
         </set>
-        <set name="locations" inverse="true">
+        <set name="locations" inverse="true" cascade="delete">
             <key>
                 <column name="POWER_METER_ID_POWER_METER" not-null="true" />
             </key>
