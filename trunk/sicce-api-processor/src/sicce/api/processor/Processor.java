@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Observer;
 import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.info.interfaces.IPowerMeter;
+import sicce.api.info.interfaces.IPowerMeterWatcher;
 import sicce.api.util.EncryptionProvider;
 
 /**
