@@ -12,33 +12,32 @@ import java.util.logging.Logger;
  *
  * @author gish@c
  */
-public class PowerMeterWatcherThread extends Thread {
+public class PowerMeterWatcherThread implements Runnable {
 
     private IPowerMeterWatcher watcher;
     private static Random generator;
     private int sleepTime;
 
     public PowerMeterWatcherThread(IPowerMeterWatcher watcher) {
-        super(watcher.getPowerMeter().getDescription());
+        //super(watcher.getPowerMeter().getDescription());
         this.watcher = watcher;
         
         generator = new Random();
         sleepTime = generator.nextInt(10);
     }
 
-    @Override
+   
     public void run() {
-        //Pruebas de ejecuciones multiples asincronicas
+        
         try {
-            System.out.printf("%s going to sleep for %d seconds.\n",
-                    this.getName(), sleepTime);
+            
+            System.out.printf("%s going to sleep for %d seconds.\n", watcher.getPowerMeter().getDescription(), sleepTime);
 
             Thread.sleep(sleepTime * 1000); // put thread to sleep
+            // Fin de pruebas de ejecuciones multiples asincronicas
+            watcher.Watch();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PowerMeterWatcherThread.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (InterruptedException exception) {
-            exception.printStackTrace();
-        }
-        // Fin de pruebas de ejecuciones multiples asincronicas
-        watcher.Watch();
     }
 }
