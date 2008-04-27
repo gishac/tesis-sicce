@@ -51,8 +51,7 @@ public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher 
      */
     public void Watch()
     {
-        //Lee los datos del medidor y los guarda en la base        
-        System.out.println( this.powerMeter.getDescription()  + " Leido: " + Calendar.getInstance().getTime());
+        //Lee los datos del medidor y los guarda en la base\
         int lectura = new Random().nextInt(10000);
         setChanged();
         notifyObservers(lectura);
