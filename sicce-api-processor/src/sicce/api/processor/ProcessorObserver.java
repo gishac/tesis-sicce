@@ -8,6 +8,7 @@ package sicce.api.processor;
 import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
+import sicce.api.info.interfaces.IPowerMeterWatcher;
 
 /**
  *
