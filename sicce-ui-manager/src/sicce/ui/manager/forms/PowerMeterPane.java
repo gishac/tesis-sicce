@@ -268,7 +268,7 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
         DialogResult result = searchPmeterDialog.getDialogResult();
         if (result == DialogResult.Ok) {
             currentObject = searchPmeterDialog.getSearchResult();
-        //SetUIElements();
+        SetUIElements();
         }
         return result;
     }
@@ -289,10 +289,7 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IPowerMeter> tableModel = (SicceTableModel<IPowerMeter>) grdPowerMeter.getModel();
-        currentObject = tableModel.getRow(selectedIndex);
-        txtSerial.setText(currentObject.getSerial());
-        txtIpAddress.setText(currentObject.getIpAddress());
-        txtDescription.setText(currentObject.getDescription());
+        currentObject = tableModel.getRow(selectedIndex);        
     }
 
     @Override
@@ -323,6 +320,18 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
 
         return true;
     }
+
+    @Override
+    public void SetUIElements() {
+        if (currentObject == null) {
+            return;
+        }
+        txtSerial.setText(currentObject.getSerial());
+        txtIpAddress.setText(currentObject.getIpAddress());
+        txtDescription.setText(currentObject.getDescription());
+    }
+    
+    
 }
     
     
