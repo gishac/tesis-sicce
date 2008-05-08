@@ -66,6 +66,16 @@
             <ref bean="sessionFactory" />
         </property>
     </bean>
+    <bean id="AlarmDAO" class="sicce.api.dataaccess.AlarmDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="ScheduleDayDAO" class="sicce.api.dataaccess.ScheduleDayDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
     
     <bean id="DataAccessManager" class="sicce.api.dataaccess.DataAccessManager" abstract="false" lazy-init="default"
    autowire="default" dependency-check="default">
@@ -98,6 +108,12 @@
         </property>	
          <property name="zoneDB">
             <ref bean="ZoneDAO" />
+        </property>
+        <property name="alarmDB">
+            <ref bean="AlarmDAO" />
+        </property>	
+         <property name="scheduleDayDB">
+            <ref bean="ScheduleDayDAO" />
         </property>
     </bean>
     
