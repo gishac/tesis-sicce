@@ -5,6 +5,8 @@
 
 package sicce.api.info.interfaces;
 
+import java.util.Set;
+
 /**
  *
  * @author karu
@@ -19,4 +21,7 @@ public interface IPowerMeter {
     
     void setIpAddress(String ipAddress);
     String getIpAddress();
+    
+    Set<IAlarm> getAlarms();
+    void setAlarms(Set<IAlarm> alarms);
 }

@@ -37,5 +37,13 @@
             </key>
             <one-to-many class="sicce.api.info.Location" />
         </set>
+      
+        <set name="alarms" inverse="true" table="alarm_power_meter" lazy="false" >
+            <key>
+                <column name="ID_POWER_METER" not-null="true" />
+            </key>
+            <many-to-many class="sicce.api.info.Alarm" column="ID_ALARM" />
+        </set>
+        
     </class>
 </hibernate-mapping>
