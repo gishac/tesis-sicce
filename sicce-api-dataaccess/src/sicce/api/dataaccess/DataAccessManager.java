@@ -17,11 +17,33 @@ public class DataAccessManager {
     private PowerMeterDAO powerMeterDB;
     private UnitMeasureDAO unitMeasureDB;
     private ZoneDAO zoneDB;
-    private static DataAccessManager instance;
+    private AlarmDAO alarmDB;
+    private ScheduleDayDAO scheduleDayDB;
 
+    private static DataAccessManager instance;
+    
     public static void setInstance(DataAccessManager instance) {
         DataAccessManager.instance = instance;
     }
+    
+    public AlarmDAO getAlarmDB() {
+        return alarmDB;
+    }
+
+    public void setAlarmDB(AlarmDAO alarmDB) {
+        this.alarmDB = alarmDB;
+    }
+
+    public ScheduleDayDAO getScheduleDayDB() {
+        return scheduleDayDB;
+    }
+
+    public void setScheduleDayDB(ScheduleDayDAO scheduleDayDB) {
+        this.scheduleDayDB = scheduleDayDB;
+    }
+    
+
+    
 
     public RoleDAO getRoleDB() {
         return roleDB;

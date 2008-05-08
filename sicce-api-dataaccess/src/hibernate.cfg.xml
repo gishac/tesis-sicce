@@ -42,6 +42,8 @@
         <mapping resource="sicce/api/info/Measure.hbm.xml" />
         <mapping resource="sicce/api/info/OptionSicce.hbm.xml" />
         <mapping resource="sicce/api/info/Location.hbm.xml" />
+        <mapping resource="sicce/api/info/Alarm.hbm.xml" />
+        <mapping resource="sicce/api/info/ScheduleDay.hbm.xml" />
         
     </session-factory>
     
