@@ -13,6 +13,13 @@
         <many-to-one name="role" class="sicce.api.info.Role" fetch="select" lazy="false">
             <column name="ID_ROLE" not-null="true" />
         </many-to-one>
+        <set name="alarms" inverse="true" table="alarm_user" >
+            <key>
+                <column name="ID_USER" not-null="true" />
+            </key>
+            <many-to-many class="sicce.api.info.Alarm" column="ID_ALARM" />
+        </set>
+        
         <property name="name" type="java.lang.String">
             <column name="NAME" length="20" />
         </property>

@@ -10,6 +10,9 @@ package sicce.api.info;
  */
 public class ConstantsProvider {
 
+    /**
+     * Opciones
+     */
     public enum OptionsProvider {
 
         Role(1),
@@ -30,6 +33,9 @@ public class ConstantsProvider {
         }
     }
 
+    /**
+     * Acciones del toolbar
+     */
     public enum ToolBarAction {
 
         None,
@@ -42,16 +48,57 @@ public class ConstantsProvider {
         Back
     }
 
+    /**
+     * Tipo de render
+     */
     public enum DisplayMemberRenderType {
 
         Method,
         Field
     }
 
+    /**
+     * Tipo de dialogo
+     */
     public enum DialogResult {
-        
+
         Ok,
         Cancel
     }
 
+    /**
+     * Tipo de Alarma
+     */
+    public enum AlarmType {
+
+        Mail(1),
+        SMS(2);
+        private int alarmType;
+
+        AlarmType(int alarmType) {
+            this.alarmType = alarmType;
+        }
+
+        public int getAlarmType() {
+            return alarmType;
+        }
+    }
+
+    /**
+     * Tipo de Agenda
+     */
+    public enum ScheduleType {
+
+        Daily(1),
+        Planned(2);
+        private int scheduleType;
+
+        ScheduleType(int scheduleType) {
+            this.scheduleType = scheduleType;
+        }
+
+        public int getScheduleType() {
+            return scheduleType;
+        }
+    }
 }
