@@ -61,41 +61,44 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblLocationType" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                              <Component id="lblUbication" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="cmbLocationType" pref="212" max="32767" attributes="0"/>
-                              <Component id="txtUbication" alignment="0" pref="212" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="btnSearchUbication" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnClearLocation" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblPowerMeter" min="-2" pref="120" max="-2" attributes="0"/>
-                              <Component id="lblDescription2" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="txtPowerMeter" pref="212" max="32767" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="btnSearchPowerMeter" min="-2" pref="30" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnClearPowerMeter" pref="30" max="32767" attributes="0"/>
-                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblLocationType" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                                  <Component id="lblUbication" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPane4" pref="216" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="cmbLocationType" pref="212" max="32767" attributes="0"/>
+                                  <Component id="txtUbication" alignment="0" pref="212" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnSearchUbication" min="-2" pref="30" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnClearLocation" min="-2" pref="30" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblPowerMeter" min="-2" pref="120" max="-2" attributes="0"/>
+                                  <Component id="lblDescription2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="txtPowerMeter" pref="212" max="32767" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="btnSearchPowerMeter" min="-2" pref="30" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btnClearPowerMeter" pref="30" max="32767" attributes="0"/>
+                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jScrollPane4" pref="216" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
+                      <Component id="btnPrueba" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="12" max="32767" attributes="0"/>
               </Group>
@@ -136,7 +139,9 @@
                       <Component id="jScrollPane4" min="-2" max="-2" attributes="0"/>
                       <Component id="lblDescription2" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="99" max="32767" attributes="0"/>
+                  <EmptySpace pref="65" max="32767" attributes="0"/>
+                  <Component id="btnPrueba" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -250,6 +255,15 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearPowerMeterActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnPrueba">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="btnPrueba.text"/>
+            <Property name="name" type="java.lang.String" value="btnPrueba" noResource="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPruebaActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
