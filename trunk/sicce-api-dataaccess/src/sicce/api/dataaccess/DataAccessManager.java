@@ -19,6 +19,7 @@ public class DataAccessManager {
     private ZoneDAO zoneDB;
     private AlarmDAO alarmDB;
     private ScheduleDayDAO scheduleDayDB;
+    private ConnectDAO connectionDB;
 
     private static DataAccessManager instance;
     
@@ -125,6 +126,15 @@ public class DataAccessManager {
         this.zoneDB = zoneDB;
     }
 
+    
+    public ConnectDAO getConnectionDB() {
+        return connectionDB;
+    }
+
+    public void setConnectionDB(ConnectDAO connectionDB) {
+        this.connectionDB = connectionDB;
+    }
+    
     public static DataAccessManager getInstance() {
         if (instance == null) {
             BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
