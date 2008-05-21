@@ -15,4 +15,6 @@ public interface IOptionSicce {
     String getDescription();
     String getActionCommand();
     int getID();
+    IGroup getGroup();
+    void setGroup(IGroup group);
 }

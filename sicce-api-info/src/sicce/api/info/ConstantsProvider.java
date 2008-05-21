@@ -21,7 +21,8 @@ public class ConstantsProvider {
         LocationType(4),
         Location(5),
         Zone(6),
-        Parameter(7);
+        Parameter(7),
+        Alarm(7);
         private int taskID;
 
         OptionsProvider(int taskID) {

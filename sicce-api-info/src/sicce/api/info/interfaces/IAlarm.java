@@ -36,4 +36,8 @@ public interface IAlarm {
     void RegisterAlarmListener(IAlarmListener alarmListener);
     Set<IPowerMeter> getAlarmPowerMeters();
     void setAlarmPowerMeters(Set<IPowerMeter> alarmPowerMeters);
+    void addAlarmPowerMeter(IPowerMeter powerMeter);
+    void removeAlarmPowerMeter(IPowerMeter powerMeter);
+    void addAlarmUser(IUserSicce user);
+    void removeAlarmUser(IUserSicce user);
 }

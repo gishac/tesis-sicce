@@ -29,5 +29,9 @@
             <many-to-many class="sicce.api.info.Role" column="ID_ROLE" />
         </set>
         
+        <many-to-one name="group" class="sicce.api.info.Group" fetch="select">
+            <column name="ID_GROUP" not-null="true" />
+        </many-to-one>
+        
     </class>
 </hibernate-mapping>

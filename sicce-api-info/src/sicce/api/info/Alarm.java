@@ -12,7 +12,9 @@ import java.util.Observer;
 import sicce.api.info.auto.AbstractAlarm;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IAlarmListener;
+import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IPowerMeterWatcher;
+import sicce.api.info.interfaces.IUserSicce;
 
 /**
  *
@@ -31,6 +33,22 @@ public class Alarm extends AbstractAlarm implements IAlarm, Observer  {
         }
 
     
+    }
+
+    public void addAlarmPowerMeter(IPowerMeter powerMeter) {
+        this.alarmPowerMeters.add(powerMeter);
+    }
+
+    public void removeAlarmPowerMeter(IPowerMeter powerMeter) {
+        this.alarmPowerMeters.remove(powerMeter);
+    }
+
+    public void addAlarmUser(IUserSicce user) {
+        this.alarmUsers.add(user);
+    }
+
+    public void removeAlarmUser(IUserSicce user) {
+        this.alarmUsers.remove(user);
     }
        
 }
