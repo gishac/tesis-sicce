@@ -66,6 +66,11 @@
             <ref bean="sessionFactory" />
         </property>
     </bean>
+     <bean id="ConnectDAO" class="sicce.api.dataaccess.ConnectDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
     <bean id="AlarmDAO" class="sicce.api.dataaccess.AlarmDAO">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
@@ -76,7 +81,6 @@
             <ref bean="sessionFactory" />
         </property>
     </bean>
-    
     <bean id="DataAccessManager" class="sicce.api.dataaccess.DataAccessManager" abstract="false" lazy-init="default"
    autowire="default" dependency-check="default">
         <property name="roleDB">
@@ -109,6 +113,10 @@
          <property name="zoneDB">
             <ref bean="ZoneDAO" />
         </property>
+        <property name="connectionDB">
+            <ref bean="ConnectDAO" />
+        </property> 
+
         <property name="alarmDB">
             <ref bean="AlarmDAO" />
         </property>	
