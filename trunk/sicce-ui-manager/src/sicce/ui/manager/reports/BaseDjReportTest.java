@@ -11,7 +11,7 @@ import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
 import ar.com.fdvs.dj.domain.DynamicReport;
 import net.sf.jasperreports.view.JasperViewer;
-import sicce.api.dataaccess.ConnectionDAO;
+import sicce.api.dataaccess.ConnectDAO;
 import sicce.api.dataaccess.DataAccessManager;
 
 
@@ -27,7 +27,7 @@ public abstract class BaseDjReportTest {
 
     public void runReport(String titleReport) throws Exception {
 
-    ConnectionDAO con = new ConnectionDAO();
+    ConnectDAO con = new ConnectDAO();
 
         dr = buildReport(titleReport);
 
