@@ -34,12 +34,24 @@ CREATE TABLE UNIT_MEASURE (
   PRIMARY KEY(ID_UNIT_MEASURE)
 );
 
+CREATE TABLE GROUPS (
+  ID_GROUP INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  DESCRIPTION VARCHAR(50) NULL,
+  PRIMARY KEY(ID_GROUP)
+);
+
 CREATE TABLE OPTION_SICCE (
   ID_OPTION_SICCE INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   DESCRIPTION VARCHAR(50) NULL,
   ACTION_COMMAND VARCHAR(50) NULL,
   ICON BLOB NULL,
-  PRIMARY KEY(ID_OPTION_SICCE)
+  ID_GROUP INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(ID_OPTION_SICCE),
+  INDEX OPTION_SICCE_FKIndex1(ID_GROUP),
+  FOREIGN KEY(ID_GROUP)
+    REFERENCES GROUPS(ID_GROUP)
+      ON DELETE CASCADE
+      ON UPDATE NO ACTION
 );
 
 CREATE TABLE LOCATION_TYPE (
@@ -177,13 +189,18 @@ CREATE TABLE ALARM_POWER_METER(
   CONSTRAINT alarm_pmeter_ibfk_2 FOREIGN KEY (ID_POWER_METER) REFERENCES POWER_METER (ID_POWER_METER) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
-insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND) values(0,'Roles',null,'Role');
-insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND) values(0,'Usuarios',null,'User');
-insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND) values(0,'Medidores',null,'PowerMeter');
-insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND) values(0,'Tipos de Dependencia',null,'LocationType');
-insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND) values(0,'Zonas',null,'Zone');
-insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND) values(0,'Parámetros',null,'Parameter');
-insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND) values(0,'Dependencias',null,'Location');
+insert into groups (ID_GROUP, DESCRIPTION) values (0, 'Opciones');
+insert into groups (ID_GROUP, DESCRIPTION) values (0, 'Alarmas');
+insert into groups (ID_GROUP, DESCRIPTION) values (0, 'Reportes');
+
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Roles',null,'Role',1);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Usuarios',null,'User',1);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Medidores',null,'PowerMeter',1);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Tipos de Dependencia',null,'LocationType',1);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Zonas',null,'Zone',1);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Parámetros',null,'Parameter',1);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Dependencias',null,'Location',1);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Alarmas',null,'Alarm',2);
 
 insert into role values(0,'Administrador');
 insert into user_sicce(ID_USER_SICCE,ID_ROLE,NAME,LASTNAME,CODE_UCSG,USERNAME_SICCE,PASSWORD_SICCE) values(0,1,'adminsicce','adminsicce',null,'adminsicce','BGEYVgYT0cCYB6SDjstB8+09gzaB/ZW/');
@@ -194,6 +211,7 @@ insert into option_role values(1,4);
 insert into option_role values(1,5);
 insert into option_role values(1,6);
 insert into option_role values(1,7);
+insert into option_role values(1,8);
 
 insert into location_type values(0,'Edificio');
 

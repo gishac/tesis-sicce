@@ -1,3 +1,4 @@
+
 package sicce.api.dataaccess;
 
 import org.springframework.beans.factory.BeanFactory;
@@ -19,14 +20,14 @@ public class DataAccessManager {
     private ZoneDAO zoneDB;
     private AlarmDAO alarmDB;
     private ScheduleDayDAO scheduleDayDB;
+    private GroupDAO groupDB;
+    private static DataAccessManager instance;
     private ConnectDAO connectionDB;
 
-    private static DataAccessManager instance;
-    
     public static void setInstance(DataAccessManager instance) {
         DataAccessManager.instance = instance;
     }
-    
+
     public AlarmDAO getAlarmDB() {
         return alarmDB;
     }
@@ -42,9 +43,6 @@ public class DataAccessManager {
     public void setScheduleDayDB(ScheduleDayDAO scheduleDayDB) {
         this.scheduleDayDB = scheduleDayDB;
     }
-    
-
-    
 
     public RoleDAO getRoleDB() {
         return roleDB;
@@ -126,7 +124,14 @@ public class DataAccessManager {
         this.zoneDB = zoneDB;
     }
 
-    
+    public GroupDAO getGroupDB() {
+        return groupDB;
+    }
+
+    public void setGroupDB(GroupDAO groupDB) {
+        this.groupDB = groupDB;
+    }
+
     public ConnectDAO getConnectionDB() {
         return connectionDB;
     }

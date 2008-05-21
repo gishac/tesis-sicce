@@ -120,8 +120,9 @@ public class UserSicceDAO extends HibernateDaoSupport {
     public List findAll() {
         log.debug("finding all UserSicce instances");
         try {
-            String queryString = "from UserSicce";
-            return getHibernateTemplate().find(queryString);
+            //String queryString = "from UserSicce as model where model." + propertyName + "= ?";
+            String queryString = "from UserSicce as model where model.usernameSicce != ?";
+            return getHibernateTemplate().find(queryString,"adminsicce");
         } catch (RuntimeException re) {
             log.error("find all failed", re);
             throw re;

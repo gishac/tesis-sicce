@@ -81,6 +81,12 @@
             <ref bean="sessionFactory" />
         </property>
     </bean>
+    <bean id="GroupDAO" class="sicce.api.dataaccess.GroupDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
     <bean id="DataAccessManager" class="sicce.api.dataaccess.DataAccessManager" abstract="false" lazy-init="default"
    autowire="default" dependency-check="default">
         <property name="roleDB">
@@ -120,8 +126,11 @@
         <property name="alarmDB">
             <ref bean="AlarmDAO" />
         </property>	
-         <property name="scheduleDayDB">
+        <property name="scheduleDayDB">
             <ref bean="ScheduleDayDAO" />
+        </property>
+        <property name="groupDB">
+            <ref bean="GroupDAO" />
         </property>
     </bean>
     
