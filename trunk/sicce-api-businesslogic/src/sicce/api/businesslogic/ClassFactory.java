@@ -4,6 +4,7 @@
  */
 package sicce.api.businesslogic;
 
+import sicce.api.info.Alarm;
 import sicce.api.info.Location;
 import sicce.api.info.LocationType;
 import sicce.api.info.OptionSicce;
@@ -11,6 +12,7 @@ import sicce.api.info.PowerMeter;
 import sicce.api.info.Role;
 import sicce.api.info.UserSicce;
 import sicce.api.info.Zone;
+import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
 import sicce.api.info.interfaces.IOptionSicce;
@@ -48,8 +50,12 @@ public class ClassFactory {
     public static ILocation getLocationInstance() {
         return new Location();
     }
-    
-     public static IZone getZoneInstance() {
+
+    public static IZone getZoneInstance() {
         return new Zone();
+    }
+    
+    public static IAlarm getAlarmInstance(){
+        return new Alarm();
     }
 }
