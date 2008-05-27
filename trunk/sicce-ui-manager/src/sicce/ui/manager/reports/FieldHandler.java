@@ -40,6 +40,9 @@ public class FieldHandler {
     }
 
     public static List<Field> getSelectedFields() {
+        if (listSelectedFields == null)
+            listSelectedFields = new ArrayList();
+        
         return listSelectedFields;
     }
 
@@ -142,6 +145,27 @@ public class FieldHandler {
     public static void removeGroupField(Field tmp) {
         getListGroupFields().remove(tmp);
     }
+    
+    public static boolean CompareList(Field fieldSelected , List<Field> groupList) {
+        
+        boolean result = false;
+
+        if (groupList == null) {
+            return result;
+        }
+      
+            for (Field fieldGroup : (List<Field>) groupList) {
+             if (fieldSelected.getIdField() == fieldGroup.getIdField() && fieldSelected.getIdTable() == fieldGroup.getIdTable()) {
+                    result = true;
+                    return result;
+                }
+        }
+        
+        return result;
+
+    }
+
+
 }
 
 

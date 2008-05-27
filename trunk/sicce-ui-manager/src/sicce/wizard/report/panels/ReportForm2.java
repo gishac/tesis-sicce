@@ -5,13 +5,16 @@
  */
 package sicce.wizard.report.panels;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import org.netbeans.spi.wizard.WizardController;
+import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.reports.Field;
 import sicce.ui.manager.reports.FieldHandler;
 import sicce.ui.manager.reports.FieldsCellRenderer;
+import sicce.ui.manager.reports.FieldsComparator;
 
 /**
  *
@@ -85,9 +88,9 @@ public class ReportForm2 extends javax.swing.JPanel {
     
     public void fillWizardMap(){
         
-        wizardData.put (KEY_SELECTED, lstSelectedFields);
+        wizardData.put (KEY_SELECTED, FieldHandler.getSelectedFields());
         controller.setProblem(null);
-        if (lstSelectedFields!= null) {
+        if (FieldHandler.getSelectedFields()!= null) {
             controller.setForwardNavigationMode(controller.MODE_CAN_CONTINUE);
         }      
     }
@@ -154,6 +157,11 @@ public class ReportForm2 extends javax.swing.JPanel {
         btnDown.setIcon(resourceMap.getIcon("btnDown.icon")); // NOI18N
         btnDown.setText(resourceMap.getString("btnDown.text")); // NOI18N
         btnDown.setName("btnDown"); // NOI18N
+        btnDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDownActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnDown, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 130, 30, 30));
 
         jLabel2.setFont(resourceMap.getFont("jLabel2.font")); // NOI18N
@@ -221,6 +229,7 @@ public class ReportForm2 extends javax.swing.JPanel {
 
         for (int i = 0; i < field.length; i++) {
             tmp = (Field) field[i];
+            tmp.setOrder(FieldHandler.getSelectedFields().size());
             FieldHandler.addSelectedField(tmp);
         }
         updateLists();
@@ -249,15 +258,49 @@ public class ReportForm2 extends javax.swing.JPanel {
 
     private void btnUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpActionPerformed
         // TODO add your handling code here:
-        if(lstSelectedFields.getSelectedValue()==null)
-            JOptionPane.showMessageDialog(this, "Seleccione un valor de la lista");
+        if(lstSelectedFields.getSelectedValue()==null){
+            JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar un valor de la lista");
             return;
-             
-       
+        }
          
-       
+       int index = lstSelectedFields.getSelectedIndex();
+        
+        if (index > 0)
+        {
+            Field previous = (Field) lstSelectedFields.getModel().getElementAt(index - 1 );
+            Field selected = (Field) lstSelectedFields.getModel().getElementAt(index);
+            previous.setOrder(previous.getOrder() + 1);
+            selected.setOrder(selected.getOrder() - 1);
+            Collections.sort(FieldHandler.getSelectedFields(), new FieldsComparator());
+            updateLists();
+            lstSelectedFields.setSelectedIndex(index - 1);
+        }
+  
         
     }//GEN-LAST:event_btnUpActionPerformed
+
+    private void btnDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownActionPerformed
+        // TODO add your handling code here:
+          if(lstSelectedFields.getSelectedValue()==null){
+            JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar un valor de la lista");
+            return;
+        }
+         
+       int index = lstSelectedFields.getSelectedIndex();
+        
+        if (index < lstSelectedFields.getModel().getSize() - 1 )
+        {
+            Field selected = (Field) lstSelectedFields.getModel().getElementAt(index);
+            Field next = (Field) lstSelectedFields.getModel().getElementAt(index + 1 );
+            selected.setOrder(selected.getOrder() + 1);
+            next.setOrder(next.getOrder() - 1);
+            
+            Collections.sort(FieldHandler.getSelectedFields(), new FieldsComparator());
+            updateLists();
+            lstSelectedFields.setSelectedIndex(index + 1);
+        }
+       
+    }//GEN-LAST:event_btnDownActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddField;
