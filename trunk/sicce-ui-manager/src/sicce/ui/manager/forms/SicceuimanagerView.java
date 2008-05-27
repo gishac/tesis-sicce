@@ -36,9 +36,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import sicce.api.businesslogic.ClassFactory;
+import sicce.api.dataaccess.GroupDB;
 import sicce.api.info.ConstantsProvider.OptionsProvider;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.eventobjects.ToolBarEventObject;
+import sicce.api.info.interfaces.IGroup;
 import sicce.api.info.interfaces.IOptionSicce;
 import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.util.Validator;
@@ -54,25 +56,25 @@ import sicce.ui.manager.handlers.ToolBarHandler;
 public class SicceuimanagerView extends FrameView {
 
     private IUserSicce currentUser;
-    
-    public SicceuimanagerView(SingleFrameApplication app, IUserSicce user){        
+
+    public SicceuimanagerView(SingleFrameApplication app, IUserSicce user) {
         this(app);
         this.currentUser = user;
-        toolBarHandler = new ToolBarHandler(toolBar,getTabManager());
-        
+        toolBarHandler = new ToolBarHandler(toolBar, getTabManager());
+
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
 
         //statusAnimationLabel.setIcon(idleIcon);
         //progressBar.setVisible(false);
         OrganizeUIElements();
-        CreateUIElements();        
+        CreateUIElements();
         tabManager.setOptionsText(optionsText);
         tabManager.setResourceMap(resourceMap);
         Validator.Initialize(resourceMap.getString("ApplicationName"));
         ExceptionHandler.Initialize(resourceMap.getString("ApplicationName"), resourceMap.getString("ErrorMessage"));
     }
-    
+
     public SicceuimanagerView(SingleFrameApplication app) {
 
         super(app);
@@ -80,7 +82,7 @@ public class SicceuimanagerView extends FrameView {
         SetFrameSize();
         initComponents();
         SetFrameSize();
-        
+
     }
 
     @Action
@@ -245,7 +247,7 @@ public class SicceuimanagerView extends FrameView {
     private void toolBarItemSaveActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             ToolBarEventObject saveEventObject = new ToolBarEventObject(toolBar, ToolBarAction.Save);
-            toolBarHandler.ToolBarStateChanged(saveEventObject);           
+            toolBarHandler.ToolBarStateChanged(saveEventObject);
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -311,19 +313,19 @@ public class SicceuimanagerView extends FrameView {
     private LocationPane locationPane;
     private ZonePane zonePane;
     private ParameterPane parameterPane;
+    private AlarmPane alarmPane;
     private JLabel statusLabel;
     private String[] optionsText;
-   
 
-    private JLabel getStatusLabel(){
-        if(statusLabel == null){
+    private JLabel getStatusLabel() {
+        if (statusLabel == null) {
             statusLabel = new JLabel();
             statusLabel.setHorizontalAlignment(JLabel.RIGHT);
             statusLabel.setIcon(getResourceMap().getIcon("UserIcon"));
         }
         return statusLabel;
     }
-    
+
     /**
      * gish@c
      * Retorna la instancia del control que administra los tabs
@@ -352,57 +354,37 @@ public class SicceuimanagerView extends FrameView {
      * Crea y agrega las opciones en el panel de tareas
      */
     private void CreateTasks() {
-        JTaskPaneGroup mainGroup = new JTaskPaneGroup();
-        mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
-        mainGroup.setSpecial(true);
+
+        List<IGroup> groups = GroupDB.GetAllGroups();
         List permissions = Arrays.asList(currentUser.getRole().getPermissions().toArray());
         Collections.sort(permissions);
-        for(IOptionSicce option : (List<IOptionSicce>)permissions){
-            ImageIcon icon = null;
-            mainGroup.add(getAction(option.getDescription(), option.getActionCommand(), icon));
+        for (IGroup group : groups) {
+            JTaskPaneGroup mainGroup = new JTaskPaneGroup();
+            mainGroup.setTitle(group.getDescription());
+            mainGroup.setSpecial(true);
+            for (IOptionSicce option : (List<IOptionSicce>) permissions) {
+                if (option.getGroup().getIdGroup().equals(group.getIdGroup())) {
+                    ImageIcon icon = null;
+                    mainGroup.add(getAction(option.getDescription(), option.getActionCommand(), icon));
+                }
+            }
+            getTaskPaneManager().add(mainGroup);
+            getTaskPaneManager().revalidate();
+            getTaskPaneManager().repaint();
         }
-        getTaskPaneManager().add(mainGroup);
-        getTaskPaneManager().revalidate();
-        getTaskPaneManager().repaint();
-        
-        /*IOptionSicce a = ClassFactory.getOptionInstance();
-        a.setDescription("Role");
 
-        IOptionSicce b = ClassFactory.getOptionInstance();
-        b.setDescription("User");
-        
-        IOptionSicce c = ClassFactory.getOptionInstance();
-        c.setDescription("PowerMeter");
+    /*JTaskPaneGroup mainGroup = new JTaskPaneGroup();
+    mainGroup.setTitle(getResourceMap().getString("TaskPane.GroupName", ""));
+    mainGroup.setSpecial(true);
+    for (IOptionSicce option : (List<IOptionSicce>) permissions) {
+    ImageIcon icon = null;
+    mainGroup.add(getAction(option.getDescription(), option.getActionCommand(), icon));
+    }
+    getTaskPaneManager().add(mainGroup);
+    getTaskPaneManager().revalidate();
+    getTaskPaneManager().repaint();*/
 
-        IOptionSicce d = ClassFactory.getOptionInstance();
-        d.setDescription("LocationType");
-        
-        IOptionSicce e = ClassFactory.getOptionInstance();
-        e.setDescription("Location");
-        
-        IOptionSicce f = ClassFactory.getOptionInstance();
-        f.setDescription("Zone");
-        
-        IOptionSicce g = ClassFactory.getOptionInstance();
-        g.setDescription("Parameter");
-        
-        this.options = new ArrayList<IOptionSicce>();
-        options.add(a);
-        options.add(b);
-        options.add(c);
-        options.add(d);
-        options.add(e);
-        options.add(f);
-        options.add(g);
-      
-        
-        for (IOptionSicce option : this.options) {
-            ImageIcon icon = null;
-            mainGroup.add(getAction(option.getDescription(), option.getDescription(), icon));
-        }
-        getTaskPaneManager().add(mainGroup);
-        getTaskPaneManager().revalidate();
-        getTaskPaneManager().repaint();*/
+
     }
 
     /**
@@ -434,23 +416,23 @@ public class SicceuimanagerView extends FrameView {
      */
     private void ApplyLookAndFeel() {
         try {
-           
-            /*UIManager.put("TaskPane.useGradient", Boolean.TRUE);
-            UIManager.put("TaskPaneGroup.useGradient", Boolean.TRUE);
-            UIManager.put("TaskPane.backgroundGradientStart", Color.LIGHT_GRAY);
-            UIManager.put("TaskPane.backgroundGradientEnd", Color.WHITE);
-            UIManager.put("TaskPaneGroup.backgroundGradientStart", Color.LIGHT_GRAY);
-            UIManager.put("TaskPaneGroup.backgroundGradientEnd", Color.WHITE);
-            UIManager.put("TaskPaneGroup.background", Color.LIGHT_GRAY);
-            UIManager.put("TaskPaneGroup.borderColor", Color.LIGHT_GRAY);
-            //UIManager.put("TaskPaneGroup.specialTitleForeground", Color.BLACK);
-            //UIManager.put("TaskPaneGroup.specialTitleBackground", Color.LIGHT_GRAY);
-            //PlasticLookAndFeel.setPlasticTheme(new com.jgoodies.looks.plastic.theme.DarkStar());
-            UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
-            LookAndFeelAddons.setAddon(AquaLookAndFeelAddons.class);
-            //getTaskPaneManager().revalidate();
-            //getTaskPaneManager().repaint();
-            */
+
+        /*UIManager.put("TaskPane.useGradient", Boolean.TRUE);
+        UIManager.put("TaskPaneGroup.useGradient", Boolean.TRUE);
+        UIManager.put("TaskPane.backgroundGradientStart", Color.LIGHT_GRAY);
+        UIManager.put("TaskPane.backgroundGradientEnd", Color.WHITE);
+        UIManager.put("TaskPaneGroup.backgroundGradientStart", Color.LIGHT_GRAY);
+        UIManager.put("TaskPaneGroup.backgroundGradientEnd", Color.WHITE);
+        UIManager.put("TaskPaneGroup.background", Color.LIGHT_GRAY);
+        UIManager.put("TaskPaneGroup.borderColor", Color.LIGHT_GRAY);
+        //UIManager.put("TaskPaneGroup.specialTitleForeground", Color.BLACK);
+        //UIManager.put("TaskPaneGroup.specialTitleBackground", Color.LIGHT_GRAY);
+        //PlasticLookAndFeel.setPlasticTheme(new com.jgoodies.looks.plastic.theme.DarkStar());
+        UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
+        LookAndFeelAddons.setAddon(AquaLookAndFeelAddons.class);
+        //getTaskPaneManager().revalidate();
+        //getTaskPaneManager().repaint();
+         */
 
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
@@ -481,7 +463,7 @@ public class SicceuimanagerView extends FrameView {
 
             public void actionPerformed(ActionEvent e) {
                 OptionsProvider option = Enum.valueOf(OptionsProvider.class, e.getActionCommand());
-                JTabExtended selectedOption = GetForm(option);               
+                JTabExtended selectedOption = GetForm(option);
                 if (!getTabManager().getTabs().contains(selectedOption)) {
                     selectedOption.setTitle(text);
                     getTabManager().AddTab(selectedOption);
@@ -514,7 +496,8 @@ public class SicceuimanagerView extends FrameView {
         locationPane = new LocationPane();
         zonePane = new ZonePane();
         parameterPane = new ParameterPane();
-       
+        alarmPane = new AlarmPane();
+
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
         toolBarHandler.AddToolBarStateListener(pmeterPane);
@@ -522,7 +505,8 @@ public class SicceuimanagerView extends FrameView {
         toolBarHandler.AddToolBarStateListener(locationPane);
         toolBarHandler.AddToolBarStateListener(zonePane);
         toolBarHandler.AddToolBarStateListener(parameterPane);
-        
+        toolBarHandler.AddToolBarStateListener(alarmPane);
+
     }
 
     /**
@@ -552,9 +536,11 @@ public class SicceuimanagerView extends FrameView {
             case Parameter:
                 result = parameterPane;
                 break;
-            
+            case Alarm:
+                result = alarmPane;
+                break;
+
         }
         return result;
     }
-   
 }
