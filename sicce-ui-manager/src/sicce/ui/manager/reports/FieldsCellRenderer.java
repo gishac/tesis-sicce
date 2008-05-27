@@ -14,7 +14,7 @@ import javax.swing.ListCellRenderer;
 
 /**
  * Modifica la manera de presentar la informacion.
- * @author TMS - The Microserv S.A.
+ * @author Karu
  */
 public class FieldsCellRenderer extends JLabel implements ListCellRenderer
 {
