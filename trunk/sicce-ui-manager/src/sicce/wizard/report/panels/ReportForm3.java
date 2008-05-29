@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JList;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPage;
@@ -17,6 +19,7 @@ import sicce.ui.manager.reports.Field;
 import sicce.ui.manager.reports.FieldHandler;
 import sicce.ui.manager.reports.FieldsCellRenderer;
 import sicce.ui.manager.reports.FieldsComparator;
+import sicce.ui.manager.reports.LocationTemplate;
 
 /**
  *
@@ -26,7 +29,7 @@ public class ReportForm3 extends javax.swing.JPanel {
 
     private final WizardController controller;
     private final Map wizardData;
-    public static final String KEY_SELECTED = "infoFields";
+    public static final String KEY_SELECTED = "selectedFields";
     public static final String KEY_GROUP = "groupFields";
    private List selectedField = null;
   
@@ -68,7 +71,15 @@ public class ReportForm3 extends javax.swing.JPanel {
         wizardData.put (KEY_GROUP, FieldHandler.getListGroupFields());
         controller.setProblem(null);
         if (FieldHandler.getListGroupFields()!= null) {
-            controller.setForwardNavigationMode(controller.MODE_CAN_CONTINUE);
+            try {
+
+                LocationTemplate template = new LocationTemplate();
+                template.buildReport("Reporte", FieldHandler.getSelectedFields());
+
+                controller.setForwardNavigationMode(controller.MODE_CAN_FINISH);
+            } catch (Exception ex) {
+                Logger.getLogger(ReportForm3.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }      
     }
     /** This method is called from within the constructor to

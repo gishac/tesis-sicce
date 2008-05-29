@@ -24,9 +24,9 @@ public class ReportForm2 extends javax.swing.JPanel {
 
     private final WizardController controller;
     private final Map wizardData;
-    public static final String KEY_SELECTED = "infoFields";
+    public static final String KEY_SELECTED = "selectedFields";
     private FieldHandler availableField = new FieldHandler();
-    public static final String VALUE_SELECTED_FIELDS = "selectedFields";
+    public static final String VALUE_SELECTED_FIELDS = "selected_Fields";
     /** Creates new form ReportDetail */
     public ReportForm2(WizardController controller, Map wizardData) {
         initComponents();

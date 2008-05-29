@@ -7,12 +7,13 @@ import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import java.util.List;
 
 
 
 public class UserTemplate extends BaseDjReportTest {
 
-    public DynamicReport buildReport(String title) throws Exception {
+    public DynamicReport buildReport(String title, List<Field> listSelected) throws Exception {
 
         Style detailStyle = new Style();
         Style headerStyle = new Style();

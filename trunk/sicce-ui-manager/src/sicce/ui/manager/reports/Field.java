@@ -14,16 +14,18 @@ public class Field {
     private Integer idField;
     private int order;
     private Integer idTable;
+    private String tableName;
     private String descriptionField;
     private String aliasField;
     private String title;
     private String dataType;
     private Integer size;
 
-    public Field(Integer idField, int order, Integer idTable, String descriptionField, String aliasField, String title, String dataType, Integer size) {
+    public Field(Integer idField, int order, Integer idTable, String tableName,String descriptionField, String aliasField, String title, String dataType, Integer size) {
         this.idField = idField;
         this.order = order;
         this.idTable = idTable;
+        this.tableName = tableName;
         this.descriptionField = descriptionField;
         this.aliasField = aliasField;
         this.title = title;
@@ -32,9 +34,15 @@ public class Field {
         
     }
 
-   
+   public Field(){}
 
-    
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
       public String getDataType() {
         return dataType;
     }

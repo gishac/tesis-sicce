@@ -4,19 +4,21 @@ import ar.com.fdvs.dj.core.DJConstants;
 import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
+import ar.com.fdvs.dj.domain.builders.ColumnBuilderException;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-
+import java.util.List;
+import sicce.ui.manager.reports.Field;
 
 
 public class LocationTemplate extends BaseDjReportTest {
 
-    public DynamicReport buildReport(String title) throws Exception {
+    public DynamicReport buildReport(String title, List<Field> listSelected) throws Exception {
 
         Style detailStyle = new Style();
         Style headerStyle = new Style();
-
+        
         Style titleStyle = new Style();
         Style subtitleStyle = new Style();
         Style amountStyle = new Style();
@@ -25,61 +27,12 @@ public class LocationTemplate extends BaseDjReportTest {
         DynamicReportBuilder drb = new DynamicReportBuilder();
         drb.setTitle(title).setDetailHeight(15).setMargins(30, 20, 30, 15).setDefaultStyles(titleStyle, subtitleStyle, headerStyle, detailStyle).setColumnsPerPage(1);
 
-       
-        AbstractColumn columnDescription = ColumnBuilder.getInstance() 
-                .setColumnProperty("descriptionLocation", String.class.getName())
-                .setTitle("Descripcion") 
-                .setWidth(85) 
-                .build();													
-
-        AbstractColumn columnDescriptionLtype = ColumnBuilder.getInstance() 
-                .setColumnProperty("descriptionLtype", String.class.getName())
-                .setTitle("Descripcion") 
-                .setWidth(85) 
-                .build();
-     
-        AbstractColumn columnIpAddress = ColumnBuilder.getInstance()
-                .setColumnProperty("ipAddress", String.class.getName())
-                .setTitle("Dirección IP")
-                .setWidth(new Integer(85)) 
-                .build();
-
-        AbstractColumn columnSerial = ColumnBuilder.getInstance()
-                .setColumnProperty("serial", String.class.getName())
-                .setTitle("Serial")
-                .setWidth(new Integer(100)) 
-                .build();
-
-        AbstractColumn columnDescriptionPM = ColumnBuilder.getInstance() 
-                .setColumnProperty("descriptionPmeter", String.class.getName())
-                .setTitle("Descripcion") 
-                .setWidth(85) 
-                .build();	
-       
-        AbstractColumn columnDescriptionZone = ColumnBuilder.getInstance() 
-                .setColumnProperty("descriptionZone", String.class.getName())
-                .setTitle("Zona Asignada") 
-                .build();
+       CreateColumns(listSelected, drb);
         
-        drb.addColumn(columnDescription);
-        drb.addColumn(columnIpAddress);
-        drb.addColumn(columnSerial);
-        drb.addColumn(columnDescriptionPM);
-        drb.addColumn(columnDescriptionLtype);
         drb.setUseFullPageWidth(true);
-
-        drb.setQuery("select " +
-                "l.description descriptionLocation, " +
-                "lt.description descriptionLtype, " +
-                "p.description descriptionPmeter, " +
-                "z.description descriptionZone, " + 
-                "p.ip_address ipAddress, " +
-                "p.serial serial " +
-                "from location l , power_meter p , location_type lt, location_zone lz, zone z " +
-                "where l.POWER_METER_ID_POWER_METER  = p.ID_POWER_METER " +
-                "and l.ID_LOCATION_TYPE = lt.ID_LOCATION_TYPE" +
-                "and l.ID_LOCATION = lz.ID_LOCATION" +
-                "and z.ID_ZONE =  lz.ID_ZONE", DJConstants.QUERY_LANGUAGE_SQL);
+        String query = createQueryFields(listSelected);
+        System.out.println("QUERY" + query);
+        drb.setQuery("select " , DJConstants.QUERY_LANGUAGE_SQL);
       
         //compilar el reporte.
         DynamicReport dr = drb.build();	
@@ -89,7 +42,46 @@ public class LocationTemplate extends BaseDjReportTest {
     
  
             
+       public void CreateColumns (List<Field> listSelected,DynamicReportBuilder drb) throws ColumnBuilderException{    
+       
+       for (Field fieldSelected : (List<Field>) listSelected) {
            
+           AbstractColumn column  = ColumnBuilder.getInstance()
+                .setColumnProperty(fieldSelected.getAliasField(),fieldSelected.getDataType())
+                .setTitle(fieldSelected.getTitle()) 
+                .setWidth(85) 
+                .build();	
+           drb.addColumn(column);
+           
+       }
 
+       }					
+
+       
+      public  String CreateQuery (){
+       String joins = "from location, power_meter, location_type, location_zone, zone, measure " +
+                "where location.POWER_METER_ID_POWER_METER  = power_meter.ID_POWER_METER " +
+                "and location.ID_LOCATION_TYPE = location_type.ID_LOCATION_TYPE" +
+                "and location.ID_LOCATION = location_zone.ID_LOCATION" +
+                "and location_zone.ID_ZONE = zone.ID_ZONE" +
+                "and location.ID_LOCATION = measure.ID_LOCATION" +
+                "and power_meter.ID_POWER_METER = measure.ID_POWER_METER";
+       return null;
+      }
+      
+      
+      
+      public String createQueryFields (List<Field> listSelected){
+      
+          String totalFields = new String();
+          for (Field fieldSelected : (List<Field>) listSelected) {
+           String field = fieldSelected.getTableName() + "." + fieldSelected.getDescriptionField() + " " + fieldSelected.getAliasField() + ",";
+           totalFields = totalFields.concat(field);
+       }
+          
+       
+       return totalFields;
+       }
+       
    
 }
