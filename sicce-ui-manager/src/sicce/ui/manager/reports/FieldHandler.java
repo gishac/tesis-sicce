@@ -75,8 +75,8 @@ public class FieldHandler {
 
         lstLocation.add(new Field(1,3, 2, "location", "idLocation", "idLocation", "Id. Ubicación", "Integer", 30));
         lstLocation.add(new Field(2,4, 2, "location", "description", "descriptionLocation", "Descripción/Ubicación", "String", 70));
-        lstLocation.add(new Field(3,5,2, "location", "idLocationType", "idLocationType", "Id. Tipo Ubicación", "Integer", 30));
-        lstLocation.add(new Field(4,6, 2, "location", "description", "descriptionLocationType", "Descripción/Tipo Ubicación", "String", 70));
+        lstLocation.add(new Field(3,5,2, "location_type", "idLocationType", "idLocationType", "Id. Tipo Ubicación", "Integer", 30));
+        lstLocation.add(new Field(4,6, 2, "location_type", "description", "descriptionLocationType", "Descripción/Tipo Ubicación", "String", 70));
 
         return lstLocation;
 

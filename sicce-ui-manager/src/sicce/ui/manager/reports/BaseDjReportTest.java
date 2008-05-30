@@ -24,13 +24,13 @@ public abstract class BaseDjReportTest {
     protected Map params = new HashMap();
     protected DynamicReport dr;
 
-    public abstract DynamicReport buildReport(String title, List<Field> listSelected) throws Exception;
+    public abstract DynamicReport buildReport(String title, List<Field> listSelected,  List<Field> listGroup) throws Exception;
 
-    public void runReport(String titleReport, List<Field> listSelected) throws Exception {
+    public void runReport(String titleReport, List<Field> listSelected,  List<Field> listGroup) throws Exception {
 
     ConnectDAO con = new ConnectDAO();
 
-        dr = buildReport(titleReport, listSelected);
+        dr = buildReport(titleReport, listSelected,listGroup);
 
        jp = DynamicJasperHelper.generateJasperPrint(dr, new ClassicLayoutManager(), DataAccessManager.getInstance().getConnectionDB().getConnection() , params);	//Creates the JasperPrint object, we pass as a Parameter
        JasperViewer.viewReport(jp, false);
