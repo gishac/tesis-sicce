@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MeasureTemplate extends BaseDjReportTest {
 
-    public DynamicReport buildReport(String title, List<Field> listSelected) throws Exception {
+    public DynamicReport buildReport(String title, List<Field> listSelected,  List<Field> listGroup) throws Exception {
 
         Style detailStyle = new Style();
         Style headerStyle = new Style();

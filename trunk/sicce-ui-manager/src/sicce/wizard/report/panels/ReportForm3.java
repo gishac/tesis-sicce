@@ -74,7 +74,7 @@ public class ReportForm3 extends javax.swing.JPanel {
             try {
 
                 LocationTemplate template = new LocationTemplate();
-                template.buildReport("Reporte", FieldHandler.getSelectedFields());
+                template.buildReport("Reporte", FieldHandler.getSelectedFields(), FieldHandler.getListGroupFields());
 
                 controller.setForwardNavigationMode(controller.MODE_CAN_FINISH);
             } catch (Exception ex) {
