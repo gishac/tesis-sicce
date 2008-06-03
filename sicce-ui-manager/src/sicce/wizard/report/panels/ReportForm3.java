@@ -19,7 +19,7 @@ import sicce.ui.manager.reports.Field;
 import sicce.ui.manager.reports.FieldHandler;
 import sicce.ui.manager.reports.FieldsCellRenderer;
 import sicce.ui.manager.reports.FieldsComparator;
-import sicce.ui.manager.reports.LocationTemplate;
+import sicce.ui.manager.reports.ReportTemplate;
 
 /**
  *
@@ -73,10 +73,14 @@ public class ReportForm3 extends javax.swing.JPanel {
         if (FieldHandler.getListGroupFields()!= null) {
             try {
 
-                LocationTemplate template = new LocationTemplate();
-                template.buildReport("Reporte", FieldHandler.getSelectedFields(), FieldHandler.getListGroupFields());
+                ReportTemplate template = new ReportTemplate();
+                template.runReport("Reporte", FieldHandler.getSelectedFields(), FieldHandler.getListGroupFields());
+                
 
                 controller.setForwardNavigationMode(controller.MODE_CAN_FINISH);
+                
+                
+                    
             } catch (Exception ex) {
                 Logger.getLogger(ReportForm3.class.getName()).log(Level.SEVERE, null, ex);
             }

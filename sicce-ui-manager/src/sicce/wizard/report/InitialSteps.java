@@ -56,6 +56,7 @@ class InitialSteps extends WizardPanelProvider {
     InitialSteps() {
         super("UCSG Report Wizard", new String[]{GENERAL_INFORMATION, SELECTED_FIELDS,GROUP_FIELDS},
                 new String[]{"Tipo de reporte", "Selección de Columnas", "Definición de Criterios"});
+        new ReportResult();
     }
 
     protected JComponent createPanel(final WizardController controller,

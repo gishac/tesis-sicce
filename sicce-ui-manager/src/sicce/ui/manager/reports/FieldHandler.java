@@ -61,8 +61,8 @@ public class FieldHandler {
 
         List<Field> lstZone = new ArrayList<Field>();
 
-        lstZone.add(new Field(1,1, 1,"zone", "idZone", "idZone", "Id. Zona", "Integer", 30));
-        lstZone.add(new Field(2,2, 1,"zone", "description", "descriptionZone", "Descripción/Zona", "String", 70));
+        lstZone.add(new Field(1,1, 1,"zone", "idZone", "idZone", "Id. Zona", Integer.class.getName(), 30));
+        lstZone.add(new Field(2,2, 1,"zone", "description", "descriptionZone", "Descripción/Zona", String.class.getName(), 70));
 
         return lstZone;
 
@@ -73,10 +73,10 @@ public class FieldHandler {
 
         List<Field> lstLocation = new ArrayList<Field>();
 
-        lstLocation.add(new Field(1,3, 2, "location", "idLocation", "idLocation", "Id. Ubicación", "Integer", 30));
-        lstLocation.add(new Field(2,4, 2, "location", "description", "descriptionLocation", "Descripción/Ubicación", "String", 70));
-        lstLocation.add(new Field(3,5,2, "location_type", "idLocationType", "idLocationType", "Id. Tipo Ubicación", "Integer", 30));
-        lstLocation.add(new Field(4,6, 2, "location_type", "description", "descriptionLocationType", "Descripción/Tipo Ubicación", "String", 70));
+        lstLocation.add(new Field(1,3, 2, "location", "idLocation", "idLocation", "Id. Ubicación", Integer.class.getName(), 30));
+        lstLocation.add(new Field(2,4, 2, "location", "description", "descriptionLocation", "Descripción/Ubicación", String.class.getName(), 70));
+        lstLocation.add(new Field(3,5,2, "location_type", "idLocationType", "idLocationType", "Id. Tipo Ubicación", Integer.class.getName(), 30));
+        lstLocation.add(new Field(4,6, 2, "location_type", "description", "descriptionLocationType", "Descripción/Tipo Ubicación", String.class.getName(), 70));
 
         return lstLocation;
 
@@ -86,10 +86,10 @@ public class FieldHandler {
 
         List<Field> lstPowerMeter = new ArrayList<Field>();
 
-        lstPowerMeter.add(new Field(1,7, 3, "power_meter","idPowerMeter", "idPowerMeter", "Id. Medidor", "Integer", 30));
-        lstPowerMeter.add(new Field(2,8,3, "power_meter","description", "descriptionPowerMeter", "Descripción/Medidor", "String", 70));
-        lstPowerMeter.add(new Field(3,9, 3,"power_meter", "ipAddress", "ipAddress", "Dirección IP", "Integer", 30));
-        lstPowerMeter.add(new Field(4,10, 3, "power_meter","serial", "serial", "No. Serial", "String", 70));
+        lstPowerMeter.add(new Field(1,7, 3, "power_meter","idPowerMeter", "idPowerMeter", "Id. Medidor", Integer.class.getName(), 30));
+        lstPowerMeter.add(new Field(2,8,3, "power_meter","description", "descriptionPowerMeter", "Descripción/Medidor", String.class.getName(), 70));
+        lstPowerMeter.add(new Field(3,9, 3,"power_meter", "ipAddress", "ipAddress", "Dirección IP", Integer.class.getName(), 30));
+        lstPowerMeter.add(new Field(4,10, 3, "power_meter","serial", "serial", "No. Serial", String.class.getName(), 70));
 
         return lstPowerMeter;
 

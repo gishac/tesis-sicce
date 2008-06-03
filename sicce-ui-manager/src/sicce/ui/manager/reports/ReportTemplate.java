@@ -11,7 +11,7 @@ import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
 import java.util.List;
 import sicce.ui.manager.reports.Field;
 
-public class LocationTemplate extends BaseDjReportTest {
+public class ReportTemplate extends BaseDjReportTest {
 
     public DynamicReport buildReport(String title, List<Field> listSelected, List<Field> listGroup) throws Exception {
 
@@ -31,13 +31,18 @@ public class LocationTemplate extends BaseDjReportTest {
         drb.setUseFullPageWidth(true);
         String stFieldSelected = createQueryFields(listSelected);
         String stFieldGroup = createQueryGroupby(listGroup);
-        String joins = "FROM location, power_meter, location_type, location_zone, zone, measure " +
+//        String joins = "FROM location, power_meter, location_type, location_zone, zone, measure " +
+//                "WHERE location.POWER_METER_ID_POWER_METER  = power_meter.ID_POWER_METER " +
+//                "AND location.ID_LOCATION_TYPE = location_type.ID_LOCATION_TYPE " +
+//                "AND location.ID_LOCATION = location_zone.ID_LOCATION " +
+//                "AND location_zone.ID_ZONE = zone.ID_ZONE " +
+//                "AND location.ID_LOCATION = measure.ID_LOCATION " +
+//                "AND power_meter.ID_POWER_METER = measure.ID_POWER_METER ";
+        String joins = "FROM location, power_meter, location_type, location_zone, zone " +
                 "WHERE location.POWER_METER_ID_POWER_METER  = power_meter.ID_POWER_METER " +
                 "AND location.ID_LOCATION_TYPE = location_type.ID_LOCATION_TYPE " +
                 "AND location.ID_LOCATION = location_zone.ID_LOCATION " +
-                "AND location_zone.ID_ZONE = zone.ID_ZONE " +
-                "AND location.ID_LOCATION = measure.ID_LOCATION " +
-                "AND power_meter.ID_POWER_METER = measure.ID_POWER_METER ";
+                "AND location_zone.ID_ZONE = zone.ID_ZONE " ;
         String query = "SELECT" + " " + stFieldSelected + " " +  joins + " " + "GROUP BY " +  stFieldGroup;
         System.out.println("QUERY :" + query);
 
