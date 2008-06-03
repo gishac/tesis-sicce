@@ -12,9 +12,11 @@ package sicce.wizard.report;
 
 import java.awt.Rectangle;
 import java.util.Map;
+import javax.swing.JComponent;
 import javax.swing.UIManager;
 import org.netbeans.api.wizard.WizardDisplayer;
 import org.netbeans.spi.wizard.WizardBranchController;
+import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPanelProvider;
 import sicce.wizard.report.panels.SpeciesPanel;
 
@@ -46,6 +48,8 @@ public class NewWizard extends WizardBranchController {
             return null;
         }
     }
+
+  
 
     
 }
