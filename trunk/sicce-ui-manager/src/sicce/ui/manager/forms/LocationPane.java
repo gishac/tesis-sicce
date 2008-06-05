@@ -364,7 +364,7 @@ public class LocationPane extends JTabExtended<ILocation> {
         try {
             // TODO add your handling code here:
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
+            
             WizardDisplayer.showWizard(new NewWizard().createWizard(), new Rectangle(20, 20, 600, 400));
             System.exit(0);
         } catch (ClassNotFoundException ex) {
