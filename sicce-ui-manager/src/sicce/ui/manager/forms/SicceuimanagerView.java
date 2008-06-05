@@ -13,6 +13,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.util.Set;
 import java.util.logging.Level;
@@ -35,6 +36,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
+import org.netbeans.api.wizard.WizardDisplayer;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.dataaccess.GroupDB;
 import sicce.api.info.ConstantsProvider.OptionsProvider;
@@ -49,6 +51,7 @@ import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.JTabbedPaneExtended;
 import sicce.ui.manager.handlers.ExceptionHandler;
 import sicce.ui.manager.handlers.ToolBarHandler;
+import sicce.wizard.report.NewWizard;
 
 /**
  * The application's main frame.
@@ -316,6 +319,7 @@ public class SicceuimanagerView extends FrameView {
     private AlarmPane alarmPane;
     private JLabel statusLabel;
     private String[] optionsText;
+    private WizardDisplayer wizard;
 
     private JLabel getStatusLabel() {
         if (statusLabel == null) {
@@ -464,10 +468,11 @@ public class SicceuimanagerView extends FrameView {
             public void actionPerformed(ActionEvent e) {
                 OptionsProvider option = Enum.valueOf(OptionsProvider.class, e.getActionCommand());
                 JTabExtended selectedOption = GetForm(option);
-                if (!getTabManager().getTabs().contains(selectedOption)) {
+                if (!getTabManager().getTabs().contains(selectedOption) && option.getTaskID()!=8) {
                     selectedOption.setTitle(text);
                     getTabManager().AddTab(selectedOption);
                 }
+                if (option.getTaskID()!=8){
                 if (!getTabManager().getCurrentTab().equals(selectedOption)) {
                     try {
                         //getTabManager().setCurrentTab(selectedOption);
@@ -476,6 +481,10 @@ public class SicceuimanagerView extends FrameView {
                     } catch (Exception ex) {
                         Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                }
+                }
+                else if (option.getTaskID()== 8){
+                         WizardDisplayer.showWizard(new NewWizard().createWizard(), new Rectangle(20, 20, 600, 400));
                 }
             }
         };
@@ -497,7 +506,7 @@ public class SicceuimanagerView extends FrameView {
         zonePane = new ZonePane();
         parameterPane = new ParameterPane();
         alarmPane = new AlarmPane();
-
+        
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
         toolBarHandler.AddToolBarStateListener(pmeterPane);
@@ -539,8 +548,10 @@ public class SicceuimanagerView extends FrameView {
             case Alarm:
                 result = alarmPane;
                 break;
-
         }
+          
+                 
+        
         return result;
     }
 }

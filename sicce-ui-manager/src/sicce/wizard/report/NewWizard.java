@@ -18,7 +18,7 @@ import org.netbeans.api.wizard.WizardDisplayer;
 import org.netbeans.spi.wizard.WizardBranchController;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPanelProvider;
-import sicce.wizard.report.panels.SpeciesPanel;
+
 
 
 /**
@@ -33,20 +33,8 @@ public class NewWizard extends WizardBranchController {
     }
    
     protected WizardPanelProvider getPanelProviderForStep(String step, Map collectedData) {
-        //There's only one branch point, so we don't need to test the
-        //value of step
-        Object species = collectedData.get(SpeciesPanel.KEY_SPECIES);
-        if (SpeciesPanel.VALUE_CAT.equals(species)) {
-            // return getCatLoversSteps();
-            return null;
-        } else if (SpeciesPanel.VALUE_DOG.equals(species)) {
-            // return getDogLoversSteps();
-            return null;
-        } else if (SpeciesPanel.VALUE_GERBIL.equals(species)) {
-            return null;//new GerbilSteps();
-        } else {
-            return null;
-        }
+          return null;
+        
     }
 
   

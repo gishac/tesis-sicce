@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import org.netbeans.spi.wizard.WizardController;
+import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.forms.*;
 
 /**
@@ -20,25 +21,17 @@ public class ReportForm1 extends javax.swing.JPanel {
     
     private final WizardController controller;
     private final Map wizardData;
-    public static final String KEY_INFO = "infogeneral";
-    public static final String VALUE_NAME = "name";
-    public static final String VALUE_DESCRIPTION = "description";
+  
+    public static final String KEY_NAME = "name";
+    public static final String KEY_DESCRIPTION = "description";
    
     /** Creates new form ReportDetail */
     public ReportForm1 (WizardController controller, Map wizardData) {
          initComponents();
         this.controller = controller;
-        this.wizardData = wizardData;
-        
-        
+        this.wizardData = wizardData; 
         controller.setProblem ("No ha ingresado los datos del reporte");
-        txtReportName.putClientProperty(KEY_INFO, VALUE_NAME);
-        txtDescription.putClientProperty(KEY_INFO, VALUE_DESCRIPTION);
-                
-                
-          
-                
-                
+             
     }
      
     /** This method is called from within the constructor to
@@ -107,18 +100,26 @@ public class ReportForm1 extends javax.swing.JPanel {
 
     private void txtReportNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtReportNameActionPerformed
         JTextField field = (JTextField) evt.getSource();
-        wizardData.put (KEY_INFO, field.getClientProperty(KEY_INFO));
+        wizardData.put (KEY_NAME, field.getText());
         controller.setProblem(null);
+       if (field.getText()==null){
+            JOptionPaneExtended.showMessageDialog(this, "Debe ingresar la descripción del reporte");
+            return;
+        }
 }//GEN-LAST:event_txtReportNameActionPerformed
 
     private void txtDescriptionPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtDescriptionPropertyChange
         // TODO add your handling code here:
         JTextArea field = (JTextArea) evt.getSource();
-        wizardData.put (KEY_INFO, field.getClientProperty(KEY_INFO));
+        wizardData.put (KEY_DESCRIPTION, field.getText());
         controller.setProblem(null);
-        if (field!= null) {
+        if (field.getText()!= null) {
             controller.setForwardNavigationMode(controller.MODE_CAN_CONTINUE);
-        }      
+        }   
+        else{
+            JOptionPaneExtended.showMessageDialog(this, "Debe ingresar la descripción del reporte");
+            return;
+        }
     }//GEN-LAST:event_txtDescriptionPropertyChange
     
     

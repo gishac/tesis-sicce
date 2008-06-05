@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.netbeans.spi.wizard.WizardBranchController;
+import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardException;
 import org.netbeans.spi.wizard.WizardPage.WizardResultProducer;
 import sicce.ui.manager.controls.JOptionPaneExtended;
@@ -31,7 +33,7 @@ public class ReportResult implements WizardResultProducer {
             
            selectedField = (List) wizardData.get(KEY_SELECTED);
            groupField = (List) wizardData.get(KEY_GROUP);
-            template.runReport("Reporte",selectedField ,groupField); 
+           template.runReport("Reporte",selectedField ,groupField); 
             
           System.out.println("Reporte generadoooo");
         } catch (Exception ex) {
@@ -41,6 +43,7 @@ public class ReportResult implements WizardResultProducer {
     }
 
     public boolean cancel(Map arg0) {
+        
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

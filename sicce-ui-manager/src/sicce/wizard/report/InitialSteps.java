@@ -35,7 +35,7 @@ import sicce.api.info.interfaces.IOptionSicce;
 import sicce.wizard.report.panels.ReportForm1;
 import sicce.wizard.report.panels.ReportForm2;
 import sicce.wizard.report.panels.ReportForm3;
-import sicce.wizard.report.panels.SpeciesPanel;
+
 
 /**
  * Defines the first two panes of the wizard.  The second one is where the
@@ -56,7 +56,7 @@ class InitialSteps extends WizardPanelProvider {
     InitialSteps() {
         super("UCSG Report Wizard", new String[]{GENERAL_INFORMATION, SELECTED_FIELDS,GROUP_FIELDS},
                 new String[]{"Tipo de reporte", "Selección de Columnas", "Definición de Criterios"});
-        new ReportResult();
+        
     }
 
     protected JComponent createPanel(final WizardController controller,

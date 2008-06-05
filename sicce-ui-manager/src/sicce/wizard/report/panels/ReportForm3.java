@@ -20,6 +20,7 @@ import sicce.ui.manager.reports.FieldHandler;
 import sicce.ui.manager.reports.FieldsCellRenderer;
 import sicce.ui.manager.reports.FieldsComparator;
 import sicce.ui.manager.reports.ReportTemplate;
+import sicce.wizard.report.ReportResult;
 
 /**
  *
@@ -38,15 +39,14 @@ public class ReportForm3 extends javax.swing.JPanel {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
-       
+        //new ReportResult();
         System.out.println("map" + wizardData.get(KEY_SELECTED));
         selectedField = (List) wizardData.get(KEY_SELECTED);
         
         fillSelectedFields();
 
         controller.setProblem("Defina los criterios del Reporte...");
-        
-        
+        ReportResult report = new ReportResult();
     }
 
     public void fillSelectedFields() {
