@@ -33,7 +33,7 @@ public abstract class BaseDjReportTest {
         dr = buildReport(titleReport, listSelected,listGroup);
 
        jp = DynamicJasperHelper.generateJasperPrint(dr, new ClassicLayoutManager(), DataAccessManager.getInstance().getConnectionDB().getConnection() , params);	//Creates the JasperPrint object, we pass as a Parameter
-       JasperViewer.viewReport(jp, false);
+       JasperViewer.viewReport(jp, true);
        jr = DynamicJasperHelper.generateJasperReport(dr, new ClassicLayoutManager());
     }
 }

@@ -51,6 +51,7 @@ import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.JTabbedPaneExtended;
 import sicce.ui.manager.handlers.ExceptionHandler;
 import sicce.ui.manager.handlers.ToolBarHandler;
+import sicce.ui.manager.reports.GenerateReport;
 import sicce.wizard.report.NewWizard;
 
 /**
@@ -319,7 +320,7 @@ public class SicceuimanagerView extends FrameView {
     private AlarmPane alarmPane;
     private JLabel statusLabel;
     private String[] optionsText;
-    private WizardDisplayer wizard;
+  
 
     private JLabel getStatusLabel() {
         if (statusLabel == null) {
@@ -369,7 +370,7 @@ public class SicceuimanagerView extends FrameView {
             for (IOptionSicce option : (List<IOptionSicce>) permissions) {
                 if (option.getGroup().getIdGroup().equals(group.getIdGroup())) {
                     ImageIcon icon = null;
-                    mainGroup.add(getAction(option.getDescription(), option.getActionCommand(), icon));
+                    mainGroup.add(getAction(option, icon));
                 }
             }
             getTaskPaneManager().add(mainGroup);
@@ -462,41 +463,55 @@ public class SicceuimanagerView extends FrameView {
      * @param icon
      * @return
      */
-    private javax.swing.Action getAction(final String text, String actionCommand, ImageIcon icon) {
-        javax.swing.Action event = new AbstractAction(text) {
+    private javax.swing.Action getAction(final IOptionSicce optionSicce, ImageIcon icon) {
+        javax.swing.Action event = new AbstractAction(optionSicce.getDescription()) {
 
             public void actionPerformed(ActionEvent e) {
                 OptionsProvider option = Enum.valueOf(OptionsProvider.class, e.getActionCommand());
-                JTabExtended selectedOption = GetForm(option);
-                if (!getTabManager().getTabs().contains(selectedOption) && option.getTaskID()!=8) {
-                    selectedOption.setTitle(text);
-                    getTabManager().AddTab(selectedOption);
-                }
-                if (option.getTaskID()!=8){
-                if (!getTabManager().getCurrentTab().equals(selectedOption)) {
-                    try {
-                        //getTabManager().setCurrentTab(selectedOption);
-                        //toolBarHandler.SetDefaultState();
-                        getTabManager().HandleTabChanging(selectedOption);
-                    } catch (Exception ex) {
-                        Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
+                if (optionSicce.getGroup().getIdGroup() != 3) {
+
+                    JTabExtended selectedOption = GetForm(option);
+                    if (!getTabManager().getTabs().contains(selectedOption)) {
+                        selectedOption.setTitle(optionSicce.getDescription());
+                        getTabManager().AddTab(selectedOption);
+                    }
+
+                    if (!getTabManager().getCurrentTab().equals(selectedOption)) {
+                        try {
+                            //getTabManager().setCurrentTab(selectedOption);
+                            //toolBarHandler.SetDefaultState();
+                            getTabManager().HandleTabChanging(selectedOption);
+                        } catch (Exception ex) {
+                            Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
-                }
-                else if (option.getTaskID()== 8){
-                         WizardDisplayer.showWizard(new NewWizard().createWizard(), new Rectangle(20, 20, 600, 400));
+                else if (optionSicce.getGroup().getIdGroup() == 3) {
+                    setActionReport(option);
+                           
+                    }
                 }
             }
-        };
-        event.putValue(javax.swing.Action.SHORT_DESCRIPTION, text);
-        event.putValue(javax.swing.Action.ACTION_COMMAND_KEY, actionCommand);
+
+            
+            
+
+              ; event 
+
+            .putValue (javax.swing.Action.SHORT_DESCRIPTION , optionSicce.getDescription());
+            event.putValue(javax.swing.Action.ACTION_COMMAND_KEY, optionSicce.getActionCommand());
         //event.putValue(javax.swing.Action.SMALL_ICON, icon);
+        
+             
+        
         return event;
     }
 
     /**
      * Crea las instancias de todos los formularios
      */
+    
+
     private void CreateForms() {
         rolePane = new RolePane();
         userPane = new UserPane();
@@ -506,7 +521,7 @@ public class SicceuimanagerView extends FrameView {
         zonePane = new ZonePane();
         parameterPane = new ParameterPane();
         alarmPane = new AlarmPane();
-        
+
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
         toolBarHandler.AddToolBarStateListener(pmeterPane);
@@ -549,9 +564,34 @@ public class SicceuimanagerView extends FrameView {
                 result = alarmPane;
                 break;
         }
-          
-                 
-        
         return result;
+    }
+        /*
+         * 
+         */
+        
+        private static void setActionReport(OptionsProvider option) {
+        
+        switch (option) {
+            case Wizard:
+                 WizardDisplayer.showWizard(new NewWizard().createWizard(), new Rectangle(20, 20, 600, 400));
+                break;
+            case PowerMeterReport:
+                GenerateReport.GeneratePowerMeterReport(null);
+                break;
+            case LocationTypeReport:
+                GenerateReport.GenerateLTypeReport(null);
+                break;
+            case LocationReport:
+                GenerateReport.GenerateLocationReport(null);
+                break;
+            case UserReport:
+                GenerateReport.GenerateUserReport(null);
+                break;
+            case ZoneReport:
+                GenerateReport.GenerateZoneReport(null);
+                break;
+        }
+
     }
 }

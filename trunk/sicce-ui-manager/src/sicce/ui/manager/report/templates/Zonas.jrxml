@@ -27,6 +27,7 @@
 	<parameter name="idZone" isForPrompting="false" class="java.lang.Long">
 		<defaultValueExpression ><![CDATA[new Long(1)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="logoSICCE" isForPrompting="false" class="java.net.URL"/>
 	<queryString><![CDATA[SELECT
      location.`DESCRIPTION` AS location_DESCRIPTION,
      location_zone.`ID_ZONE` AS location_zone_ID_ZONE,
@@ -34,8 +35,7 @@
      zone.`DESCRIPTION` AS zone_DESCRIPTION
 FROM
      `location` location INNER JOIN `location_zone` location_zone ON location.`ID_LOCATION` = location_zone.`ID_LOCATION`
-     INNER JOIN `zone` zone ON location_zone.`ID_ZONE` = zone.`ID_ZONE`
-]]></queryString>
+     INNER JOIN `zone` zone ON location_zone.`ID_ZONE` = zone.`ID_ZONE`]]></queryString>
 
 	<field name="location_DESCRIPTION" class="java.lang.String"/>
 	<field name="location_zone_ID_ZONE" class="java.lang.Long"/>
@@ -190,6 +190,17 @@ FROM
 						width="76"
 						height="42"
 						key="image-1"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.net.URL"><![CDATA[$P{logoSICCE}]]></imageExpression>
+				</image>
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="3"
+						y="4"
+						width="76"
+						height="42"
+						key="image-2"/>
 					<box></box>
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.net.URL"><![CDATA[$P{logoUCSG}]]></imageExpression>

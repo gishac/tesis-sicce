@@ -11,27 +11,15 @@ enclosed by brackets [] replaced by your own identifying information:
 package sicce.wizard.report;
 
 import org.netbeans.spi.wizard.WizardController;
-import org.netbeans.spi.wizard.WizardException;
 import org.netbeans.spi.wizard.WizardPanelProvider;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+import java.util.List;
 import java.util.Map;
-
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import org.netbeans.lib.awtextra.AbsoluteLayout;
-import sicce.api.businesslogic.OptionBizObject;
-import sicce.api.businesslogic.SicceComboBoxModel;
-import sicce.api.businesslogic.SicceComboBoxRenderer;
-import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
-import sicce.api.info.interfaces.IOptionSicce;
+import sicce.ui.manager.reports.ReportTemplate;
 import sicce.wizard.report.panels.ReportForm1;
 import sicce.wizard.report.panels.ReportForm2;
 import sicce.wizard.report.panels.ReportForm3;
@@ -48,6 +36,14 @@ class InitialSteps extends WizardPanelProvider {
     private static final String GENERAL_INFORMATION = "generalInformation";
     private static final String SELECTED_FIELDS = "selectedField";
     private static final String GROUP_FIELDS = "groupField";
+    private ReportTemplate template = new ReportTemplate();
+
+    public static final String KEY_SELECTED = "selectedFields";
+    public static final String KEY_GROUP = "groupFields";
+    public static final String KEY_NAME = "name";
+    List selectedField = null;
+    List groupField  = null;
+    String title = null;
     
 
     /**
@@ -79,4 +75,21 @@ class InitialSteps extends WizardPanelProvider {
                 throw new IllegalArgumentException(id);
         }
     }
+    @Override
+    public Object finish(Map wizardData)  {
+        try {
+            
+           selectedField = (List) wizardData.get(KEY_SELECTED);
+           groupField = (List) wizardData.get(KEY_GROUP);
+           title = (String)wizardData.get(KEY_NAME);
+           template.runReport(title,selectedField ,groupField); 
+            
+        
+        } catch (Exception ex) {
+            Logger.getLogger(InitialSteps.class.getName()).log(Level.SEVERE, null, ex);
+        }
+               return true;
+    }
+
+    
 }

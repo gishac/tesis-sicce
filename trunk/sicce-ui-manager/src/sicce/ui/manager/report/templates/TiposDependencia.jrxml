@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="Usuarios"
+		 name="TipoDependencia"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -24,18 +24,13 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="logoUCSG" isForPrompting="false" class="java.net.URL"/>
+	<parameter name="logoSICCE" isForPrompting="false" class="java.net.URL"/>
 	<queryString><![CDATA[SELECT
-     role.`DESCRIPTION` AS role_DESCRIPTION,
-     user_sicce.`NAME` AS user_sicce_NAME,
-     user_sicce.`LASTNAME` AS user_sicce_LASTNAME,
-     user_sicce.`USERNAME_SICCE` AS user_sicce_USERNAME_SICCE
+     location_type.`DESCRIPTION` AS location_type_DESCRIPTION
 FROM
-     `role` role INNER JOIN `user_sicce` user_sicce ON role.`ID_ROLE` = user_sicce.`ID_ROLE`]]></queryString>
+     `location_type` location_type]]></queryString>
 
-	<field name="role_DESCRIPTION" class="java.lang.String"/>
-	<field name="user_sicce_NAME" class="java.lang.String"/>
-	<field name="user_sicce_LASTNAME" class="java.lang.String"/>
-	<field name="user_sicce_USERNAME_SICCE" class="java.lang.String"/>
+	<field name="location_type_DESCRIPTION" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -78,6 +73,17 @@ FROM
 						key="image-1"/>
 					<box></box>
 					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.net.URL"><![CDATA[$P{logoSICCE}]]></imageExpression>
+				</image>
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="7"
+						y="3"
+						width="76"
+						height="42"
+						key="image-2"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.net.URL"><![CDATA[$P{logoUCSG}]]></imageExpression>
 				</image>
 			</band>
@@ -95,7 +101,7 @@ FROM
 					<textElement textAlignment="Left">
 						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Reporte de Usuarios Registrados en el Sistema]]></text>
+				<text><![CDATA[Reporte de Tipos de Dependencias Registradas en el Sistema]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
@@ -105,7 +111,7 @@ FROM
 					<reportElement
 						x="3"
 						y="8"
-						width="43"
+						width="28"
 						height="16"
 						key="staticText-4"/>
 					<box></box>
@@ -116,49 +122,23 @@ FROM
 				</staticText>
 				<staticText>
 					<reportElement
-						x="53"
+						x="34"
 						y="8"
-						width="110"
+						width="259"
 						height="16"
 						key="staticText-5"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Usuario]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="171"
-						y="8"
-						width="110"
-						height="16"
-						key="staticText-6"/>
-					<box></box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Rol Asignado]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="287"
-						y="8"
-						width="243"
-						height="16"
-						key="staticText-7"/>
-					<box></box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Nombre Completo]]></text>
+				<text><![CDATA[Descripción Tipo de Dependencia]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="2"
 						y="7"
-						width="528"
-						height="0"
+						width="291"
+						height="1"
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -166,7 +146,7 @@ FROM
 					<reportElement
 						x="2"
 						y="25"
-						width="528"
+						width="291"
 						height="0"
 						key="line-2"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -182,7 +162,7 @@ FROM
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="46"
+						x="32"
 						y="7"
 						width="0"
 						height="19"
@@ -191,29 +171,11 @@ FROM
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="166"
-						y="7"
-						width="0"
-						height="19"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="283"
+						x="293"
 						y="7"
 						width="0"
 						height="19"
 						key="line-6"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="530"
-						y="7"
-						width="0"
-						height="19"
-						key="line-7"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -224,7 +186,7 @@ FROM
 					<reportElement
 						x="5"
 						y="0"
-						width="36"
+						width="26"
 						height="18"
 						key="textField"/>
 					<box></box>
@@ -235,42 +197,16 @@ FROM
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="53"
+						x="40"
 						y="0"
-						width="110"
+						width="253"
 						height="18"
 						key="textField"/>
 					<box></box>
 					<textElement>
 						<font fontName="Verdana"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{user_sicce_USERNAME_SICCE}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="171"
-						y="0"
-						width="110"
-						height="18"
-						key="textField"/>
-					<box></box>
-					<textElement>
-						<font fontName="Verdana"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{role_DESCRIPTION}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="287"
-						y="0"
-						width="240"
-						height="18"
-						key="textField"/>
-					<box></box>
-					<textElement>
-						<font fontName="Verdana"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{user_sicce_NAME}.concat( " ".concat( $F{user_sicce_LASTNAME} ) )]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{location_type_DESCRIPTION}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -285,14 +221,14 @@ FROM
 					<reportElement
 						x="2"
 						y="18"
-						width="528"
+						width="291"
 						height="0"
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="46"
+						x="32"
 						y="0"
 						width="0"
 						height="19"
@@ -301,29 +237,11 @@ FROM
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="166"
-						y="0"
-						width="0"
-						height="19"
-						key="line-11"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="283"
+						x="293"
 						y="0"
 						width="0"
 						height="19"
 						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="530"
-						y="0"
-						width="0"
-						height="19"
-						key="line-13"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>

@@ -5,13 +5,8 @@
 package sicce.ui.manager.reports;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Vector;
+import sicce.ui.manager.controls.JOptionPaneExtended;
 
 /**
  *
@@ -22,8 +17,6 @@ public class FieldHandler {
     private static List<Field> listAvailableFields = new ArrayList();
     private static List<Field> listSelectedFields = new ArrayList();
     private static List<Field> listGroupFields = new ArrayList();
-
-  
 
     public FieldHandler() {
         listAvailableFields = new ArrayList();
@@ -40,16 +33,17 @@ public class FieldHandler {
     }
 
     public static List<Field> getSelectedFields() {
-        if (listSelectedFields == null)
+        if (listSelectedFields == null) {
             listSelectedFields = new ArrayList();
-        
+        }
+
         return listSelectedFields;
     }
 
     public static List<Field> getAvailableFields() {
         return listAvailableFields;
     }
-  
+
     public static List<Field> getListGroupFields() {
         return listGroupFields;
     }
@@ -57,12 +51,13 @@ public class FieldHandler {
     public static void setListGroupFields(List<Field> listGroupFields) {
         FieldHandler.listGroupFields = listGroupFields;
     }
+
     public List<Field> fillZone() {
 
         List<Field> lstZone = new ArrayList<Field>();
 
-        lstZone.add(new Field(1,1, 1,"zone", "idZone", "idZone", "Id. Zona", Integer.class.getName(), 30));
-        lstZone.add(new Field(2,2, 1,"zone", "description", "descriptionZone", "Descripción/Zona", String.class.getName(), 70));
+        lstZone.add(new Field(1, 1, 1, "zone", "id_Zone", "idZone", "Id. Zona", Integer.class.getName(), 30));
+        lstZone.add(new Field(2, 2, 1, "zone", "description", "descriptionZone", "Descripción/Zona", String.class.getName(), 70));
 
         return lstZone;
 
@@ -73,10 +68,10 @@ public class FieldHandler {
 
         List<Field> lstLocation = new ArrayList<Field>();
 
-        lstLocation.add(new Field(1,3, 2, "location", "idLocation", "idLocation", "Id. Ubicación", Integer.class.getName(), 30));
-        lstLocation.add(new Field(2,4, 2, "location", "description", "descriptionLocation", "Descripción/Ubicación", String.class.getName(), 70));
-        lstLocation.add(new Field(3,5,2, "location_type", "idLocationType", "idLocationType", "Id. Tipo Ubicación", Integer.class.getName(), 30));
-        lstLocation.add(new Field(4,6, 2, "location_type", "description", "descriptionLocationType", "Descripción/Tipo Ubicación", String.class.getName(), 70));
+        lstLocation.add(new Field(1, 3, 2, "location", "id_Location", "idLocation", "Id. Ubicación", Integer.class.getName(), 30));
+        lstLocation.add(new Field(2, 4, 2, "location", "description", "descriptionLocation", "Descripción/Ubicación", String.class.getName(), 70));
+        lstLocation.add(new Field(3, 5, 2, "location_type", "id_Location_Type", "idLocationType", "Id. Tipo Ubicación", Integer.class.getName(), 30));
+        lstLocation.add(new Field(4, 6, 2, "location_type", "description", "descriptionLocationType", "Descripción/Tipo Ubicación", String.class.getName(), 70));
 
         return lstLocation;
 
@@ -86,36 +81,22 @@ public class FieldHandler {
 
         List<Field> lstPowerMeter = new ArrayList<Field>();
 
-        lstPowerMeter.add(new Field(1,7, 3, "power_meter","idPowerMeter", "idPowerMeter", "Id. Medidor", Integer.class.getName(), 30));
-        lstPowerMeter.add(new Field(2,8,3, "power_meter","description", "descriptionPowerMeter", "Descripción/Medidor", String.class.getName(), 70));
-        lstPowerMeter.add(new Field(3,9, 3,"power_meter", "ipAddress", "ipAddress", "Dirección IP", Integer.class.getName(), 30));
-        lstPowerMeter.add(new Field(4,10, 3, "power_meter","serial", "serial", "No. Serial", String.class.getName(), 70));
+        lstPowerMeter.add(new Field(1, 7, 3, "power_meter", "id_Power_Meter", "idPowerMeter", "Id. Medidor", Integer.class.getName(), 30));
+        lstPowerMeter.add(new Field(2, 8, 3, "power_meter", "description", "descriptionPowerMeter", "Descripción/Medidor", String.class.getName(), 70));
+        lstPowerMeter.add(new Field(3, 9, 3, "power_meter", "ip_Address", "ipAddress", "Dirección IP", String.class.getName(), 30));
+        lstPowerMeter.add(new Field(4, 10, 3, "power_meter", "serial", "serial", "No. Serial", String.class.getName(), 70));
 
         return lstPowerMeter;
 
 
     }
 
-    public Map fillModulesMap() {
-
-        Map modules = new HashMap();
-
-        modules.put(1, fillZone());
-        modules.put(2, fillLocation());
-        modules.put(3, fillPowerMeter());
-
-
-        return modules;
-    }
-
     public static List<Field> CompareLists(List<Field> availableList, List<Field> selectedList) {
-        List<Field> resultList = new  ArrayList<Field>();
+        List<Field> resultList = new ArrayList<Field>();
 
         if (selectedList.isEmpty()) {
             return availableList;
         }
-
-
         resultList.addAll(availableList);
         for (Field fieldSelected : (List<Field>) selectedList) {
             for (Field fieldAvailable : (List<Field>) availableList) {
@@ -134,38 +115,43 @@ public class FieldHandler {
     }
 
     public static void removeSelectedField(Field tmp) {
-        getSelectedFields().remove(tmp);
+            Field ftmp = (Field) getAvailableFields().get(0);
+            if (ftmp.getIdTable() == tmp.getIdTable()) {
+                getSelectedFields().remove(tmp);
+                
+            } else {
+                JOptionPaneExtended.showMessageDialog(null, "El campo no pertenece al grupo selecionado");
+            }
+
     }
-    
+
     public static void addGroupField(Field tmp) {
-        
+
         getListGroupFields().add(tmp);
     }
 
     public static void removeGroupField(Field tmp) {
         getListGroupFields().remove(tmp);
     }
-    
-    public static boolean CompareList(Field fieldSelected , List<Field> groupList) {
-        
+
+    public static boolean CompareList(Field fieldSelected, List<Field> groupList) {
+
         boolean result = false;
 
         if (groupList == null) {
             return result;
         }
-      
-            for (Field fieldGroup : (List<Field>) groupList) {
-             if (fieldSelected.getIdField() == fieldGroup.getIdField() && fieldSelected.getIdTable() == fieldGroup.getIdTable()) {
-                    result = true;
-                    return result;
-                }
+
+        for (Field fieldGroup : (List<Field>) groupList) {
+            if (fieldSelected.getIdField() == fieldGroup.getIdField() && fieldSelected.getIdTable() == fieldGroup.getIdTable()) {
+                result = true;
+                return result;
+            }
         }
-        
+
         return result;
 
     }
-
-
 }
 
 
