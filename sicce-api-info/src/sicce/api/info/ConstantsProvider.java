@@ -22,7 +22,13 @@ public class ConstantsProvider {
         Location(5),
         Zone(6),
         Parameter(7),
-        Alarm(7);
+        Alarm(8),
+        Wizard(9),
+        PowerMeterReport(10),
+        LocationTypeReport(11),
+        LocationReport(12),
+        UserReport(13),
+        ZoneReport(14);
         private int taskID;
 
         OptionsProvider(int taskID) {
