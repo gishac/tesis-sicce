@@ -202,6 +202,11 @@ insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GRO
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Dependencias',null,'Location',1);
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Alarmas',null,'Alarm',2);
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Reportes Dinámicos',null,'Wizard',3);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Medidores',null,'PowerMeterReport',3);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Tipo de Dependencia',null,'LocationTypeReport',3);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Dependencias',null,'LocationReport',3);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Usuarios',null,'UserReport',3);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Zonas',null,'ZoneReport',3);
 
 
 insert into role values(0,'Administrador');
@@ -215,6 +220,11 @@ insert into option_role values(1,6);
 insert into option_role values(1,7);
 insert into option_role values(1,8);
 insert into option_role values(1,9);
+insert into option_role values(1,10);
+insert into option_role values(1,11);
+insert into option_role values(1,12);
+insert into option_role values(1,13);
+insert into option_role values(1,14);
 
 insert into location_type values(0,'Edificio');
 
