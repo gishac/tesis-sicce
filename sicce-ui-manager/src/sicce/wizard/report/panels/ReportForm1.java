@@ -3,13 +3,12 @@
  *
  * Created on 31 de marzo de 2008, 10:06 PM
  */
-
 package sicce.wizard.report.panels;
 
+import java.awt.Component;
 import java.util.Map;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import org.netbeans.spi.wizard.WizardController;
+import org.netbeans.spi.wizard.WizardPage;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.forms.*;
 
@@ -17,23 +16,22 @@ import sicce.ui.manager.forms.*;
  *
  * @author  Karu
  */
-public class ReportForm1 extends javax.swing.JPanel {
-    
+public class ReportForm1 extends WizardPage {
+
     private final WizardController controller;
     private final Map wizardData;
-  
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";
-   
+
     /** Creates new form ReportDetail */
-    public ReportForm1 (WizardController controller, Map wizardData) {
-         initComponents();
+    public ReportForm1(WizardController controller, Map wizardData) {
+        initComponents();
         this.controller = controller;
-        this.wizardData = wizardData; 
-        controller.setProblem ("No ha ingresado los datos del reporte");
-             
+        this.wizardData = wizardData;
+      
+
     }
-     
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -59,11 +57,6 @@ public class ReportForm1 extends javax.swing.JPanel {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtReportName.setName("txtReportName"); // NOI18N
-        txtReportName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtReportNameActionPerformed(evt);
-            }
-        });
         jPanel1.add(txtReportName, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 250, 20));
 
         jLabel1.setName("jLabel1"); // NOI18N
@@ -75,13 +68,10 @@ public class ReportForm1 extends javax.swing.JPanel {
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         txtDescription.setColumns(20);
+        txtDescription.setLineWrap(true);
         txtDescription.setRows(5);
+        txtDescription.setWrapStyleWord(true);
         txtDescription.setName("txtDescription"); // NOI18N
-        txtDescription.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                txtDescriptionPropertyChange(evt);
-            }
-        });
         jScrollPane1.setViewportView(txtDescription);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 250, -1));
@@ -98,31 +88,31 @@ public class ReportForm1 extends javax.swing.JPanel {
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 420, 200));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtReportNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtReportNameActionPerformed
-        JTextField field = (JTextField) evt.getSource();
-        wizardData.put (KEY_NAME, field.getText());
-        controller.setProblem(null);
-       if (field.getText()==null){
-            JOptionPaneExtended.showMessageDialog(this, "Debe ingresar la descripción del reporte");
-            return;
+    @Override
+    protected String validateContents(Component component, Object event) {
+        
+        if (component==null)
+            return "Debe ingresar la información General del reporte...";
+        
+        if (component == txtReportName && txtReportName.getText().trim().length() == 0) {
+            JOptionPaneExtended.showMessageDialog(null, "Debe ingresar el nombre del reporte");
+           return "Ingrese el nombre del Reporte...";
+        } else {
+            wizardData.put(KEY_NAME, txtReportName.getText());
+            
         }
-}//GEN-LAST:event_txtReportNameActionPerformed
+        if (component == txtDescription  && txtDescription.getText().trim().length() == 0) {
+            JOptionPaneExtended.showMessageDialog(null, "Debe ingresar la descripción del reporte");
+            return "Ingrese la descripción del Reporte...";
+        } else {
+            controller.setForwardNavigationMode(WizardController.MODE_CAN_CONTINUE);
+            wizardData.put(KEY_DESCRIPTION, txtDescription.getText());
+            controller.setProblem(null);
+        }
 
-    private void txtDescriptionPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtDescriptionPropertyChange
-        // TODO add your handling code here:
-        JTextArea field = (JTextArea) evt.getSource();
-        wizardData.put (KEY_DESCRIPTION, field.getText());
-        controller.setProblem(null);
-        if (field.getText()!= null) {
-            controller.setForwardNavigationMode(controller.MODE_CAN_CONTINUE);
-        }   
-        else{
-            JOptionPaneExtended.showMessageDialog(this, "Debe ingresar la descripción del reporte");
-            return;
-        }
-    }//GEN-LAST:event_txtDescriptionPropertyChange
-    
-    
+        return null;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -133,5 +123,4 @@ public class ReportForm1 extends javax.swing.JPanel {
     private javax.swing.JTextArea txtDescription;
     private javax.swing.JTextField txtReportName;
     // End of variables declaration//GEN-END:variables
-    
 }

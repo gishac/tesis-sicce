@@ -35,7 +35,7 @@ public class ReportResult implements WizardResultProducer {
            groupField = (List) wizardData.get(KEY_GROUP);
            template.runReport("Reporte",selectedField ,groupField); 
             
-          System.out.println("Reporte generadoooo");
+        
         } catch (Exception ex) {
             Logger.getLogger(ReportResult.class.getName()).log(Level.SEVERE, null, ex);
         }

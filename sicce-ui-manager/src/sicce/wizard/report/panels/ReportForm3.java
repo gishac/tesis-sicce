@@ -5,13 +5,12 @@
  */
 package sicce.wizard.report.panels;
 
+import java.awt.Component;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JList;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPage;
 import sicce.ui.manager.controls.JOptionPaneExtended;
@@ -19,14 +18,12 @@ import sicce.ui.manager.reports.Field;
 import sicce.ui.manager.reports.FieldHandler;
 import sicce.ui.manager.reports.FieldsCellRenderer;
 import sicce.ui.manager.reports.FieldsComparator;
-import sicce.ui.manager.reports.ReportTemplate;
-import sicce.wizard.report.ReportResult;
 
 /**
  *
  * @author  Karu
  */
-public class ReportForm3 extends javax.swing.JPanel {
+public class ReportForm3 extends WizardPage {
 
     private final WizardController controller;
     private final Map wizardData;
@@ -38,15 +35,10 @@ public class ReportForm3 extends javax.swing.JPanel {
     public ReportForm3(WizardController controller, Map wizardData) {
         initComponents();
         this.controller = controller;
-        this.wizardData = wizardData;
-        //new ReportResult();
-        System.out.println("map" + wizardData.get(KEY_SELECTED));
+        this.wizardData = wizardData;     
         selectedField = (List) wizardData.get(KEY_SELECTED);
-        
-        fillSelectedFields();
-
-        controller.setProblem("Defina los criterios del Reporte...");
-        ReportResult report = new ReportResult();
+        fillSelectedFields(); 
+       
     }
 
     public void fillSelectedFields() {
@@ -65,22 +57,34 @@ public class ReportForm3 extends javax.swing.JPanel {
     
     }
 
-    
+      @Override
+    protected String validateContents(Component component, Object event) {
+
+        if (component == null) {
+            return "Defina los criterios del reporte...";
+        }
+
+        if (component == dtpBeginDate && dtpBeginDate == null) {
+            JOptionPaneExtended.showMessageDialog(null, "Debe seleccionar la fecha de inicio del reporte");
+            return "Defina las fechas del reporte...";
+        }
+        if (component == dtpFinishDate && dtpFinishDate == null) {
+            JOptionPaneExtended.showMessageDialog(null, "Debe seleccionar la fecha de fin del reporte");
+            return "Defina las fechas del reporte...";
+        }
+
+        return null;
+    }
+
      public void fillWizardMap(){
         
         wizardData.put (KEY_GROUP, FieldHandler.getListGroupFields());
         controller.setProblem(null);
         if (FieldHandler.getListGroupFields()!= null) {
-            try {
-
-                ReportTemplate template = new ReportTemplate();
-                template.runReport("Reporte", FieldHandler.getSelectedFields(), FieldHandler.getListGroupFields());
+            try {          
+                controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
+                controller.setProblem(null);
                 
-
-                controller.setForwardNavigationMode(controller.MODE_CAN_FINISH);
-                
-                
-                    
             } catch (Exception ex) {
                 Logger.getLogger(ReportForm3.class.getName()).log(Level.SEVERE, null, ex);
             }

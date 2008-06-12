@@ -5,11 +5,12 @@
  */
 package sicce.wizard.report.panels;
 
+import java.awt.Component;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JOptionPane;
 import org.netbeans.spi.wizard.WizardController;
+import org.netbeans.spi.wizard.WizardPage;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.reports.Field;
 import sicce.ui.manager.reports.FieldHandler;
@@ -20,13 +21,14 @@ import sicce.ui.manager.reports.FieldsComparator;
  *
  * @author  Karu
  */
-public class ReportForm2 extends javax.swing.JPanel {
+public class ReportForm2 extends WizardPage {
 
     private final WizardController controller;
     private final Map wizardData;
     public static final String KEY_SELECTED = "selectedFields";
     private FieldHandler availableField = new FieldHandler();
     public static final String VALUE_SELECTED_FIELDS = "selected_Fields";
+
     /** Creates new form ReportDetail */
     public ReportForm2(WizardController controller, Map wizardData) {
         initComponents();
@@ -47,15 +49,11 @@ public class ReportForm2 extends javax.swing.JPanel {
     }
 
     public void fillAvailableFields() {
-
-        
-
         if (cbModules.getSelectedItem().equals("Zona")) {
             FieldHandler.setListAvailableFields(availableField.fillZone());
             List<Field> resultList = FieldHandler.CompareLists(FieldHandler.getAvailableFields(), FieldHandler.getSelectedFields());
             lstAvailableFields.setCellRenderer(new FieldsCellRenderer());
             lstAvailableFields.setListData(resultList.toArray());
-
         }
 
         if (cbModules.getSelectedItem().equals("Ubicación")) {
@@ -72,28 +70,35 @@ public class ReportForm2 extends javax.swing.JPanel {
             lstAvailableFields.setListData(resultList.toArray());
 
         }
+    }
+
+    public void updateLists() {
+        lstSelectedFields.setCellRenderer(new FieldsCellRenderer());
+        lstAvailableFields.setListData(FieldHandler.CompareLists(FieldHandler.getAvailableFields(), FieldHandler.getSelectedFields()).toArray());
+        lstSelectedFields.setListData(FieldHandler.getSelectedFields().toArray());
+        wizardData.put(KEY_SELECTED, FieldHandler.getSelectedFields());
 
     }
 
-   
-    public void updateLists(){
-      lstSelectedFields.setCellRenderer(new FieldsCellRenderer());
-     
-      lstAvailableFields.setListData(FieldHandler.CompareLists(FieldHandler.getAvailableFields(),FieldHandler.getSelectedFields()).toArray());
-      lstSelectedFields.setListData(FieldHandler.getSelectedFields().toArray());
-      wizardData.put(KEY_SELECTED, FieldHandler.getSelectedFields());
-      System.out.println("wizard" + wizardData.get(KEY_SELECTED));
+    @Override
+    protected String validateContents(Component component, Object event) {
+
+        if (component == null) {
+            return "Debe seleccionar los campos a mostrar en el reporte...";
+        }
+
+        if (component == lstSelectedFields && lstSelectedFields == null) {
+            JOptionPaneExtended.showMessageDialog(null, "Debe seleccionar los campos del reporte");
+            return "Seleccione los campos del reporte...";
+        } else {
+            controller.setForwardNavigationMode(WizardController.MODE_CAN_CONTINUE);
+            wizardData.put(KEY_SELECTED, FieldHandler.getSelectedFields());
+            controller.setProblem(null);
+        }
+
+        return null;
     }
 
-    
-    public void fillWizardMap(){
-        
-        wizardData.put (KEY_SELECTED, FieldHandler.getSelectedFields());
-        controller.setProblem(null);
-        if (FieldHandler.getSelectedFields()!= null) {
-            controller.setForwardNavigationMode(controller.MODE_CAN_CONTINUE);
-        }      
-    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -178,11 +183,6 @@ public class ReportForm2 extends javax.swing.JPanel {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, 20));
 
         cbModules.setName("cbModules"); // NOI18N
-        cbModules.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbModulesItemStateChanged(evt);
-            }
-        });
         cbModules.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbModulesActionPerformed(evt);
@@ -212,10 +212,6 @@ public class ReportForm2 extends javax.swing.JPanel {
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 400, 280));
     }// </editor-fold>//GEN-END:initComponents
-    private void cbModulesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbModulesItemStateChanged
-    // TODO add your handling code here:
-      
-    }//GEN-LAST:event_cbModulesItemStateChanged
 
     private void cbModulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbModulesActionPerformed
         // TODO add your handling code here:
@@ -233,41 +229,41 @@ public class ReportForm2 extends javax.swing.JPanel {
             FieldHandler.addSelectedField(tmp);
         }
         updateLists();
-        //fillWizardMap(evt);
+        
         
 }//GEN-LAST:event_btnAddFieldActionPerformed
 
     private void btnRemoveFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveFieldActionPerformed
-        // TODO add your handling code here:
+
         Object[] field = this.lstSelectedFields.getSelectedValues();
         Field tmp = null;
 
         for (int i = 0; i < field.length; i++) {
             tmp = (Field) field[i];
-            FieldHandler.removeSelectedField(tmp);
+            FieldHandler.removeSelectedField(tmp); 
+            updateLists();
         }
-        updateLists();
-     //   fillWizardMap(evt);
+     
+     
         
     }//GEN-LAST:event_btnRemoveFieldActionPerformed
 
     private void lstSelectedFieldsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstSelectedFieldsValueChanged
         // TODO add your handling code here:
-        fillWizardMap();
+       // updateLists();
     }//GEN-LAST:event_lstSelectedFieldsValueChanged
 
     private void btnUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpActionPerformed
         // TODO add your handling code here:
-        if(lstSelectedFields.getSelectedValue()==null){
+        if (lstSelectedFields.getSelectedValue() == null) {
             JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar un valor de la lista");
             return;
         }
-         
-       int index = lstSelectedFields.getSelectedIndex();
-        
-        if (index > 0)
-        {
-            Field previous = (Field) lstSelectedFields.getModel().getElementAt(index - 1 );
+
+        int index = lstSelectedFields.getSelectedIndex();
+
+        if (index > 0) {
+            Field previous = (Field) lstSelectedFields.getModel().getElementAt(index - 1);
             Field selected = (Field) lstSelectedFields.getModel().getElementAt(index);
             previous.setOrder(previous.getOrder() + 1);
             selected.setOrder(selected.getOrder() - 1);
@@ -281,20 +277,19 @@ public class ReportForm2 extends javax.swing.JPanel {
 
     private void btnDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownActionPerformed
         // TODO add your handling code here:
-          if(lstSelectedFields.getSelectedValue()==null){
+        if (lstSelectedFields.getSelectedValue() == null) {
             JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar un valor de la lista");
             return;
         }
-         
-       int index = lstSelectedFields.getSelectedIndex();
-        
-        if (index < lstSelectedFields.getModel().getSize() - 1 )
-        {
+
+        int index = lstSelectedFields.getSelectedIndex();
+
+        if (index < lstSelectedFields.getModel().getSize() - 1) {
             Field selected = (Field) lstSelectedFields.getModel().getElementAt(index);
-            Field next = (Field) lstSelectedFields.getModel().getElementAt(index + 1 );
+            Field next = (Field) lstSelectedFields.getModel().getElementAt(index + 1);
             selected.setOrder(selected.getOrder() + 1);
             next.setOrder(next.getOrder() - 1);
-            
+
             Collections.sort(FieldHandler.getSelectedFields(), new FieldsComparator());
             updateLists();
             lstSelectedFields.setSelectedIndex(index + 1);
