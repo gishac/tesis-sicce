@@ -39,6 +39,7 @@ public class ReportForm2 extends WizardPage {
         controller.setProblem("Seleccione el módulo deseado.");
         lstSelectedFields.putClientProperty(KEY_SELECTED, VALUE_SELECTED_FIELDS);
         fillCbModules();
+        validateContents(this, null);
     }
 
     public void fillCbModules() {
@@ -87,13 +88,10 @@ public class ReportForm2 extends WizardPage {
             return "Debe seleccionar los campos a mostrar en el reporte...";
         }
 
-        if (component == lstSelectedFields && lstSelectedFields == null) {
-            JOptionPaneExtended.showMessageDialog(null, "Debe seleccionar los campos del reporte");
+        if (( component == null || component == cbModules || component == lstAvailableFields) && lstSelectedFields.getModel().getSize() == 0) {      
             return "Seleccione los campos del reporte...";
-        } else {
-            controller.setForwardNavigationMode(WizardController.MODE_CAN_CONTINUE);
-            wizardData.put(KEY_SELECTED, FieldHandler.getSelectedFields());
-            controller.setProblem(null);
+        } else {           
+            wizardData.put(KEY_SELECTED, FieldHandler.getSelectedFields());  
         }
 
         return null;
@@ -215,7 +213,9 @@ public class ReportForm2 extends WizardPage {
 
     private void cbModulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbModulesActionPerformed
         // TODO add your handling code here:
+        validateContents(cbModules, evt);
         fillAvailableFields();
+        
     }//GEN-LAST:event_cbModulesActionPerformed
 
     private void btnAddFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFieldActionPerformed
