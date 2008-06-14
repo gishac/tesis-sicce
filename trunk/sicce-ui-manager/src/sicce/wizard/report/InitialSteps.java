@@ -10,6 +10,7 @@ enclosed by brackets [] replaced by your own identifying information:
 "Portions Copyrighted [year] [name of copyright owner]" */
 package sicce.wizard.report;
 
+import java.util.Date;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPanelProvider;
 
@@ -29,7 +30,7 @@ import sicce.wizard.report.panels.ReportForm3;
  * Defines the first two panes of the wizard.  The second one is where the
  * user decides what comes next.
  *
- * @author Timothy Boudreau
+ * @author karu
  */
 class InitialSteps extends WizardPanelProvider {
 
@@ -41,9 +42,13 @@ class InitialSteps extends WizardPanelProvider {
     public static final String KEY_SELECTED = "selectedFields";
     public static final String KEY_GROUP = "groupFields";
     public static final String KEY_NAME = "name";
+    public static final String KEY_BEGIN_DATE = "beginDate";
+    public static final String KEY_FINISH_DATE = "finishDate";
     List selectedField = null;
     List groupField  = null;
     String title = null;
+    Date beginDate = null;
+    Date finishDate = null;
     
 
     /**
@@ -76,13 +81,19 @@ class InitialSteps extends WizardPanelProvider {
         }
     }
     @Override
+    /*
+     * 
+     */
+    
     public Object finish(Map wizardData)  {
         try {
             
            selectedField = (List) wizardData.get(KEY_SELECTED);
            groupField = (List) wizardData.get(KEY_GROUP);
            title = (String)wizardData.get(KEY_NAME);
-           template.runReport(title,selectedField ,groupField); 
+           beginDate = (Date)wizardData.get(KEY_BEGIN_DATE);
+           finishDate = (Date)wizardData.get(KEY_FINISH_DATE);
+           template.runReport(title,selectedField ,groupField, beginDate, finishDate); 
             
         
         } catch (Exception ex) {

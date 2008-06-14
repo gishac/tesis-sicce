@@ -29,7 +29,9 @@ public class ReportForm3 extends WizardPage {
     private final Map wizardData;
     public static final String KEY_SELECTED = "selectedFields";
     public static final String KEY_GROUP = "groupFields";
-   private List selectedField = null;
+    public static final String KEY_BEGIN_DATE = "beginDate";
+    public static final String KEY_FINISH_DATE = "finishDate";
+    private List selectedField = null;
   
     /** Creates new form ReportDetail */
     public ReportForm3(WizardController controller, Map wizardData) {
@@ -51,7 +53,6 @@ public class ReportForm3 extends WizardPage {
     
     public void updateLists(){
       lstGroupFields.setCellRenderer(new FieldsCellRenderer());
-     
       lstSelectedFields.setListData(FieldHandler.getSelectedFields().toArray());
       lstGroupFields.setListData(FieldHandler.getListGroupFields().toArray());
     
@@ -64,22 +65,17 @@ public class ReportForm3 extends WizardPage {
             return "Defina los criterios del reporte...";
         }
 
-        if (component == dtpBeginDate && dtpBeginDate == null) {
-            JOptionPaneExtended.showMessageDialog(null, "Debe seleccionar la fecha de inicio del reporte");
+        if ((component == dtpBeginDate || component == lstSelectedFields || component == dtpFinishDate  || component == lstGroupFields ) && (dtpBeginDate.getDate() == null ||  dtpFinishDate.getDate() == null))  {  
             return "Defina las fechas del reporte...";
         }
-        if (component == dtpFinishDate && dtpFinishDate == null) {
-            JOptionPaneExtended.showMessageDialog(null, "Debe seleccionar la fecha de fin del reporte");
-            return "Defina las fechas del reporte...";
-        }
-
         return null;
     }
 
      public void fillWizardMap(){
         
-        wizardData.put (KEY_GROUP, FieldHandler.getListGroupFields());
-        controller.setProblem(null);
+        wizardData.put (KEY_GROUP, FieldHandler.getListGroupFields());  
+        wizardData.put(KEY_BEGIN_DATE, dtpBeginDate.getDate());
+        wizardData.put(KEY_FINISH_DATE, dtpFinishDate.getDate());
         if (FieldHandler.getListGroupFields()!= null) {
             try {          
                 controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);

@@ -7,8 +7,10 @@ package sicce.wizard.report.panels;
 
 import java.awt.Component;
 import java.util.Map;
+import org.netbeans.spi.wizard.Wizard;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPage;
+import org.netbeans.spi.wizard.WizardPanelNavResult;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.forms.*;
 
@@ -44,10 +46,9 @@ public class ReportForm1 extends WizardPage {
         txtReportName = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtDescription = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        txtDescription = new javax.swing.JTextField();
 
         setName("Form"); // NOI18N
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -65,17 +66,6 @@ public class ReportForm1 extends WizardPage {
         jLabel3.setName("jLabel3"); // NOI18N
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, -1));
 
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        txtDescription.setColumns(20);
-        txtDescription.setLineWrap(true);
-        txtDescription.setRows(5);
-        txtDescription.setWrapStyleWord(true);
-        txtDescription.setName("txtDescription"); // NOI18N
-        jScrollPane1.setViewportView(txtDescription);
-
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 250, -1));
-
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportForm1.class);
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
@@ -85,33 +75,41 @@ public class ReportForm1 extends WizardPage {
         jLabel4.setName("jLabel4"); // NOI18N
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
 
+        txtDescription.setText(resourceMap.getString("txtDescription.text")); // NOI18N
+        txtDescription.setName("txtDescription"); // NOI18N
+        jPanel1.add(txtDescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 250, -1));
+
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 420, 200));
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
     protected String validateContents(Component component, Object event) {
+    
         
-        if (component==null)
-            return "Debe ingresar la información General del reporte...";
-        
-        if (component == txtReportName && txtReportName.getText().trim().length() == 0) {
-            JOptionPaneExtended.showMessageDialog(null, "Debe ingresar el nombre del reporte");
-           return "Ingrese el nombre del Reporte...";
+        if (((component == txtReportName  || component == null || component == txtDescription)  && txtReportName.getText().trim().length() == 0)){                 
+           return "Debe ingresar la información General del reporte...";
         } else {
-            wizardData.put(KEY_NAME, txtReportName.getText());
-            
+            wizardData.put(KEY_NAME, txtReportName.getText());  
+            wizardData.put(KEY_DESCRIPTION, txtDescription.getText());  
         }
-        if (component == txtDescription  && txtDescription.getText().trim().length() == 0) {
-            JOptionPaneExtended.showMessageDialog(null, "Debe ingresar la descripción del reporte");
-            return "Ingrese la descripción del Reporte...";
-        } else {
-            controller.setForwardNavigationMode(WizardController.MODE_CAN_CONTINUE);
-            wizardData.put(KEY_DESCRIPTION, txtDescription.getText());
-            controller.setProblem(null);
-        }
-
-        return null;
+      return null;
     }
+
+    
+    @Override
+    public WizardPanelNavResult allowBack(String stepName, Map wizardData, Wizard controller) {
+        validateContents(this, controller);
+        return super.allowBack(stepName, wizardData, controller);
+    }
+////
+////    @Override
+////    public WizardPanelNavResult allowNext(String stepName, Map wizardData, Wizard controller) {
+////        validateContents(this, controller);
+////        return super.allowNext(stepName, wizardData, controller);
+////    }
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -119,8 +117,7 @@ public class ReportForm1 extends WizardPage {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea txtDescription;
+    private javax.swing.JTextField txtDescription;
     private javax.swing.JTextField txtReportName;
     // End of variables declaration//GEN-END:variables
 }
