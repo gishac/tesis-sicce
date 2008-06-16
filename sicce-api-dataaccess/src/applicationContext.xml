@@ -87,6 +87,12 @@
         </property>
     </bean>
     
+    <bean id="ReportDAO" class="sicce.api.dataaccess.ReportDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
     <bean id="DataAccessManager" class="sicce.api.dataaccess.DataAccessManager" abstract="false" lazy-init="default"
    autowire="default" dependency-check="default">
         <property name="roleDB">
@@ -131,6 +137,10 @@
         </property>
         <property name="groupDB">
             <ref bean="GroupDAO" />
+        </property>
+        
+        <property name="reportDB">
+            <ref bean="ReportDAO" />
         </property>
     </bean>
     

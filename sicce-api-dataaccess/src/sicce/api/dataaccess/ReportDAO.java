@@ -10,27 +10,26 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import sicce.api.info.interfaces.IScheduleDay;
+import sicce.api.info.interfaces.IReport;
 
 /**
  *
  * @author gish@c
  */
-public class ScheduleDayDAO extends HibernateDaoSupport {
+public class ReportDAO extends HibernateDaoSupport {
 
-    private static final Log log = LogFactory.getLog(ScheduleDayDAO.class);
+    private static final Log log = LogFactory.getLog(ReportDAO.class);
     // property constants
-    public static final String DAY_SCHEDULED = "dayScheduled";
-    public static final String START_TIME = "startTime";
-    public static final String END_TIME = "endTime";
+    public static final String REPORT_NAME = "reportName";
+    public static final String REPORT_DESCRIPTION = "reportDescription";
+    public static final String REPORT_JRXML = "reportJrxml";
 
-    @Override
     protected void initDao() {
     // do nothing
     }
 
-    public void save(IScheduleDay transientInstance) {
-        log.debug("saving ScheduleDay instance");
+    public void save(IReport transientInstance) {
+        log.debug("saving Report instance");
         try {
             getHibernateTemplate().save(transientInstance);
             log.debug("save successful");
@@ -40,10 +39,10 @@ public class ScheduleDayDAO extends HibernateDaoSupport {
         }
     }
     
-    public void update(IScheduleDay scheduleDay) {
-        log.debug("updating ScheduleDay instance");
+    public void update(IReport report) {
+        log.debug("udpating Report instance");
         try {
-            getHibernateTemplate().update(scheduleDay);
+            getHibernateTemplate().update(report);
             log.debug("update successful");
         } catch (RuntimeException re) {
             log.error("update failed", re);
@@ -51,8 +50,8 @@ public class ScheduleDayDAO extends HibernateDaoSupport {
         }
     }
 
-    public void delete(IScheduleDay persistentInstance) {
-        log.debug("deleting ScheduleDay instance");
+    public void delete(IReport persistentInstance) {
+        log.debug("deleting Report instance");
         try {
             getHibernateTemplate().delete(persistentInstance);
             log.debug("delete successful");
@@ -62,11 +61,11 @@ public class ScheduleDayDAO extends HibernateDaoSupport {
         }
     }
 
-    public IScheduleDay findById(java.lang.Integer id) {
-        log.debug("getting ScheduleDay instance with id: " + id);
+    public IReport findById(java.lang.Integer id) {
+        log.debug("getting Report instance with id: " + id);
         try {
-            IScheduleDay instance = (IScheduleDay) getHibernateTemplate().get(
-                    "sicce.api.info.ScheduleDay", id);
+            IReport instance = (IReport) getHibernateTemplate().get(
+                    "sicce.api.info.Report", id);
             return instance;
         } catch (RuntimeException re) {
             log.error("get failed", re);
@@ -74,8 +73,8 @@ public class ScheduleDayDAO extends HibernateDaoSupport {
         }
     }
 
-    public List findByExample(IScheduleDay instance) {
-        log.debug("finding ScheduleDay instance by example");
+    public List findByExample(IReport instance) {
+        log.debug("finding Report instance by example");
         try {
             List results = getHibernateTemplate().findByExample(instance);
             log.debug("find by example successful, result size: " + results.size());
@@ -87,9 +86,9 @@ public class ScheduleDayDAO extends HibernateDaoSupport {
     }
 
     public List findByProperty(String propertyName, Object value) {
-        log.debug("finding ScheduleDay instance with property: " + propertyName + ", value: " + value);
+        log.debug("finding Report instance with property: " + propertyName + ", value: " + value);
         try {
-            String queryString = "from ScheduleDay as model where model." + propertyName + "= ?";
+            String queryString = "from Report as model where model." + propertyName + "= ?";
             return getHibernateTemplate().find(queryString, value);
         } catch (RuntimeException re) {
             log.error("find by property name failed", re);
@@ -97,22 +96,22 @@ public class ScheduleDayDAO extends HibernateDaoSupport {
         }
     }
 
-    public List findByDayScheduled(Object dayScheduled) {
-        return findByProperty(DAY_SCHEDULED, dayScheduled);
+    public List findByReportName(Object reportName) {
+        return findByProperty(REPORT_NAME, reportName);
     }
 
-    public List findByStartTime(Object startTime) {
-        return findByProperty(START_TIME, startTime);
+    public List findByReportDescription(Object reportDescription) {
+        return findByProperty(REPORT_DESCRIPTION, reportDescription);
     }
 
-    public List findByEndTime(Object endTime) {
-        return findByProperty(END_TIME, endTime);
+    public List findByReportJrxml(Object reportJrxml) {
+        return findByProperty(REPORT_JRXML, reportJrxml);
     }
 
     public List findAll() {
-        log.debug("finding all ScheduleDay instances");
+        log.debug("finding all Report instances");
         try {
-            String queryString = "from ScheduleDay";
+            String queryString = "from Report";
             return getHibernateTemplate().find(queryString);
         } catch (RuntimeException re) {
             log.error("find all failed", re);
@@ -120,10 +119,10 @@ public class ScheduleDayDAO extends HibernateDaoSupport {
         }
     }
 
-    public IScheduleDay merge(IScheduleDay detachedInstance) {
-        log.debug("merging ScheduleDay instance");
+    public IReport merge(IReport detachedInstance) {
+        log.debug("merging Report instance");
         try {
-            IScheduleDay result = (IScheduleDay) getHibernateTemplate().merge(
+            IReport result = (IReport) getHibernateTemplate().merge(
                     detachedInstance);
             log.debug("merge successful");
             return result;
@@ -133,8 +132,8 @@ public class ScheduleDayDAO extends HibernateDaoSupport {
         }
     }
 
-    public void attachDirty(IScheduleDay instance) {
-        log.debug("attaching dirty ScheduleDay instance");
+    public void attachDirty(IReport instance) {
+        log.debug("attaching dirty Report instance");
         try {
             getHibernateTemplate().saveOrUpdate(instance);
             log.debug("attach successful");
@@ -144,8 +143,8 @@ public class ScheduleDayDAO extends HibernateDaoSupport {
         }
     }
 
-    public void attachClean(IScheduleDay instance) {
-        log.debug("attaching clean ScheduleDay instance");
+    public void attachClean(IReport instance) {
+        log.debug("attaching clean Report instance");
         try {
             getHibernateTemplate().lock(instance, LockMode.NONE);
             log.debug("attach successful");
@@ -155,8 +154,7 @@ public class ScheduleDayDAO extends HibernateDaoSupport {
         }
     }
 
-    public static ScheduleDayDAO getFromApplicationContext(
-            ApplicationContext ctx) {
-        return (ScheduleDayDAO) ctx.getBean("ScheduleDayDAO");
+    public static ReportDAO getFromApplicationContext(ApplicationContext ctx) {
+        return (ReportDAO) ctx.getBean("ReportDAO");
     }
 }
