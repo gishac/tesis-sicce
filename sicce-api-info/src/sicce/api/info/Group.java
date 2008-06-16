@@ -6,12 +6,11 @@
 package sicce.api.info;
 
 import sicce.api.info.auto.AbstractGroup;
-import sicce.api.info.interfaces.IGroup;
 
 /**
- *
+ * Representacion de los gruppos a ser usadas por sistema, para la organizacion de las opciones de menu
  * @author gish@c
  */
-public class Group extends AbstractGroup implements IGroup {
+public class Group extends AbstractGroup {
 
 }

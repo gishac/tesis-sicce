@@ -33,5 +33,12 @@
             <column name="ID_GROUP" not-null="true" />
         </many-to-one>
         
+        <set name="reports" inverse="true">
+            <key>
+                <column name="ID_OPTION_SICCE" not-null="true" />
+            </key>
+            <one-to-many class="sicce.api.info.Report" />
+        </set>
+        
     </class>
 </hibernate-mapping>

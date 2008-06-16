@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sicce.api.info.interfaces.IGroup;
+import sicce.api.info.interfaces.IReport;
 import sicce.api.info.interfaces.IRole;
 
 /**
@@ -17,9 +18,8 @@ public abstract class AbstractOptionSicce implements java.io.Serializable {
     protected String actionCommand;
     protected String icon;
     protected Set<IRole> roles = new HashSet<IRole>(0);
-    private IGroup group;
-
-    
+    protected IGroup group;
+    protected Set<IReport> reports = new HashSet(0);
 
     // Constructors
     /** default constructor */
@@ -80,12 +80,20 @@ public abstract class AbstractOptionSicce implements java.io.Serializable {
     public void setRoles(Set<IRole> roles) {
         this.roles = roles;
     }
-    
+
     public IGroup getGroup() {
         return group;
     }
 
     public void setGroup(IGroup group) {
         this.group = group;
+    }
+
+    public Set<IReport> getReports() {
+        return this.reports;
+    }
+
+    public void setReports(Set<IReport> reports) {
+        this.reports = reports;
     }
 }
