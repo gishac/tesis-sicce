@@ -8,41 +8,93 @@ import java.util.HashSet;
 import java.util.Set;
 import sicce.api.info.ConstantsProvider.AlarmType;
 import sicce.api.info.ConstantsProvider.ScheduleType;
+import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IAlarmListener;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IScheduleDay;
 import sicce.api.info.interfaces.IUserSicce;
 
 /**
- *
+ * Representacion de las alarmas a ser usadas por sistema, para el control de los medidores
  * @author gish@c
  */
-public abstract class AbstractAlarm {
+public abstract class AbstractAlarm implements IAlarm {
 
-    private Integer idAlarm;
+    /**
+     * Identificador de la alarma
+     */
+    protected Integer idAlarm;
+    
+    /**
+     * Tipo de agendamiento de la alarma
+     */
     protected Integer scheduleType;
+    
+    /**
+     * Tipo de alarma
+     */
     protected Integer alarmType;
+    
+    /**
+     * Descripcion de la alarma
+     */
     protected String description;
+    
+    /**
+     * Dias de agendamiento de la alarma
+     * @see IScheduleDay
+     */
     protected Set<IScheduleDay> scheduledDays = new HashSet(0);
+    
+    /**
+     * Usuarios suscritos a la alarma
+     * @see IUserSicce
+     */
     protected Set<IUserSicce> alarmUsers = new HashSet(0);
+    
+    /**
+     * Medidores a ser monitoreados por la alarma
+     * @see IPowerMeter
+     */
     protected Set<IPowerMeter> alarmPowerMeters = new HashSet(0);
 
-    
+    /**
+     * Objecto que ejecutara las acciones respectivas cuando se activa la alarma
+     * @see IAlarmListener
+     */
     protected IAlarmListener alarmListener;
+    
+    /**
+     * Valor maximo de kw/h permitido 
+     */
     protected Integer maxValueAllowed;
     
 
     // Constructors
-    /** default constructor */
+    
+    /**
+     * Constructor base
+     */
     public AbstractAlarm() {
     }
 
-    /** minimal constructor */
+    /**
+     * Constructor
+     * @param idAlarm Identificador de la alarma
+     */
     public AbstractAlarm(Integer idAlarm) {
         this.idAlarm = idAlarm;
     }
 
-    /** full constructor */
+    /**
+     * Constructor
+     * @param idAlarm Identificador de la alarma
+     * @param scheduleType Tipo de agendamiento
+     * @param alarmType Tipo de alarma
+     * @param description Descripcion de la alarma
+     * @param scheduledDays Dias de agendamiento
+     * @param alarmUsers Usuarios suscritos a la alarma
+     */
     public AbstractAlarm(Integer idAlarm, int scheduleType,
             int alarmType, String description, Set scheduledDays,
             Set alarmUsers) {
@@ -146,6 +198,22 @@ public abstract class AbstractAlarm {
 
     public void setAlarmPowerMeters(Set<IPowerMeter> alarmPowerMeters) {
         this.alarmPowerMeters = alarmPowerMeters;
+    }
+    
+    public void addAlarmPowerMeter(IPowerMeter powerMeter) {
+        this.alarmPowerMeters.add(powerMeter);
+    }
+
+    public void removeAlarmPowerMeter(IPowerMeter powerMeter) {
+        this.alarmPowerMeters.remove(powerMeter);
+    }
+
+    public void addAlarmUser(IUserSicce user) {
+        this.alarmUsers.add(user);
+    }
+
+    public void removeAlarmUser(IUserSicce user) {
+        this.alarmUsers.remove(user);
     }
 
 }
