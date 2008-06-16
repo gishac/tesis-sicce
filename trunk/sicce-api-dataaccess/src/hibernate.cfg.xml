@@ -26,7 +26,7 @@
         <property name="myeclipse.connection.profile">
             MySqlDriver
         </property>
-        <property name="connection.password">ENC(EtsMtHVOXCjiEKmYl8Q8Jg==)</property>
+        <property name="connection.password">ENC(GeYXjVML+pTl7n/K16pMgQ==)</property>
         <property name="connection.driver_class">
             com.mysql.jdbc.Driver
         </property>
@@ -45,6 +45,7 @@
         <mapping resource="sicce/api/info/Alarm.hbm.xml" />
         <mapping resource="sicce/api/info/ScheduleDay.hbm.xml" />
         <mapping resource="sicce/api/info/Group.hbm.xml" />
+        <mapping resource="sicce/api/info/Report.hbm.xml" />
         
     </session-factory>
     
