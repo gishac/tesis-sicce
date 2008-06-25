@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import sicce.api.util.GetResourceDir;
 
-public class ReportTemplate extends BaseDjReportTest {
+public class ReportTemplate extends GenerateDjReport {
 
     private static GetResourceDir resource;
 
