@@ -218,7 +218,7 @@ insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GRO
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Dependencias',null,'LocationReport',3);
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Usuarios',null,'UserReport',3);
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Zonas',null,'ZoneReport',3);
-
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Reportes Existentes',null,'SavedReport',1);
 
 insert into role values(0,'Administrador');
 insert into user_sicce(ID_USER_SICCE,ID_ROLE,NAME,LASTNAME,CODE_UCSG,USERNAME_SICCE,PASSWORD_SICCE) values(0,1,'adminsicce','adminsicce',null,'adminsicce','BGEYVgYT0cCYB6SDjstB8+09gzaB/ZW/');
@@ -236,6 +236,7 @@ insert into option_role values(1,11);
 insert into option_role values(1,12);
 insert into option_role values(1,13);
 insert into option_role values(1,14);
+insert into option_role values(1,15);
 
 insert into location_type values(0,'Edificio');
 
