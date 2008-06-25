@@ -28,7 +28,8 @@ public class ConstantsProvider {
         LocationTypeReport(11),
         LocationReport(12),
         UserReport(13),
-        ZoneReport(14);
+        ZoneReport(14),
+        SavedReport(15);
         private int taskID;
 
         OptionsProvider(int taskID) {
