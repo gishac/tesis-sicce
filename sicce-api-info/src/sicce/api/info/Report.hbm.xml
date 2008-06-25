@@ -8,10 +8,10 @@
     <class name="sicce.api.info.Report" table="report" catalog="sicce">
         <id name="idReport" type="java.lang.Integer">
             <column name="ID_REPORT" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <many-to-one name="optionSicce" class="sicce.api.info.OptionSicce" fetch="select">
-            <column name="ID_OPTION_SICCE" not-null="true" />
+            <column name="ID_OPTION_SICCE" not-null="false" />
         </many-to-one>
         <property name="reportName" type="java.lang.String">
             <column name="REPORT_NAME" length="30" not-null="true" />
