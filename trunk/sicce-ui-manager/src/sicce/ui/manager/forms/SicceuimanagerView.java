@@ -318,6 +318,7 @@ public class SicceuimanagerView extends FrameView {
     private ZonePane zonePane;
     private ParameterPane parameterPane;
     private AlarmPane alarmPane;
+    private ReportsPane reportPane;
     private JLabel statusLabel;
     private String[] optionsText;
   
@@ -521,6 +522,7 @@ public class SicceuimanagerView extends FrameView {
         zonePane = new ZonePane();
         parameterPane = new ParameterPane();
         alarmPane = new AlarmPane();
+        reportPane = new ReportsPane();
 
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
@@ -530,6 +532,7 @@ public class SicceuimanagerView extends FrameView {
         toolBarHandler.AddToolBarStateListener(zonePane);
         toolBarHandler.AddToolBarStateListener(parameterPane);
         toolBarHandler.AddToolBarStateListener(alarmPane);
+        toolBarHandler.AddToolBarStateListener(reportPane);
 
     }
 
@@ -562,6 +565,9 @@ public class SicceuimanagerView extends FrameView {
                 break;
             case Alarm:
                 result = alarmPane;
+                break;
+            case SavedReport:
+                result = reportPane;
                 break;
         }
         return result;
