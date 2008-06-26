@@ -28,6 +28,8 @@ public class ReportForm2 extends WizardPage {
     public static final String KEY_SELECTED = "selectedFields";
     private FieldHandler availableField = new FieldHandler();
     public static final String VALUE_SELECTED_FIELDS = "selected_Fields";
+    public static final String KEY_BEGIN_DATE = "beginDate";
+    public static final String KEY_FINISH_DATE = "finishDate";
 
     /** Creates new form ReportDetail */
     public ReportForm2(WizardController controller, Map wizardData) {
@@ -88,10 +90,15 @@ public class ReportForm2 extends WizardPage {
             return "Debe seleccionar los campos a mostrar en el reporte...";
         }
 
+       if ((component == dtpBeginDate || component == lstAvailableFields || component == dtpFinishDate  || component == lstSelectedFields ) && (dtpBeginDate.getDate() == null ||  dtpFinishDate.getDate() == null))  {  
+            return "Defina las fechas del reporte...";
+        }
         if (( component == null || component == cbModules || component == lstAvailableFields) && lstSelectedFields.getModel().getSize() == 0) {      
             return "Seleccione los campos del reporte...";
         } else {           
-            wizardData.put(KEY_SELECTED, FieldHandler.getSelectedFields());  
+            wizardData.put(KEY_SELECTED, FieldHandler.getSelectedFields());
+            wizardData.put(KEY_BEGIN_DATE, dtpBeginDate.getDate());
+            wizardData.put(KEY_FINISH_DATE, dtpFinishDate.getDate());
         }
 
         return null;
@@ -118,6 +125,11 @@ public class ReportForm2 extends WizardPage {
         cbModules = new javax.swing.JComboBox();
         btnAddField = new javax.swing.JButton();
         btnRemoveField = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        dtpBeginDate = new com.toedter.calendar.JDateChooser();
+        jLabel6 = new javax.swing.JLabel();
+        dtpFinishDate = new com.toedter.calendar.JDateChooser();
 
         setName("Form"); // NOI18N
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -209,6 +221,26 @@ public class ReportForm2 extends WizardPage {
         jPanel1.add(btnRemoveField, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, 40, 30));
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 400, 280));
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("jPanel2.border.title"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("jPanel2.border.titleColor"))); // NOI18N
+        jPanel2.setName("jPanel2"); // NOI18N
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
+        jLabel7.setName("jLabel7"); // NOI18N
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, 20));
+
+        dtpBeginDate.setName("dtpBeginDate"); // NOI18N
+        jPanel2.add(dtpBeginDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 100, -1));
+
+        jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
+        jLabel6.setName("jLabel6"); // NOI18N
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, -1, 20));
+
+        dtpFinishDate.setName("dtpFinishDate"); // NOI18N
+        jPanel2.add(dtpFinishDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 20, 100, -1));
+
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 400, 50));
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbModulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbModulesActionPerformed
@@ -303,10 +335,15 @@ public class ReportForm2 extends WizardPage {
     private javax.swing.JButton btnRemoveField;
     private javax.swing.JButton btnUp;
     private javax.swing.JComboBox cbModules;
+    private com.toedter.calendar.JDateChooser dtpBeginDate;
+    private com.toedter.calendar.JDateChooser dtpFinishDate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList lstAvailableFields;

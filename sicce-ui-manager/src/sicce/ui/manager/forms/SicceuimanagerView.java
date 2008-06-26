@@ -580,7 +580,7 @@ public class SicceuimanagerView extends FrameView {
         
         switch (option) {
             case Wizard:
-                 WizardDisplayer.showWizard(new NewWizard().createWizard(), new Rectangle(20, 20, 600, 400));
+                 WizardDisplayer.showWizard(new NewWizard().createWizard(), new Rectangle(20, 20, 650, 500));
                 break;
             case PowerMeterReport:
                 GenerateReport.GeneratePowerMeterReport(null);
