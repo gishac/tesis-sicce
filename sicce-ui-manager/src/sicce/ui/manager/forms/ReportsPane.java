@@ -6,12 +6,15 @@
 
 package sicce.ui.manager.forms;
 
+import javax.swing.JScrollPane;
+import org.jdesktop.application.ResourceMap;
 import sicce.api.businesslogic.ReportBizObject;
 import sicce.api.businesslogic.ReportTableModel;
 import sicce.api.info.interfaces.IReport;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.api.dataaccess.ReportDB;
 import sicce.api.info.ToolBarStateInfo;
+import sicce.ui.manager.controls.ReportTable;
 
 /**
  *
@@ -21,23 +24,23 @@ public class ReportsPane extends JTabExtended<IReport> {
     
     ReportBizObject reportBizObj;
     ReportTableModel reportModel;
+    private ReportTable grdReport;
+    private JScrollPane jScrollPane1;
     
     /** Creates new form ReportsPane */
-    public ReportsPane() {
+    public ReportsPane(ResourceMap resourceMap) {
         initComponents();
+        this.resourceMap = resourceMap;
+        grdReport = new ReportTable(resourceMap);
+        jScrollPane1 = new JScrollPane();
+        jScrollPane1.setViewportView(grdReport);
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 370, 180));
          reportBizObj = new ReportBizObject();
         this.setHandleToolBarStates(false);
         this.setToolBarStateInfo(new ToolBarStateInfo(false, false, false, false, false, false));
         FillGrid();
          
     }
-    
-    /** Creates new form PowerMeterPane */
-    public ReportsPane(Object option) {
-        initComponents();
-        FillGrid();
-    }
-
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -48,8 +51,6 @@ public class ReportsPane extends JTabExtended<IReport> {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        grdReportsDetail = new javax.swing.JTable();
 
         setName("Form"); // NOI18N
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -58,48 +59,12 @@ public class ReportsPane extends JTabExtended<IReport> {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("jPanel1.border.title"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("jPanel1.border.titleColor"))); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        grdReportsDetail.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "No.", "Nombre ", "Descripción", "Archivo"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        grdReportsDetail.setName("grdReportsDetail"); // NOI18N
-        jScrollPane1.setViewportView(grdReportsDetail);
-
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 370, 180));
-
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 390, 210));
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable grdReportsDetail;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     
   @Override
@@ -121,7 +86,7 @@ public class ReportsPane extends JTabExtended<IReport> {
     @Override
     public void FillGrid() {
         reportModel = new ReportTableModel(reportBizObj.GetAllReport());
-        grdReportsDetail.setModel(reportModel);
+        grdReport.setModel(reportModel);
     }
 
   

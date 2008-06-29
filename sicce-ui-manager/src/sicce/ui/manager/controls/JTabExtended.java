@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionListener;
+import org.jdesktop.application.ResourceMap;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.ToolBarStateInfo;
@@ -38,6 +39,7 @@ public class JTabExtended<T> extends JPanel implements ITabbedWindow, IToolBarSt
     private ToolBarStateInfo toolBarStateInfo;
     private ToolBarAction tabState;
     protected T currentObject;
+    protected ResourceMap resourceMap;
 
     public T getCurrentObject() {
         return currentObject;
@@ -140,6 +142,11 @@ public class JTabExtended<T> extends JPanel implements ITabbedWindow, IToolBarSt
         setTitle(title);
     }
 
+    public JTabExtended (ResourceMap resourceMap)
+    {
+        this();
+        this.resourceMap = resourceMap;
+    }
     public void setTitle(String title) {
         this.title = title;
     }
