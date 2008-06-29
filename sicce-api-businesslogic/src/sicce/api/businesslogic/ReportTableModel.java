@@ -31,11 +31,11 @@ public class ReportTableModel extends SicceTableModel<IReport> {
                 return preport.getReportName();
             case 2: 
                 return preport.getReportDescription(); 
-            case 3: 
-                return preport.getReportJrxml();
             default: 
                 return null;
         }
     }
+    
+    
     
 }

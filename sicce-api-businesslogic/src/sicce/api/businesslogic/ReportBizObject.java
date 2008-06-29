@@ -15,6 +15,6 @@ import sicce.api.info.interfaces.IReport;
 public class ReportBizObject {
 
     public List<IReport> GetAllReport() {
-        return ReportDB.GetAllReports();        
+        return ReportDB.GetAllReports(); 
     }
 }
