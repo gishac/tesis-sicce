@@ -488,7 +488,7 @@ public class SicceuimanagerView extends FrameView {
                     }
                 }
                 else if (optionSicce.getGroup().getIdGroup() == 3) {
-                    setActionReport(option);
+                    setActionReport(option, getResourceMap());
                            
                     }
                 }
@@ -522,7 +522,7 @@ public class SicceuimanagerView extends FrameView {
         zonePane = new ZonePane();
         parameterPane = new ParameterPane();
         alarmPane = new AlarmPane();
-        reportPane = new ReportsPane();
+        reportPane = new ReportsPane(getResourceMap());
 
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
@@ -576,26 +576,26 @@ public class SicceuimanagerView extends FrameView {
          * 
          */
         
-        private static void setActionReport(OptionsProvider option) {
+        private static void setActionReport(OptionsProvider option, ResourceMap resourceMap) {
         
         switch (option) {
             case Wizard:
-                 WizardDisplayer.showWizard(new NewWizard().createWizard(), new Rectangle(20, 20, 650, 500));
+                 WizardDisplayer.showWizard(new NewWizard(resourceMap).createWizard(), new Rectangle(20, 20, 650, 500));
                 break;
             case PowerMeterReport:
-                GenerateReport.GeneratePowerMeterReport(null);
+                GenerateReport.GenerateStaticReport(null,option);
                 break;
             case LocationTypeReport:
-                GenerateReport.GenerateLTypeReport(null);
+                GenerateReport.GenerateStaticReport(null,option);
                 break;
             case LocationReport:
-                GenerateReport.GenerateLocationReport(null);
+                GenerateReport.GenerateStaticReport(null,option);
                 break;
             case UserReport:
-                GenerateReport.GenerateUserReport(null);
+                GenerateReport.GenerateStaticReport(null,option);
                 break;
             case ZoneReport:
-                GenerateReport.GenerateZoneReport(null);
+                GenerateReport.GenerateStaticReport(null,option);
                 break;
         }
 

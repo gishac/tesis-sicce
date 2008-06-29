@@ -14,6 +14,7 @@ import java.awt.Rectangle;
 import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
+import org.jdesktop.application.ResourceMap;
 import org.netbeans.api.wizard.WizardDisplayer;
 import org.netbeans.spi.wizard.WizardBranchController;
 import org.netbeans.spi.wizard.WizardController;
@@ -28,10 +29,15 @@ import org.netbeans.spi.wizard.WizardPanelProvider;
  */
 public class NewWizard extends WizardBranchController {
 
-    public NewWizard(  ) {
-        super( new InitialSteps(  ) );
-    }
+    protected ResourceMap resourceMap;
+    
+   public NewWizard (ResourceMap resourceMap)
+   {
+     super( new InitialSteps( resourceMap ) );
+     this.resourceMap = resourceMap;
    
+     
+   }
     protected WizardPanelProvider getPanelProviderForStep(String step, Map collectedData) {
           return null;
         

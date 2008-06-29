@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
+import org.jdesktop.application.ResourceMap;
 import sicce.ui.manager.reports.ReportTemplate;
 import sicce.wizard.report.panels.ReportForm1;
 import sicce.wizard.report.panels.ReportForm2;
@@ -44,6 +45,7 @@ class InitialSteps extends WizardPanelProvider {
     public static final String KEY_NAME = "name";
     public static final String KEY_BEGIN_DATE = "beginDate";
     public static final String KEY_FINISH_DATE = "finishDate";
+    private ResourceMap resourceMap;
     List selectedField = null;
     List groupField  = null;
     String title = null;
@@ -54,10 +56,10 @@ class InitialSteps extends WizardPanelProvider {
     /**
      * Creates a new instance of InitialSteps
      */
-    InitialSteps() {
+    InitialSteps(ResourceMap resourceMap) {
         super("UCSG Report Wizard", new String[]{GENERAL_INFORMATION, SELECTED_FIELDS,GROUP_FIELDS},
                 new String[]{"Tipo de reporte", "Selección de Columnas", "Definición de Criterios"});
-        
+        this.resourceMap = resourceMap;
     }
 
     protected JComponent createPanel(final WizardController controller,
@@ -93,7 +95,7 @@ class InitialSteps extends WizardPanelProvider {
            title = (String)wizardData.get(KEY_NAME);
            beginDate = (Date)wizardData.get(KEY_BEGIN_DATE);
            finishDate = (Date)wizardData.get(KEY_FINISH_DATE);
-           template.runReport(title,selectedField ,groupField, beginDate, finishDate); 
+           template.runReport(title,selectedField ,groupField,resourceMap); 
             
         
         } catch (Exception ex) {
