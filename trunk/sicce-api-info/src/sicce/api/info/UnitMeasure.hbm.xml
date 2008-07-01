@@ -13,11 +13,5 @@
         <property name="description" type="java.lang.String">
             <column name="DESCRIPTION" length="45" />
         </property>
-        <set name="measures" inverse="true">
-            <key>
-                <column name="ID_MEASURE" not-null="true" unique="true" />
-            </key>
-            <one-to-many class="sicce.api.info.Measure" />
-        </set>
     </class>
 </hibernate-mapping>
