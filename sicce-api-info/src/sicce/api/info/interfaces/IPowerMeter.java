@@ -5,6 +5,7 @@
 
 package sicce.api.info.interfaces;
 
+import java.net.Socket;
 import java.util.Set;
 
 /**
@@ -16,6 +17,9 @@ public interface IPowerMeter {
     void setSerial(String serial);
     String getSerial();
     
+    void setDeviceID(String deviceID);
+    String getDeviceID();
+    
     void setDescription(String description);
     String getDescription();
     
@@ -24,4 +28,9 @@ public interface IPowerMeter {
     
     Set<IAlarm> getAlarms();
     void setAlarms(Set<IAlarm> alarms);
+    
+    Socket getSocket();
+    void setSocket(Socket socket);
+    
+    Set<ILocation> getLocations();
 }
