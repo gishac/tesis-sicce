@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.table.TableModel;
 import sicce.api.info.interfaces.ISicceTableModel;
 
@@ -53,6 +54,9 @@ public class ComponentUtil {
                     table.repaint();
                 }
             }
+            else if(IsCheckBox(component)){
+                ((JCheckBox) component).setSelected(false);
+            }
         }
     }
     
@@ -79,7 +83,7 @@ public class ComponentUtil {
     {
         for(Component component : components)
         {
-            if(IsTextField(component) || IsComboBox(component) || IsButton(component)){
+            if(IsTextField(component) || IsComboBox(component) || IsButton(component) || IsCheckBox(component)){
                 component.setEnabled(enabled);
             }
             else if(IsTable(component))
@@ -156,6 +160,15 @@ public class ComponentUtil {
     public static boolean IsSicceTableModel(TableModel component)
     {
         return component instanceof ISicceTableModel;
+    }
+    
+    /**
+     * Indica si el componente es una instancia de JCheckbox
+     * @param component
+     * @return
+     */
+    public static boolean IsCheckBox(Component component){
+        return component instanceof JCheckBox;
     }
     
     /**
