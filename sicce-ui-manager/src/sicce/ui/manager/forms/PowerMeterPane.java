@@ -39,10 +39,13 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
         getControlsToClear().add(txtSerial);
         getControlsToClear().add(txtIpAddress);
         getControlsToClear().add(txtDescription);
+        getControlsToClear().add(txtDeviceID);
         getControlsToEnable().add(txtSerial);
         getControlsToEnable().add(txtIpAddress);
         getControlsToEnable().add(txtDescription);
+        getControlsToEnable().add(txtDeviceID);
         txtSerial.setDocument(new JTextFieldLimit(20));
+        txtDeviceID.setDocument(new JTextFieldLimit(20));
         txtIpAddress.setDocument(new JTextFieldLimit(16));
         txtDescription.setDocument(new JTextFieldLimit(200));
         ComponentUtil.SetState(false, getControlsToEnable());
@@ -74,6 +77,8 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
         txtIpAddress = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDescription = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        txtDeviceID = new javax.swing.JTextField();
 
         setName("PowerMeterPane"); // NOI18N
         setLayout(new java.awt.BorderLayout());
@@ -134,6 +139,12 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
         txtDescription.setName("txtDescription"); // NOI18N
         jScrollPane2.setViewportView(txtDescription);
 
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        txtDeviceID.setText(resourceMap.getString("txtDeviceID.text")); // NOI18N
+        txtDeviceID.setName("txtDeviceID"); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -141,17 +152,19 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSerial, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblipAddress)
+                            .addComponent(jLabel1)
                             .addComponent(lblDescription))
                         .addGap(54, 54, 54)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
-                            .addComponent(txtIpAddress)
-                            .addComponent(txtSerial)))
-                    .addComponent(lblSerial, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtDeviceID, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                            .addComponent(txtIpAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                            .addComponent(txtSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))))
+                .addContainerGap(21, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,10 +177,14 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
                     .addComponent(lblipAddress)
                     .addComponent(txtIpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtDeviceID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDescription)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -195,6 +212,7 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable grdPowerMeter;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -203,6 +221,7 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
     private javax.swing.JLabel lblSerial;
     private javax.swing.JLabel lblipAddress;
     private javax.swing.JTextArea txtDescription;
+    private javax.swing.JTextField txtDeviceID;
     private javax.swing.JTextField txtIpAddress;
     private javax.swing.JTextField txtSerial;
     // End of variables declaration//GEN-END:variables
@@ -244,6 +263,7 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
             currentObject.setSerial(txtSerial.getText().trim());
             currentObject.setIpAddress(txtIpAddress.getText().trim());
             currentObject.setDescription(txtDescription.getText().trim());
+            currentObject.setDeviceID(txtDeviceID.getText().trim());
             if (IsObjectLoaded()) {
                 return Update();
 
@@ -252,6 +272,7 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
             txtSerial.setText(currentObject.getSerial());
             txtIpAddress.setText(currentObject.getIpAddress());
             txtSerial.setText(currentObject.getSerial());
+            txtDeviceID.setText(currentObject.getDeviceID());
             FillGrid();
         } catch (Exception ex) {
             ExceptionHandler.DisplayException(ex);
@@ -329,6 +350,7 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
         txtSerial.setText(currentObject.getSerial());
         txtIpAddress.setText(currentObject.getIpAddress());
         txtDescription.setText(currentObject.getDescription());
+        txtDeviceID.setText(currentObject.getDeviceID());
     }
     
     

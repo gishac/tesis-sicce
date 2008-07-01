@@ -3,30 +3,35 @@
  *
  * Created on May 12, 2008, 9:48 PM
  */
-
 package sicce.ui.manager.forms;
 
+import java.util.Calendar;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.businesslogic.PowerMeterTableModelForAlarms;
 import sicce.api.businesslogic.UserBizObject;
 import sicce.api.businesslogic.UserTableModelForAlarms;
+import sicce.api.dataaccess.AlarmDB;
+import sicce.api.dataaccess.ScheduledDayDB;
 import sicce.api.info.interfaces.IAlarm;
+import sicce.api.info.interfaces.IScheduleDay;
 import sicce.api.util.ComponentUtil;
 import sicce.api.util.JTextFieldLimit;
+import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JTabExtended;
+import sicce.ui.manager.handlers.ExceptionHandler;
 
 /**
  *
  * @author  gish@c
  */
 public class AlarmPane extends JTabExtended<IAlarm> {
-    
+
     private PowerMeterTableModelForAlarms powerMeterTableModel;
     private UserTableModelForAlarms userTableModel;
     private PowerMeterBizObject powerMeterBizObject;
     private UserBizObject userBizObject;
-    
+
     /** Creates new form AlarmPane */
     public AlarmPane() {
         initComponents();
@@ -42,7 +47,7 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         getControlsToClear().add(chkThursday);
         getControlsToClear().add(chkFriday);
         getControlsToClear().add(chkSaturday);
-        getControlsToClear().add(chkSunday);        
+        getControlsToClear().add(chkSunday);
         getControlsToEnable().add(txtDescription);
         getControlsToEnable().add(txtKwMax);
         getControlsToEnable().add(cmbStartTime);
@@ -56,14 +61,14 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         getControlsToEnable().add(chkThursday);
         getControlsToEnable().add(chkFriday);
         getControlsToEnable().add(chkSaturday);
-        getControlsToEnable().add(chkSunday); 
+        getControlsToEnable().add(chkSunday);
         powerMeterBizObject = new PowerMeterBizObject();
         userBizObject = new UserBizObject();
         FillPowerMetersGrid();
         FillUsersGrid();
         ComponentUtil.SetState(false, getControlsToEnable());
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -314,8 +319,6 @@ public class AlarmPane extends JTabExtended<IAlarm> {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox chkFriday;
     private javax.swing.JCheckBox chkMonday;
@@ -342,7 +345,6 @@ public class AlarmPane extends JTabExtended<IAlarm> {
     private javax.swing.JTextField txtDescription;
     private javax.swing.JTextField txtKwMax;
     // End of variables declaration//GEN-END:variables
-
     @Override
     public void New() {
         super.New();
@@ -351,26 +353,92 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         FillPowerMetersGrid();
         FillUsersGrid();
     }
-    
+
     /**
      * 
      */
-    private void FillPowerMetersGrid(){
+    private void FillPowerMetersGrid() {
         powerMeterTableModel = null;
         powerMeterTableModel = new PowerMeterTableModelForAlarms(powerMeterBizObject.GetAllPowerMeter(), currentObject);
         gridPowerMeters.setModel(powerMeterTableModel);
         gridPowerMeters.setEnabled(true);
     }
-    
+
     /**
      * 
      */
-    private void FillUsersGrid(){
+    private void FillUsersGrid() {
         userTableModel = null;
         userTableModel = new UserTableModelForAlarms(userBizObject.GetAllUsers(), currentObject);
         gridUsers.setModel(userTableModel);
         gridUsers.setEnabled(true);
-                
+
     }
-    
+
+    @Override
+    public boolean CheckFields() {
+        if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción de la alarma", 5)) {
+            return false;
+        }
+        if (!Validator.ValidateField(null, null, 0, txtKwMax, true, "el maximo de kw/h permitidos", 1)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean Save() throws Exception {
+        super.Save();
+        cancelAction = false;
+        if (!CheckFields()) {
+            return true;
+        }
+        try {
+            currentObject.setDescription(txtDescription.getText().trim());
+            currentObject.setAlarmType(cmbAlarmType.getSelectedIndex());
+            currentObject.setMaxValueAllowed(Integer.parseInt(txtKwMax.getText().trim()));
+            SetScheduledDays(currentObject);
+            if (IsObjectLoaded()) {
+                return Update();
+            }
+            AlarmDB.Save(currentObject);
+            ScheduledDayDB.Save(currentObject.getScheduledDays());
+            FillGrid();
+        } catch (Exception ex) {
+            ExceptionHandler.DisplayException(ex);
+            cancelAction = true;
+        }
+        return cancelAction;
+    }
+
+    /**
+     * 
+     * @param alarm
+     */
+    public void SetScheduledDays(IAlarm alarm) {
+        SetScheduledDay(alarm, chkMonday.isSelected(), Calendar.MONDAY);
+        SetScheduledDay(alarm, chkTuesday.isSelected(), Calendar.TUESDAY);
+        SetScheduledDay(alarm, chkWednesday.isSelected(), Calendar.WEDNESDAY);
+        SetScheduledDay(alarm, chkThursday.isSelected(), Calendar.THURSDAY);
+        SetScheduledDay(alarm, chkFriday.isSelected(), Calendar.FRIDAY);
+        SetScheduledDay(alarm, chkSaturday.isSelected(), Calendar.SATURDAY);
+        SetScheduledDay(alarm, chkSunday.isSelected(), Calendar.SUNDAY);
+    }
+
+    /**
+     * 
+     * @param alarm
+     * @param checked
+     * @param day
+     */
+    public void SetScheduledDay(IAlarm alarm, boolean checked, int day) {
+        if (checked) {
+            IScheduleDay scheduledDay = ClassFactory.getScheduleInstance();
+            scheduledDay.setDayScheduled(day);
+            scheduledDay.setStartTime(Integer.parseInt(cmbStartTime.getSelectedItem().toString()));
+            scheduledDay.setEndTime(Integer.parseInt(cmbEndTime.getSelectedItem().toString()));
+            alarm.getScheduledDays().add(scheduledDay);
+            scheduledDay.setAlarm(currentObject);
+        }
+    }
 }
