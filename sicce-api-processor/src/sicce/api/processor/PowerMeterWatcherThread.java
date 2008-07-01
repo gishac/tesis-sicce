@@ -22,22 +22,17 @@ public class PowerMeterWatcherThread implements Runnable {
     public PowerMeterWatcherThread(IPowerMeterWatcher watcher) {
         //super(watcher.getPowerMeter().getDescription());
         this.watcher = watcher;
-        
+
         generator = new Random();
         sleepTime = generator.nextInt(10);
     }
 
-   
     public void run() {
-        
         try {
-            
-            System.out.printf("%s going to sleep for %d seconds.\n", watcher.getPowerMeter().getDescription(), sleepTime);
-
-            Thread.sleep(sleepTime * 1000); // put thread to sleep
-            // Fin de pruebas de ejecuciones multiples asincronicas
+            //System.out.printf("%s going to sleep for %d seconds.\n", watcher.getPowerMeter().getDescription(), sleepTime);
+            //Thread.sleep(sleepTime * 1000); // put thread to sleep
             watcher.Watch();
-        } catch (InterruptedException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(PowerMeterWatcherThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
