@@ -26,10 +26,10 @@ import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IZone;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.controls.SearchDialog;
-import sicce.ui.manager.reports.Field;
-import sicce.ui.manager.reports.FieldHandler;
-import sicce.ui.manager.reports.FieldsCellRenderer;
-import sicce.ui.manager.reports.FieldsComparator;
+import sicce.api.info.Field;
+import sicce.ui.manager.handlers.FieldHandler;
+import sicce.api.businesslogic.FieldsCellRenderer;
+import sicce.api.businesslogic.FieldsComparator;
 
 /**
  *
@@ -125,19 +125,6 @@ public class ReportForm3 extends WizardPage {
         btnRemoveField = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        txtZone = new javax.swing.JTextField();
-        btnSearchZone = new javax.swing.JButton();
-        btnClearZone = new javax.swing.JButton();
-        txtLocation = new javax.swing.JTextField();
-        btnSearchLocation = new javax.swing.JButton();
-        btnClearLocation = new javax.swing.JButton();
-        txtPowerMeter = new javax.swing.JTextField();
-        btnSearchPowerMeter = new javax.swing.JButton();
-        btnClearPowerMeter = new javax.swing.JButton();
 
         setName("Form"); // NOI18N
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -220,111 +207,7 @@ public class ReportForm3 extends WizardPage {
         jLabel5.setName("jLabel5"); // NOI18N
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 110, -1));
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 400, 220));
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("jPanel2.border.title"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("jPanel2.border.titleColor"))); // NOI18N
-        jPanel2.setName("jPanel2"); // NOI18N
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
-        jLabel6.setName("jLabel6"); // NOI18N
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
-
-        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
-        jLabel7.setName("jLabel7"); // NOI18N
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 45, -1, -1));
-
-        jLabel8.setText(resourceMap.getString("jLabel8.text")); // NOI18N
-        jLabel8.setName("jLabel8"); // NOI18N
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
-
-        txtZone.setText(resourceMap.getString("txtZone.text")); // NOI18N
-        txtZone.setName("txtZone"); // NOI18N
-        txtZone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtZoneActionPerformed(evt);
-            }
-        });
-        jPanel2.add(txtZone, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 240, -1));
-
-        btnSearchZone.setIcon(resourceMap.getIcon("btnSearchZone.icon")); // NOI18N
-        btnSearchZone.setAlignmentX(0.5F);
-        btnSearchZone.setAlignmentY(1.5F);
-        btnSearchZone.setName("btnSearchZone"); // NOI18N
-        btnSearchZone.setPreferredSize(new java.awt.Dimension(50, 21));
-        btnSearchZone.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        btnSearchZone.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSearchZone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchZoneActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnSearchZone, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 30, -1));
-
-        btnClearZone.setIcon(resourceMap.getIcon("btnClearZone.icon")); // NOI18N
-        btnClearZone.setName("btnClearZone"); // NOI18N
-        btnClearZone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearZoneActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnClearZone, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, 30, -1));
-
-        txtLocation.setText(resourceMap.getString("txtLocation.text")); // NOI18N
-        txtLocation.setName("txtLocation"); // NOI18N
-        jPanel2.add(txtLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 45, 240, -1));
-
-        btnSearchLocation.setIcon(resourceMap.getIcon("btnSearchLocation.icon")); // NOI18N
-        btnSearchLocation.setAlignmentX(0.5F);
-        btnSearchLocation.setAlignmentY(1.5F);
-        btnSearchLocation.setName("btnSearchLocation"); // NOI18N
-        btnSearchLocation.setPreferredSize(new java.awt.Dimension(50, 21));
-        btnSearchLocation.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        btnSearchLocation.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSearchLocation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchLocationActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnSearchLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 45, 30, -1));
-
-        btnClearLocation.setIcon(resourceMap.getIcon("btnClearLocation.icon")); // NOI18N
-        btnClearLocation.setName("btnClearLocation"); // NOI18N
-        btnClearLocation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearLocationActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnClearLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 45, 30, -1));
-
-        txtPowerMeter.setText(resourceMap.getString("txtPowerMeter.text")); // NOI18N
-        txtPowerMeter.setName("txtPowerMeter"); // NOI18N
-        jPanel2.add(txtPowerMeter, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 240, -1));
-
-        btnSearchPowerMeter.setIcon(resourceMap.getIcon("btnSearchPowerMeter.icon")); // NOI18N
-        btnSearchPowerMeter.setAlignmentX(0.5F);
-        btnSearchPowerMeter.setAlignmentY(1.5F);
-        btnSearchPowerMeter.setName("btnSearchPowerMeter"); // NOI18N
-        btnSearchPowerMeter.setPreferredSize(new java.awt.Dimension(50, 21));
-        btnSearchPowerMeter.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        btnSearchPowerMeter.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSearchPowerMeter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchPowerMeterActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnSearchPowerMeter, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, 30, -1));
-
-        btnClearPowerMeter.setIcon(resourceMap.getIcon("btnClearPowerMeter.icon")); // NOI18N
-        btnClearPowerMeter.setName("btnClearPowerMeter"); // NOI18N
-        btnClearPowerMeter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearPowerMeterActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnClearPowerMeter, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 70, 30, -1));
-
-        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 400, 100));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 400, 220));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFieldActionPerformed
@@ -411,90 +294,20 @@ public class ReportForm3 extends WizardPage {
        
     }//GEN-LAST:event_btnDownActionPerformed
 
-    private void txtZoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtZoneActionPerformed
-        // TODO add your handling code here:
-}//GEN-LAST:event_txtZoneActionPerformed
-
-    private void btnSearchZoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchZoneActionPerformed
-        SearchDialog<IZone> searchZoneDialog = new SearchDialog<IZone>(new JFrame(), true, new ZoneTableModel(zoneBizObject.GetAllZones()));
-        searchZoneDialog.setVisible(true);
-        DialogResult result = searchZoneDialog.getDialogResult();
-        if (result == DialogResult.Ok) {
-            pzone = searchZoneDialog.getSearchResult();
-            if (pzone != null) {
-                txtZone.setText(pzone.getDescription());
-            }
-        }
-}//GEN-LAST:event_btnSearchZoneActionPerformed
-
-    private void btnClearZoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearZoneActionPerformed
-        pzone = null;
-        txtZone.setText("");
-}//GEN-LAST:event_btnClearZoneActionPerformed
-
-    private void btnSearchLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchLocationActionPerformed
-        SearchDialog<ILocation> searchLocationDialog = new SearchDialog<ILocation>(new JFrame(), true, new LocationTableModel(locationBizObject.GetAllLocations()));
-        searchLocationDialog.setVisible(true);
-        DialogResult result = searchLocationDialog.getDialogResult();
-        if (result == DialogResult.Ok) {
-            plocation = searchLocationDialog.getSearchResult();
-            if (plocation != null) {
-                txtLocation.setText(plocation.getDescription());
-            }
-        }
-        
-}//GEN-LAST:event_btnSearchLocationActionPerformed
-
-    private void btnClearLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearLocationActionPerformed
-       plocation = null;
-       txtLocation.setText("");
-}//GEN-LAST:event_btnClearLocationActionPerformed
-
-    private void btnSearchPowerMeterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPowerMeterActionPerformed
-        SearchDialog<IPowerMeter> searchPowerMeterDialog = new SearchDialog<IPowerMeter>(new JFrame(), true, new PowerMeterTableModel(pmeterBizObject.GetAllPowerMeter()));
-        searchPowerMeterDialog.setVisible(true);
-        DialogResult result = searchPowerMeterDialog.getDialogResult();
-        if (result == DialogResult.Ok) {
-           pmeter = searchPowerMeterDialog.getSearchResult();
-            if (pmeter != null) {
-                txtPowerMeter.setText(pmeter.getDescription());
-            }
-        }      
-        
-}//GEN-LAST:event_btnSearchPowerMeterActionPerformed
-
-    private void btnClearPowerMeterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPowerMeterActionPerformed
-        pmeter =null;
-        txtPowerMeter.setText("");
-}//GEN-LAST:event_btnClearPowerMeterActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddField;
-    private javax.swing.JButton btnClearLocation;
-    private javax.swing.JButton btnClearPowerMeter;
-    private javax.swing.JButton btnClearZone;
     private javax.swing.JButton btnDown;
     private javax.swing.JButton btnRemoveField;
-    private javax.swing.JButton btnSearchLocation;
-    private javax.swing.JButton btnSearchPowerMeter;
-    private javax.swing.JButton btnSearchZone;
     private javax.swing.JButton btnUp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList lstGroupFields;
     private javax.swing.JList lstSelectedFields;
-    private javax.swing.JTextField txtLocation;
-    private javax.swing.JTextField txtPowerMeter;
-    private javax.swing.JTextField txtZone;
     // End of variables declaration//GEN-END:variables
 }

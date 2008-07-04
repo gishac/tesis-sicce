@@ -12,10 +12,10 @@ import java.util.Map;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPage;
 import sicce.ui.manager.controls.JOptionPaneExtended;
-import sicce.ui.manager.reports.Field;
-import sicce.ui.manager.reports.FieldHandler;
-import sicce.ui.manager.reports.FieldsCellRenderer;
-import sicce.ui.manager.reports.FieldsComparator;
+import sicce.api.info.Field;
+import sicce.ui.manager.handlers.FieldHandler;
+import sicce.api.businesslogic.FieldsCellRenderer;
+import sicce.api.businesslogic.FieldsComparator;
 
 /**
  *
