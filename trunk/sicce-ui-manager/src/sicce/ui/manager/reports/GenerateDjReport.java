@@ -1,5 +1,6 @@
 package sicce.ui.manager.reports;
 
+import sicce.api.info.Field;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

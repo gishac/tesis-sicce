@@ -1,5 +1,6 @@
 package sicce.ui.manager.reports;
 
+import sicce.api.info.Field;
 import ar.com.fdvs.dj.core.DJConstants;
 import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
 import ar.com.fdvs.dj.domain.DynamicReport;

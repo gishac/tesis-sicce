@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sicce.ui.manager.reports;
+package sicce.ui.manager.handlers;
 
+import sicce.api.info.Field;
 import java.util.ArrayList;
 import java.util.List;
 import sicce.ui.manager.controls.JOptionPaneExtended;
