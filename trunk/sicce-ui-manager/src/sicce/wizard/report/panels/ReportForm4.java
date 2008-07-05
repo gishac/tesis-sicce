@@ -6,36 +6,27 @@
 package sicce.wizard.report.panels;
 
 import java.awt.Component;
-import java.util.Collections;
+import java.awt.Dimension;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.text.TableView.TableRow;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPage;
-import sicce.api.businesslogic.LocationBizObject;
-import sicce.api.businesslogic.LocationTableModel;
-import sicce.api.businesslogic.PowerMeterBizObject;
-import sicce.api.businesslogic.PowerMeterTableModel;
+import sicce.api.businesslogic.ClassFactory;
 import sicce.api.businesslogic.SicceComboBoxModel;
-import sicce.api.businesslogic.ZoneBizObject;
-import sicce.api.businesslogic.ZoneTableModel;
-import sicce.api.info.ConstantsProvider.DialogResult;
-import sicce.api.info.interfaces.ILocation;
-import sicce.api.info.interfaces.IPowerMeter;
-import sicce.api.info.interfaces.IZone;
-import sicce.ui.manager.controls.JOptionPaneExtended;
-import sicce.ui.manager.controls.SearchDialog;
 import sicce.api.info.Field;
 import sicce.ui.manager.handlers.FieldHandler;
 import sicce.api.businesslogic.FieldsCellRenderer;
-import sicce.api.businesslogic.FieldsComparator;
-import sicce.ui.manager.reports.ReportWizardTableModel;
+import sicce.ui.manager.listeners.JTableButtonMouseListener;
+import sicce.api.businesslogic.JTableButtonRenderer;
+import sicce.api.businesslogic.ReportFilterTableModel;
+import sicce.api.info.interfaces.IFilter;
 
 /**
  *
@@ -46,34 +37,36 @@ public class ReportForm4 extends WizardPage {
     private final WizardController controller;
     private final Map wizardData;
     public static final String KEY_SELECTED = "selectedFields";
-    public static final String KEY_GROUP = "groupFields";
-    ZoneBizObject zoneBizObject;
-    LocationBizObject locationBizObject;
-    PowerMeterBizObject pmeterBizObject;
+    public static final String KEY_WHERE = "whereFields";
+    private FieldHandler filterField = new FieldHandler();
     SicceComboBoxModel selectedComboBoxModel;
-    ReportWizardTableModel reportTableModel;
-    private ILocation plocation;
-    private IPowerMeter pmeter;
-    private IZone pzone;
-    private List selectedField = null;
-    private TableRow fieldRow;
-    private TableColumn operatorColumn;
-
+    private ReportFilterTableModel reportTableModel;
+    JComboBox operator;
+    JButton searchField;
+    TableCellRenderer defaultRenderer;
     /** Creates new form ReportDetail */
     public ReportForm4(WizardController controller, Map wizardData) {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
-        selectedField = (List) wizardData.get(KEY_SELECTED);
-        zoneBizObject = new ZoneBizObject();
-        locationBizObject = new LocationBizObject();
-        pmeterBizObject = new PowerMeterBizObject();
+        List filterList = null;
         LoadComboBox();
+        reportTableModel = new ReportFilterTableModel(filterList);
+        grdSearchFields.setModel(reportTableModel);
+        TableColumn operatorColumn = grdSearchFields.getColumnModel().getColumn(1);
+        TableColumn searchColumn = grdSearchFields.getColumnModel().getColumn(3);
+        operatorColumn.setCellEditor(new DefaultCellEditor(getComboBox()));
+        
+        defaultRenderer = grdSearchFields.getDefaultRenderer(JButton.class);
+        grdSearchFields.setDefaultRenderer(JButton.class,
+			       new JTableButtonRenderer(defaultRenderer));
+        grdSearchFields.setPreferredScrollableViewportSize(new Dimension(150, 200));
+        grdSearchFields.addMouseListener(new JTableButtonMouseListener(grdSearchFields));
 
     }
 
     private void LoadComboBox() {
-        selectedComboBoxModel = new SicceComboBoxModel(selectedField);
+        selectedComboBoxModel = new SicceComboBoxModel(filterField.fillfilterFields());
         cboWhereItems.setModel(selectedComboBoxModel);
         cboWhereItems.setRenderer(new FieldsCellRenderer());
     }
@@ -91,7 +84,7 @@ public class ReportForm4 extends WizardPage {
 
     public void fillWizardMap() {
 
-        wizardData.put(KEY_GROUP, FieldHandler.getListGroupFields());
+        //  wizardData.put(KEY_GROUP, FieldHandler.getListGroupFields());
 
         if (FieldHandler.getListGroupFields() != null) {
             try {
@@ -180,29 +173,37 @@ public class ReportForm4 extends WizardPage {
 }//GEN-LAST:event_cboWhereItemsActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
-        if (cboWhereItems != null) {
-            
-            operatorColumn = grdSearchFields.getColumnModel().getColumn(1);
+        // TODO add your handling code here: 
 
-        JComboBox operator = getComboBox();
-        operatorColumn.setCellEditor(new DefaultCellEditor(operator));
-        
-        
-        
+        if (cboWhereItems != null) {
+            Field fieldSelected = (Field) cboWhereItems.getSelectedItem();            
+            IFilter filter = ClassFactory.getFilterInstance();
+            filter.setField(fieldSelected);
+            reportTableModel.addFilter(filter);
         }
             
 }//GEN-LAST:event_btnAddActionPerformed
 
     private JComboBox getComboBox() {
-        JComboBox operator = new JComboBox();
-        operator.addItem("=");
-        operator.addItem("<");
-        operator.addItem(">");
-        operator.addItem("<>");
-        operator.addItem("<>");
-        operator.addItem("like");
+        if (operator == null) {
+            operator = new JComboBox();
+            operator.addItem("igual");
+            operator.addItem("menor");
+            operator.addItem("mayor");
+            operator.addItem("diferente");
+            operator.addItem("entre");
+            operator.addItem("contiene");
+        }
         return operator;
+    }
+    
+    private JButton getButtonSearch()
+    {
+           if (searchField == null)
+               searchField.setText("...");
+        
+           
+           return searchField;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;

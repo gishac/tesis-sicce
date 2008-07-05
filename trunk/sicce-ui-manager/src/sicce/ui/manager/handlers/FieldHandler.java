@@ -92,6 +92,24 @@ public class FieldHandler {
 
     }
 
+     public List<Field> fillfilterFields() {
+
+        List<Field> lstfilterFields = new ArrayList<Field>();
+
+        lstfilterFields.add(new Field(1,11, 3, "power_meter", "description", "descriptionPowerMeter", "Descripción/Medidor", String.class.getName(), 70));
+        lstfilterFields.add(new Field(2,12, 3, "power_meter", "ip_Address", "ipAddress", "Dirección IP", String.class.getName(), 30));
+        lstfilterFields.add(new Field(3,13, 3, "power_meter", "serial", "serial", "No. Serial", String.class.getName(), 70));
+        lstfilterFields.add(new Field(4,14, 2, "location", "description", "descriptionLocation", "Descripción/Ubicación", String.class.getName(), 70));
+        lstfilterFields.add(new Field(5,15, 2, "location_type", "description", "descriptionLocationType", "Descripción/Tipo Ubicación", String.class.getName(), 70));
+        lstfilterFields.add(new Field(6,16, 1, "zone", "description", "descriptionZone", "Descripción/Zona", String.class.getName(), 70));
+
+        return lstfilterFields;
+
+
+    }
+
+    
+    
     public static List<Field> CompareLists(List<Field> availableList, List<Field> selectedList) {
         List<Field> resultList = new ArrayList<Field>();
 

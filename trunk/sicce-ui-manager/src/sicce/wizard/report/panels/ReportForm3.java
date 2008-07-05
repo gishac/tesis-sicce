@@ -95,7 +95,7 @@ public class ReportForm3 extends WizardPage {
       
         if (FieldHandler.getListGroupFields()!= null) {
             try {          
-                controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
+                controller.setForwardNavigationMode(WizardController.MODE_CAN_CONTINUE);
                 controller.setProblem(null);
                 
             } catch (Exception ex) {
