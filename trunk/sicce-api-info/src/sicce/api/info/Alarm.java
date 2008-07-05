@@ -12,6 +12,7 @@ import java.util.Observer;
 import sicce.api.info.auto.AbstractAlarm;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IAlarmListener;
+import sicce.api.info.interfaces.IMeasure;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IPowerMeterWatcher;
 import sicce.api.info.interfaces.IUserSicce;
@@ -31,7 +32,8 @@ public class Alarm extends AbstractAlarm implements Observer  {
      */
     public void update(Observable observable, Object arg) {
         IPowerMeterWatcher watcher = (IPowerMeterWatcher) observable;
-        int read = Integer.parseInt(arg.toString());        
+        IMeasure measure = (IMeasure) arg;
+        double read = measure.getTotalActivePower();
         if(this.IsActive() && read > this.getMaxValueAllowed() && true){
             //TODO: Terminar la logica de activacion de la alarma. Mover el alarm handler del proyecto sicce.api.alarms a sicce.api.businesslogic
                 /*watcher.getPowerMeter().getSerial().equals(this.getPowerMeter().getSerial())){
