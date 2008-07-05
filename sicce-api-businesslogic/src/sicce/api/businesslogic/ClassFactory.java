@@ -5,6 +5,7 @@
 package sicce.api.businesslogic;
 
 import sicce.api.info.Alarm;
+import sicce.api.info.Filter;
 import sicce.api.info.Location;
 import sicce.api.info.LocationType;
 import sicce.api.info.Measure;
@@ -18,6 +19,7 @@ import sicce.api.info.ScheduleDay;
 import sicce.api.info.UserSicce;
 import sicce.api.info.Zone;
 import sicce.api.info.interfaces.IAlarm;
+import sicce.api.info.interfaces.IFilter;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
 import sicce.api.info.interfaces.IMeasure;
@@ -87,5 +89,9 @@ public class ClassFactory {
     
     public static IReport getReportInstance(){
         return new Report();
+    }
+    
+    public static IFilter getFilterInstance(){
+        return new Filter();
     }
 }
