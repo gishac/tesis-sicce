@@ -56,17 +56,17 @@ public class Processor {
      */
     public static void DoProcess(){
         EncryptionProvider.RegisterHibernateEncryptor();
-        int readInterval = 5;
+        int readInterval = 15;
         PowerMeterBizObject powerMeterHandler = new PowerMeterBizObject();
         List<IPowerMeter> powerMeters = powerMeterHandler.GetAllPowerMeter();
-        
-        IPowerMeter meter = ClassFactory.getPowerMeterInstance();
-        meter.setIpAddress("192.168.8.42");
-        meter.setDescription("home test");
-        meter.setSerial("01");
-        meter.setDeviceID("01");
-        
-        powerMeters.add(meter);
+//        
+//        IPowerMeter meter = ClassFactory.getPowerMeterInstance();
+//        meter.setIpAddress("192.168.8.42");
+//        meter.setDescription("home test");
+//        meter.setSerial("01");
+//        meter.setDeviceID("01");
+//        
+//        powerMeters.add(meter);
         
         ArrayList<IPowerMeterWatcher> watchers = new ArrayList<IPowerMeterWatcher>();
         for (IPowerMeter powerMeter : powerMeters) {
@@ -74,6 +74,9 @@ public class Processor {
             SetObservers(watcher);        
             watchers.add(watcher);            
         }
+        
+        //watchers.get(0).Watch();
+        
         TimerTaskLauncher taskLauncher = new TimerTaskLauncher(watchers, readInterval);
         taskLauncher.BeginTasks();
     }    

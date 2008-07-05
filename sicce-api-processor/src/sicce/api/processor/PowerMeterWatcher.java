@@ -18,8 +18,10 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sicce.api.businesslogic.PowerMeterBizObject;
+import sicce.api.dataaccess.MeasureDB;
 import sicce.api.info.ConstantsProvider.RequestType;
 import sicce.api.info.exceptions.InvalidModbusResponseException;
+import sicce.api.info.interfaces.IMeasure;
 import sicce.api.info.interfaces.IModbusResponse;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IPowerMeterWatcher;
@@ -89,10 +91,13 @@ public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher 
             /*int lectura = new Random().nextInt(10000);
             setChanged();
             notifyObservers(lectura);*/
-
+            
             HashMap<RequestType, IModbusResponse> powerMeterData = powerMeterBizObject.ReadPowerMeterData(this.powerMeter);
-            powerMeterBizObject.ProcessPowerMeterData(powerMeterData);
-
+            IMeasure measure = powerMeterBizObject.ProcessPowerMeterData(powerMeterData);
+            MeasureDB.Save(measure);
+            setChanged();
+            notifyObservers(measure);
+            
 
         } catch (UnknownHostException ex) {
             Logger.getLogger(PowerMeterWatcher.class.getName()).log(Level.SEVERE, null, ex);
@@ -118,87 +123,5 @@ public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher 
     public void AddObserver(Observer observer) {
         addObserver(observer);
     }
-
-    private static int getIntValue(String value) {
-        int result;
-        result = getHexValue(value.charAt(0)) * 16 + getHexValue(value.charAt(1));
-        return result;
-    }
-
-    private static int read(InputStream in, int num_chars) throws Exception {
-        int valuex = 0;
-        StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < num_chars; i++) {
-            valuex = in.read();
-            String toHex = Integer.toHexString(valuex).toUpperCase();
-            toHex = (toHex.length() == 1 ? "0" + toHex : toHex);
-            //System.out.println((i<10?"0"+i:""+i)+": "+toHex);
-            buf.append(toHex);
-        }
-        System.out.println(buf.toString());
-        return valuex;
-    }
-
-    public static void write(OutputStream out, String[] trama) throws Exception {
-        for (int i = 0; i < trama.length; i++) {
-            System.out.print(" " + trama[i]);
-            out.write(getIntValue(trama[i]));
-        }
-        System.out.println("");
-    }
-
-    public static int getHexValue(char value) {
-        int result = 0;
-        switch (value) {
-            case '0':
-                result = 0;
-                break;
-            case '1':
-                result = 1;
-                break;
-            case '2':
-                result = 2;
-                break;
-            case '3':
-                result = 3;
-                break;
-            case '4':
-                result = 4;
-                break;
-            case '5':
-                result = 5;
-                break;
-            case '6':
-                result = 6;
-                break;
-            case '7':
-                result = 7;
-                break;
-            case '8':
-                result = 8;
-                break;
-            case '9':
-                result = 9;
-                break;
-            case 'A':
-                result = 10;
-                break;
-            case 'B':
-                result = 11;
-                break;
-            case 'C':
-                result = 12;
-                break;
-            case 'D':
-                result = 13;
-                break;
-            case 'E':
-                result = 14;
-                break;
-            case 'F':
-                result = 15;
-                break;
-        }
-        return result;
-    }
+ 
 }

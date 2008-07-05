@@ -17,8 +17,8 @@ import sicce.api.info.interfaces.IPowerMeterWatcher;
 public class ProcessorObserver implements Observer {
 
     public void update( Observable observable, Object obj) {
-        IPowerMeterWatcher watcher = (IPowerMeterWatcher) observable;
-        System.out.println( watcher.getPowerMeter().getDescription()  + " Leido: " + Calendar.getInstance().getTime() + " con una lectura de " + Integer.parseInt(obj.toString()));
+        //IPowerMeterWatcher watcher = (IPowerMeterWatcher) observable;
+        //System.out.println( watcher.getPowerMeter().getDescription()  + " Leido: " + Calendar.getInstance().getTime() + " con una lectura de " + Integer.parseInt(obj.toString()));
     }
     
 }
