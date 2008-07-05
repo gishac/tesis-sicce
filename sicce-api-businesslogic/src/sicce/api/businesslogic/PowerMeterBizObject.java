@@ -51,11 +51,12 @@ public class PowerMeterBizObject {
      * 
      * @param powerMeterData
      */
-    public void ProcessPowerMeterData(HashMap<RequestType,IModbusResponse> powerMeterData) throws InvalidModbusResponseException{
+    public IMeasure ProcessPowerMeterData(HashMap<RequestType,IModbusResponse> powerMeterData) throws InvalidModbusResponseException{
         IMeasure measure = ClassFactory.getMeasure();
         IModbusResponse response = powerMeterData.get(RequestType.HoldingRegisters);
         System.out.println(response.getHoldingRegistersResponse());
         new ModbusBizObject().ProcessModbusResponse(response, measure);
+        return measure;
     }
     
 }
