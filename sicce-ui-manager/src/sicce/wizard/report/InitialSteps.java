@@ -25,6 +25,7 @@ import sicce.ui.manager.reports.ReportTemplate;
 import sicce.wizard.report.panels.ReportForm1;
 import sicce.wizard.report.panels.ReportForm2;
 import sicce.wizard.report.panels.ReportForm3;
+import sicce.wizard.report.panels.ReportForm4;
 
 
 /**
@@ -38,10 +39,12 @@ class InitialSteps extends WizardPanelProvider {
     private static final String GENERAL_INFORMATION = "generalInformation";
     private static final String SELECTED_FIELDS = "selectedField";
     private static final String GROUP_FIELDS = "groupField";
+    private static final String WHERE_FIELDS = "whereField";
     private ReportTemplate template = new ReportTemplate();
 
     public static final String KEY_SELECTED = "selectedFields";
     public static final String KEY_GROUP = "groupFields";
+    public static final String KEY_WHERE = "whereFields";
     public static final String KEY_NAME = "name";
     public static final String KEY_BEGIN_DATE = "beginDate";
     public static final String KEY_FINISH_DATE = "finishDate";
@@ -57,8 +60,8 @@ class InitialSteps extends WizardPanelProvider {
      * Creates a new instance of InitialSteps
      */
     InitialSteps(ResourceMap resourceMap) {
-        super("UCSG Report Wizard", new String[]{GENERAL_INFORMATION, SELECTED_FIELDS,GROUP_FIELDS},
-                new String[]{"Tipo de reporte", "Selección de Columnas", "Definición de Criterios"});
+        super("UCSG Report Wizard", new String[]{GENERAL_INFORMATION, SELECTED_FIELDS,GROUP_FIELDS, WHERE_FIELDS},
+                new String[]{"Tipo de reporte", "Selección de Columnas", "Definición de Criterios", "Definición de Filtros"});
         this.resourceMap = resourceMap;
     }
 
@@ -75,7 +78,8 @@ class InitialSteps extends WizardPanelProvider {
             
             case 2:
                 return new ReportForm3(controller, data);
-          
+            case 3:
+                return new ReportForm4(controller, data);
 
 
             default:
