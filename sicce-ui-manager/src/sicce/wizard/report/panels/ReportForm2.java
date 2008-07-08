@@ -26,18 +26,14 @@ public class ReportForm2 extends WizardPage {
     private final WizardController controller;
     private final Map wizardData;
     public static final String KEY_SELECTED = "selectedFields";
-    private FieldHandler availableField = new FieldHandler();
     public static final String VALUE_SELECTED_FIELDS = "selected_Fields";
-    public static final String KEY_BEGIN_DATE = "beginDate";
-    public static final String KEY_FINISH_DATE = "finishDate";
+    private FieldHandler availableField = new FieldHandler();
 
     /** Creates new form ReportDetail */
     public ReportForm2(WizardController controller, Map wizardData) {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
-
-
         controller.setProblem("Seleccione el módulo deseado.");
         lstSelectedFields.putClientProperty(KEY_SELECTED, VALUE_SELECTED_FIELDS);
         fillCbModules();
@@ -48,6 +44,7 @@ public class ReportForm2 extends WizardPage {
         cbModules.addItem("Zona");
         cbModules.addItem("Ubicación");
         cbModules.addItem("Medidor");
+        cbModules.addItem("Mediciones");
 
     }
 
@@ -73,6 +70,13 @@ public class ReportForm2 extends WizardPage {
             lstAvailableFields.setListData(resultList.toArray());
 
         }
+         if (cbModules.getSelectedItem().equals("Mediciones")) {
+            FieldHandler.setListAvailableFields(availableField.fillMeasureFields());
+            List<Field> resultList = FieldHandler.CompareLists(FieldHandler.getAvailableFields(), FieldHandler.getSelectedFields());
+            lstAvailableFields.setCellRenderer(new FieldsCellRenderer());
+            lstAvailableFields.setListData(resultList.toArray());
+
+        }
     }
 
     public void updateLists() {
@@ -90,16 +94,12 @@ public class ReportForm2 extends WizardPage {
             return "Debe seleccionar los campos a mostrar en el reporte...";
         }
 
-       if ((component == dtpBeginDate || component == lstAvailableFields || component == dtpFinishDate  || component == lstSelectedFields ) && (dtpBeginDate.getDate() == null ||  dtpFinishDate.getDate() == null))  {  
-            return "Defina las fechas del reporte...";
-        }
-        if (( component == null || component == cbModules || component == lstAvailableFields) && lstSelectedFields.getModel().getSize() == 0) {      
-            return "Seleccione los campos del reporte...";
-        } else {           
+        if ((component == lstAvailableFields ||component == lstSelectedFields || component == cbModules) && (lstSelectedFields.getModel().getSize() == 0)) {
+            return "Defina los criterios del reporte...";
+        } else {
+            controller.setForwardNavigationMode(WizardController.MODE_CAN_CONTINUE);
             wizardData.put(KEY_SELECTED, FieldHandler.getSelectedFields());
-            wizardData.put(KEY_BEGIN_DATE, dtpBeginDate.getDate());
-            wizardData.put(KEY_FINISH_DATE, dtpFinishDate.getDate());
-        }
+                  }
 
         return null;
     }
@@ -125,11 +125,6 @@ public class ReportForm2 extends WizardPage {
         cbModules = new javax.swing.JComboBox();
         btnAddField = new javax.swing.JButton();
         btnRemoveField = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        dtpBeginDate = new com.toedter.calendar.JDateChooser();
-        jLabel6 = new javax.swing.JLabel();
-        dtpFinishDate = new com.toedter.calendar.JDateChooser();
 
         setName("Form"); // NOI18N
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -149,7 +144,7 @@ public class ReportForm2 extends WizardPage {
         });
         jScrollPane1.setViewportView(lstSelectedFields);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 90, 140, 170));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 70, 160, 160));
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
@@ -157,7 +152,7 @@ public class ReportForm2 extends WizardPage {
         lstAvailableFields.setName("lstAvailableFields"); // NOI18N
         jScrollPane2.setViewportView(lstAvailableFields);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 130, 170));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 160, 160));
 
         btnUp.setIcon(resourceMap.getIcon("btnUp.icon")); // NOI18N
         btnUp.setText(resourceMap.getString("btnUp.text")); // NOI18N
@@ -167,7 +162,7 @@ public class ReportForm2 extends WizardPage {
                 btnUpActionPerformed(evt);
             }
         });
-        jPanel1.add(btnUp, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 90, 30, 30));
+        jPanel1.add(btnUp, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 90, 30, 30));
 
         btnDown.setIcon(resourceMap.getIcon("btnDown.icon")); // NOI18N
         btnDown.setText(resourceMap.getString("btnDown.text")); // NOI18N
@@ -177,20 +172,20 @@ public class ReportForm2 extends WizardPage {
                 btnDownActionPerformed(evt);
             }
         });
-        jPanel1.add(btnDown, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 130, 30, 30));
+        jPanel1.add(btnDown, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 130, 30, 30));
 
         jLabel2.setFont(resourceMap.getFont("jLabel2.font")); // NOI18N
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
 
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, 110, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, 110, -1));
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, 20));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, 20));
 
         cbModules.setName("cbModules"); // NOI18N
         cbModules.addActionListener(new java.awt.event.ActionListener() {
@@ -198,7 +193,7 @@ public class ReportForm2 extends WizardPage {
                 cbModulesActionPerformed(evt);
             }
         });
-        jPanel1.add(cbModules, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 30, 130, -1));
+        jPanel1.add(cbModules, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 130, -1));
 
         btnAddField.setIcon(resourceMap.getIcon("btnAddField.icon")); // NOI18N
         btnAddField.setText(resourceMap.getString("btnAddField.text")); // NOI18N
@@ -208,7 +203,7 @@ public class ReportForm2 extends WizardPage {
                 btnAddFieldActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAddField, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 130, 40, 30));
+        jPanel1.add(btnAddField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 40, 30));
 
         btnRemoveField.setIcon(resourceMap.getIcon("btnRemoveField.icon")); // NOI18N
         btnRemoveField.setText(resourceMap.getString("btnRemoveField.text")); // NOI18N
@@ -218,31 +213,10 @@ public class ReportForm2 extends WizardPage {
                 btnRemoveFieldActionPerformed(evt);
             }
         });
-        jPanel1.add(btnRemoveField, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, 40, 30));
+        jPanel1.add(btnRemoveField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 40, 30));
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 400, 280));
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("jPanel2.border.title"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("jPanel2.border.titleColor"))); // NOI18N
-        jPanel2.setName("jPanel2"); // NOI18N
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
-        jLabel7.setName("jLabel7"); // NOI18N
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, 20));
-
-        dtpBeginDate.setName("dtpBeginDate"); // NOI18N
-        jPanel2.add(dtpBeginDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 100, -1));
-
-        jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
-        jLabel6.setName("jLabel6"); // NOI18N
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, -1, 20));
-
-        dtpFinishDate.setName("dtpFinishDate"); // NOI18N
-        jPanel2.add(dtpFinishDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 20, 100, -1));
-
-        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 400, 50));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 240));
     }// </editor-fold>//GEN-END:initComponents
-
     private void cbModulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbModulesActionPerformed
         // TODO add your handling code here:
         validateContents(cbModules, evt);
@@ -272,7 +246,7 @@ public class ReportForm2 extends WizardPage {
 
         for (int i = 0; i < field.length; i++) {
             tmp = (Field) field[i];
-            FieldHandler.removeSelectedField(tmp); 
+            FieldHandler.removeSelectedField(tmp);
             updateLists();
         }
      
@@ -281,8 +255,8 @@ public class ReportForm2 extends WizardPage {
     }//GEN-LAST:event_btnRemoveFieldActionPerformed
 
     private void lstSelectedFieldsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstSelectedFieldsValueChanged
-        // TODO add your handling code here:
-       // updateLists();
+    // TODO add your handling code here:
+    // updateLists();
     }//GEN-LAST:event_lstSelectedFieldsValueChanged
 
     private void btnUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpActionPerformed
@@ -335,15 +309,10 @@ public class ReportForm2 extends WizardPage {
     private javax.swing.JButton btnRemoveField;
     private javax.swing.JButton btnUp;
     private javax.swing.JComboBox cbModules;
-    private com.toedter.calendar.JDateChooser dtpBeginDate;
-    private com.toedter.calendar.JDateChooser dtpFinishDate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList lstAvailableFields;

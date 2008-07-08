@@ -49,7 +49,7 @@ public abstract class GenerateDjReport {
         dreport = buildReport(titleReport, listSelected, listGroup, resourceMap);
         IReport currentObject = ClassFactory.getReportInstance();
         jprint = DynamicJasperHelper.generateJasperPrint(dreport, new ClassicLayoutManager(), DataAccessManager.getInstance().getConnectionDB().getConnection(), params);	//Creates the JasperPrint object, we pass as a Parameter
-        JasperViewer.viewReport(jprint, true);
+        JasperViewer.viewReport(jprint, false);
 
         jreport = DynamicJasperHelper.generateJasperReport(dreport, new ClassicLayoutManager());
       
@@ -58,13 +58,13 @@ public abstract class GenerateDjReport {
 
         String xml = DynamicJasperHelper.generateJRXML(dreport, new ClassicLayoutManager(), params, "UTF-8");
 
-//        currentObject.setReportName(titleReport);
-//        currentObject.setReportDescription(titleReport);
-//        //currentObject.setReportJrxml(out);
-//        currentObject.setReportJrxml(xml);
-//        currentObject.setOptionSicce(OptionDB.FindOptionByID(9));
-//        ReportDB.Save(currentObject);
-//        System.out.println("xmlDATA" + xml);
+        currentObject.setReportName(titleReport);
+        currentObject.setReportDescription(titleReport);
+        //currentObject.setReportJrxml(out);
+        currentObject.setReportJrxml(xml);
+        currentObject.setOptionSicce(OptionDB.FindOptionByID(9));
+        ReportDB.Save(currentObject);
+        System.out.println("xmlDATA" + xml);
 
     }
 }

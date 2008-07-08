@@ -7,6 +7,8 @@ package sicce.ui.manager.controls;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.List;
+import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.ComponentUtil;
@@ -33,6 +35,13 @@ public class SearchDialog<T> extends javax.swing.JDialog {
         this.getContentPane().add(searchPane, BorderLayout.CENTER);
         ComponentUtil.CenterFormInScreen(this, this.getToolkit());
     }
+    
+    public SearchDialog(java.awt.Frame parent, boolean modal, SicceTableModel<T> tableModel, int lstModel) {
+        this(parent, modal);
+        searchPane = new SearchPane<T>(this, tableModel, lstModel);
+        this.getContentPane().add(searchPane, BorderLayout.CENTER);
+        ComponentUtil.CenterFormInScreen(this, this.getToolkit());
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -53,6 +62,10 @@ public class SearchDialog<T> extends javax.swing.JDialog {
 
     public T getSearchResult() {
         return searchPane.getSearchResult();
+    }
+    
+    public List<T> getResultList(){
+        return searchPane.getResultList();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

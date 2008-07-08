@@ -42,7 +42,7 @@ public class ReportTemplate extends GenerateDjReport {
         Style titleStyle = new Style();
         
         /* Definir el formato para la cabecera del reporte - headerStyle -*/
-        headerStyle.setFont(Font.VERDANA_MEDIUM_BOLD);
+        headerStyle.setFont(Font.VERDANA_SMALL_BOLD);
         headerStyle.setBorderBottom(Border.PEN_1_POINT);
         headerStyle.setHorizontalAlign(HorizontalAlign.CENTER);
         headerStyle.setVerticalAlign(VerticalAlign.MIDDLE);
@@ -64,8 +64,8 @@ public class ReportTemplate extends GenerateDjReport {
         
         DynamicReportBuilder drb = new DynamicReportBuilder();
         drb.setTitle(title).setDetailHeight(15).setMargins(30, 20, 30, 15).setDefaultStyles(titleStyle, null, headerStyle, detailStyle).setColumnsPerPage(1);
-        String imagePath = resourceMap.getResourcesDir() + "/" + resourceMap.getString("small_ucsg");
-        drb.addImageBanner(imagePath, new Integer(197), new Integer(60), ImageBanner.ALIGN_RIGHT);
+        //String imagePath = resourceMap.getResourcesDir() + "/" + resourceMap.getString("small_ucsg");
+        //drb.addImageBanner(imagePath, new Integer(197), new Integer(60), ImageBanner.ALIGN_RIGHT);
         CreateColumns(listSelected, drb);
 
         drb.setUseFullPageWidth(true);
@@ -84,11 +84,18 @@ public class ReportTemplate extends GenerateDjReport {
 //                "AND location_zone.ID_ZONE = zone.ID_ZONE " +
 //                "AND location.ID_LOCATION = measure.ID_LOCATION " +
 //                "AND power_meter.ID_POWER_METER = measure.ID_POWER_METER ";
-        String joins = "FROM location " +
-                "INNER JOIN location_type ON location.ID_LOCATION_TYPE = location_type.ID_LOCATION_TYPE" +
-                " LEFT JOIN location_zone ON location.ID_LOCATION = location_zone.ID_LOCATION " +
-                " LEFT JOIN zone ON location_zone.ID_ZONE = zone.ID_ZONE " +
-                " LEFT JOIN power_meter ON location.POWER_METER_ID_POWER_METER  = power_meter.ID_POWER_METER";
+//        "FROM location " +
+//                "INNER JOIN location_type ON location.ID_LOCATION_TYPE = location_type.ID_LOCATION_TYPE" +
+//                " LEFT JOIN location_zone ON location.ID_LOCATION = location_zone.ID_LOCATION " +
+//                " LEFT JOIN zone ON location_zone.ID_ZONE = zone.ID_ZONE " +
+//                " LEFT JOIN power_meter ON location.POWER_METER_ID_POWER_METER  = power_meter.ID_POWER_METER";
+        String joins = "FROM measure " +
+                "INNER JOIN location ON measure.ID_LOCATION = location.ID_LOCATION " +
+                "INNER JOIN power_meter ON measure.ID_POWER_METER = power_meter.ID_POWER_METER " +
+                "INNER JOIN location_type ON location.ID_LOCATION_TYPE = location_type.ID_LOCATION_TYPE " +
+                "LEFT JOIN location_zone ON location.ID_LOCATION = location_zone.ID_LOCATION " +
+                "LEFT JOIN zone ON location_zone.ID_ZONE = zone.ID_ZONE ";
+        
         String query = "SELECT" + " " + stFieldSelected + " " + joins + " " + "GROUP BY " + stFieldGroup;
         System.out.println("QUERY :" + query);
         drb.setQuery(query, DJConstants.QUERY_LANGUAGE_SQL);
@@ -127,13 +134,17 @@ public class ReportTemplate extends GenerateDjReport {
     public String createQueryGroupby(List<Field> listGroup) {
 
         String totalFieldsGroup = new String();
+        if (listGroup.size()< 0)
+            return null;
+        
         for (Field fieldGroup : (List<Field>) listGroup) {
             String field = fieldGroup.getAliasField() + ",";
             totalFieldsGroup = totalFieldsGroup.concat(field);
         }
         String total = totalFieldsGroup.substring(0, totalFieldsGroup.length() - 1);
-
+        
         return total;
+        
     }
     
     public void createGroup (List<Field> listGroup, DynamicReportBuilder drb){
