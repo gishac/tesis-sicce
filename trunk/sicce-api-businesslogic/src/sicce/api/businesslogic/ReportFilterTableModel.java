@@ -26,29 +26,31 @@ public class ReportFilterTableModel extends SicceTableModel<IFilter> {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         IFilter pFilter = getDataSource().get(rowIndex);
+        if (pFilter == null) {
+            return null;
+        }
         switch (columnIndex) {
             case 0:
-                return pFilter.getField().getAliasField();
+                return pFilter.getField().getTitle();
             case 1:
                 return pFilter.getOperator();
             case 2:
                 return pFilter.getValues();
             case 3:
-                return new JButton("...");
+                return new JButton("búsqueda");
             default:
                 return null;
         }
+
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if(columnIndex == 3)
+        if (columnIndex == 3) {
             return JButton.class;
+        }
         return super.getColumnClass(columnIndex);
     }
-    
-    
-
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -62,22 +64,36 @@ public class ReportFilterTableModel extends SicceTableModel<IFilter> {
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         IFilter pfilter = getDataSource().get(rowIndex);
-        if (pfilter!=null){
-        switch (columnIndex) {
-            case 1:
-                pfilter.setOperator(value.toString());
-                break;
-            case 2:
-                pfilter.setValues(value.toString());
-                break;
-        }
+        if (pfilter != null && value != null) {
+
+            switch (columnIndex) {
+                case 1:
+                    pfilter.setOperator(value.toString());
+                    break;
+                case 2:
+                    pfilter.setValues(value.toString());
+                    break;
+            }
         }
     }
 
-    public void addFilter(IFilter filter) {
+    public boolean addFilter(IFilter filter) {
+        List<IFilter> lstFilter = this.getDataSource();
+        for (IFilter pfilter : lstFilter) {
+            if (pfilter.getField().getIdField() == filter.getField().getIdField()) {
+                return false;
+            }
+        }
         this.getDataSource().add(filter);
         this.fireTableDataChanged();
+        return true;
     }
-
+    
+    public void deleteFilter(int index) {
+        if (index >=0 && index < this.getDataSource().size()){
+                this.getDataSource().remove(index);
+                this.fireTableDataChanged();
+        }
+    }      
    
 }
