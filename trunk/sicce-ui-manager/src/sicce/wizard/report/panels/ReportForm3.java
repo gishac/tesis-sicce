@@ -11,21 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPage;
-import sicce.api.businesslogic.LocationBizObject;
-import sicce.api.businesslogic.LocationTableModel;
-import sicce.api.businesslogic.PowerMeterBizObject;
-import sicce.api.businesslogic.PowerMeterTableModel;
-import sicce.api.businesslogic.ZoneBizObject;
-import sicce.api.businesslogic.ZoneTableModel;
-import sicce.api.info.ConstantsProvider.DialogResult;
-import sicce.api.info.interfaces.ILocation;
-import sicce.api.info.interfaces.IPowerMeter;
-import sicce.api.info.interfaces.IZone;
 import sicce.ui.manager.controls.JOptionPaneExtended;
-import sicce.ui.manager.controls.SearchDialog;
 import sicce.api.info.Field;
 import sicce.ui.manager.handlers.FieldHandler;
 import sicce.api.businesslogic.FieldsCellRenderer;
@@ -41,68 +29,51 @@ public class ReportForm3 extends WizardPage {
     private final Map wizardData;
     public static final String KEY_SELECTED = "selectedFields";
     public static final String KEY_GROUP = "groupFields";
-    ZoneBizObject zoneBizObject;
-    LocationBizObject locationBizObject;
-    PowerMeterBizObject pmeterBizObject;
-    private ILocation plocation;
-    private IPowerMeter pmeter;
-    private IZone pzone;
     private List selectedField = null;
-  
+
     /** Creates new form ReportDetail */
     public ReportForm3(WizardController controller, Map wizardData) {
         initComponents();
         this.controller = controller;
-        this.wizardData = wizardData;     
+        this.wizardData = wizardData;
         selectedField = (List) wizardData.get(KEY_SELECTED);
-        fillSelectedFields(); 
-        zoneBizObject = new ZoneBizObject();
-        locationBizObject = new LocationBizObject();
-        pmeterBizObject = new PowerMeterBizObject();
-      
-       
+        fillSelectedFields();
     }
 
     public void fillSelectedFields() {
-      
-      lstSelectedFields.setCellRenderer(new FieldsCellRenderer());
-      lstSelectedFields.setListData(selectedField.toArray());
+        if (selectedField.size() > 0) {
+            lstSelectedFields.setCellRenderer(new FieldsCellRenderer());
+            lstSelectedFields.setListData(selectedField.toArray());
+        }
     }
 
-   
-    
-    public void updateLists(){
-      lstGroupFields.setCellRenderer(new FieldsCellRenderer());
-      lstSelectedFields.setListData(FieldHandler.getSelectedFields().toArray());
-      lstGroupFields.setListData(FieldHandler.getListGroupFields().toArray());
-    
+    public void updateLists() {
+        lstGroupFields.setCellRenderer(new FieldsCellRenderer());
+        lstSelectedFields.setListData(FieldHandler.getSelectedFields().toArray());
+        lstGroupFields.setListData(FieldHandler.getListGroupFields().toArray());
+
     }
 
-      @Override
+    @Override
     protected String validateContents(Component component, Object event) {
 
         if (component == null) {
             return "Defina los criterios del reporte...";
         }
+        wizardData.put(KEY_GROUP, FieldHandler.getListGroupFields());
 
-      
-        return null;
-    }
-
-     public void fillWizardMap(){
-        
-        wizardData.put (KEY_GROUP, FieldHandler.getListGroupFields());  
-      
-        if (FieldHandler.getListGroupFields()!= null) {
-            try {          
+        if (lstGroupFields.getModel().getSize() > 0) {
+            try {
                 controller.setForwardNavigationMode(WizardController.MODE_CAN_CONTINUE);
                 controller.setProblem(null);
-                
+
             } catch (Exception ex) {
                 Logger.getLogger(ReportForm3.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }      
+        } 
+        return null;
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -144,7 +115,7 @@ public class ReportForm3 extends WizardPage {
         });
         jScrollPane1.setViewportView(lstGroupFields);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 40, 140, 170));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 40, 160, 170));
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
@@ -152,7 +123,7 @@ public class ReportForm3 extends WizardPage {
         lstSelectedFields.setName("lstSelectedFields"); // NOI18N
         jScrollPane2.setViewportView(lstSelectedFields);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 130, 170));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 160, 170));
 
         btnUp.setIcon(resourceMap.getIcon("btnUp.icon")); // NOI18N
         btnUp.setName("btnUp"); // NOI18N
@@ -161,7 +132,7 @@ public class ReportForm3 extends WizardPage {
                 btnUpActionPerformed(evt);
             }
         });
-        jPanel1.add(btnUp, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 40, 30, 30));
+        jPanel1.add(btnUp, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 40, 30, 30));
 
         btnDown.setIcon(resourceMap.getIcon("btnDown.icon")); // NOI18N
         btnDown.setName("btnDown"); // NOI18N
@@ -170,7 +141,7 @@ public class ReportForm3 extends WizardPage {
                 btnDownActionPerformed(evt);
             }
         });
-        jPanel1.add(btnDown, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 80, 30, 30));
+        jPanel1.add(btnDown, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 80, 30, 30));
 
         jLabel2.setName("jLabel2"); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
@@ -188,7 +159,7 @@ public class ReportForm3 extends WizardPage {
                 btnAddFieldActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAddField, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 40, 30));
+        jPanel1.add(btnAddField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 40, 30));
 
         btnRemoveField.setIcon(resourceMap.getIcon("btnRemoveField.icon")); // NOI18N
         btnRemoveField.setName("btnRemoveField"); // NOI18N
@@ -197,7 +168,7 @@ public class ReportForm3 extends WizardPage {
                 btnRemoveFieldActionPerformed(evt);
             }
         });
-        jPanel1.add(btnRemoveField, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 130, 40, 30));
+        jPanel1.add(btnRemoveField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 40, 30));
 
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
@@ -205,19 +176,18 @@ public class ReportForm3 extends WizardPage {
 
         jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 110, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, 110, -1));
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 400, 220));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 240));
     }// </editor-fold>//GEN-END:initComponents
-
     private void btnAddFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFieldActionPerformed
         // TODO add your handling code here:
         Object[] field = this.lstSelectedFields.getSelectedValues();
         Field tmp = null;
-       
+
         for (int i = 0; i < field.length; i++) {
             tmp = (Field) field[i];
-            if (FieldHandler.CompareList(tmp , FieldHandler.getListGroupFields())){
+            if (FieldHandler.CompareList(tmp, FieldHandler.getListGroupFields())) {
                 JOptionPaneExtended.showMessageDialog(this, "El campo " + tmp.getTitle() + " ya ha sido agregado.");
                 return;
             } else {
@@ -225,7 +195,7 @@ public class ReportForm3 extends WizardPage {
             }
         }
         updateLists();
-      //  fillWizardMap(evt);
+    //  fillWizardMap(evt);
         
 }//GEN-LAST:event_btnAddFieldActionPerformed
 
@@ -236,30 +206,29 @@ public class ReportForm3 extends WizardPage {
 
         for (int i = 0; i < field.length; i++) {
             tmp = (Field) field[i];
-         FieldHandler.removeGroupField(tmp);
+            FieldHandler.removeGroupField(tmp);
         }
         updateLists();
-      //  fillWizardMap(evt);
+    //  fillWizardMap(evt);
         
     }//GEN-LAST:event_btnRemoveFieldActionPerformed
 
     private void lstGroupFieldsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstGroupFieldsValueChanged
         // TODO add your handling code here:
-        fillWizardMap();
+    
     }//GEN-LAST:event_lstGroupFieldsValueChanged
 
     private void btnUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpActionPerformed
         // TODO add your handling code here:
-         if(lstGroupFields.getSelectedValue()==null){
+        if (lstGroupFields.getSelectedValue() == null) {
             JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar un valor de la lista");
             return;
         }
-         
-       int index = lstGroupFields.getSelectedIndex();
-        
-        if (index > 0)
-        {
-            Field previous = (Field) lstGroupFields.getModel().getElementAt(index - 1 );
+
+        int index = lstGroupFields.getSelectedIndex();
+
+        if (index > 0) {
+            Field previous = (Field) lstGroupFields.getModel().getElementAt(index - 1);
             Field selected = (Field) lstGroupFields.getModel().getElementAt(index);
             previous.setOrder(previous.getOrder() + 1);
             selected.setOrder(selected.getOrder() - 1);
@@ -272,20 +241,19 @@ public class ReportForm3 extends WizardPage {
 
     private void btnDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownActionPerformed
         // TODO add your handling code here:
-        if(lstGroupFields.getSelectedValue()==null){
+        if (lstGroupFields.getSelectedValue() == null) {
             JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar un valor de la lista");
             return;
         }
-         
-       int index = lstGroupFields.getSelectedIndex();
-        
-        if (index < lstGroupFields.getModel().getSize() - 1 )
-        {
+
+        int index = lstGroupFields.getSelectedIndex();
+
+        if (index < lstGroupFields.getModel().getSize() - 1) {
             Field selected = (Field) lstGroupFields.getModel().getElementAt(index);
-            Field next = (Field) lstGroupFields.getModel().getElementAt(index + 1 );
+            Field next = (Field) lstGroupFields.getModel().getElementAt(index + 1);
             selected.setOrder(selected.getOrder() + 1);
             next.setOrder(next.getOrder() - 1);
-            
+
             Collections.sort(FieldHandler.getListGroupFields(), new FieldsComparator());
             updateLists();
             lstGroupFields.setSelectedIndex(index + 1);

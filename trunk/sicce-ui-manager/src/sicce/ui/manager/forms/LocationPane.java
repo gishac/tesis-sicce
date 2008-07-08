@@ -327,6 +327,7 @@ public class LocationPane extends JTabExtended<ILocation> {
     private void btnSearchUbicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchUbicationActionPerformed
         SearchDialog<ILocation> searchLocationDialog = new SearchDialog<ILocation>(new JFrame(), true, new LocationTableModel(locationBizObject.GetAllLocations()));
         searchLocationDialog.setVisible(true);
+        
         DialogResult result = searchLocationDialog.getDialogResult();
         if (result == DialogResult.Ok) {
             plocation = searchLocationDialog.getSearchResult();

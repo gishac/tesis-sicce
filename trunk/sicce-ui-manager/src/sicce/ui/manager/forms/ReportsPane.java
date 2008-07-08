@@ -6,15 +6,18 @@
 
 package sicce.ui.manager.forms;
 
-import javax.swing.JScrollPane;
+import java.awt.Dimension;
+import javax.swing.JButton;
+import javax.swing.table.TableCellRenderer;
 import org.jdesktop.application.ResourceMap;
+import sicce.api.businesslogic.JTableButtonRenderer;
 import sicce.api.businesslogic.ReportBizObject;
 import sicce.api.businesslogic.ReportTableModel;
 import sicce.api.info.interfaces.IReport;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.api.dataaccess.ReportDB;
 import sicce.api.info.ToolBarStateInfo;
-import sicce.ui.manager.controls.ReportTable;
+import sicce.ui.manager.listeners.JTbButtonReportMouseListener;
 
 /**
  *
@@ -24,18 +27,20 @@ public class ReportsPane extends JTabExtended<IReport> {
     
     ReportBizObject reportBizObj;
     ReportTableModel reportModel;
-    private ReportTable grdReport;
-    private JScrollPane jScrollPane1;
+     JButton searchField;
+    TableCellRenderer defaultRenderer;
+   
     
     /** Creates new form ReportsPane */
     public ReportsPane(ResourceMap resourceMap) {
         initComponents();
-        this.resourceMap = resourceMap;
-        grdReport = new ReportTable(resourceMap);
-        jScrollPane1 = new JScrollPane();
-        jScrollPane1.setViewportView(grdReport);
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 370, 180));
-         reportBizObj = new ReportBizObject();
+        reportBizObj = new ReportBizObject();
+        defaultRenderer = grdSavedReport.getDefaultRenderer(JButton.class);
+        grdSavedReport.setDefaultRenderer(JButton.class,
+			       new JTableButtonRenderer(defaultRenderer));
+        grdSavedReport.setPreferredScrollableViewportSize(new Dimension(150, 200));
+        grdSavedReport.addMouseListener(new JTbButtonReportMouseListener(grdSavedReport));
+
         this.setHandleToolBarStates(false);
         this.setToolBarStateInfo(new ToolBarStateInfo(false, false, false, false, false, false));
         FillGrid();
@@ -51,6 +56,8 @@ public class ReportsPane extends JTabExtended<IReport> {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        grdSavedReport = new javax.swing.JTable();
 
         setName("Form"); // NOI18N
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -59,12 +66,33 @@ public class ReportsPane extends JTabExtended<IReport> {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("jPanel1.border.title"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("jPanel1.border.titleColor"))); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        grdSavedReport.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        grdSavedReport.setName("grdSavedReport"); // NOI18N
+        jScrollPane1.setViewportView(grdSavedReport);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 320, 150));
+
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 390, 210));
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable grdSavedReport;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     
   @Override
@@ -86,7 +114,7 @@ public class ReportsPane extends JTabExtended<IReport> {
     @Override
     public void FillGrid() {
         reportModel = new ReportTableModel(reportBizObj.GetAllReport());
-        grdReport.setModel(reportModel);
+        grdSavedReport.setModel(reportModel);
     }
 
   

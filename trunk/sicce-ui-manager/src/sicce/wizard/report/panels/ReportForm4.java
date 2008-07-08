@@ -9,8 +9,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -27,6 +25,7 @@ import sicce.ui.manager.listeners.JTableButtonMouseListener;
 import sicce.api.businesslogic.JTableButtonRenderer;
 import sicce.api.businesslogic.ReportFilterTableModel;
 import sicce.api.info.interfaces.IFilter;
+import sicce.ui.manager.controls.JOptionPaneExtended;
 
 /**
  *
@@ -44,6 +43,7 @@ public class ReportForm4 extends WizardPage {
     JComboBox operator;
     JButton searchField;
     TableCellRenderer defaultRenderer;
+    
     /** Creates new form ReportDetail */
     public ReportForm4(WizardController controller, Map wizardData) {
         initComponents();
@@ -54,10 +54,8 @@ public class ReportForm4 extends WizardPage {
         reportTableModel = new ReportFilterTableModel(filterList);
         grdSearchFields.setModel(reportTableModel);
         TableColumn operatorColumn = grdSearchFields.getColumnModel().getColumn(1);
-        TableColumn searchColumn = grdSearchFields.getColumnModel().getColumn(3);
         operatorColumn.setCellEditor(new DefaultCellEditor(getComboBox()));
-        
-        defaultRenderer = grdSearchFields.getDefaultRenderer(JButton.class);
+       defaultRenderer = grdSearchFields.getDefaultRenderer(JButton.class);
         grdSearchFields.setDefaultRenderer(JButton.class,
 			       new JTableButtonRenderer(defaultRenderer));
         grdSearchFields.setPreferredScrollableViewportSize(new Dimension(150, 200));
@@ -77,24 +75,9 @@ public class ReportForm4 extends WizardPage {
         if (component == null) {
             return "Defina los criterios del reporte...";
         }
-
-
+         controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
+         controller.setProblem(null);
         return null;
-    }
-
-    public void fillWizardMap() {
-
-        //  wizardData.put(KEY_GROUP, FieldHandler.getListGroupFields());
-
-        if (FieldHandler.getListGroupFields() != null) {
-            try {
-                controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
-                controller.setProblem(null);
-
-            } catch (Exception ex) {
-                Logger.getLogger(ReportForm4.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
     /** This method is called from within the constructor to
@@ -108,9 +91,10 @@ public class ReportForm4 extends WizardPage {
         jPanel1 = new javax.swing.JPanel();
         cboWhereItems = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
-        btnAdd = new javax.swing.JButton();
+        btnAddFilter = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         grdSearchFields = new javax.swing.JTable();
+        btndelFilter = new javax.swing.JButton();
 
         setName("Form"); // NOI18N
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -122,26 +106,21 @@ public class ReportForm4 extends WizardPage {
 
         cboWhereItems.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboWhereItems.setName("cboWhereItems"); // NOI18N
-        cboWhereItems.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboWhereItemsActionPerformed(evt);
-            }
-        });
         jPanel1.add(cboWhereItems, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 130, -1));
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
 
-        btnAdd.setIcon(resourceMap.getIcon("btnAdd.icon")); // NOI18N
-        btnAdd.setText(resourceMap.getString("btnAdd.text")); // NOI18N
-        btnAdd.setName("btnAdd"); // NOI18N
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+        btnAddFilter.setIcon(resourceMap.getIcon("btnAddFilter.icon")); // NOI18N
+        btnAddFilter.setText(resourceMap.getString("btnAddFilter.text")); // NOI18N
+        btnAddFilter.setName("btnAddFilter"); // NOI18N
+        btnAddFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+                btnAddFilterActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
+        jPanel1.add(btnAddFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, 40, -1));
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -164,25 +143,40 @@ public class ReportForm4 extends WizardPage {
         grdSearchFields.setName("grdSearchFields"); // NOI18N
         jScrollPane1.setViewportView(grdSearchFields);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 340, 150));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 390, 150));
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 390, 230));
+        btndelFilter.setIcon(resourceMap.getIcon("btndelFilter.icon")); // NOI18N
+        btndelFilter.setText(resourceMap.getString("btndelFilter.text")); // NOI18N
+        btndelFilter.setName("btndelFilter"); // NOI18N
+        btndelFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndelFilterActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btndelFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, 40, 25));
+
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 240));
     }// </editor-fold>//GEN-END:initComponents
-    private void cboWhereItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboWhereItemsActionPerformed
-    // TODO add your handling code here:
-}//GEN-LAST:event_cboWhereItemsActionPerformed
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    private void btnAddFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFilterActionPerformed
         // TODO add your handling code here: 
 
         if (cboWhereItems != null) {
-            Field fieldSelected = (Field) cboWhereItems.getSelectedItem();            
+            Field fieldSelected = (Field) cboWhereItems.getSelectedItem();
+            
             IFilter filter = ClassFactory.getFilterInstance();
             filter.setField(fieldSelected);
-            reportTableModel.addFilter(filter);
+            if (!reportTableModel.addFilter(filter))
+                JOptionPaneExtended.showMessageDialog(null, "El campo ya fue agregado");
         }
             
-}//GEN-LAST:event_btnAddActionPerformed
+}//GEN-LAST:event_btnAddFilterActionPerformed
+
+    private void btndelFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndelFilterActionPerformed
+        // TODO add your handling code here:
+        if (grdSearchFields.getSelectedRow()>= 0)
+            reportTableModel.deleteFilter(grdSearchFields.getSelectedRow());
+    }//GEN-LAST:event_btndelFilterActionPerformed
 
     private JComboBox getComboBox() {
         if (operator == null) {
@@ -197,16 +191,10 @@ public class ReportForm4 extends WizardPage {
         return operator;
     }
     
-    private JButton getButtonSearch()
-    {
-           if (searchField == null)
-               searchField.setText("...");
-        
-           
-           return searchField;
-    }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnAddFilter;
+    private javax.swing.JButton btndelFilter;
     private javax.swing.JComboBox cboWhereItems;
     private javax.swing.JTable grdSearchFields;
     private javax.swing.JLabel jLabel1;
