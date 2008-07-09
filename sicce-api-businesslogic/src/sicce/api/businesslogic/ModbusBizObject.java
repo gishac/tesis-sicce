@@ -4,9 +4,13 @@
  */
 package sicce.api.businesslogic;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -33,38 +37,7 @@ import sicce.api.info.interfaces.IPowerMeter;
  */
 public class ModbusBizObject {
 
-    /**
-     * 
-     */
-    public static final String PORT = "DIGI_PORT";
-    /**
-     * 
-     */
-    public static final String READ_HOLDING_REGISTERS_COMMAND = "READ_HOLDING_REGISTERS_COMMAND";
-    /**
-     * 
-     */
-    public static final String READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES = "READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES";
-    /**
-     * 
-     */
-    public static final String READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES = "READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES";
-    /**
-     * 
-     */
-    public static final String READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES = "READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES";
-    /**
-     * 
-     */
-    public static final String READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES = "READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES";
-    /**
-     * 
-     */
-    public static final String READ_HOLDING_REGISTERS_CRC_HI_BYTES = "READ_HOLDING_REGISTERS_CRC_HI_BYTES";
-    /**
-     * 
-     */
-    public static final String READ_HOLDING_REGISTERS_CRC_LO_BYTES = "READ_HOLDING_REGISTERS_CRC_LO_BYTES";
+   
     /**
      * 
      */
@@ -121,13 +94,13 @@ public class ModbusBizObject {
         String[] frame = {"70", "XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"};
 
         frame[1] = powerMeter.getDeviceID();
-        frame[2] = ModbusBizObject.getRequestFields().get(READ_HOLDING_REGISTERS_COMMAND).getValue();
-        frame[3] = ModbusBizObject.getRequestFields().get(READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES).getValue();
-        frame[4] = ModbusBizObject.getRequestFields().get(READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES).getValue();
-        frame[5] = ModbusBizObject.getRequestFields().get(READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES).getValue();
-        frame[6] = ModbusBizObject.getRequestFields().get(READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES).getValue();
-        frame[7] = ModbusBizObject.getRequestFields().get(READ_HOLDING_REGISTERS_CRC_HI_BYTES).getValue();
-        frame[8] = ModbusBizObject.getRequestFields().get(READ_HOLDING_REGISTERS_CRC_LO_BYTES).getValue();
+        frame[2] = ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_COMMAND).getValue();
+        frame[3] = ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES).getValue();
+        frame[4] = ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES).getValue();
+        frame[5] = ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES).getValue();
+        frame[6] = ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES).getValue();
+        frame[7] = ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_CRC_HI_BYTES).getValue();
+        frame[8] = ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_CRC_LO_BYTES).getValue();
 
         return frame;
     }
@@ -278,7 +251,7 @@ public class ModbusBizObject {
      */
     private boolean ValidateHoldingRegistersID(String frame){
         String requestID = frame.substring(2,4);
-        return requestID.equals(ModbusBizObject.getRequestFields().get(READ_HOLDING_REGISTERS_COMMAND).getValue());
+        return requestID.equals(ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_COMMAND).getValue());
     }
     
     /**
@@ -293,7 +266,7 @@ public class ModbusBizObject {
             return false;
         return true;
     }
-
+    
     /**
      * 
      * @param request
@@ -303,17 +276,31 @@ public class ModbusBizObject {
      */
     private String GetResponse(IModbusRequest request, int charsToRead, IPowerMeter powerMeter) throws IOException {
         String response = "";
-//        if(powerMeter.getSocket() == null)
-//        {
-            
-//        }
-        Socket socket = new Socket(request.getIpAddress(), Integer.parseInt(ModbusBizObject.getRequestFields().get(PORT).getValue()));
-//            powerMeter.setSocket(xocket);
-            
-//        Socket socket = powerMeter.getSocket();
-        WriteRequest(socket.getOutputStream(), request);
+        if(powerMeter.getSocket() == null)
+        {
+            //Socket socket = new Socket(request.getIpAddress(), Integer.parseInt(ModbusBizObject.getRequestFields().get(ConstantsProvider.PORT).getValue()));
+            //powerMeter.setSocket(socket);
+            //outStream = new BufferedOutputStream(socket.getOutputStream());
+            //inStream = new BufferedInputStream(socket.getInputStream());
+        }
+        else{
+            //powerMeter.getSocket().shutdownInput();
+        }
+        
+        Socket socket = new Socket(request.getIpAddress(), Integer.parseInt(ModbusBizObject.getRequestFields().get(ConstantsProvider.PORT).getValue()));
+        socket.setReuseAddress(true);
+        
+        //WriteRequest(powerMeter.getSocket().getOutputStream(), request);
+        //response = ReadResult(new BufferedInputStream(powerMeter.getSocket().getInputStream()), charsToRead);
+        //socket.close();
+        
+        WriteRequest( socket.getOutputStream(), request);
         response = ReadResult(socket.getInputStream(), charsToRead);
+        
+        socket.shutdownOutput();
+        socket.shutdownInput();
         socket.close();
+        
         return response;
     }
 
@@ -323,11 +310,13 @@ public class ModbusBizObject {
      * @param request
      */
     private void WriteRequest(OutputStream outputStream, IModbusRequest request) throws IOException {
+        //outputStream.flush();
         String frame[] = request.getRequest();
         for (int index = 0; index < frame.length; index++) {
             outputStream.write(GetIntValueFromHex(frame[index]));
         }
         outputStream.flush();
+        //
     }
 
     /**
@@ -363,22 +352,22 @@ public class ModbusBizObject {
         if (requestFields == null) {
             try {
                 requestFields = new HashMap<String, IParameter>();
-                IParameter readHoldingRegistersCommand = ParameterDB.GetParameterByKey(READ_HOLDING_REGISTERS_COMMAND);
-                IParameter startAddressHI = ParameterDB.GetParameterByKey(READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES);
-                IParameter startAddressLO = ParameterDB.GetParameterByKey(READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES);
-                IParameter registersToReadHI = ParameterDB.GetParameterByKey(READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES);
-                IParameter registersToReadLO = ParameterDB.GetParameterByKey(READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES);
-                IParameter crcHI = ParameterDB.GetParameterByKey(READ_HOLDING_REGISTERS_CRC_HI_BYTES);
-                IParameter crcLO = ParameterDB.GetParameterByKey(READ_HOLDING_REGISTERS_CRC_LO_BYTES);
-                IParameter port = ParameterDB.GetParameterByKey(ModbusBizObject.PORT);
-                requestFields.put(READ_HOLDING_REGISTERS_COMMAND, readHoldingRegistersCommand);
-                requestFields.put(READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES, startAddressHI);
-                requestFields.put(READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES, startAddressLO);
-                requestFields.put(READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES, registersToReadHI);
-                requestFields.put(READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES, registersToReadLO);
-                requestFields.put(READ_HOLDING_REGISTERS_CRC_HI_BYTES, crcHI);
-                requestFields.put(READ_HOLDING_REGISTERS_CRC_LO_BYTES, crcLO);
-                requestFields.put(PORT, port);
+                IParameter readHoldingRegistersCommand = ParameterDB.GetParameterByKey(ConstantsProvider.READ_HOLDING_REGISTERS_COMMAND);
+                IParameter startAddressHI = ParameterDB.GetParameterByKey(ConstantsProvider.READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES);
+                IParameter startAddressLO = ParameterDB.GetParameterByKey(ConstantsProvider.READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES);
+                IParameter registersToReadHI = ParameterDB.GetParameterByKey(ConstantsProvider.READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES);
+                IParameter registersToReadLO = ParameterDB.GetParameterByKey(ConstantsProvider.READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES);
+                IParameter crcHI = ParameterDB.GetParameterByKey(ConstantsProvider.READ_HOLDING_REGISTERS_CRC_HI_BYTES);
+                IParameter crcLO = ParameterDB.GetParameterByKey(ConstantsProvider.READ_HOLDING_REGISTERS_CRC_LO_BYTES);
+                IParameter port = ParameterDB.GetParameterByKey(ConstantsProvider.PORT);
+                requestFields.put(ConstantsProvider.READ_HOLDING_REGISTERS_COMMAND, readHoldingRegistersCommand);
+                requestFields.put(ConstantsProvider.READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES, startAddressHI);
+                requestFields.put(ConstantsProvider.READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES, startAddressLO);
+                requestFields.put(ConstantsProvider.READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES, registersToReadHI);
+                requestFields.put(ConstantsProvider.READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES, registersToReadLO);
+                requestFields.put(ConstantsProvider.READ_HOLDING_REGISTERS_CRC_HI_BYTES, crcHI);
+                requestFields.put(ConstantsProvider.READ_HOLDING_REGISTERS_CRC_LO_BYTES, crcLO);
+                requestFields.put(ConstantsProvider.PORT, port);
             } catch (Exception ex) {
                 Logger.getLogger(ModbusBizObject.class.getName()).log(Level.SEVERE, null, ex);
             }
