@@ -6,6 +6,8 @@
 
 package sicce.api.processor.viewer.controls;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
 import sicce.api.processor.Processor;
 import sicce.api.processor.viewer.handlers.LogHandler;
@@ -14,7 +16,7 @@ import sicce.api.processor.viewer.handlers.LogHandler;
  *
  * @author  gish@c
  */
-public class LogPane extends javax.swing.JPanel {
+public class LogPane extends javax.swing.JPanel implements ActionListener {
     
     /** Creates new form LogPane */
     public LogPane() {
@@ -73,6 +75,10 @@ public class LogPane extends javax.swing.JPanel {
      */
     private void AttachLogToDataProcessor(){
         Processor.AddObserver(getLogHandler().getLogObserver());
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        getLogHandler().HandlePowerMeterVisibility(e.getActionCommand(), (e.getID() == 1) ? true : false);
     }
     
 }

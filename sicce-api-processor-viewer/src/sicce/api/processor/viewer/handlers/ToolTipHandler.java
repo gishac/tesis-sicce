@@ -14,6 +14,13 @@ import org.jfree.data.xy.XYDataset;
  */
 public class ToolTipHandler implements XYToolTipGenerator {
 
+    /**
+     * 
+     * @param dataset
+     * @param series
+     * @param item
+     * @return
+     */
     public String generateToolTip(XYDataset dataset, int series, int item) {
         double yValue = dataset.getYValue(series, item);
         String seriesName = dataset.getSeriesKey(series).toString();

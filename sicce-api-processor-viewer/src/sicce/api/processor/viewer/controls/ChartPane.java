@@ -3,24 +3,25 @@
  *
  * Created on July 5, 2008, 4:18 AM
  */
-
 package sicce.api.processor.viewer.controls;
 
 import java.awt.BorderLayout;
-import javax.swing.JLabel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import org.jfree.chart.ChartPanel;
 import sicce.api.processor.Processor;
 import sicce.api.processor.viewer.handlers.ChartHandler;
+import sicce.api.processor.viewer.handlers.MeasureVisibilityHandler;
 
 /**
  *
  * @author  gish@c
  */
-public class ChartPane extends javax.swing.JPanel {
-    
+public class ChartPane extends javax.swing.JPanel implements ActionListener {
+
     private ChartHandler chartHandler;
     private String chartTitle;
-    
+
     /**
      * 
      * @return
@@ -31,7 +32,7 @@ public class ChartPane extends javax.swing.JPanel {
         }
         return chartHandler;
     }
-    
+
     /** Creates new form ChartPane */
     public ChartPane(String chartTitle) {
         initComponents();
@@ -39,7 +40,7 @@ public class ChartPane extends javax.swing.JPanel {
         BuildChart();
         AttachChartToDataProcessor();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -51,26 +52,41 @@ public class ChartPane extends javax.swing.JPanel {
         setName("Form"); // NOI18N
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
-     /**
+    /**
      * 
      */
     private void BuildChart() {
         ChartHandler chartUIHandler = getChartHandler();
         ChartPanel chartPanel = chartUIHandler.BuildChart(chartTitle);
         this.add(chartPanel, BorderLayout.CENTER);
-        this.add(new JLabel("abcd"),BorderLayout.NORTH);
+    }
+
+    /**
+     * 
+     */
+    private void AttachChartToDataProcessor() {
+        Processor.AddObserver(getChartHandler().getChartObserver());
+    }
+
+    /**
+     * 
+     * @param e
+     */
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() instanceof MeasureVisibilityHandler)
+        {
+            getChartHandler().HandleMeasureChanged(e.getID(), e.getActionCommand());
+        }
+        else
+            getChartHandler().HandlePowerMeterVisibility(e.getActionCommand(), (e.getID() == 1) ? true : false);
     }
     
     /**
      * 
      */
-    private void AttachChartToDataProcessor(){
-        Processor.AddObserver(getChartHandler().getChartObserver());
+    public void SaveChart(){
+        getChartHandler().SaveChart();
     }
-    
 }
