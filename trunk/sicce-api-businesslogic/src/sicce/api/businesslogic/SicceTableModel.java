@@ -140,5 +140,6 @@ public abstract class SicceTableModel<T> extends AbstractTableModel implements I
      */
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
+        
     }
 }
