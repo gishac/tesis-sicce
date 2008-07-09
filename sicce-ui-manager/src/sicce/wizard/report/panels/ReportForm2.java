@@ -127,6 +127,7 @@ public class ReportForm2 extends WizardPage {
         btnRemoveField = new javax.swing.JButton();
 
         setName("Form"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(650, 500));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportForm2.class);
@@ -144,7 +145,7 @@ public class ReportForm2 extends WizardPage {
         });
         jScrollPane1.setViewportView(lstSelectedFields);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 70, 160, 160));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(232, 70, 160, 260));
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
@@ -152,7 +153,7 @@ public class ReportForm2 extends WizardPage {
         lstAvailableFields.setName("lstAvailableFields"); // NOI18N
         jScrollPane2.setViewportView(lstAvailableFields);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 160, 160));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 160, 260));
 
         btnUp.setIcon(resourceMap.getIcon("btnUp.icon")); // NOI18N
         btnUp.setText(resourceMap.getString("btnUp.text")); // NOI18N
@@ -193,7 +194,7 @@ public class ReportForm2 extends WizardPage {
                 cbModulesActionPerformed(evt);
             }
         });
-        jPanel1.add(cbModules, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 130, -1));
+        jPanel1.add(cbModules, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 130, -1));
 
         btnAddField.setIcon(resourceMap.getIcon("btnAddField.icon")); // NOI18N
         btnAddField.setText(resourceMap.getString("btnAddField.text")); // NOI18N
@@ -203,7 +204,7 @@ public class ReportForm2 extends WizardPage {
                 btnAddFieldActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAddField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 40, 30));
+        jPanel1.add(btnAddField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 40, 30));
 
         btnRemoveField.setIcon(resourceMap.getIcon("btnRemoveField.icon")); // NOI18N
         btnRemoveField.setText(resourceMap.getString("btnRemoveField.text")); // NOI18N
@@ -213,9 +214,9 @@ public class ReportForm2 extends WizardPage {
                 btnRemoveFieldActionPerformed(evt);
             }
         });
-        jPanel1.add(btnRemoveField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 40, 30));
+        jPanel1.add(btnRemoveField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, 40, 30));
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 240));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 340));
     }// </editor-fold>//GEN-END:initComponents
     private void cbModulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbModulesActionPerformed
         // TODO add your handling code here:

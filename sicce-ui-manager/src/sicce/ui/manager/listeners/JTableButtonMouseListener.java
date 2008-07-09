@@ -44,13 +44,16 @@ public class JTableButtonMouseListener implements MouseListener {
         if (column == 3) {
             try {
 
+                
+                
                 SicceTableModel<IFilter> tableModel = (SicceTableModel<IFilter>) ptable.getModel();
                 IFilter filter = tableModel.getRow(row);
+                
                 String selectField = "select " + filter.getField().getDescriptionField() + " from " + filter.getField().getTableName();
                 System.out.println("query" + selectField);
                 List<ISimpleQueryResult> descriptions = PlainQueryExecutor.ExecuteSimpleQuery(selectField, DataAccessManager.getInstance().getConnectionDB().getConnection());
 
-                if (ptable.getValueAt(row, 1).equals("contiene") || ptable.getValueAt(row, 1).equals("entre")) {
+                if (ptable.getValueAt(row, 1).equals("entre")) {
                     SearchDialog<ISimpleQueryResult> searchFilterDialog = new SearchDialog<ISimpleQueryResult>(new JFrame(), true, new SearchFilterTableModel(descriptions), ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
                     searchFilterDialog.setVisible(true);
                     DialogResult result = searchFilterDialog.getDialogResult();
@@ -62,12 +65,13 @@ public class JTableButtonMouseListener implements MouseListener {
                             for (ISimpleQueryResult tmpresult : resultList) {
                                 String valuetmp = tmpresult.getResult();
                                 if (valueCell == null) {
-                                    valueCell = valuetmp.concat(";");
+                                    valueCell = " '" + valuetmp.concat("'").concat(",");
                                 } else {
-                                    valueCell = valueCell.concat(valuetmp.concat(";"));
+                                    valueCell = valueCell.concat(" '").concat(valuetmp).concat("'").concat(",");
                                 }
                             }
-                            ptable.setValueAt(valueCell, row, 2);
+                            String totalValue = valueCell.substring(0, valueCell.length() - 1);
+                            ptable.setValueAt(totalValue, row, 2);
                         }
                     }
                     ptable.repaint();

@@ -4,6 +4,8 @@
  */
 package sicce.ui.manager.listeners;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sf.jasperreports.engine.JRException;
@@ -11,6 +13,9 @@ import net.sf.jasperreports.engine.JasperReport;
 import sicce.api.businesslogic.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JTable;
@@ -19,6 +24,8 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
+import org.jboss.util.DirectoryBuilder;
+import org.jboss.util.DirectoryBuilder;
 import sicce.api.dataaccess.DataAccessManager;
 import sicce.api.info.interfaces.IReport;
 
@@ -36,21 +43,26 @@ public class JTbButtonReportMouseListener implements MouseListener {
         int row = e.getY() / ptable.getRowHeight();
 
         if (column == 2) {
-            try {
-                Map pCriterios = new HashMap();
-                SicceTableModel<IReport> tableModel = (SicceTableModel<IReport>) ptable.getModel();
-                IReport preport = tableModel.getRow(row);
-                JasperReport jprint = JasperCompileManager.compileReport(preport.getReportJrxml());
-                JasperPrint jasperPrint = JasperFillManager.fillReport(jprint, pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
-                JasperViewer.viewReport(jasperPrint, false);
-            } catch (JRException ex) {
-                Logger.getLogger(JTbButtonReportMouseListener.class.getName()).log(Level.SEVERE, null, ex);
+            
+                FileOutputStream x = null;
+                try {
+                    Map pCriterios = new HashMap();
+                    
+                    
+                    SicceTableModel<IReport> tableModel = (SicceTableModel<IReport>) ptable.getModel();
+                    IReport preport = tableModel.getRow(row);
+                    JasperReport jprint = JasperCompileManager.compileReport(preport.getReportJrxml());
+                    JasperPrint jasperPrint = JasperFillManager.fillReport(jprint, pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
+                    JasperViewer.viewReport(jasperPrint, false);
+                } catch (JRException ex) {
+                    Logger.getLogger(JTbButtonReportMouseListener.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-
         }
-    }
 
-    public JTbButtonReportMouseListener(JTable table) {
+    public
+
+     JTbButtonReportMouseListener(JTable table) {
         ptable = table;
     }
 

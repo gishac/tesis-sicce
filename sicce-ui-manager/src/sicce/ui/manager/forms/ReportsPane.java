@@ -7,6 +7,7 @@
 package sicce.ui.manager.forms;
 
 import java.awt.Dimension;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.table.TableCellRenderer;
 import org.jdesktop.application.ResourceMap;
@@ -29,12 +30,13 @@ public class ReportsPane extends JTabExtended<IReport> {
     ReportTableModel reportModel;
      JButton searchField;
     TableCellRenderer defaultRenderer;
-   
+    Icon imgReport;
     
     /** Creates new form ReportsPane */
     public ReportsPane(ResourceMap resourceMap) {
         initComponents();
         reportBizObj = new ReportBizObject();
+        imgReport = resourceMap.getIcon("reportIcon");
         defaultRenderer = grdSavedReport.getDefaultRenderer(JButton.class);
         grdSavedReport.setDefaultRenderer(JButton.class,
 			       new JTableButtonRenderer(defaultRenderer));
@@ -113,7 +115,7 @@ public class ReportsPane extends JTabExtended<IReport> {
   
     @Override
     public void FillGrid() {
-        reportModel = new ReportTableModel(reportBizObj.GetAllReport());
+        reportModel = new ReportTableModel(reportBizObj.GetAllReport(), imgReport);
         grdSavedReport.setModel(reportModel);
     }
 

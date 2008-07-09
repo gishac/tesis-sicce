@@ -79,7 +79,7 @@ class InitialSteps extends WizardPanelProvider {
             case 2:
                 return new ReportForm3(controller, data);
             case 3:
-                return new ReportForm4(controller, data);
+                return new ReportForm4(controller, data,resourceMap);
 
 
             default:
@@ -94,13 +94,7 @@ class InitialSteps extends WizardPanelProvider {
     public Object finish(Map wizardData)  {
         try {
             
-           selectedField = (List) wizardData.get(KEY_SELECTED);
-           groupField = (List) wizardData.get(KEY_GROUP);
-           title = (String)wizardData.get(KEY_NAME);
-           beginDate = (Date)wizardData.get(KEY_BEGIN_DATE);
-           finishDate = (Date)wizardData.get(KEY_FINISH_DATE);
-           template.runReport(title,selectedField ,groupField,resourceMap); 
-            
+           template.runReport(wizardData);
         
         } catch (Exception ex) {
             Logger.getLogger(InitialSteps.class.getName()).log(Level.SEVERE, null, ex);
