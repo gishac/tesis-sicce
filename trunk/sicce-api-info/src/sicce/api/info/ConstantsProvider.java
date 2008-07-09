@@ -9,6 +9,51 @@ package sicce.api.info;
  * @author gish@c
  */
 public class ConstantsProvider {
+    
+    /**
+     * 
+     */
+    public static final String READ_INTERVAL = "READ_INTERVAL";
+    
+     /**
+     * 
+     */
+    public static final String PORT = "DIGI_PORT";
+    
+    /**
+     * 
+     */
+    public static final String READ_HOLDING_REGISTERS_COMMAND = "READ_HOLDING_REGISTERS_COMMAND";
+    
+    /**
+     * 
+     */
+    public static final String READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES = "READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES";
+  
+    /**
+     * 
+     */
+    public static final String READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES = "READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES";
+  
+    /**
+     * 
+     */
+    public static final String READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES = "READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES";
+ 
+    /**
+     * 
+     */
+    public static final String READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES = "READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES";
+ 
+    /**
+     * 
+     */
+    public static final String READ_HOLDING_REGISTERS_CRC_HI_BYTES = "READ_HOLDING_REGISTERS_CRC_HI_BYTES";
+  
+    /**
+     * 
+     */
+    public static final String READ_HOLDING_REGISTERS_CRC_LO_BYTES = "READ_HOLDING_REGISTERS_CRC_LO_BYTES";
 
     /**
      * Opciones
@@ -122,6 +167,7 @@ public class ConstantsProvider {
 
         public int getTotalRegisters() {
             return totalRegisters;
+            
         }
     }
     
