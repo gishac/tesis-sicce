@@ -16,21 +16,21 @@ import sicce.api.info.interfaces.IPowerMeterWatcher;
 public class PowerMeterWatcherThread implements Runnable {
 
     private IPowerMeterWatcher watcher;
-    private static Random generator;
-    private int sleepTime;
 
+    /**
+     * 
+     * @param watcher
+     */
     public PowerMeterWatcherThread(IPowerMeterWatcher watcher) {
-        //super(watcher.getPowerMeter().getDescription());
+        
         this.watcher = watcher;
-
-        generator = new Random();
-        sleepTime = generator.nextInt(10);
     }
 
+    /**
+     * 
+     */
     public void run() {
         try {
-            //System.out.printf("%s going to sleep for %d seconds.\n", watcher.getPowerMeter().getDescription(), sleepTime);
-            //Thread.sleep(sleepTime * 1000); // put thread to sleep
             watcher.Watch();
         } catch (Exception ex) {
             Logger.getLogger(PowerMeterWatcherThread.class.getName()).log(Level.SEVERE, null, ex);
