@@ -7,9 +7,11 @@ package sicce.wizard.report.panels;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultCellEditor;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.table.TableCellRenderer;
@@ -26,6 +28,7 @@ import sicce.api.businesslogic.JTableButtonRenderer;
 import sicce.api.businesslogic.ReportFilterTableModel;
 import sicce.api.info.interfaces.IFilter;
 import sicce.ui.manager.controls.JOptionPaneExtended;
+import org.jdesktop.application.ResourceMap;
 
 /**
  *
@@ -37,28 +40,34 @@ public class ReportForm4 extends WizardPage {
     private final Map wizardData;
     public static final String KEY_SELECTED = "selectedFields";
     public static final String KEY_WHERE = "whereFields";
+    public static final String KEY_BEGIN_DATE = "beginDate";
+    public static final String KEY_FINISH_DATE = "finishDate";
     private FieldHandler filterField = new FieldHandler();
     SicceComboBoxModel selectedComboBoxModel;
     private ReportFilterTableModel reportTableModel;
     JComboBox operator;
     JButton searchField;
     TableCellRenderer defaultRenderer;
-    
+
     /** Creates new form ReportDetail */
-    public ReportForm4(WizardController controller, Map wizardData) {
+    public ReportForm4(WizardController controller, Map wizardData, ResourceMap resourceMap) {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
         List filterList = null;
         LoadComboBox();
-        reportTableModel = new ReportFilterTableModel(filterList);
+        Icon imgSearch = resourceMap.getIcon("search");
+        reportTableModel = new ReportFilterTableModel(filterList, imgSearch);
         grdSearchFields.setModel(reportTableModel);
         TableColumn operatorColumn = grdSearchFields.getColumnModel().getColumn(1);
+        TableColumn searchColumn = grdSearchFields.getColumnModel().getColumn(3);
         operatorColumn.setCellEditor(new DefaultCellEditor(getComboBox()));
-       defaultRenderer = grdSearchFields.getDefaultRenderer(JButton.class);
+        searchColumn.setPreferredWidth(10);
+        
+        defaultRenderer = grdSearchFields.getDefaultRenderer(JButton.class);
         grdSearchFields.setDefaultRenderer(JButton.class,
-			       new JTableButtonRenderer(defaultRenderer));
-        grdSearchFields.setPreferredScrollableViewportSize(new Dimension(150, 200));
+                new JTableButtonRenderer(defaultRenderer));
+        //grdSearchFields.setPreferredScrollableViewportSize(new Dimension(30,20));
         grdSearchFields.addMouseListener(new JTableButtonMouseListener(grdSearchFields));
 
     }
@@ -75,8 +84,18 @@ public class ReportForm4 extends WizardPage {
         if (component == null) {
             return "Defina los criterios del reporte...";
         }
-         controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
-         controller.setProblem(null);
+        if (component == dtpBeginDate && dtpBeginDate.getDate() == null) {
+            return "Seleccione el rango de fechas";
+        }
+        if(!validateDates(dtpBeginDate.getDate(), dtpFinishDate.getDate()))
+            return "Ingrese un rango de fechas válido.";
+        
+        wizardData.put(KEY_WHERE, reportTableModel.getDataSource());
+        wizardData.put(KEY_BEGIN_DATE, dtpBeginDate.getDate());
+        wizardData.put(KEY_FINISH_DATE, dtpFinishDate.getDate());
+        
+        controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
+        controller.setProblem(null);
         return null;
     }
 
@@ -95,6 +114,11 @@ public class ReportForm4 extends WizardPage {
         jScrollPane1 = new javax.swing.JScrollPane();
         grdSearchFields = new javax.swing.JTable();
         btndelFilter = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        dtpBeginDate = new com.toedter.calendar.JDateChooser();
+        jLabel6 = new javax.swing.JLabel();
+        dtpFinishDate = new com.toedter.calendar.JDateChooser();
 
         setName("Form"); // NOI18N
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -106,7 +130,7 @@ public class ReportForm4 extends WizardPage {
 
         cboWhereItems.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboWhereItems.setName("cboWhereItems"); // NOI18N
-        jPanel1.add(cboWhereItems, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 130, -1));
+        jPanel1.add(cboWhereItems, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 170, -1));
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
@@ -120,7 +144,7 @@ public class ReportForm4 extends WizardPage {
                 btnAddFilterActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAddFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, 40, -1));
+        jPanel1.add(btnAddFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, 40, -1));
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -143,7 +167,7 @@ public class ReportForm4 extends WizardPage {
         grdSearchFields.setName("grdSearchFields"); // NOI18N
         jScrollPane1.setViewportView(grdSearchFields);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 390, 150));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 410, 170));
 
         btndelFilter.setIcon(resourceMap.getIcon("btndelFilter.icon")); // NOI18N
         btndelFilter.setText(resourceMap.getString("btndelFilter.text")); // NOI18N
@@ -153,29 +177,50 @@ public class ReportForm4 extends WizardPage {
                 btndelFilterActionPerformed(evt);
             }
         });
-        jPanel1.add(btndelFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, 40, 25));
+        jPanel1.add(btndelFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 30, 40, 25));
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 240));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 270));
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Rango de Fechas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204)));
+        jPanel2.setName("jPanel2"); // NOI18N
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
+        jLabel7.setName("jLabel7"); // NOI18N
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, 20));
+
+        dtpBeginDate.setName("dtpBeginDate"); // NOI18N
+        jPanel2.add(dtpBeginDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 100, -1));
+
+        jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
+        jLabel6.setName("jLabel6"); // NOI18N
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, -1, 20));
+
+        dtpFinishDate.setName("dtpFinishDate"); // NOI18N
+        jPanel2.add(dtpFinishDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, 100, -1));
+
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 450, 70));
     }// </editor-fold>//GEN-END:initComponents
-
     private void btnAddFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFilterActionPerformed
         // TODO add your handling code here: 
 
         if (cboWhereItems != null) {
             Field fieldSelected = (Field) cboWhereItems.getSelectedItem();
-            
+
             IFilter filter = ClassFactory.getFilterInstance();
             filter.setField(fieldSelected);
-            if (!reportTableModel.addFilter(filter))
+            if (!reportTableModel.addFilter(filter)) {
                 JOptionPaneExtended.showMessageDialog(null, "El campo ya fue agregado");
+            }
         }
             
 }//GEN-LAST:event_btnAddFilterActionPerformed
 
     private void btndelFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndelFilterActionPerformed
         // TODO add your handling code here:
-        if (grdSearchFields.getSelectedRow()>= 0)
+        if (grdSearchFields.getSelectedRow() >= 0) {
             reportTableModel.deleteFilter(grdSearchFields.getSelectedRow());
+        }
     }//GEN-LAST:event_btndelFilterActionPerformed
 
     private JComboBox getComboBox() {
@@ -191,14 +236,31 @@ public class ReportForm4 extends WizardPage {
         return operator;
     }
     
-   
+    private boolean validateDates(Date begin , Date finish)
+    {
+        if (begin !=null || finish !=null){
+        if (begin.after(finish))
+            return false;
+        
+        if (finish.before(begin))
+            return false;
+        }
+        
+        return true;
+    
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddFilter;
     private javax.swing.JButton btndelFilter;
     private javax.swing.JComboBox cboWhereItems;
+    private com.toedter.calendar.JDateChooser dtpBeginDate;
+    private com.toedter.calendar.JDateChooser dtpFinishDate;
     private javax.swing.JTable grdSearchFields;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

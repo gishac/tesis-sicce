@@ -23,6 +23,7 @@ import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import java.awt.event.ActionEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -77,6 +78,8 @@ public class SicceuimanagerView extends FrameView {
         tabManager.setResourceMap(resourceMap);
         Validator.Initialize(resourceMap.getString("ApplicationName"));
         ExceptionHandler.Initialize(resourceMap.getString("ApplicationName"), resourceMap.getString("ErrorMessage"));
+        
+         
     }
 
     public SicceuimanagerView(SingleFrameApplication app) {
@@ -580,7 +583,7 @@ public class SicceuimanagerView extends FrameView {
         
         switch (option) {
             case Wizard:
-                 WizardDisplayer.showWizard(new NewWizard(resourceMap).createWizard(), new Rectangle(20, 20, 650, 500));
+                 WizardDisplayer.showWizard(new NewWizard(resourceMap).createWizard(), new Rectangle(20, 20, 700, 500));
                 break;
             case PowerMeterReport:
                 GenerateReport.GenerateStaticReport(null,option);

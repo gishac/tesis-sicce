@@ -23,9 +23,8 @@ public class ReportForm1 extends WizardPage {
     private final Map wizardData;
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";
-    public static final String KEY_BEGIN_DATE = "beginDate";
-    public static final String KEY_FINISH_DATE = "finishDate";
-   
+    public static final String KEY_ORT_VERTICAL = "ortVertical";
+    public static final String KEY_ORT_HORIZONTAL = "ortHorizontal";
 
     /** Creates new form ReportDetail */
     public ReportForm1(WizardController controller, Map wizardData) {
@@ -44,6 +43,7 @@ public class ReportForm1 extends WizardPage {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         txtReportName = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -52,12 +52,13 @@ public class ReportForm1 extends WizardPage {
         jLabel4 = new javax.swing.JLabel();
         txtDescription = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        dtpBeginDate = new com.toedter.calendar.JDateChooser();
-        jLabel6 = new javax.swing.JLabel();
-        dtpFinishDate = new com.toedter.calendar.JDateChooser();
+        rbVertical = new javax.swing.JRadioButton();
+        rbHorizontal = new javax.swing.JRadioButton();
 
+        setMaximumSize(new java.awt.Dimension(650, 500));
+        setMinimumSize(new java.awt.Dimension(650, 500));
         setName("Form"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(650, 500));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportForm1.class);
@@ -66,7 +67,7 @@ public class ReportForm1 extends WizardPage {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtReportName.setName("txtReportName"); // NOI18N
-        jPanel1.add(txtReportName, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 280, 20));
+        jPanel1.add(txtReportName, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 310, 20));
 
         jLabel1.setName("jLabel1"); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
@@ -84,43 +85,38 @@ public class ReportForm1 extends WizardPage {
 
         txtDescription.setText(resourceMap.getString("txtDescription.text")); // NOI18N
         txtDescription.setName("txtDescription"); // NOI18N
-        jPanel1.add(txtDescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 280, -1));
+        jPanel1.add(txtDescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 310, -1));
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 420, 140));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 440, 170));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Rango de Fechas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204)));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("jPanel2.border.title"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("jPanel2.border.titleColor"))); // NOI18N
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
-        jLabel7.setName("jLabel7"); // NOI18N
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, 20));
+        buttonGroup1.add(rbVertical);
+        rbVertical.setText(resourceMap.getString("rbVertical.text")); // NOI18N
+        rbVertical.setName("rbVertical"); // NOI18N
+        jPanel2.add(rbVertical, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 20, -1, -1));
 
-        dtpBeginDate.setName("dtpBeginDate"); // NOI18N
-        jPanel2.add(dtpBeginDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 100, -1));
+        buttonGroup1.add(rbHorizontal);
+        rbHorizontal.setText(resourceMap.getString("rbHorizontal.text")); // NOI18N
+        rbHorizontal.setName("rbHorizontal"); // NOI18N
+        jPanel2.add(rbHorizontal, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
 
-        jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
-        jLabel6.setName("jLabel6"); // NOI18N
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, -1, 20));
-
-        dtpFinishDate.setName("dtpFinishDate"); // NOI18N
-        jPanel2.add(dtpFinishDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, 100, -1));
-
-        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 420, 60));
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 440, 60));
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
     protected String validateContents(Component component, Object event) {
     
-        if (component == dtpBeginDate && dtpBeginDate.getDate() == null)
-            return "Seleccione el rango de fechas";
+      
         if ((component == txtReportName  || component == null || component == txtDescription) && (txtReportName.getText().trim().length() == 0)){                 
            return "Debe ingresar la información General del reporte...";
         } else {
             wizardData.put(KEY_NAME, txtReportName.getText());  
             wizardData.put(KEY_DESCRIPTION, txtDescription.getText());  
-            wizardData.put(KEY_BEGIN_DATE, dtpBeginDate.getDate());
-            wizardData.put(KEY_FINISH_DATE, dtpFinishDate.getDate());
+            wizardData.put(KEY_ORT_HORIZONTAL, rbHorizontal.isSelected());
+            wizardData.put(KEY_ORT_VERTICAL, rbVertical.isSelected());
         }
       return null;
     }
@@ -136,16 +132,15 @@ public class ReportForm1 extends WizardPage {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser dtpBeginDate;
-    private com.toedter.calendar.JDateChooser dtpFinishDate;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JRadioButton rbHorizontal;
+    private javax.swing.JRadioButton rbVertical;
     private javax.swing.JTextField txtDescription;
     private javax.swing.JTextField txtReportName;
     // End of variables declaration//GEN-END:variables
