@@ -5,7 +5,9 @@
 
 package sicce.api.businesslogic;
 
+import java.awt.Dimension;
 import java.util.List;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import sicce.api.info.interfaces.IReport;
 
@@ -15,8 +17,10 @@ import sicce.api.info.interfaces.IReport;
  */
 public class ReportTableModel extends SicceTableModel<IReport> {
 
-    public ReportTableModel(List<IReport> dataSource) {
+    private Icon imgReport;
+    public ReportTableModel(List<IReport> dataSource, Icon imgReport) {
         this.dataSource = dataSource;
+        this.imgReport = imgReport;
         columns = new String[]{"Nombre","Descripción", "Archivo"};
        
     }
@@ -31,12 +35,24 @@ public class ReportTableModel extends SicceTableModel<IReport> {
             case 1: 
                 return preport.getReportDescription(); 
             case 2:
-                return new JButton("Abrir");
+                JButton reportButton = new JButton();
+                reportButton.setIcon(imgReport);
+                reportButton.setPreferredSize(new Dimension(30,20));
+                
+                return reportButton;
             default: 
                 return null;
         }
     }
     
+      @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        if (columnIndex == 2) {
+            return JButton.class;
+        }
+        return super.getColumnClass(columnIndex);
+    }
+
     
     
 }
