@@ -4,9 +4,10 @@
  */
 package sicce.api.businesslogic;
 
+import java.awt.Dimension;
 import java.util.List;
+import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.table.TableColumn;
 import sicce.api.info.interfaces.IFilter;
 
 /**
@@ -15,11 +16,12 @@ import sicce.api.info.interfaces.IFilter;
  */
 public class ReportFilterTableModel extends SicceTableModel<IFilter> {
 
-    private TableColumn operatorColumn;
+    private Icon imgSearch;
 
-    public ReportFilterTableModel(List<IFilter> dataSource) {
+    public ReportFilterTableModel(List<IFilter> dataSource, Icon imgSearch) {
         this.dataSource = dataSource;
-        columns = new String[]{"Descripción", "Operador", "Valor", "buscar"};
+        this.imgSearch = imgSearch;
+        columns = new String[]{"Descripción", "Operador", "Valor", "  "};
 
     }
 
@@ -37,7 +39,11 @@ public class ReportFilterTableModel extends SicceTableModel<IFilter> {
             case 2:
                 return pFilter.getValues();
             case 3:
-                return new JButton("búsqueda");
+                JButton searchButton = new JButton();
+                searchButton.setIcon(imgSearch);
+                searchButton.setPreferredSize(new Dimension(30,20));
+                
+                return searchButton;
             default:
                 return null;
         }
