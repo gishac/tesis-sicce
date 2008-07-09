@@ -4,35 +4,33 @@
  */
 package sicce.api.processor.viewer.handlers;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sicce.api.processor.viewer.observers.ChartObserver;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
-import java.awt.Image;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.XYSplineRenderer;
-import org.jfree.data.time.Hour;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.RectangleInsets;
+import sicce.api.businesslogic.MeasureBizObject;
 import sicce.api.businesslogic.PowerMeterBizObject;
+import sicce.api.info.ConstantsProvider.ModbusRegister;
 import sicce.api.info.interfaces.IMeasure;
 import sicce.api.info.interfaces.IPowerMeter;
 
@@ -40,12 +38,29 @@ import sicce.api.info.interfaces.IPowerMeter;
  *
  * @author gish@c
  */
-public class ChartHandler {
+public class ChartHandler implements IViewHandler {
 
     private TimeSeriesCollection series;
     private HashMap<String, TimeSeries> seriesMap;
     private TimeSeries virtual1 = new TimeSeries("Medidor virtual 1", Millisecond.class);
     private TimeSeries virtual2 = new TimeSeries("Medidor virtual 2", Millisecond.class);
+    private List<String> nonVisiblePowerMeters;
+    private ChartPanel chartPanel;
+    private JFreeChart chart;
+    private int currentRegisterID;
+    private String currentRegisterName;
+    private String chartTitle;
+
+    /**
+     * 
+     * @return
+     */
+    private List<String> getNonVisiblePowerMeters() {
+        if (nonVisiblePowerMeters == null) {
+            nonVisiblePowerMeters = new ArrayList<String>();
+        }
+        return nonVisiblePowerMeters;
+    }
 
     /**
      * 
@@ -74,20 +89,19 @@ public class ChartHandler {
      * @return
      */
     private TimeSeriesCollection BuildSeries() {
-        TimeSeriesCollection dataset = new TimeSeriesCollection();
         PowerMeterBizObject powerMeterBizObject = new PowerMeterBizObject();
         List<IPowerMeter> powerMeters = powerMeterBizObject.GetAllPowerMeter();
         for (IPowerMeter powerMeter : powerMeters) {
             TimeSeries timeSeries = new TimeSeries(powerMeter.getDescription(), Millisecond.class);
-            timeSeries.setMaximumItemAge(300000);
             getSeries().addSeries(timeSeries);
-
             getSeriesMap().put(powerMeter.getSerial(), timeSeries);
-            dataset.addSeries(timeSeries);
-            dataset.addSeries(virtual1);
-            dataset.addSeries(virtual2);
+            getSeries().addSeries(virtual1);
+            getSeries().addSeries(virtual2);
+
+            getSeriesMap().put("v1", virtual1);
+            getSeriesMap().put("v2", virtual2);
         }
-        return dataset;
+        return getSeries();
     }
 
     /**
@@ -155,17 +169,17 @@ public class ChartHandler {
      * @return
      */
     public ChartPanel BuildChart(String chartTitle) {
+        this.chartTitle = chartTitle;
         TimeSeriesCollection dataset = BuildSeries();
         DateAxis xAxis = ConfigureXAxis();
         NumberAxis yAxis = ConfigureYAxis();
         XYPlot plot = BuildPlot(dataset, xAxis, yAxis, ConfigureChartRenderer());
-        JFreeChart chart = new JFreeChart(chartTitle, new Font("Verdana", Font.BOLD, 10), plot, true);
+        chart = new JFreeChart(chartTitle + " - " + currentRegisterName, new Font("Verdana", Font.BOLD, 10), plot, true);
         chart.setBackgroundPaint(Color.WHITE);
-        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel = new ChartPanel(chart);
         chartPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(4, 8, 4, 4),
                 BorderFactory.createLineBorder(Color.black)));
-
         chartPanel.setDisplayToolTips(true);
         return chartPanel;
     }
@@ -176,7 +190,7 @@ public class ChartHandler {
      */
     public void ProcessMeasure(IMeasure measure) {
         TimeSeries powerMeterSeries = getSeriesMap().get(measure.getPowerMeter().getSerial());
-        powerMeterSeries.add(new Millisecond(), measure.getPhaseToNeutralVoltagePhase3());
+        powerMeterSeries.add(new Millisecond(), GetMeasure(measure));
         virtual1.add(new Millisecond(), Math.random() * 1000);
         virtual2.add(new Millisecond(), Math.random() * 1000);
     }
@@ -187,5 +201,58 @@ public class ChartHandler {
      */
     public ChartObserver getChartObserver() {
         return new ChartObserver(this);
+    }
+
+    /**
+     * 
+     * @param powerMeterSerial
+     * @param state
+     */
+    public void HandlePowerMeterVisibility(String powerMeterSerial, boolean state) {
+        if (!state) {
+            getSeries().removeSeries(getSeriesMap().get(powerMeterSerial));
+        } else {
+            getSeries().addSeries(getSeriesMap().get(powerMeterSerial));
+        }
+    }
+    
+    /**
+     * 
+     * @param registerID
+     * @param registerName
+     */
+    public void HandleMeasureChanged(int registerID, String registerName){
+        currentRegisterID = registerID;
+        currentRegisterName = registerName;
+        if(chart != null){
+            for(Object timeSeries : series.getSeries()){
+                ((TimeSeries) timeSeries).clear();
+            }
+            chart.setTitle(chartTitle + " - " + currentRegisterName);
+        }        
+    }
+    
+    
+    /**
+     * 
+     * @param measure
+     * @return
+     */
+    private double GetMeasure(IMeasure measure){
+        return new MeasureBizObject().GetMeasure(measure, currentRegisterID);
+    }
+    
+    /**
+     * 
+     */
+    public void SaveChart(){
+        try {
+            if (chartPanel != null) {
+                chartPanel.doSaveAs();
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error al guardar el archivo.");
+            Logger.getLogger(ChartHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
