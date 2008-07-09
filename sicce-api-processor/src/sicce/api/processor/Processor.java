@@ -8,8 +8,13 @@ package sicce.api.processor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sicce.api.businesslogic.ClassFactory;
 import sicce.api.businesslogic.PowerMeterBizObject;
+import sicce.api.dataaccess.ParameterDB;
+import sicce.api.info.ConstantsProvider;
+import sicce.api.info.interfaces.IParameter;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IPowerMeterWatcher;
 import sicce.api.util.EncryptionProvider;
@@ -50,34 +55,28 @@ public class Processor {
             watcher.AddObserver(observer);
         }
     }
+   
     
     /**
      * Realiza el proceso de lectura de los medidores
      */
     public static void DoProcess(){
-        EncryptionProvider.RegisterHibernateEncryptor();
-        int readInterval = 15;
-        PowerMeterBizObject powerMeterHandler = new PowerMeterBizObject();
-        List<IPowerMeter> powerMeters = powerMeterHandler.GetAllPowerMeter();
-//        
-//        IPowerMeter meter = ClassFactory.getPowerMeterInstance();
-//        meter.setIpAddress("192.168.8.42");
-//        meter.setDescription("home test");
-//        meter.setSerial("01");
-//        meter.setDeviceID("01");
-//        
-//        powerMeters.add(meter);
-        
-        ArrayList<IPowerMeterWatcher> watchers = new ArrayList<IPowerMeterWatcher>();
-        for (IPowerMeter powerMeter : powerMeters) {
-            IPowerMeterWatcher watcher = new PowerMeterWatcher(powerMeter);
-            SetObservers(watcher);        
-            watchers.add(watcher);            
+        try {
+            
+            EncryptionProvider.RegisterHibernateEncryptor();
+            IParameter readInterval = ParameterDB.GetParameterByKey(ConstantsProvider.READ_INTERVAL);
+            PowerMeterBizObject powerMeterHandler = new PowerMeterBizObject();
+            List<IPowerMeter> powerMeters = powerMeterHandler.GetAllPowerMeter();
+            ArrayList<IPowerMeterWatcher> watchers = new ArrayList<IPowerMeterWatcher>();
+            for (IPowerMeter powerMeter : powerMeters) {
+                IPowerMeterWatcher watcher = new PowerMeterWatcher(powerMeter);
+                SetObservers(watcher);
+                watchers.add(watcher);
+            }
+            TimerTaskLauncher taskLauncher = new TimerTaskLauncher(watchers, Integer.parseInt(readInterval.getValue()));
+            taskLauncher.BeginTasks();
+        } catch (Exception ex) {
+            Logger.getLogger(Processor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        //watchers.get(0).Watch();
-        
-        TimerTaskLauncher taskLauncher = new TimerTaskLauncher(watchers, readInterval);
-        taskLauncher.BeginTasks();
     }    
 }
