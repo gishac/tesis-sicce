@@ -6,11 +6,11 @@
 package sicce.ui.manager.forms;
 
 import java.util.Calendar;
-import sicce.api.businesslogic.ClassFactory;
+import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.businesslogic.PowerMeterBizObject;
-import sicce.api.businesslogic.PowerMeterTableModelForAlarms;
+import sicce.api.businesslogic.model.PowerMeterTableModelForAlarms;
 import sicce.api.businesslogic.UserBizObject;
-import sicce.api.businesslogic.UserTableModelForAlarms;
+import sicce.api.businesslogic.model.UserTableModelForAlarms;
 import sicce.api.dataaccess.AlarmDB;
 import sicce.api.dataaccess.ScheduledDayDB;
 import sicce.api.info.interfaces.IAlarm;

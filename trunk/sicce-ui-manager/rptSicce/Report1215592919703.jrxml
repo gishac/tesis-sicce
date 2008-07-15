@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="DynamicReport" pageWidth="842" pageHeight="595" columnWidth="797" leftMargin="30" rightMargin="15" topMargin="30" bottomMargin="20">
+	<style name="dj_style_1" isDefault="false" mode="Transparent" forecolor="#000000" backcolor="#FFFFFF" radius="0" hAlign="Left" vAlign="Bottom" rotation="None" fontName="Verdana" fontSize="15" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded="false">
+		<box>
+			<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="dj_style_2" isDefault="false" mode="Opaque" forecolor="#FFFFFF" backcolor="#0000FF" radius="0" hAlign="Center" vAlign="Middle" rotation="None" fontName="Verdana" fontSize="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded="false">
+		<box>
+			<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="2.0" lineStyle="Solid"/>
+		</box>
+	</style>
+	<style name="dj_style_3" isDefault="false" mode="Transparent" forecolor="#000000" backcolor="#FFFFFF" radius="0" hAlign="Left" vAlign="Bottom" rotation="None" fontName="Verdana" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded="false">
+		<box>
+			<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+	</style>
+	<queryString>
+		<![CDATA[SELECT zone.id_Zone idZone,zone.description descriptionZone,power_meter.description descriptionPowerMeter,power_meter.ip_Address ipAddress,power_meter.serial serial,measure.frequency frequency,measure.instantaneous_current_phase_1 ins_current_phase_1,measure.phase_to_phase_voltage_phase_1_to_2 ptp_phase_1to2,measure.phase_to_neutral_voltage_phase_1 ptn_phase_1,measure.active_power_phase_1 active_power_phase_1 FROM measure INNER JOIN location ON measure.ID_LOCATION = location.ID_LOCATION INNER JOIN power_meter ON measure.ID_POWER_METER = power_meter.ID_POWER_METER INNER JOIN location_type ON location.ID_LOCATION_TYPE = location_type.ID_LOCATION_TYPE LEFT JOIN location_zone ON location.ID_LOCATION = location_zone.ID_LOCATION LEFT JOIN zone ON location_zone.ID_ZONE = zone.ID_ZONE   WHERE power_meter.description = 'Primer medidor de prueba'  GROUP BY idZone]]>
+	</queryString>
+	<field name="idZone" class="java.lang.Integer"/>
+	<field name="descriptionZone" class="java.lang.String"/>
+	<field name="descriptionPowerMeter" class="java.lang.String"/>
+	<field name="ipAddress" class="java.lang.String"/>
+	<field name="serial" class="java.lang.String"/>
+	<field name="frequency" class="java.lang.Double"/>
+	<field name="ins_current_phase_1" class="java.lang.Double"/>
+	<field name="ptp_phase_1to2" class="java.lang.Double"/>
+	<field name="ptn_phase_1" class="java.lang.Double"/>
+	<field name="active_power_phase_1" class="java.lang.Double"/>
+	<pageHeader>
+		<band height="30">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="dj_style_1" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="797" height="30" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new java.lang.Boolean(((Number)$V{PAGE_NUMBER}).doubleValue() == 1)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["reporte UCSG 03:40 "]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="header_Id. Zona" style="dj_style_2" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="79" height="30" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Id. Zona"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="header_Descripción/Zona" style="dj_style_2" positionType="Float" stretchType="RelativeToTallestObject" x="79" y="0" width="79" height="30" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Descripción/Zona"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="header_Descripción/Medidor" style="dj_style_2" positionType="Float" stretchType="RelativeToTallestObject" x="158" y="0" width="79" height="30" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Descripción/Medidor"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="header_Dirección IP" style="dj_style_2" positionType="Float" stretchType="RelativeToTallestObject" x="237" y="0" width="79" height="30" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Dirección IP"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="header_No. Serial" style="dj_style_2" positionType="Float" stretchType="RelativeToTallestObject" x="316" y="0" width="79" height="30" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["No. Serial"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="header_Frecuencia" style="dj_style_2" positionType="Float" stretchType="RelativeToTallestObject" x="395" y="0" width="79" height="30" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Frecuencia"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="header_Intensidad Instantánea fase 1" style="dj_style_2" positionType="Float" stretchType="RelativeToTallestObject" x="474" y="0" width="79" height="30" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Intensidad Instantánea fase 1"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="header_Tensión fase a fase/fase 1 a 2" style="dj_style_2" positionType="Float" stretchType="RelativeToTallestObject" x="553" y="0" width="79" height="30" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Tensión fase a fase/fase 1 a 2"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="header_Tensión fase a neutro, fase 1" style="dj_style_2" positionType="Float" stretchType="RelativeToTallestObject" x="632" y="0" width="79" height="30" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Tensión fase a neutro, fase 1"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="header_Potencia activa/fase 1" style="dj_style_2" positionType="Float" stretchType="RelativeToTallestObject" x="711" y="0" width="86" height="30" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Potencia activa/fase 1"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="dj_style_3" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="79" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{idZone}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="dj_style_3" positionType="Float" stretchType="RelativeToTallestObject" x="79" y="0" width="79" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descriptionZone}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="dj_style_3" positionType="Float" stretchType="RelativeToTallestObject" x="158" y="0" width="79" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descriptionPowerMeter}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="dj_style_3" positionType="Float" stretchType="RelativeToTallestObject" x="237" y="0" width="79" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ipAddress}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="dj_style_3" positionType="Float" stretchType="RelativeToTallestObject" x="316" y="0" width="79" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{serial}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="dj_style_3" positionType="Float" stretchType="RelativeToTallestObject" x="395" y="0" width="79" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{frequency}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="dj_style_3" positionType="Float" stretchType="RelativeToTallestObject" x="474" y="0" width="79" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{ins_current_phase_1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="dj_style_3" positionType="Float" stretchType="RelativeToTallestObject" x="553" y="0" width="79" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{ptp_phase_1to2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="dj_style_3" positionType="Float" stretchType="RelativeToTallestObject" x="632" y="0" width="79" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{ptn_phase_1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="dj_style_3" positionType="Float" stretchType="RelativeToTallestObject" x="711" y="0" width="86" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{active_power_phase_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<textField evaluationTime="Report">
+				<reportElement positionType="Float" x="80" y="0" width="20" height="15"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+" " + $V{PAGE_NUMBER}+" " + ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{autotext.page}+" " + $V{PAGE_NUMBER}+" " + $R{autotext.of}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement positionType="Float" x="80" y="0" width="20" height="15"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+" " + $V{PAGE_NUMBER}+" " + ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="15" width="797" height="15"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{autotext.created_on}+" " + "Jul 9, 2008 3:41:59 AM" +" " + ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

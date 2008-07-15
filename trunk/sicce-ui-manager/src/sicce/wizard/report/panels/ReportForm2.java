@@ -14,8 +14,8 @@ import org.netbeans.spi.wizard.WizardPage;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.api.info.Field;
 import sicce.ui.manager.handlers.FieldHandler;
-import sicce.api.businesslogic.FieldsCellRenderer;
-import sicce.api.businesslogic.FieldsComparator;
+import sicce.api.businesslogic.renderer.FieldsCellRenderer;
+import sicce.api.businesslogic.comparator.FieldsComparator;
 
 /**
  *

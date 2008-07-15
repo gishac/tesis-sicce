@@ -38,7 +38,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import org.netbeans.api.wizard.WizardDisplayer;
-import sicce.api.businesslogic.ClassFactory;
+import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.dataaccess.GroupDB;
 import sicce.api.info.ConstantsProvider.OptionsProvider;
 import sicce.api.info.ConstantsProvider.ToolBarAction;

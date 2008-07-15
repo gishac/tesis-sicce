@@ -4,6 +4,8 @@
  */
 package sicce.ui.manager.listeners;
 
+import sicce.api.businesslogic.model.SicceTableModel;
+import sicce.api.businesslogic.model.SearchFilterTableModel;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -8,7 +8,7 @@ package sicce.ui.manager.forms;
 
 import java.util.List;
 import sicce.api.businesslogic.ParameterBizObject;
-import sicce.api.businesslogic.ParameterTableModel;
+import sicce.api.businesslogic.model.ParameterTableModel;
 import sicce.api.info.ToolBarStateInfo;
 import sicce.api.info.interfaces.IParameter;
 import sicce.ui.manager.controls.JTabExtended;

@@ -18,7 +18,7 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.Calendar;
 import net.sf.jasperreports.view.JasperViewer;
-import sicce.api.businesslogic.ClassFactory;
+import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.dataaccess.DataAccessManager;
 import sicce.api.dataaccess.OptionDB;
 import sicce.api.dataaccess.ReportDB;

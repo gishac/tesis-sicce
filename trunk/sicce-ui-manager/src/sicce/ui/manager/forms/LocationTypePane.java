@@ -8,15 +8,15 @@ package sicce.ui.manager.forms;
 
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
-import sicce.api.businesslogic.ClassFactory;
+import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.dataaccess.LocationTypeDB;
 import sicce.api.info.interfaces.ILocationType;
 import sicce.api.util.ComponentUtil;
 import sicce.api.util.JTextFieldLimit;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.api.businesslogic.LocationTypeBizObject;
-import sicce.api.businesslogic.LocationTypeTableModel;
-import sicce.api.businesslogic.SicceTableModel;
+import sicce.api.businesslogic.model.LocationTypeTableModel;
+import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.Validator;
 import sicce.ui.manager.controls.SearchDialog;

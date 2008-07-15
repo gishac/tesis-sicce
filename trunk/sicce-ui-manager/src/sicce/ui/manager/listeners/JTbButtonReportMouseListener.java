@@ -4,6 +4,7 @@
  */
 package sicce.ui.manager.listeners;
 
+import sicce.api.businesslogic.model.SicceTableModel;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;

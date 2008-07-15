@@ -5,6 +5,7 @@
 
 package sicce.ui.manager.reports;
 
+import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.info.Field;
 import sicce.api.businesslogic.*;
 import java.util.List;

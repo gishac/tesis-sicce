@@ -13,7 +13,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import sicce.api.businesslogic.SicceTableModel;
+import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.interfaces.ISimpleQueryResult;
 
