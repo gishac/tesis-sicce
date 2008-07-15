@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sicce.api.businesslogic;
+package sicce.api.businesslogic.renderer;
 
 import java.awt.Component;
 import java.lang.reflect.Field;

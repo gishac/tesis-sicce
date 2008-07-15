@@ -3,7 +3,7 @@
  *
  */
 
-package sicce.api.businesslogic;
+package sicce.api.businesslogic.renderer;
 
 
 import sicce.api.info.Field;

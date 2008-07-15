@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package sicce.api.businesslogic;
+package sicce.api.businesslogic.comparator;
 
 import java.util.Comparator;
 import sicce.api.info.ComboBoxItem;
