@@ -7,13 +7,13 @@ package sicce.ui.manager.forms;
 
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
-import sicce.api.businesslogic.ClassFactory;
+import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.businesslogic.RoleBizObject;
-import sicce.api.businesslogic.SicceComboBoxModel;
-import sicce.api.businesslogic.SicceComboBoxRenderer;
-import sicce.api.businesslogic.SicceTableModel;
+import sicce.api.businesslogic.model.SicceComboBoxModel;
+import sicce.api.businesslogic.renderer.SicceComboBoxRenderer;
+import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.businesslogic.UserBizObject;
-import sicce.api.businesslogic.UserTableModel;
+import sicce.api.businesslogic.model.UserTableModel;
 import sicce.api.dataaccess.UserDB;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;

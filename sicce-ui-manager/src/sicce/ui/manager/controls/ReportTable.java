@@ -8,7 +8,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import org.jdesktop.application.ResourceMap;
-import sicce.api.businesslogic.ReportCellRenderer;
+import sicce.api.businesslogic.renderer.ReportCellRenderer;
 
 /**
  *

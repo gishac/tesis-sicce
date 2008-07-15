@@ -9,7 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.List;
 import javax.swing.ListSelectionModel;
-import sicce.api.businesslogic.SicceTableModel;
+import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.ComponentUtil;
 

@@ -5,24 +5,18 @@
  */
 package sicce.ui.manager.forms;
 
-import java.awt.Rectangle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import org.netbeans.api.wizard.WizardDisplayer;
-import sicce.api.businesslogic.ClassFactory;
+import sicce.api.businesslogic.factory.ClassFactory;
 
 import sicce.api.businesslogic.LocationBizObject;
-import sicce.api.businesslogic.LocationTableModel;
+import sicce.api.businesslogic.model.LocationTableModel;
 import sicce.api.businesslogic.LocationTypeBizObject;
 import sicce.api.businesslogic.PowerMeterBizObject;
-import sicce.api.businesslogic.PowerMeterTableModel;
-import sicce.api.businesslogic.SicceComboBoxModel;
-import sicce.api.businesslogic.SicceComboBoxRenderer;
-import sicce.api.businesslogic.SicceTableModel;
+import sicce.api.businesslogic.model.PowerMeterTableModel;
+import sicce.api.businesslogic.model.SicceComboBoxModel;
+import sicce.api.businesslogic.renderer.SicceComboBoxRenderer;
+import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.dataaccess.LocationDB;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
@@ -35,7 +29,6 @@ import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.SearchDialog;
 import sicce.ui.manager.handlers.ExceptionHandler;
-import sicce.wizard.report.NewWizard;
 
 /**
  *
