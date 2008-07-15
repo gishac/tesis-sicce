@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package sicce.api.businesslogic;
+package sicce.api.businesslogic.model;
 
+import sicce.api.businesslogic.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;

@@ -4,6 +4,7 @@
  */
 package sicce.api.businesslogic;
 
+import sicce.api.businesslogic.factory.ClassFactory;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;

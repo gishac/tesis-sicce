@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package sicce.api.businesslogic;
+package sicce.api.businesslogic.model;
 import java.util.List;
 import sicce.api.info.interfaces.IParameter;
 

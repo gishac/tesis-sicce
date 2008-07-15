@@ -2,7 +2,7 @@
  * ReportCellRenderer.java
  *
  */
-package sicce.api.businesslogic;
+package sicce.api.businesslogic.renderer;
 
 
 import java.awt.Component;

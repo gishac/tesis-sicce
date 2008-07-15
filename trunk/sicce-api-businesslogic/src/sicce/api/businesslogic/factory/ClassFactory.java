@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sicce.api.businesslogic;
+package sicce.api.businesslogic.factory;
 
 import sicce.api.info.Alarm;
 import sicce.api.info.Filter;

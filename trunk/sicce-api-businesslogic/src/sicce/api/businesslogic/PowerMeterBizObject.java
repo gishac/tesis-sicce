@@ -4,6 +4,7 @@
  */
 package sicce.api.businesslogic;
 
+import sicce.api.businesslogic.factory.ClassFactory;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.HashMap;

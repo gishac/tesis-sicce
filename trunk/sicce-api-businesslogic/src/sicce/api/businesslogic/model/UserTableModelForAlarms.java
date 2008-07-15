@@ -2,53 +2,56 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+package sicce.api.businesslogic.model;
 
-package sicce.api.businesslogic;
-
+import sicce.api.businesslogic.*;
+import sicce.api.businesslogic.model.SicceTableModel;
+import sicce.api.businesslogic.factory.ClassFactory;
 import java.util.List;
 import java.util.Set;
 import sicce.api.info.interfaces.IAlarm;
-import sicce.api.info.interfaces.IPowerMeter;
+import sicce.api.info.interfaces.IUserSicce;
 
 /**
  *
  * @author gish@c
  */
-public class PowerMeterTableModelForAlarms extends SicceTableModel<IPowerMeter> {
+public class UserTableModelForAlarms extends SicceTableModel<IUserSicce> {
 
     private AlarmBizObject alarmBizObject;
     private IAlarm alarm;
-    
-    public PowerMeterTableModelForAlarms(List<IPowerMeter> dataSource, IAlarm alarm) {
+
+    public UserTableModelForAlarms(List<IUserSicce> dataSource, IAlarm alarm) {
         if (alarm == null) {
             this.alarm = ClassFactory.getAlarmInstance();
         } else {
             this.alarm = alarm;
         }
         this.dataSource = dataSource;
-        columns = new String[]{"Descripción","Estado"};
+        columns = new String[]{"Nombre", "Estado"};
         alarmBizObject = new AlarmBizObject();
     }
-    
+
     @Override
     public int getRowCount() {
         return getDataSource().size();
     }
-    
-     @Override
+
+    @Override
     public void setDataSource(List dataSource) {
-        if(dataSource == null)
+        if (dataSource == null) {
             this.alarm = ClassFactory.getAlarmInstance();
+        }
     }
-     
-     @Override
+
+    @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         if (columnIndex == 1) {
             return !isReadOnly();
         }
         return false;
     }
-    
+
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
@@ -67,29 +70,29 @@ public class PowerMeterTableModelForAlarms extends SicceTableModel<IPowerMeter> 
             if(getDataSource().size() <= rowIndex)
                 return;
             boolean checked = Boolean.parseBoolean(value.toString());
-            IPowerMeter option = getDataSource().get(rowIndex);
+            IUserSicce user = getDataSource().get(rowIndex);
             if (checked) {                
-                AddPowerMeterToAlarm(option, alarm);
+                AddUserToAlarm(user, alarm);
             }
             if(!checked){
-                RemovePowerMeter(option, alarm);
+                RemoveUserFromAlarm(user, alarm);
             }
         }
     }
     
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        IPowerMeter powerMeter = getDataSource().get(rowIndex);
+        IUserSicce user = getDataSource().get(rowIndex);
         boolean state = false;
-        for (IPowerMeter activePowerMeter : alarm.getAlarmPowerMeters()) {
-            if (powerMeter.getSerial().equals(activePowerMeter.getSerial())) {
+        for (IUserSicce activeUser : alarm.getAlarmUsers()) {
+            if (user.getID() == activeUser.getID()) {
                 state = true;
                 break;
             }
         }
         switch (columnIndex) {
             case 0:
-                return powerMeter.getDescription();
+                return user.getName() + " " + user.getLastname();
             case 1:
                 return state;
             default:
@@ -97,39 +100,38 @@ public class PowerMeterTableModelForAlarms extends SicceTableModel<IPowerMeter> 
         }
     }
     
+
     /**
-     * Agrega un medidor a ser monitoreado por la alarma
-     * @param powerMeter
+     * Agrega un usuario a ser notificado por la alarma
+     * @param user
      * @param alarm
      */
-    private void AddPowerMeterToAlarm(IPowerMeter powerMeter, IAlarm alarm) {
-        if (!alarmBizObject.PowerMeterExists(powerMeter.getSerial(), alarm)) {
-            alarm.addAlarmPowerMeter(powerMeter);
+    private void AddUserToAlarm(IUserSicce user, IAlarm alarm) {
+        if (!alarmBizObject.UserExists(user.getID(), alarm)) {
+            alarm.addAlarmUser(user);
         }
     }
-    
+
     /**
-     * Elimina un medidor del monitoreo de la alarma
-     * @param powerMeter
+     * Remueve un usuario del monitoreo
+     * @param user
      * @param alarm
      */
-    private void RemovePowerMeter(IPowerMeter powerMeter, IAlarm alarm){
-        for(IPowerMeter powerMeterInAlarm : alarm.getAlarmPowerMeters())
-        {
-            if(powerMeterInAlarm.getSerial().equals(powerMeter.getSerial())){
-                powerMeter = powerMeterInAlarm;
+    private void RemoveUserFromAlarm(IUserSicce user, IAlarm alarm) {
+        for (IUserSicce userInAlarm : alarm.getAlarmUsers()) {
+            if (userInAlarm.getID() == user.getID()) {
+                user = userInAlarm;
                 break;
-            } 
+            }
         }
-        alarm.removeAlarmPowerMeter(powerMeter);
+        alarm.removeAlarmUser(user);
     }
     
-    /**
-     * Retorna la coleccion de medidores asignados
+     /**
+     * Retorna la coleccion de usuarios asignados
      * @return
      */
-    public Set<IPowerMeter> getPowerMeters() {
-        return this.alarm.getAlarmPowerMeters();
+    public Set<IUserSicce> getPowerMeters() {
+        return this.alarm.getAlarmUsers();
     }
-    
 }
