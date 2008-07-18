@@ -276,32 +276,14 @@ public class ModbusBizObject {
      * @throws java.io.IOException
      */
     private String GetResponse(IModbusRequest request, int charsToRead, IPowerMeter powerMeter) throws IOException {
-        String response = "";
-        if(powerMeter.getSocket() == null)
-        {
-            //Socket socket = new Socket(request.getIpAddress(), Integer.parseInt(ModbusBizObject.getRequestFields().get(ConstantsProvider.PORT).getValue()));
-            //powerMeter.setSocket(socket);
-            //outStream = new BufferedOutputStream(socket.getOutputStream());
-            //inStream = new BufferedInputStream(socket.getInputStream());
-        }
-        else{
-            //powerMeter.getSocket().shutdownInput();
-        }
-        
+       
         Socket socket = new Socket(request.getIpAddress(), Integer.parseInt(ModbusBizObject.getRequestFields().get(ConstantsProvider.PORT).getValue()));
         socket.setReuseAddress(true);
-        
-        //WriteRequest(powerMeter.getSocket().getOutputStream(), request);
-        //response = ReadResult(new BufferedInputStream(powerMeter.getSocket().getInputStream()), charsToRead);
-        //socket.close();
-        
-        WriteRequest( socket.getOutputStream(), request);
-        response = ReadResult(socket.getInputStream(), charsToRead);
-        
+        WriteRequest(socket.getOutputStream(), request);
+        String response = ReadResult(socket.getInputStream(), charsToRead);
         socket.shutdownOutput();
         socket.shutdownInput();
         socket.close();
-        
         return response;
     }
 

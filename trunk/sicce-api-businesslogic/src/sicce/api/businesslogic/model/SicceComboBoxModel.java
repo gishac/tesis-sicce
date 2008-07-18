@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
+import sicce.api.businesslogic.renderer.SicceComboBoxRenderer;
 /**
  *
  * @author gish@c
