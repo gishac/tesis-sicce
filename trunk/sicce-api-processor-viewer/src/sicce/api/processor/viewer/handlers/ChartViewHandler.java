@@ -38,7 +38,7 @@ import sicce.api.info.interfaces.IPowerMeter;
  *
  * @author gish@c
  */
-public class ChartHandler implements IViewHandler {
+public class ChartViewHandler {
 
     private TimeSeriesCollection series;
     private HashMap<String, TimeSeries> seriesMap;
@@ -209,7 +209,7 @@ public class ChartHandler implements IViewHandler {
      * @param state
      */
     public void HandlePowerMeterVisibility(String powerMeterSerial, boolean state) {
-        if (!state) {
+        if (!state && getSeriesMap().containsKey(powerMeterSerial)) {
             getSeries().removeSeries(getSeriesMap().get(powerMeterSerial));
         } else {
             getSeries().addSeries(getSeriesMap().get(powerMeterSerial));
@@ -252,7 +252,7 @@ public class ChartHandler implements IViewHandler {
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error al guardar el archivo.");
-            Logger.getLogger(ChartHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChartViewHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

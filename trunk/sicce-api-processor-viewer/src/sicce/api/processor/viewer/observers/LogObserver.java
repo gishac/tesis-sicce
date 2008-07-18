@@ -8,7 +8,7 @@ package sicce.api.processor.viewer.observers;
 import java.util.Observable;
 import java.util.Observer;
 import sicce.api.info.interfaces.IMeasure;
-import sicce.api.processor.viewer.handlers.LogHandler;
+import sicce.api.processor.viewer.handlers.LogViewHandler;
 
 /**
  *
@@ -16,13 +16,13 @@ import sicce.api.processor.viewer.handlers.LogHandler;
  */
 public class LogObserver implements Observer {
 
-    private LogHandler logHandler;
+    private LogViewHandler logHandler;
     
     /**
      * 
      * @param logHandler
      */
-    public LogObserver(LogHandler logHandler){
+    public LogObserver(LogViewHandler logHandler){
         this.logHandler = logHandler;
     }
     

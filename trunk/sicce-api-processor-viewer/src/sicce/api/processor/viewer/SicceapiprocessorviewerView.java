@@ -4,33 +4,16 @@
 package sicce.api.processor.viewer;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.border.TitledBorder;
-import javax.swing.plaf.BorderUIResource.TitledBorderUIResource;
-import sicce.api.businesslogic.ClassFactory;
-import sicce.api.businesslogic.PowerMeterBizObject;
-import sicce.api.info.ComboBoxItem;
-import sicce.api.info.ConstantsProvider.ModbusRegister;
-import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.processor.Processor;
 import sicce.api.processor.viewer.controls.ChartPane;
 import sicce.api.processor.viewer.controls.LogPane;
-import sicce.api.processor.viewer.handlers.MeasureVisibilityHandler;
+import sicce.api.processor.viewer.controls.MeasuresPane;
 
 /**
  * The application's main frame.
@@ -43,11 +26,7 @@ public class SicceapiprocessorviewerView extends FrameView {
         initComponents();        
         OrganizeUIElements();
         BuildPanes();
-        BuildAvailablePowerMeters();
         RunProcessor();
-        measureVisibilityHandler = MeasureVisibilityHandler.getInstance();
-        measureVisibilityHandler.FillMeasures(cmbMeasure);
-        
     }
 
     @Action
@@ -69,111 +48,23 @@ public class SicceapiprocessorviewerView extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        toolBarManager = new javax.swing.JToolBar();
-        btnSaveChart = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JToolBar.Separator();
-        lblCurrentMeasure = new javax.swing.JLabel();
-        cmbMeasure = new javax.swing.JComboBox();
 
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.setLayout(new java.awt.BorderLayout());
 
-        toolBarManager.setFloatable(false);
-        toolBarManager.setRollover(true);
-        toolBarManager.setName("toolBarManager"); // NOI18N
-        toolBarManager.setPreferredSize(new java.awt.Dimension(101, 25));
-
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.api.processor.viewer.SicceapiprocessorviewerApp.class).getContext().getResourceMap(SicceapiprocessorviewerView.class);
-        btnSaveChart.setIcon(resourceMap.getIcon("btnSaveChart.icon")); // NOI18N
-        btnSaveChart.setToolTipText(resourceMap.getString("btnSaveChart.toolTipText")); // NOI18N
-        btnSaveChart.setFocusable(false);
-        btnSaveChart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSaveChart.setName("btnSaveChart"); // NOI18N
-        btnSaveChart.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSaveChart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveChartActionPerformed(evt);
-            }
-        });
-        toolBarManager.add(btnSaveChart);
-
-        jSeparator1.setName("jSeparator1"); // NOI18N
-        toolBarManager.add(jSeparator1);
-
-        lblCurrentMeasure.setText(resourceMap.getString("lblCurrentMeasure.text")); // NOI18N
-        lblCurrentMeasure.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        lblCurrentMeasure.setName("lblCurrentMeasure"); // NOI18N
-        toolBarManager.add(lblCurrentMeasure);
-
-        cmbMeasure.setLightWeightPopupEnabled(false);
-        cmbMeasure.setMaximumSize(new java.awt.Dimension(200, 25));
-        cmbMeasure.setName("cmbMeasure"); // NOI18N
-        cmbMeasure.setPreferredSize(new java.awt.Dimension(28, 15));
-        cmbMeasure.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbMeasureActionPerformed(evt);
-            }
-        });
-        toolBarManager.add(cmbMeasure);
-
-        mainPanel.add(toolBarManager, java.awt.BorderLayout.NORTH);
-
         setComponent(mainPanel);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSaveChartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChartActionPerformed
-        
-        if(chartPane != null)
-            chartPane.SaveChart();
-        
-    }//GEN-LAST:event_btnSaveChartActionPerformed
-
-    private void cmbMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMeasureActionPerformed
-        ComboBoxItem<ModbusRegister> selectedItem = (ComboBoxItem<ModbusRegister>)cmbMeasure.getSelectedItem();
-        lblCurrentMeasure.setText(selectedItem.getId());
-        ActionEvent event = new ActionEvent(measureVisibilityHandler,selectedItem.getValue().ordinal(),selectedItem.getId());
-        for(ActionListener listener : getListeners()){
-            listener.actionPerformed(event);
-        }
-    }//GEN-LAST:event_cmbMeasureActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSaveChart;
-    private javax.swing.JComboBox cmbMeasure;
-    private javax.swing.JToolBar.Separator jSeparator1;
-    private javax.swing.JLabel lblCurrentMeasure;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JToolBar toolBarManager;
     // End of variables declaration//GEN-END:variables
     private JDialog aboutBox;
     private JTabbedPane tabManager;
-    private JPanel powerMetersPane;
-    ChartPane chartPane;
-    LogPane logPane;
-    private MeasureVisibilityHandler measureVisibilityHandler;
-    private List<ActionListener> listeners;
+    private ChartPane chartPane;
+    private LogPane logPane;
+    private MeasuresPane measuresPane;
 
-    /**
-     * 
-     * @return
-     */
-    private List<ActionListener> getListeners() {
-        if (listeners == null) {
-            listeners = new ArrayList<ActionListener>();
-        }
-        return listeners;
-    }
-
-    public JPanel getPowerMetersPane() {
-        if (powerMetersPane == null) {
-            powerMetersPane = new JPanel();
-            powerMetersPane.setPreferredSize(new Dimension(200, Toolkit.getDefaultToolkit().getScreenSize().height));
-            powerMetersPane.setBorder(new TitledBorder(getResourceMap().getString("PowerMeterPaneTitle")));
-            powerMetersPane.setLayout(new BoxLayout(powerMetersPane, BoxLayout.PAGE_AXIS));
-        }
-        return powerMetersPane;
-    }
-
+  
     /**
      * gish@c
      * Retorna la instancia del control que administra los tabs
@@ -189,71 +80,21 @@ public class SicceapiprocessorviewerView extends FrameView {
      * 
      */
     private void OrganizeUIElements() {
-        this.getFrame().getContentPane().add(toolBarManager, BorderLayout.NORTH);
         this.getFrame().getContentPane().add(getTabManager(), BorderLayout.CENTER);
-        this.getFrame().getContentPane().add(getPowerMetersPane(), BorderLayout.WEST);
-        
-        
     }
 
     /**
      * 
      */
     private void BuildPanes() {
-        chartPane = new ChartPane(getResourceMap().getString("ChartTitle"));
-        logPane = new LogPane();
+        chartPane = new ChartPane(getResourceMap().getString("ChartTitle"), getResourceMap());
+        logPane = new LogPane(getResourceMap());
+        measuresPane = new MeasuresPane();
         getTabManager().addTab("Gráficos del Consumo Eléctrico", chartPane);
         getTabManager().addTab("Log de Lecturas del Consumo Eléctrico", logPane);
-        getListeners().add(chartPane);
-        getListeners().add(logPane);
+        getTabManager().addTab("Detalles de Registor Por Medidor", measuresPane);
     }
 
-    /**
-     * 
-     */
-    private void BuildAvailablePowerMeters() {
-        PowerMeterBizObject powerMeterBizObject = new PowerMeterBizObject();
-        List<IPowerMeter> powerMeters = powerMeterBizObject.GetAllPowerMeter();
-        
-        //getPowerMetersPane().setLayout(new GridLayout(powerMeters.size(),1));
-        
-        IPowerMeter virtual1 = ClassFactory.getPowerMeterInstance();
-        virtual1.setSerial("v1");
-        virtual1.setDescription("Medidor virtual 1");
-        
-        powerMeters.add(virtual1);
-        
-        IPowerMeter virtual2 = ClassFactory.getPowerMeterInstance();
-        virtual2.setSerial("v2");
-        virtual2.setDescription("Medidor virtual 2");
-        
-        powerMeters.add(virtual2);
-        
-        for (IPowerMeter powerMeter : powerMeters) {
-            JCheckBox checkbox = new JCheckBox(powerMeter.getDescription());
-            checkbox.setName(powerMeter.getSerial());
-            checkbox.setSelected(true);
-            getPowerMetersPane().add(checkbox);
-            checkbox.addActionListener(new ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    JCheckBox sender = (JCheckBox) evt.getSource();
-                    PowerMeterStateChanged(sender.getName(), sender.isSelected());
-                }
-            });
-        }
-    }
-
-    /**
-     * 
-     * @param powerMeterSerial
-     * @param state
-     */
-    private void PowerMeterStateChanged(String powerMeterSerial, boolean state) {
-        ActionEvent event = new ActionEvent(this, (state) ? 1 : 0, powerMeterSerial);
-        for(ActionListener listener : getListeners()){
-            listener.actionPerformed(event);
-        }
-    }
 
     /**
      * 

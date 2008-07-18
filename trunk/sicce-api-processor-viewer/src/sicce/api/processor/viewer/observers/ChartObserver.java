@@ -16,9 +16,9 @@ import sicce.api.info.interfaces.IMeasure;
  */
 public class ChartObserver implements Observer {
 
-    private ChartHandler chartHandler;
+    private ChartViewHandler chartHandler;
     
-    public ChartObserver(ChartHandler chartHandler){
+    public ChartObserver(ChartViewHandler chartHandler){
         this.chartHandler = chartHandler;
     }
 
