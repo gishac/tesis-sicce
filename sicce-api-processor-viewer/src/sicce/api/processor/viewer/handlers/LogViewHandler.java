@@ -8,7 +8,7 @@ package sicce.api.processor.viewer.handlers;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
+import sicce.api.businesslogic.MeasureBizObject;
 import sicce.api.info.interfaces.IMeasure;
 import sicce.api.processor.viewer.observers.LogObserver;
 
@@ -16,10 +16,12 @@ import sicce.api.processor.viewer.observers.LogObserver;
  *
  * @author gish@c
  */
-public class LogHandler implements IViewHandler {
+public class LogViewHandler {
 
     private DefaultListModel logListModel;
     private List<String> nonAllowedPowerMeters;
+    private int currentRegisterID;
+    private String currentRegisterName;
     
     /**
      * 
@@ -36,7 +38,7 @@ public class LogHandler implements IViewHandler {
      * 
      * @param logListModel
      */
-    public LogHandler(DefaultListModel logListModel){
+    public LogViewHandler(DefaultListModel logListModel){
         this.logListModel = logListModel;
     }
     
@@ -48,8 +50,17 @@ public class LogHandler implements IViewHandler {
         if(getNonAllowedPowerMeters().contains(measure.getPowerMeter().getSerial()))
             return;
         String log = "Lectura del medidor " + measure.getPowerMeter().getDescription() + " realizada el " + 
-                measure.getDateMeasure().toString() + ", con un valor de " + measure.getPhaseToNeutralVoltagePhase3();
+                measure.getDateMeasure().toString() + ". " + currentRegisterName + " - Valor: " + GetMeasure(measure);
         this.logListModel.addElement(log);
+    }
+    
+    /**
+     * 
+     * @param measure
+     * @return
+     */
+    private double GetMeasure(IMeasure measure){
+        return new MeasureBizObject().GetMeasure(measure, currentRegisterID);
     }
     
     /**
@@ -72,6 +83,16 @@ public class LogHandler implements IViewHandler {
         else{
             getNonAllowedPowerMeters().remove(powerMeterSerial);
         }
+    }
+    
+    /**
+     * 
+     * @param registerID
+     * @param registerName
+     */
+    public void HandleMeasureChanged(int registerID, String registerName){
+        this.currentRegisterID = registerID;
+        this.currentRegisterName = registerName;
     }
     
     

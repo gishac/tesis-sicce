@@ -5,19 +5,15 @@
 
 package sicce.api.processor.viewer.handlers;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import javax.swing.JComboBox;
-import sicce.api.businesslogic.ComboBoxItemComparator;
-import sicce.api.businesslogic.SicceComboBoxModel;
-import sicce.api.businesslogic.SicceComboBoxRenderer;
+import sicce.api.businesslogic.comparator.ComboBoxItemComparator;
+import sicce.api.businesslogic.model.SicceComboBoxModel;
+import sicce.api.businesslogic.renderer.SicceComboBoxRenderer;
 import sicce.api.info.ComboBoxItem;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 import sicce.api.info.ConstantsProvider.ModbusRegister;
