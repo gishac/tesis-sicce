@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sicce.api.businesslogic.ClassFactory;
+import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.dataaccess.ParameterDB;
 import sicce.api.info.ConstantsProvider;
@@ -66,7 +66,7 @@ public class Processor {
             EncryptionProvider.RegisterHibernateEncryptor();
             IParameter readInterval = ParameterDB.GetParameterByKey(ConstantsProvider.READ_INTERVAL);
             PowerMeterBizObject powerMeterHandler = new PowerMeterBizObject();
-            List<IPowerMeter> powerMeters = powerMeterHandler.GetAllPowerMeter();
+            List<IPowerMeter> powerMeters = powerMeterHandler.GetActivePowerMeter();
             ArrayList<IPowerMeterWatcher> watchers = new ArrayList<IPowerMeterWatcher>();
             for (IPowerMeter powerMeter : powerMeters) {
                 IPowerMeterWatcher watcher = new PowerMeterWatcher(powerMeter);
