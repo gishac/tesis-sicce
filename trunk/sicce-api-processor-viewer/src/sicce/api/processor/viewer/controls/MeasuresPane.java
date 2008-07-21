@@ -11,6 +11,7 @@ import sicce.api.businesslogic.model.SicceComboBoxModel;
 import sicce.api.businesslogic.renderer.SicceComboBoxRenderer;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 import sicce.api.info.interfaces.IPowerMeter;
+import sicce.api.processor.Processor;
 import sicce.api.processor.viewer.handlers.MeasureViewHandler;
 
 /**
@@ -20,6 +21,10 @@ import sicce.api.processor.viewer.handlers.MeasureViewHandler;
 public class MeasuresPane extends javax.swing.JPanel {
     
     private MeasureViewHandler measureViewHandler;
+
+    public MeasureViewHandler getMeasureViewHandler() {
+        return measureViewHandler;
+    }
     private SicceComboBoxModel<IPowerMeter> powerMetersComboModel;
     private SicceComboBoxRenderer powerMetersComboRenderer;
     private PowerMeterBizObject powerMeterBizObject;
@@ -27,12 +32,16 @@ public class MeasuresPane extends javax.swing.JPanel {
     /** Creates new form MeasuresPane */
     public MeasuresPane() {
         initComponents();
-        measureViewHandler = new MeasureViewHandler(measuresTable);
+        measureViewHandler = new MeasureViewHandler(measuresTable,txtPhaseToPhaseVoltage1To2,txtPhaseToPhaseVoltage2To3,txtPhaseToPhaseVoltage3To1,
+                txtTotalActivePower,txtTotalApparentPower,txtTotalReactivePower);
         powerMeterBizObject = new PowerMeterBizObject();
-        powerMetersComboModel = new SicceComboBoxModel<IPowerMeter>(powerMeterBizObject.GetAllPowerMeter());
+        powerMetersComboModel = new SicceComboBoxModel<IPowerMeter>(powerMeterBizObject.GetActivePowerMeter());
         powerMetersComboRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method, "getSerial", DisplayMemberRenderType.Method);
         cmbCurrentPowerMeter.setModel(powerMetersComboModel);
         cmbCurrentPowerMeter.setRenderer(powerMetersComboRenderer);
+        AttachMeasureToDataProcessor();
+        if(cmbCurrentPowerMeter.getItemCount() > 0)
+            cmbCurrentPowerMeter.setSelectedIndex(0);
     }
     
     /** This method is called from within the constructor to
@@ -51,16 +60,16 @@ public class MeasuresPane extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtPhaseToPhaseVoltage1To2 = new javax.swing.JTextField();
+        txtPhaseToPhaseVoltage2To3 = new javax.swing.JTextField();
+        txtPhaseToPhaseVoltage3To1 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtTotalActivePower = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtTotalReactivePower = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtTotalApparentPower = new javax.swing.JTextField();
 
         setName("Form"); // NOI18N
 
@@ -106,23 +115,29 @@ public class MeasuresPane extends javax.swing.JPanel {
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
 
-        jTextField1.setEditable(false);
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
-        jTextField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jTextField1.setName("jTextField1"); // NOI18N
+        txtPhaseToPhaseVoltage1To2.setBackground(resourceMap.getColor("txtPhaseToPhaseVoltage1To2.background")); // NOI18N
+        txtPhaseToPhaseVoltage1To2.setEditable(false);
+        txtPhaseToPhaseVoltage1To2.setFont(resourceMap.getFont("txtPhaseToPhaseVoltage1To2.font")); // NOI18N
+        txtPhaseToPhaseVoltage1To2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtPhaseToPhaseVoltage1To2.setText(resourceMap.getString("txtPhaseToPhaseVoltage1To2.text")); // NOI18N
+        txtPhaseToPhaseVoltage1To2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txtPhaseToPhaseVoltage1To2.setName("txtPhaseToPhaseVoltage1To2"); // NOI18N
 
-        jTextField2.setEditable(false);
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField2.setText(resourceMap.getString("jTextField2.text")); // NOI18N
-        jTextField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jTextField2.setName("jTextField2"); // NOI18N
+        txtPhaseToPhaseVoltage2To3.setBackground(resourceMap.getColor("txtPhaseToPhaseVoltage2To3.background")); // NOI18N
+        txtPhaseToPhaseVoltage2To3.setEditable(false);
+        txtPhaseToPhaseVoltage2To3.setFont(resourceMap.getFont("txtPhaseToPhaseVoltage2To3.font")); // NOI18N
+        txtPhaseToPhaseVoltage2To3.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtPhaseToPhaseVoltage2To3.setText(resourceMap.getString("txtPhaseToPhaseVoltage2To3.text")); // NOI18N
+        txtPhaseToPhaseVoltage2To3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txtPhaseToPhaseVoltage2To3.setName("txtPhaseToPhaseVoltage2To3"); // NOI18N
 
-        jTextField3.setEditable(false);
-        jTextField3.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField3.setText(resourceMap.getString("jTextField3.text")); // NOI18N
-        jTextField3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jTextField3.setName("jTextField3"); // NOI18N
+        txtPhaseToPhaseVoltage3To1.setBackground(resourceMap.getColor("txtPhaseToPhaseVoltage3To1.background")); // NOI18N
+        txtPhaseToPhaseVoltage3To1.setEditable(false);
+        txtPhaseToPhaseVoltage3To1.setFont(resourceMap.getFont("txtPhaseToPhaseVoltage3To1.font")); // NOI18N
+        txtPhaseToPhaseVoltage3To1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtPhaseToPhaseVoltage3To1.setText(resourceMap.getString("txtPhaseToPhaseVoltage3To1.text")); // NOI18N
+        txtPhaseToPhaseVoltage3To1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txtPhaseToPhaseVoltage3To1.setName("txtPhaseToPhaseVoltage3To1"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -134,27 +149,27 @@ public class MeasuresPane extends javax.swing.JPanel {
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addGap(80, 80, 80)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(txtPhaseToPhaseVoltage1To2)
+                    .addComponent(txtPhaseToPhaseVoltage2To3)
+                    .addComponent(txtPhaseToPhaseVoltage3To1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPhaseToPhaseVoltage1To2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPhaseToPhaseVoltage2To3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtPhaseToPhaseVoltage3To1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel2.border.title"))); // NOI18N
@@ -163,29 +178,35 @@ public class MeasuresPane extends javax.swing.JPanel {
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
 
-        jTextField4.setEditable(false);
-        jTextField4.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField4.setText(resourceMap.getString("jTextField4.text")); // NOI18N
-        jTextField4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jTextField4.setName("jTextField4"); // NOI18N
+        txtTotalActivePower.setBackground(resourceMap.getColor("txtTotalActivePower.background")); // NOI18N
+        txtTotalActivePower.setEditable(false);
+        txtTotalActivePower.setFont(resourceMap.getFont("txtTotalActivePower.font")); // NOI18N
+        txtTotalActivePower.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTotalActivePower.setText(resourceMap.getString("txtTotalActivePower.text")); // NOI18N
+        txtTotalActivePower.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txtTotalActivePower.setName("txtTotalActivePower"); // NOI18N
 
         jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
 
-        jTextField5.setEditable(false);
-        jTextField5.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField5.setText(resourceMap.getString("jTextField5.text")); // NOI18N
-        jTextField5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jTextField5.setName("jTextField5"); // NOI18N
+        txtTotalReactivePower.setBackground(resourceMap.getColor("txtTotalReactivePower.background")); // NOI18N
+        txtTotalReactivePower.setEditable(false);
+        txtTotalReactivePower.setFont(resourceMap.getFont("txtTotalReactivePower.font")); // NOI18N
+        txtTotalReactivePower.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTotalReactivePower.setText(resourceMap.getString("txtTotalReactivePower.text")); // NOI18N
+        txtTotalReactivePower.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txtTotalReactivePower.setName("txtTotalReactivePower"); // NOI18N
 
         jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
         jLabel6.setName("jLabel6"); // NOI18N
 
-        jTextField6.setEditable(false);
-        jTextField6.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField6.setText(resourceMap.getString("jTextField6.text")); // NOI18N
-        jTextField6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jTextField6.setName("jTextField6"); // NOI18N
+        txtTotalApparentPower.setBackground(resourceMap.getColor("txtTotalApparentPower.background")); // NOI18N
+        txtTotalApparentPower.setEditable(false);
+        txtTotalApparentPower.setFont(resourceMap.getFont("txtTotalApparentPower.font")); // NOI18N
+        txtTotalApparentPower.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTotalApparentPower.setText(resourceMap.getString("txtTotalApparentPower.text")); // NOI18N
+        txtTotalApparentPower.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txtTotalApparentPower.setName("txtTotalApparentPower"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -193,19 +214,19 @@ public class MeasuresPane extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtTotalReactivePower, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTotalActivePower, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)))
+                        .addComponent(txtTotalApparentPower, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -213,15 +234,15 @@ public class MeasuresPane extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTotalActivePower, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTotalReactivePower, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtTotalApparentPower, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -231,13 +252,13 @@ public class MeasuresPane extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(lblCurrentPowerMeter)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbCurrentPowerMeter, 0, 371, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -258,11 +279,16 @@ public class MeasuresPane extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmbCurrentPowerMeterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCurrentPowerMeterActionPerformed
-        // TODO add your handling code here:
+        IPowerMeter powerMeter = (IPowerMeter) cmbCurrentPowerMeter.getSelectedItem();
+        measureViewHandler.setActivePowerMeter(powerMeter);
     }//GEN-LAST:event_cmbCurrentPowerMeterActionPerformed
     
-    
-    //private void 
+    /**
+     * 
+     */
+    private void AttachMeasureToDataProcessor(){
+        Processor.AddObserver(getMeasureViewHandler().getMeasureObserver());
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cmbCurrentPowerMeter;
@@ -275,14 +301,14 @@ public class MeasuresPane extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel lblCurrentPowerMeter;
     private javax.swing.JTable measuresTable;
+    private javax.swing.JTextField txtPhaseToPhaseVoltage1To2;
+    private javax.swing.JTextField txtPhaseToPhaseVoltage2To3;
+    private javax.swing.JTextField txtPhaseToPhaseVoltage3To1;
+    private javax.swing.JTextField txtTotalActivePower;
+    private javax.swing.JTextField txtTotalApparentPower;
+    private javax.swing.JTextField txtTotalReactivePower;
     // End of variables declaration//GEN-END:variables
     
 }

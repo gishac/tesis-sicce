@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sicce.api.processor.viewer.observers;
 
 import java.util.Observable;
@@ -21,24 +20,25 @@ public class MeasureObserver implements Observer {
      * 
      */
     private MeasureViewHandler measureHandler;
-    
+
     /**
      * 
      * @param measureHandler
      */
-    public MeasureObserver(MeasureViewHandler measureHandler){
+    public MeasureObserver(MeasureViewHandler measureHandler) {
         this.measureHandler = measureHandler;
     }
-    
+
     /**
      * 
      * @param o
      * @param arg
      */
     public void update(Observable o, Object arg) {
-        IPowerMeterWatcher powerMeterWatcher = (IPowerMeterWatcher) o;
-        IMeasure measure = (IMeasure) arg;
-        this.measureHandler.ProcessMeasure(powerMeterWatcher.getPowerMeter(), measure);
+        if (!(arg instanceof Exception)) {
+            IPowerMeterWatcher powerMeterWatcher = (IPowerMeterWatcher) o;
+            IMeasure measure = (IMeasure) arg;
+            this.measureHandler.ProcessMeasure(powerMeterWatcher.getPowerMeter(), measure);
+        }
     }
-
 }
