@@ -58,20 +58,6 @@ public interface ILocation {
     ILocationType getLocationType(); 
     
     /**
-     * Establece el medidor asignado a la dependencia
-     * @param powerMeter Medidor asignado a la dependencia
-     * @see IPowerMeter
-     */
-    void setPowerMeter (IPowerMeter powerMeter);
-    
-    /**
-     * Devuelve el medidor asignado a la dependenca
-     * @return Medidor asignado a la dependencia
-     * @see IPowerMeter
-     */
-    IPowerMeter getPowerMeter();
-    
-    /**
      * Establece la ubicacion donde se encuentra la dependencia
      * @param location Ubicacion donde se encuentra la dependencia
      * @see ILocation
@@ -126,4 +112,18 @@ public interface ILocation {
      * @see IMeasure
      */
     void setMeasures(Set<IMeasure> measures);
+    
+    /**
+     * Devuelve los medidores asignados a la ubicacion
+     * @return Medidores asignados a la ubicacion
+     * @see IPowerMeter
+     */
+    Set<IPowerMeter> getPowerMeters();
+    
+    /**
+     * Establece los medidores a ser asignados a la dependencia
+     * @param powerMeters Medidores asignados a la dependencia
+     * @see IPowerMeter
+     */
+    void setPowerMeters(Set<IPowerMeter> powerMeters);
 }
