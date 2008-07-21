@@ -35,6 +35,7 @@ public class ReportForm2 extends WizardPage {
         this.controller = controller;
         this.wizardData = wizardData;
         controller.setProblem("Seleccione el módulo deseado.");
+       
         lstSelectedFields.putClientProperty(KEY_SELECTED, VALUE_SELECTED_FIELDS);
         fillCbModules();
         validateContents(this, null);
@@ -75,6 +76,7 @@ public class ReportForm2 extends WizardPage {
             List<Field> resultList = FieldHandler.CompareLists(FieldHandler.getAvailableFields(), FieldHandler.getSelectedFields());
             lstAvailableFields.setCellRenderer(new FieldsCellRenderer());
             lstAvailableFields.setListData(resultList.toArray());
+            
 
         }
     }
@@ -84,7 +86,6 @@ public class ReportForm2 extends WizardPage {
         lstAvailableFields.setListData(FieldHandler.CompareLists(FieldHandler.getAvailableFields(), FieldHandler.getSelectedFields()).toArray());
         lstSelectedFields.setListData(FieldHandler.getSelectedFields().toArray());
         wizardData.put(KEY_SELECTED, FieldHandler.getSelectedFields());
-
     }
 
     @Override
@@ -272,11 +273,12 @@ public class ReportForm2 extends WizardPage {
         if (index > 0) {
             Field previous = (Field) lstSelectedFields.getModel().getElementAt(index - 1);
             Field selected = (Field) lstSelectedFields.getModel().getElementAt(index);
-            previous.setOrder(previous.getOrder() + 1);
-            selected.setOrder(selected.getOrder() - 1);
+            previous.setOrder(index + 1);
+            selected.setOrder(index - 1);
             Collections.sort(FieldHandler.getSelectedFields(), new FieldsComparator());
             updateLists();
             lstSelectedFields.setSelectedIndex(index - 1);
+            
         }
   
         
@@ -294,8 +296,8 @@ public class ReportForm2 extends WizardPage {
         if (index < lstSelectedFields.getModel().getSize() - 1) {
             Field selected = (Field) lstSelectedFields.getModel().getElementAt(index);
             Field next = (Field) lstSelectedFields.getModel().getElementAt(index + 1);
-            selected.setOrder(selected.getOrder() + 1);
-            next.setOrder(next.getOrder() - 1);
+            selected.setOrder(index + 1);
+            next.setOrder(index - 1);
 
             Collections.sort(FieldHandler.getSelectedFields(), new FieldsComparator());
             updateLists();
