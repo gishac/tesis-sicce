@@ -18,11 +18,14 @@ public class FieldHandler {
     private static List<Field> listAvailableFields = new ArrayList();
     private static List<Field> listSelectedFields = new ArrayList();
     private static List<Field> listGroupFields = new ArrayList();
+    private static List<Field> lstMeasureFields = new ArrayList();
 
+   
     public FieldHandler() {
         listAvailableFields = new ArrayList();
         listSelectedFields = new ArrayList();
         listGroupFields = new ArrayList();
+        lstMeasureFields = new ArrayList();
     }
 
     public static void setListAvailableFields(List<Field> listAvailableFields) {
@@ -53,6 +56,14 @@ public class FieldHandler {
         FieldHandler.listGroupFields = listGroupFields;
     }
 
+     public static List<Field> getLstMeasureFields() {
+        return lstMeasureFields;
+    }
+
+    public static void setLstMeasureFields(List<Field> lstMeasureFields) {
+        FieldHandler.lstMeasureFields = lstMeasureFields;
+    }
+    
     public List<Field> fillZone() {
 
         List<Field> lstZone = new ArrayList<Field>();
@@ -200,6 +211,24 @@ public class FieldHandler {
         return result;
 
     }
+    
+    public static List<Field> getMeasureSelected(List<Field> selectedList) {
+        List<Field> resultList = new ArrayList<Field>();
+
+        if (selectedList.isEmpty()) {
+            return null;
+        }
+        resultList.addAll(selectedList);
+        for (Field fieldSelected : (List<Field>) selectedList) {
+                if (fieldSelected.getIdTable() != 4) {
+                    resultList.remove(fieldSelected);
+                }
+            
+        }
+        return resultList;
+
+    }
+
 }
 
 
