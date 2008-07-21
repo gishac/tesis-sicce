@@ -95,7 +95,7 @@ public class Validator
         
         if (pZeroExcluded && pTxt.getText().length()>0 )
         {
-            BigDecimal tmp = UtlMath.strToBigDecimal(pTxt.getText());
+            BigDecimal tmp = UtilMath.StringToBigDecimal(pTxt.getText());
             
             if (tmp.doubleValue()<=0.0 )
             {
@@ -135,7 +135,7 @@ public class Validator
                
         if (pZeroExcluded && pTxt.getText().length()>0 )
         {
-            BigDecimal tmp = UtlMath.strToBigDecimal(pTxt.getText());
+            BigDecimal tmp = UtilMath.StringToBigDecimal(pTxt.getText());
             
             if (tmp.doubleValue()<=0.0 )
             { 
@@ -685,7 +685,7 @@ public class Validator
             else if (pDatoString.length() == 0 )
                 return false;
             
-            BigDecimal tmp = UtlMath.AplicarRedondeo(new BigDecimal(pDatoString));
+            BigDecimal tmp = UtilMath.Round(new BigDecimal(pDatoString));
             
             return tmp.equals(pDatoDecimal);
         }
