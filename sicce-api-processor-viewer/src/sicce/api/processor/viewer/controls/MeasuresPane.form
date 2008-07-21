@@ -21,14 +21,14 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jPanel2" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" alignment="1" pref="450" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lblCurrentPowerMeter" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmbCurrentPowerMeter" pref="371" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -133,13 +133,13 @@
                       <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="80" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jTextField1" alignment="0" max="32767" attributes="1"/>
-                      <Component id="jTextField2" alignment="0" max="32767" attributes="1"/>
-                      <Component id="jTextField3" alignment="1" min="-2" pref="241" max="-2" attributes="1"/>
+                      <Component id="txtPhaseToPhaseVoltage1To2" alignment="0" max="32767" attributes="1"/>
+                      <Component id="txtPhaseToPhaseVoltage2To3" alignment="0" max="32767" attributes="1"/>
+                      <Component id="txtPhaseToPhaseVoltage3To1" alignment="1" min="-2" pref="241" max="-2" attributes="1"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -148,17 +148,17 @@
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtPhaseToPhaseVoltage1To2" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtPhaseToPhaseVoltage2To3" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtPhaseToPhaseVoltage3To1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -183,43 +183,49 @@
             <Property name="name" type="java.lang.String" value="jLabel3" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="txtPhaseToPhaseVoltage1To2">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="txtPhaseToPhaseVoltage1To2.background"/>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="font" type="java.awt.Font" resourceKey="txtPhaseToPhaseVoltage1To2.font"/>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" resourceKey="jTextField1.text"/>
+            <Property name="text" type="java.lang.String" resourceKey="txtPhaseToPhaseVoltage1To2.text"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
             </Property>
-            <Property name="name" type="java.lang.String" value="jTextField1" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="txtPhaseToPhaseVoltage1To2" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField2">
+        <Component class="javax.swing.JTextField" name="txtPhaseToPhaseVoltage2To3">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="txtPhaseToPhaseVoltage2To3.background"/>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="font" type="java.awt.Font" resourceKey="txtPhaseToPhaseVoltage2To3.font"/>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" resourceKey="jTextField2.text"/>
+            <Property name="text" type="java.lang.String" resourceKey="txtPhaseToPhaseVoltage2To3.text"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
             </Property>
-            <Property name="name" type="java.lang.String" value="jTextField2" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="txtPhaseToPhaseVoltage2To3" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField3">
+        <Component class="javax.swing.JTextField" name="txtPhaseToPhaseVoltage3To1">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="txtPhaseToPhaseVoltage3To1.background"/>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="font" type="java.awt.Font" resourceKey="txtPhaseToPhaseVoltage3To1.font"/>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" resourceKey="jTextField3.text"/>
+            <Property name="text" type="java.lang.String" resourceKey="txtPhaseToPhaseVoltage3To1.text"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
             </Property>
-            <Property name="name" type="java.lang.String" value="jTextField3" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="txtPhaseToPhaseVoltage3To1" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -239,24 +245,24 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" max="-2" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" max="-2" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jTextField4" alignment="0" pref="239" max="32767" attributes="0"/>
-                              <Component id="jTextField5" alignment="0" pref="239" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="txtTotalReactivePower" min="-2" pref="239" max="-2" attributes="0"/>
+                              <Component id="txtTotalActivePower" alignment="0" min="-2" pref="239" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTextField6" pref="239" max="32767" attributes="0"/>
+                          <Component id="txtTotalApparentPower" min="-2" pref="239" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -268,17 +274,17 @@
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtTotalActivePower" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField5" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtTotalReactivePower" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField6" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtTotalApparentPower" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -291,17 +297,19 @@
             <Property name="name" type="java.lang.String" value="jLabel4" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField4">
+        <Component class="javax.swing.JTextField" name="txtTotalActivePower">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="txtTotalActivePower.background"/>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="font" type="java.awt.Font" resourceKey="txtTotalActivePower.font"/>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" resourceKey="jTextField4.text"/>
+            <Property name="text" type="java.lang.String" resourceKey="txtTotalActivePower.text"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
             </Property>
-            <Property name="name" type="java.lang.String" value="jTextField4" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="txtTotalActivePower" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
@@ -310,17 +318,19 @@
             <Property name="name" type="java.lang.String" value="jLabel5" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField5">
+        <Component class="javax.swing.JTextField" name="txtTotalReactivePower">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="txtTotalReactivePower.background"/>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="font" type="java.awt.Font" resourceKey="txtTotalReactivePower.font"/>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" resourceKey="jTextField5.text"/>
+            <Property name="text" type="java.lang.String" resourceKey="txtTotalReactivePower.text"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
             </Property>
-            <Property name="name" type="java.lang.String" value="jTextField5" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="txtTotalReactivePower" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
@@ -329,17 +339,19 @@
             <Property name="name" type="java.lang.String" value="jLabel6" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField6">
+        <Component class="javax.swing.JTextField" name="txtTotalApparentPower">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="txtTotalApparentPower.background"/>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="font" type="java.awt.Font" resourceKey="txtTotalApparentPower.font"/>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" resourceKey="jTextField6.text"/>
+            <Property name="text" type="java.lang.String" resourceKey="txtTotalApparentPower.text"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
             </Property>
-            <Property name="name" type="java.lang.String" value="jTextField6" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="txtTotalApparentPower" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>

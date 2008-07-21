@@ -3,7 +3,12 @@
  */
 package sicce.api.processor.viewer;
 
+import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
@@ -12,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import sicce.api.processor.Processor;
 import sicce.api.processor.viewer.controls.ChartPane;
+import sicce.api.processor.viewer.controls.ErrorsPane;
 import sicce.api.processor.viewer.controls.LogPane;
 import sicce.api.processor.viewer.controls.MeasuresPane;
 
@@ -25,6 +31,7 @@ public class SicceapiprocessorviewerView extends FrameView {
 
         initComponents();        
         OrganizeUIElements();
+        SetTrayIcon();
         BuildPanes();
         RunProcessor();
     }
@@ -63,6 +70,8 @@ public class SicceapiprocessorviewerView extends FrameView {
     private ChartPane chartPane;
     private LogPane logPane;
     private MeasuresPane measuresPane;
+    private ErrorsPane errorsPane;
+    private TrayIcon trayIcon;
 
   
     /**
@@ -90,9 +99,11 @@ public class SicceapiprocessorviewerView extends FrameView {
         chartPane = new ChartPane(getResourceMap().getString("ChartTitle"), getResourceMap());
         logPane = new LogPane(getResourceMap());
         measuresPane = new MeasuresPane();
+        errorsPane = new ErrorsPane(trayIcon);
         getTabManager().addTab("Gráficos del Consumo Eléctrico", chartPane);
         getTabManager().addTab("Log de Lecturas del Consumo Eléctrico", logPane);
         getTabManager().addTab("Detalles de Registor Por Medidor", measuresPane);
+        getTabManager().addTab("Detalle de Errores", errorsPane);
     }
 
 
@@ -102,4 +113,22 @@ public class SicceapiprocessorviewerView extends FrameView {
     private void RunProcessor() {
       Processor.DoProcess();
     }
+    
+    /**
+     * 
+     */
+    private void SetTrayIcon(){
+        if(SystemTray.isSupported()){
+            try {
+                SystemTray tray = SystemTray.getSystemTray();
+                trayIcon = new TrayIcon(getResourceMap().getImageIcon("TrayIcon").getImage(), "Sicce");
+                trayIcon.setImageAutoSize(true);
+                tray.add(trayIcon);
+            } catch (AWTException ex) {
+                Logger.getLogger(SicceapiprocessorviewerView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+   
 }

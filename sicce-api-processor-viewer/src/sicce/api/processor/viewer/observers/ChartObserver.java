@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sicce.api.processor.viewer.observers;
 
 import sicce.api.processor.viewer.handlers.*;
@@ -17,16 +16,16 @@ import sicce.api.info.interfaces.IMeasure;
 public class ChartObserver implements Observer {
 
     private ChartViewHandler chartHandler;
-    
-    public ChartObserver(ChartViewHandler chartHandler){
+
+    public ChartObserver(ChartViewHandler chartHandler) {
         this.chartHandler = chartHandler;
     }
 
     public void update(Observable o, Object arg) {
-        IMeasure measure = (IMeasure) arg;
-        this.chartHandler.ProcessMeasure(measure);
+        if (!(arg instanceof Exception)) {
+            IMeasure measure = (IMeasure) arg;
+            this.chartHandler.ProcessMeasure(measure);
+        }
+
     }
-    
-    
-    
 }
