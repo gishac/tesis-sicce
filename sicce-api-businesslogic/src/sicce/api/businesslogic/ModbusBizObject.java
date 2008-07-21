@@ -5,19 +5,14 @@
 package sicce.api.businesslogic;
 
 import sicce.api.businesslogic.factory.ClassFactory;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sicce.api.dataaccess.ParameterDB;
@@ -31,6 +26,8 @@ import sicce.api.info.interfaces.IModbusRequest;
 import sicce.api.info.interfaces.IModbusResponse;
 import sicce.api.info.interfaces.IParameter;
 import sicce.api.info.interfaces.IPowerMeter;
+import java.text.NumberFormat;
+import sicce.api.util.UtilMath;
 
 /**
  *
@@ -209,7 +206,27 @@ public class ModbusBizObject {
      * @return
      */
     private String ApplyFormatToRegisterValue(String registerValue, ModbusRegister register){
-        //TODO: Aplicar logica especial ya sea de separacion de decimales, o algo en especial al resultado
+        switch(register)
+        {
+            case PhaseToPhaseVoltagePhase1To2:
+                registerValue = UtilMath.Parse(registerValue, 2);
+                break;
+            case PhaseToPhaseVoltagePhase2To3:
+                registerValue = UtilMath.Parse(registerValue, 2);
+                break;
+            case PhaseToPhaseVoltagePhase3To1:
+                registerValue = UtilMath.Parse(registerValue, 2);
+                break;
+            case PhaseToNeutralVoltagePhase1:
+                registerValue = UtilMath.Parse(registerValue, 2);
+                break;
+            case PhaseToNeutralVoltagePhase2:
+                registerValue = UtilMath.Parse(registerValue, 2);
+                break;
+            case PhaseToNeutralVoltagePhase3:
+                registerValue = UtilMath.Parse(registerValue, 2);
+                break;
+        }
         return registerValue;
     }
     
