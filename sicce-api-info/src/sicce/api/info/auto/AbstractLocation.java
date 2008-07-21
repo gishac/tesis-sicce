@@ -7,6 +7,7 @@ import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
 import sicce.api.info.interfaces.IMeasure;
 import sicce.api.info.interfaces.IPowerMeter;
+import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.info.interfaces.IZone;
 
 /**
@@ -29,11 +30,7 @@ public abstract class AbstractLocation implements java.io.Serializable, ILocatio
      * @see ILocation
      */
     protected ILocation location;
-    /**
-     * Medidor asignado a la dependencia
-     * @see IPowerMeter
-     */
-    protected IPowerMeter powerMeter;
+    
     /**
      * Descripcion de la dependencia
      */
@@ -53,6 +50,14 @@ public abstract class AbstractLocation implements java.io.Serializable, ILocatio
      * @see IMeasure
      */
     protected Set<IMeasure> measures = new HashSet<IMeasure>(0);
+    
+    /**
+     * Medidores asignados a la dependencia
+     */
+    protected Set<IPowerMeter> powerMeters = new HashSet<IPowerMeter>(0);
+    
+   
+
 
     // Constructors
     /**
@@ -66,15 +71,13 @@ public abstract class AbstractLocation implements java.io.Serializable, ILocatio
      * @param idLocation Identificador de la dependencia
      * @param locationType Tipo de dependenca
      * @param location Ubicacion de la dependencia
-     * @param powerMeter Medidor asignado a la dependencia
      * @param description Descripcion de la dependencia
      */
     public AbstractLocation(Integer idLocation, ILocationType locationType,
-            ILocation location, IPowerMeter powerMeter, String description) {
+            ILocation location, String description) {
         this.idLocation = idLocation;
         this.locationType = locationType;
         this.location = location;
-        this.powerMeter = powerMeter;
         this.description = description;
     }
 
@@ -83,20 +86,18 @@ public abstract class AbstractLocation implements java.io.Serializable, ILocatio
      * @param idLocation Identificador de la dependencia
      * @param locationType Tipo de dependencia
      * @param location Ubicacion de la dependencia
-     * @param powerMeter Medidor asignado a la dependencia
      * @param description Descripcion de la dependencia
      * @param locations Dependencias agrupadas dentro de esta ubicacion
      * @param zones Zonas logicas que agrupan a la dependencia
      * @param measures Mediciones realizadas sobre la dependencia
      */
     public AbstractLocation(Integer idLocation, ILocationType locationType,
-            ILocation location, IPowerMeter powerMeter, String description,
+            ILocation location, String description,
             Set<ILocation> locations, Set<IZone> zones,
             Set<IMeasure> measures) {
         this.idLocation = idLocation;
         this.locationType = locationType;
         this.location = location;
-        this.powerMeter = powerMeter;
         this.description = description;
         this.locations = locations;
         this.zones = zones;
@@ -132,14 +133,6 @@ public abstract class AbstractLocation implements java.io.Serializable, ILocatio
         this.location = location;
     }
 
-    public IPowerMeter getPowerMeter() {
-        return this.powerMeter;
-    }
-
-    public void setPowerMeter(IPowerMeter powerMeter) {
-        this.powerMeter = powerMeter;
-    }
-
     public String getDescription() {
         return this.description;
     }
@@ -171,4 +164,14 @@ public abstract class AbstractLocation implements java.io.Serializable, ILocatio
     public void setMeasures(Set<IMeasure> measures) {
         this.measures = measures;
     }
+    
+    public Set<IPowerMeter> getPowerMeters() {
+        return this.powerMeters;
+    }
+
+    public void setPowerMeters(Set<IPowerMeter> powerMeters) {
+        this.powerMeters = powerMeters;
+    }
+    
+    
 }

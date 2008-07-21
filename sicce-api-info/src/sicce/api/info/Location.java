@@ -29,12 +29,11 @@ public class Location extends AbstractLocation implements java.io.Serializable {
      * @param idLocation Identificador de la dependencia
      * @param locationType Tipo de dependenca
      * @param location Ubicacion de la dependencia
-     * @param powerMeter Medidor asignado a la dependencia
      * @param description Descripcion de la dependencia
      */
     public Location(Integer idLocation, LocationType locationType,
-            ILocation location, IPowerMeter powerMeter, String description) {
-        super(idLocation, locationType, location, powerMeter, description);
+            ILocation location, String description) {
+        super(idLocation, locationType, location, description);
     }
 
     /**
@@ -42,16 +41,17 @@ public class Location extends AbstractLocation implements java.io.Serializable {
      * @param idLocation Identificador de la dependencia
      * @param locationType Tipo de dependencia
      * @param location Ubicacion de la dependencia
-     * @param powerMeter Medidor asignado a la dependencia
      * @param description Descripcion de la dependencia
      * @param locations Dependencias agrupadas dentro de esta ubicacion
      * @param zones Zonas logicas que agrupan a la dependencia
      * @param measures Mediciones realizadas sobre la dependencia
      */
     public Location(Integer idLocation, LocationType locationType,
-            ILocation location, IPowerMeter powerMeter, String description, Set<ILocation> locations, Set<IZone> zones,
+            ILocation location, String description, Set<ILocation> locations, Set<IZone> zones,
             Set<IMeasure> measures) {
-        super(idLocation, locationType, location, powerMeter, description,
+        super(idLocation, locationType, location, description,
                 locations, zones, measures);
     }
+
+    
 }
