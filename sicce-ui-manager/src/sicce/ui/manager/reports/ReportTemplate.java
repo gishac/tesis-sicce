@@ -101,7 +101,7 @@ public class ReportTemplate extends GenerateDjReport {
         drb.setTitle(title).setDetailHeight(15).setMargins(30, 20, 30, 15).setDefaultStyles(titleStyle, null, headerStyle, detailStyle).setColumnsPerPage(1);
         //String imagePath = resourceMap.getResourcesDir() + "/" + resourceMap.getString("small_ucsg");
         //drb.addImageBanner(imagePath, new Integer(197), new Integer(60), ImageBanner.ALIGN_RIGHT);
-        CreateColumns(listSelected, drb, importeStyle, headerStyle);
+        CreateColumns(listSelected, drb, detailStyle,importeStyle, headerStyle);
 
         drb.setUseFullPageWidth(true);
         if (phorizontal) {
@@ -117,8 +117,9 @@ public class ReportTemplate extends GenerateDjReport {
         if (listGroup!=null){
         stFieldGroup = createQueryGroupby(listGroup);
         addGlobalVariables(listMeasure, drb, headerVariables, importeStyle, headerStyle);
-        createGroup(wizardData,drb,importeStyle,headerStyle);
+        createGroup(wizardData,drb,detailStyle,importeStyle,headerStyle);
         }
+       
         
         String joins = "FROM measure " +
                 "INNER JOIN location ON measure.ID_LOCATION = location.ID_LOCATION " +
@@ -153,18 +154,21 @@ public class ReportTemplate extends GenerateDjReport {
      * @param drb
      * @throws ar.com.fdvs.dj.domain.builders.ColumnBuilderException
      */
-    public void CreateColumns(List<Field> listSelected, DynamicReportBuilder drb, Style importeStyle, Style headerStyle) {
+    public void CreateColumns(List<Field> listSelected, DynamicReportBuilder drb, Style detailStyle, Style importeStyle, Style headerStyle) {
 
+       
+        
         for (Field fieldSelected : (List<Field>) listSelected) {
             try {
-
+            
                 AbstractColumn column = ColumnBuilder.getInstance()
                         .setColumnProperty(fieldSelected.getAliasField(), fieldSelected.getDataType())
                         .setTitle(fieldSelected.getTitle())
                         .setWidth(85)
-                        .setStyle(importeStyle)
+                        .setStyle(setStyleType(fieldSelected, importeStyle, detailStyle))
 		        .setHeaderStyle(headerStyle)
                         .build();
+            
                 drb.addColumn(column);
             } catch (ColumnBuilderException ex) {
                 Logger.getLogger(ReportTemplate.class.getName()).log(Level.SEVERE, null, ex);
@@ -217,7 +221,7 @@ public class ReportTemplate extends GenerateDjReport {
      * @param listGroup
      * @param drb
      */
-    public void createGroup(Map wizardData, DynamicReportBuilder drb, Style importeStyle, Style headerStyle) {
+    public void createGroup(Map wizardData, DynamicReportBuilder drb, Style detailStyle, Style importeStyle, Style headerStyle) {
 
         List listGroup = (List) wizardData.get(KEY_GROUP);
         List listVariableMeasure = (List) wizardData.get(KEY_MEASURE_FIELDS);
@@ -234,7 +238,7 @@ public class ReportTemplate extends GenerateDjReport {
                 AbstractColumn column = ColumnBuilder.getInstance()
                         .setColumnProperty(fieldGroup.getAliasField(), fieldGroup.getDataType())
                         .setTitle(fieldGroup.getTitle())
-                        .setStyle(importeStyle)
+                        .setStyle(setStyleType(fieldGroup, importeStyle, detailStyle))
 		        .setHeaderStyle(headerStyle)
                         .setWidth(85)
                         .build();
@@ -311,7 +315,7 @@ public class ReportTemplate extends GenerateDjReport {
             DJChartBuilder cb = new DJChartBuilder();
             
             
-             DJChartBuilder builder2 = cb.addType(DJChart.PIE_CHART)
+             DJChartBuilder builder2 = cb.addType(DJChart.BAR_CHART)
                     .addOperation(DJChart.CALCULATION_SUM)
                     .addColumnsGroup(groupChart)
                     .setPosition(DJChartOptions.POSITION_FOOTER)
@@ -330,6 +334,17 @@ public class ReportTemplate extends GenerateDjReport {
     
     }
 
+    
+    public Style setStyleType(Field field, Style importeStyle, Style detailStyle){
+      Style tmp = new Style();
+ 
+            if (field.getDataType().equals(String.class.getName()))
+                     tmp = detailStyle;
+            else 
+                    tmp  = importeStyle;
+     return tmp;
+    }
+    
     public String createWhereClause(Map wizardData, DynamicReportBuilder drb) {
         List listFilters = (List) wizardData.get(KEY_WHERE);
         Date begin = (Date) wizardData.get(KEY_BEGIN_DATE);
