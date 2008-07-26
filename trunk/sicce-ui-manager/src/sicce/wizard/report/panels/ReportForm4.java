@@ -124,6 +124,7 @@ public class ReportForm4 extends WizardPage {
         } 
         wizardData.put(KEY_WHERE, reportTableModel.getDataSource());
         wizardData.put(KEY_FIELD_CHART, cboGroupChart.getSelectedItem());
+        wizardData.put(KEY_BL_CHART,chkChart.isSelected());
         return null;
     }
 
