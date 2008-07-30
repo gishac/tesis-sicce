@@ -5,11 +5,12 @@
 package sicce.api.processor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Observer;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.dataaccess.ParameterDB;
 import sicce.api.info.ConstantsProvider;
 import sicce.api.info.interfaces.IParameter;
@@ -53,6 +54,32 @@ public class Processor {
             watcher.AddObserver(observer);
         }
     }
+    
+    private static Set<IPowerMeter> powerMeters;
+
+    private static Set<IPowerMeter> getPowerMeters() {
+        if(powerMeters == null){
+            powerMeters = new HashSet<IPowerMeter>();
+        }
+        return powerMeters;
+    }
+    
+    private static void setPowerMeters(Set<IPowerMeter> powerMetersParam){
+        powerMeters = powerMetersParam;
+    }
+    
+   /**
+    * 
+    * @param powerMetersParam
+    */
+    public static void DoProcess(Set<IPowerMeter> powerMetersParam) {
+        try {
+            Processor.setPowerMeters(powerMetersParam);
+            Processor.DoProcess();
+        } catch (Exception ex) {
+            Logger.getLogger(Processor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * Realiza el proceso de lectura de los medidores
@@ -60,12 +87,17 @@ public class Processor {
     public static void DoProcess() {
         try {
 
+            if(Processor.getPowerMeters().size() == 0 ){
+                System.out.println("No existen medidores disponibles para realizar el proceso");
+                return;
+            }
+            
             EncryptionProvider.RegisterHibernateEncryptor();
             IParameter readInterval = ParameterDB.GetParameterByKey(ConstantsProvider.READ_INTERVAL);
-            PowerMeterBizObject powerMeterHandler = new PowerMeterBizObject();
-            List<IPowerMeter> powerMeters = powerMeterHandler.GetActivePowerMeter();
+            //PowerMeterBizObject powerMeterHandler = new PowerMeterBizObject();
+            //List<IPowerMeter> powerMeters = powerMeterHandler.GetActivePowerMeter();
             ArrayList<IPowerMeterWatcher> watchers = new ArrayList<IPowerMeterWatcher>();
-            for (IPowerMeter powerMeter : powerMeters) {
+            for (IPowerMeter powerMeter : getPowerMeters()) {
                 IPowerMeterWatcher watcher = new PowerMeterWatcher(powerMeter);
                 SetObservers(watcher);
                 watchers.add(watcher);
