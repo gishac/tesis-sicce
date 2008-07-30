@@ -25,6 +25,7 @@ public class PowerMeterDAO extends HibernateDaoSupport {
     public static final String IP_ADDRESS = "ipAddress";
     public static final String LOG_STATUS = "logStatus";
     public static final String SERIAL = "serial";
+    public static final String DEVICE_ID = "deviceID";
     public static final String STATUS2 = "status2";
 
     protected void initDao() {
@@ -108,6 +109,10 @@ public class PowerMeterDAO extends HibernateDaoSupport {
 
     public List findByLogStatus(Object logStatus) {
         return findByProperty(LOG_STATUS, logStatus);
+    }
+    
+    public List findByDeviceID(Object deviceID) {
+        return findByProperty(DEVICE_ID, deviceID);
     }
 
     public List findBySerial(Object serial) {
