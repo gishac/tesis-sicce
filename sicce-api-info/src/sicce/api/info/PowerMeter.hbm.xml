@@ -49,7 +49,7 @@
             <many-to-many class="sicce.api.info.Location" column="ID_LOCATION" />
         </set>
         
-        <set name="users" inverse="true" table="user_power_meter" >
+        <set name="users" inverse="true" table="user_power_meter" lazy="false">
             <key>
                 <column name="ID_POWER_METER" not-null="true" />
             </key>

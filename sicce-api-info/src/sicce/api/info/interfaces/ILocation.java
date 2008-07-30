@@ -126,4 +126,16 @@ public interface ILocation {
      * @see IPowerMeter
      */
     void setPowerMeters(Set<IPowerMeter> powerMeters);
+    
+    /**
+     * Agrega un medidor a la ubicacion
+     * @param powerMeter
+     */
+    void addLocationPowerMeter(IPowerMeter powerMeter);
+    
+    /**
+     * Remueve un medidor de la ubicacion
+     * @param powerMeter
+     */ 
+    void removeLocationPowerMeter(IPowerMeter powerMeter);
 }

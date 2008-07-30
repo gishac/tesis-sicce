@@ -125,4 +125,12 @@ public abstract class AbstractUserSicce implements IUserSicce, java.io.Serializa
     public void setPowerMeters(Set<IPowerMeter> powerMeters) {
         this.powerMeters = powerMeters;
     }
+    
+    public void addUserPowerMeter(IPowerMeter powerMeter) {
+        this.powerMeters.add(powerMeter);
+    }
+
+    public void removeUserPowerMeter(IPowerMeter powerMeter) {
+        this.powerMeters.remove(powerMeter);
+    }
 }
