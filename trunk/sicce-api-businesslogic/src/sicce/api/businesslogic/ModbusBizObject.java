@@ -312,8 +312,11 @@ public class ModbusBizObject {
     private void WriteRequest(OutputStream outputStream, IModbusRequest request) throws IOException {
         //outputStream.flush();
         String frame[] = request.getRequest();
+        String fullFrame = "";
         for (int index = 0; index < frame.length; index++) {
-            outputStream.write(GetIntValueFromHex(frame[index]));
+            int value = GetIntValueFromHex(frame[index]);
+            fullFrame += String.valueOf((byte)value);
+            outputStream.write(value);
         }
         outputStream.flush();
         //

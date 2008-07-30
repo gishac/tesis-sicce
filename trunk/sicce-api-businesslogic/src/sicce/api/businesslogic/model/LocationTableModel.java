@@ -17,7 +17,7 @@ public class LocationTableModel extends SicceTableModel<ILocation> {
 
     public LocationTableModel(List<ILocation> dataSource) {
         this.dataSource = dataSource;
-        columns = new String[]{"No.", "Descripción", "Tipo de Dependencia", "Medidor Asignado" , "Ubicación" };
+        columns = new String[]{"No.", "Descripción", "Tipo de Dependencia", "Ubicación" };
     }
 
     @Override
@@ -30,13 +30,8 @@ public class LocationTableModel extends SicceTableModel<ILocation> {
             case 1: 
                 return location.getDescription();
             case 2:
-                return location.getLocationType().getDescription();
+                return location.getLocationType().getDescription();            
             case 3:
-                if(location.getPowerMeter() != null)
-                    return location.getPowerMeter().getDescription();
-                else
-                    return null;
-            case 4:
                 if (location.getLocation()!=null)
                     return location.getLocation().getDescription();
                 else
