@@ -310,7 +310,8 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IPowerMeter> tableModel = (SicceTableModel<IPowerMeter>) grdPowerMeter.getModel();
-        currentObject = tableModel.getRow(selectedIndex);        
+        currentObject = tableModel.getRow(selectedIndex);     
+        SetUIElements();
     }
 
     @Override

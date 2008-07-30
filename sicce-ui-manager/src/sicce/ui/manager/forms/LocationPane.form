@@ -24,8 +24,8 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="357" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="483" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -35,7 +35,7 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="320" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" pref="531" max="32767" attributes="0"/>
                   <Component id="jPanel4" alignment="0" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -59,45 +59,36 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblLocationType" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                              <Component id="lblUbication" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jScrollPane2" min="0" pref="0" max="32767" attributes="1"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="cmbLocationType" pref="212" max="32767" attributes="0"/>
-                              <Component id="txtUbication" alignment="0" pref="212" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="btnSearchUbication" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnClearLocation" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblPowerMeter" min="-2" pref="120" max="-2" attributes="0"/>
+                              <Component id="lblLocationType" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                              <Component id="lblUbication" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblDescription2" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="txtPowerMeter" pref="212" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="cmbLocationType" pref="212" max="32767" attributes="0"/>
+                                      <Component id="txtUbication" alignment="0" pref="212" max="32767" attributes="0"/>
+                                  </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="btnSearchPowerMeter" min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Component id="btnSearchUbication" min="-2" pref="30" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnClearPowerMeter" pref="30" max="32767" attributes="0"/>
-                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                  <Component id="btnClearLocation" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPane4" pref="216" max="32767" attributes="0"/>
+                              <Component id="jScrollPane4" alignment="0" pref="288" max="32767" attributes="0"/>
                           </Group>
+                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="12" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -120,23 +111,14 @@
                       <Component id="btnSearchUbication" min="-2" pref="20" max="-2" attributes="0"/>
                       <Component id="btnClearLocation" min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                          <Component id="lblPowerMeter" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtPowerMeter" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Component id="btnSearchPowerMeter" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnClearPowerMeter" alignment="1" min="-2" pref="20" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane4" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblDescription2" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblDescription2" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="99" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane2" pref="341" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -202,28 +184,6 @@
             <Property name="name" type="java.lang.String" value="lblLocationType" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblPowerMeter">
-          <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="lblPowerMeter.text"/>
-            <Property name="name" type="java.lang.String" value="lblPowerMeter" noResource="true"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtPowerMeter">
-          <Properties>
-            <Property name="editable" type="boolean" value="false"/>
-            <Property name="name" type="java.lang.String" value="txtPowerMeter" noResource="true"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnSearchPowerMeter">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" resourceKey="btnSearchPowerMeter.icon"/>
-            <Property name="horizontalTextPosition" type="int" value="2"/>
-            <Property name="name" type="java.lang.String" value="btnSearchPowerMeter" noResource="true"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSearchPowerMeterActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JComboBox" name="cmbLocationType">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -242,16 +202,38 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearLocationActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnClearPowerMeter">
+        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" resourceKey="btnClearPowerMeter.icon"/>
-            <Property name="text" type="java.lang.String" resourceKey="btnClearPowerMeter.text"/>
-            <Property name="name" type="java.lang.String" value="btnClearPowerMeter" noResource="true"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                <TitledBorder title="Medidores Asignados">
+                  <Property name="titleX" resourceKey="jScrollPane2.border.title"/>
+                </TitledBorder>
+              </Border>
+            </Property>
+            <Property name="name" type="java.lang.String" value="jScrollPane2" noResource="true"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearPowerMeterActionPerformed"/>
-          </Events>
-        </Component>
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTable" name="gridPowerMeters">
+              <Properties>
+                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                  <Table columnCount="4" rowCount="4">
+                    <Column editable="true" title="Title 1" type="java.lang.Object"/>
+                    <Column editable="true" title="Title 2" type="java.lang.Object"/>
+                    <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                    <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                  </Table>
+                </Property>
+                <Property name="name" type="java.lang.String" value="gridPowerMeters" noResource="true"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">

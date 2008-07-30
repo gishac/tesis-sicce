@@ -23,7 +23,9 @@ public class SicceuimanagerApp extends SingleFrameApplication {
         LoginForm loginForm = new LoginForm(sicceUIManagerView.getResourceMap());
         loginForm.setVisible(true);
         if(loginForm.getDialogResult() == DialogResult.Ok){
-            show(new SicceuimanagerView(this,loginForm.getCurrentUser()));
+            sicceUIManagerView.setCurrentUser(loginForm.getCurrentUser());
+            sicceUIManagerView.Init();
+            show(sicceUIManagerView);
         }
         else{
             getApplication().exit(null);
