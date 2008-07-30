@@ -7,7 +7,6 @@ import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
 import sicce.api.info.interfaces.IMeasure;
 import sicce.api.info.interfaces.IPowerMeter;
-import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.info.interfaces.IZone;
 
 /**
@@ -173,5 +172,12 @@ public abstract class AbstractLocation implements java.io.Serializable, ILocatio
         this.powerMeters = powerMeters;
     }
     
+    public void addLocationPowerMeter(IPowerMeter powerMeter){
+        this.powerMeters.add(powerMeter);
+    }
+    
+    public void removeLocationPowerMeter(IPowerMeter powerMeter){
+        this.powerMeters.remove(powerMeter);
+    }
     
 }

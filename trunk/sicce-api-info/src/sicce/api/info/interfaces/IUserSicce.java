@@ -41,4 +41,8 @@ public interface IUserSicce {
     public Set<IPowerMeter> getPowerMeters();
 
     public void setPowerMeters(Set<IPowerMeter> powerMeters);
+    
+    public void addUserPowerMeter(IPowerMeter powerMeter);
+
+    public void removeUserPowerMeter(IPowerMeter powerMeter);
 }
