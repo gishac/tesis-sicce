@@ -62,9 +62,19 @@ public class SicceuimanagerView extends FrameView {
 
     private IUserSicce currentUser;
 
-    public SicceuimanagerView(SingleFrameApplication app, IUserSicce user) {
-        this(app);
-        this.currentUser = user;
+    public void setCurrentUser(IUserSicce currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public SicceuimanagerView(SingleFrameApplication app) {
+        super(app);
+    }
+    
+    public void Init(){
+        ApplyLookAndFeel();
+        SetFrameSize();
+        initComponents();
+        SetFrameSize();
         toolBarHandler = new ToolBarHandler(toolBar, getTabManager());
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
@@ -78,19 +88,14 @@ public class SicceuimanagerView extends FrameView {
         tabManager.setResourceMap(resourceMap);
         Validator.Initialize(resourceMap.getString("ApplicationName"));
         ExceptionHandler.Initialize(resourceMap.getString("ApplicationName"), resourceMap.getString("ErrorMessage"));
-        
-         
     }
 
-    public SicceuimanagerView(SingleFrameApplication app) {
-
-        super(app);
-        ApplyLookAndFeel();
-        SetFrameSize();
-        initComponents();
-        SetFrameSize();
-
-    }
+//    public SicceuimanagerView(SingleFrameApplication app) {
+//
+//        super(app);
+//        
+//
+//    }
 
     @Action
     public void showAboutBox() {

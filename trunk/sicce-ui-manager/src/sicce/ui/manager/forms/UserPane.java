@@ -7,13 +7,16 @@ package sicce.ui.manager.forms;
 
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
+import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.businesslogic.RoleBizObject;
 import sicce.api.businesslogic.model.SicceComboBoxModel;
 import sicce.api.businesslogic.renderer.SicceComboBoxRenderer;
 import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.businesslogic.UserBizObject;
+import sicce.api.businesslogic.model.PowerMeterTableModelForUsers;
 import sicce.api.businesslogic.model.UserTableModel;
+import sicce.api.businesslogic.renderer.PowerMeterUserCellRenderer;
 import sicce.api.dataaccess.UserDB;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
@@ -32,11 +35,14 @@ import sicce.ui.manager.controls.SearchDialog;
  */
 public class UserPane extends JTabExtended<IUserSicce> {
 
-    SicceComboBoxModel<IRole> roleComboBoxModel;
-    SicceComboBoxRenderer roleComboBoxRenderer;
-    RoleBizObject roleBizObject;
-    UserBizObject userBizObject;
-    UserTableModel userTableModel;
+    private SicceComboBoxModel<IRole> roleComboBoxModel;
+    private SicceComboBoxRenderer roleComboBoxRenderer;
+    private RoleBizObject roleBizObject;
+    private UserBizObject userBizObject;
+    private UserTableModel userTableModel;
+    private PowerMeterTableModelForUsers powerMeterTableModel;
+    private PowerMeterBizObject powerMeterBizObject;
+    private PowerMeterUserCellRenderer powerMeterCellRenderer;
 
     /** Creates new form LocationPane */
     public UserPane() {
@@ -46,11 +52,14 @@ public class UserPane extends JTabExtended<IUserSicce> {
         getControlsToClear().add(txtName);
         getControlsToClear().add(txtPassword);
         getControlsToClear().add(cmbRole);
+        getControlsToClear().add(gridPowerMeters);
         getControlsToEnable().add(txtFirstName);
         getControlsToEnable().add(txtLastName);
         getControlsToEnable().add(txtName);
         getControlsToEnable().add(txtPassword);
         getControlsToEnable().add(cmbRole);
+        getControlsToEnable().add(gridUsers);
+        getControlsToEnable().add(gridPowerMeters);
         ComponentUtil.SetState(false, getControlsToEnable());
         txtName.setDocument(new JTextFieldLimit(20));
         txtLastName.setDocument(new JTextFieldLimit(20));
@@ -58,7 +67,11 @@ public class UserPane extends JTabExtended<IUserSicce> {
         txtPassword.setDocument(new JTextFieldLimit(20));
         userBizObject = new UserBizObject();
         roleBizObject = new RoleBizObject();
+        powerMeterBizObject = new PowerMeterBizObject();
+        powerMeterCellRenderer = new PowerMeterUserCellRenderer();
+        gridPowerMeters.setDefaultRenderer(String.class, powerMeterCellRenderer);
         LoadComboBoxes();
+        FillPowerMetersGrid();
         FillGrid();
     }
 
@@ -88,6 +101,8 @@ public class UserPane extends JTabExtended<IUserSicce> {
         txtLastName = new javax.swing.JTextField();
         cmbRole = new javax.swing.JComboBox();
         txtPassword = new javax.swing.JPasswordField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        gridPowerMeters = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         gridUsers = new javax.swing.JTable();
 
@@ -101,57 +116,115 @@ public class UserPane extends JTabExtended<IUserSicce> {
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(UserPane.class);
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel4.border.title"))); // NOI18N
         jPanel4.setName("jPanel4"); // NOI18N
-        jPanel4.setLayout(null);
 
         txtName.setName("txtName"); // NOI18N
-        jPanel4.add(txtName);
-        txtName.setBounds(120, 30, 150, 20);
 
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
-        jPanel4.add(jLabel3);
-        jLabel3.setBounds(20, 90, 100, 14);
 
         jLabel4.setBackground(resourceMap.getColor("jLabel4.background")); // NOI18N
         jLabel4.setForeground(resourceMap.getColor("jLabel4.foreground")); // NOI18N
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
         jLabel4.setOpaque(true);
-        jPanel4.add(jLabel4);
-        jLabel4.setBounds(20, 30, 60, 14);
 
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
-        jPanel4.add(jLabel2);
-        jLabel2.setBounds(20, 60, 80, 14);
 
         jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
-        jPanel4.add(jLabel5);
-        jLabel5.setBounds(20, 150, 60, 14);
 
         jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
         jLabel6.setName("jLabel6"); // NOI18N
-        jPanel4.add(jLabel6);
-        jLabel6.setBounds(20, 120, 60, 14);
 
         txtFirstName.setName("txtFirstName"); // NOI18N
-        jPanel4.add(txtFirstName);
-        txtFirstName.setBounds(120, 120, 200, 20);
 
         txtLastName.setName("txtLastName"); // NOI18N
-        jPanel4.add(txtLastName);
-        txtLastName.setBounds(120, 150, 200, 20);
 
         cmbRole.setName("cmbRole"); // NOI18N
         cmbRole.setOpaque(false);
-        jPanel4.add(cmbRole);
-        cmbRole.setBounds(120, 60, 200, 20);
 
         txtPassword.setText(resourceMap.getString("txtPassword.text")); // NOI18N
         txtPassword.setName("txtPassword"); // NOI18N
-        jPanel4.add(txtPassword);
-        txtPassword.setBounds(120, 90, 200, 20);
+
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jScrollPane2.border.title"))); // NOI18N
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+
+        gridPowerMeters.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        gridPowerMeters.setName("gridPowerMeters"); // NOI18N
+        jScrollPane2.setViewportView(gridPowerMeters);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(cmbRole, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
+                        .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
+                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(cmbRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE))
+        );
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -187,7 +260,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -197,7 +270,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -212,6 +285,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
     }//GEN-LAST:event_formComponentShown
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cmbRole;
+    private javax.swing.JTable gridPowerMeters;
     private javax.swing.JTable gridUsers;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -220,6 +294,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtName;
@@ -245,6 +320,8 @@ public class UserPane extends JTabExtended<IUserSicce> {
         super.New();
         currentObject = ClassFactory.getUserInstance();
         txtName.requestFocusInWindow();
+        powerMeterCellRenderer.setCurrentUser(currentObject);
+        FillPowerMetersGrid();
     }
 
     @Override
@@ -260,10 +337,12 @@ public class UserPane extends JTabExtended<IUserSicce> {
             currentObject.setPasswordSicce(EncryptionProvider.Encrypt(new String(txtPassword.getPassword())));
             currentObject.setUsernameSicce(txtName.getText());
             currentObject.setLastname(txtLastName.getText());
+            
             if (IsObjectLoaded()) {
                 return Update();
             }
             UserDB.Save(currentObject);
+            powerMeterCellRenderer.setCurrentUser(currentObject);
             FillGrid();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -314,6 +393,9 @@ public class UserPane extends JTabExtended<IUserSicce> {
         roleComboBoxModel.setSelectedItem(currentObject.getRole(), roleComboBoxRenderer);
         txtPassword.setText(EncryptionProvider.Decrypt(currentObject.getPasswordSicce()));
         txtLastName.setText(currentObject.getLastname());
+        FillPowerMetersGrid();
+        powerMeterTableModel.setReadOnly(true);
+        powerMeterCellRenderer.setCurrentUser(currentObject);
     }
 
     @Override
@@ -355,5 +437,15 @@ public class UserPane extends JTabExtended<IUserSicce> {
             return false;
         }
         return true;
+    }
+    
+    /**
+     * 
+     */
+    private void FillPowerMetersGrid(){
+        powerMeterTableModel = null;
+        powerMeterTableModel = new PowerMeterTableModelForUsers(powerMeterBizObject.GetAllPowerMeter(), currentObject);
+        gridPowerMeters.setModel(powerMeterTableModel);
+        gridPowerMeters.setEnabled(true);
     }
 }
