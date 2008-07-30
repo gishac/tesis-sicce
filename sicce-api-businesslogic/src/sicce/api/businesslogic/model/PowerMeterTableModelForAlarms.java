@@ -6,7 +6,6 @@
 package sicce.api.businesslogic.model;
 
 import sicce.api.businesslogic.*;
-import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.businesslogic.factory.ClassFactory;
 import java.util.List;
 import java.util.Set;
@@ -33,10 +32,6 @@ public class PowerMeterTableModelForAlarms extends SicceTableModel<IPowerMeter> 
         alarmBizObject = new AlarmBizObject();
     }
     
-    @Override
-    public int getRowCount() {
-        return getDataSource().size();
-    }
     
      @Override
     public void setDataSource(List dataSource) {
