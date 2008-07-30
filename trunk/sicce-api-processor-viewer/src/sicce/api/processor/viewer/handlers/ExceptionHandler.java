@@ -49,7 +49,7 @@ public class ExceptionHandler {
         if(this.trayIcon != null){
             trayIcon.displayMessage("Error procesando lectura", 
            "Ocurrio un error en el medidor: " + powerMeter.getDescription() + 
-                    ". \n Comuníquese con el Administrador del sistema." ,
+                    "\n" + "Comuníquese con el Administrador del sistema." ,
            TrayIcon.MessageType.ERROR);
         }
         this.exceptionList.addElement(error);

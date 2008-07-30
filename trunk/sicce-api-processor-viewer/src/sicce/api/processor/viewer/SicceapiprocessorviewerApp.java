@@ -6,6 +6,7 @@ package sicce.api.processor.viewer;
 
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
+import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.EncryptionProvider;
 
 /**
@@ -17,7 +18,18 @@ public class SicceapiprocessorviewerApp extends SingleFrameApplication {
      * At startup create and show the main frame of the application.
      */
     @Override protected void startup() {
-        show(new SicceapiprocessorviewerView(this));
+        
+        SicceapiprocessorviewerView sicceMonitor = new SicceapiprocessorviewerView(this);
+        LoginForm loginForm = new LoginForm(sicceMonitor.getResourceMap());
+        loginForm.setVisible(true);
+        if(loginForm.getDialogResult() == DialogResult.Ok){
+            sicceMonitor.setCurrentUser(loginForm.getCurrentUser());
+            sicceMonitor.Init();
+            show(sicceMonitor);
+        }
+        else{
+            getApplication().exit(null);
+        }
     }
 
     /**

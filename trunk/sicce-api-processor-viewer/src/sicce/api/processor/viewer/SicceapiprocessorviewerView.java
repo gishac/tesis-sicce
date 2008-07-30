@@ -15,6 +15,7 @@ import org.jdesktop.application.FrameView;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
+import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.processor.Processor;
 import sicce.api.processor.viewer.controls.ChartPane;
 import sicce.api.processor.viewer.controls.ErrorsPane;
@@ -26,9 +27,17 @@ import sicce.api.processor.viewer.controls.MeasuresPane;
  */
 public class SicceapiprocessorviewerView extends FrameView {
 
+    private IUserSicce currentUser;
+
+    public void setCurrentUser(IUserSicce currentUser) {
+        this.currentUser = currentUser;
+    }
+    
     public SicceapiprocessorviewerView(SingleFrameApplication app) {
         super(app);
-
+    }
+    
+    public void Init(){
         initComponents();        
         OrganizeUIElements();
         SetTrayIcon();
@@ -102,7 +111,7 @@ public class SicceapiprocessorviewerView extends FrameView {
         errorsPane = new ErrorsPane(trayIcon);
         getTabManager().addTab("Gráficos del Consumo Eléctrico", chartPane);
         getTabManager().addTab("Log de Lecturas del Consumo Eléctrico", logPane);
-        getTabManager().addTab("Detalles de Registor Por Medidor", measuresPane);
+        getTabManager().addTab("Detalle de Registros Por Medidor", measuresPane);
         getTabManager().addTab("Detalle de Errores", errorsPane);
     }
 
@@ -111,7 +120,7 @@ public class SicceapiprocessorviewerView extends FrameView {
      * 
      */
     private void RunProcessor() {
-      Processor.DoProcess();
+      Processor.DoProcess(currentUser.getPowerMeters());
     }
     
     /**
@@ -121,7 +130,7 @@ public class SicceapiprocessorviewerView extends FrameView {
         if(SystemTray.isSupported()){
             try {
                 SystemTray tray = SystemTray.getSystemTray();
-                trayIcon = new TrayIcon(getResourceMap().getImageIcon("TrayIcon").getImage(), "Sicce");
+                trayIcon = new TrayIcon(getResourceMap().getImageIcon("TrayIcon").getImage(), getResourceMap().getString("ApplicationName"));
                 trayIcon.setImageAutoSize(true);
                 tray.add(trayIcon);
             } catch (AWTException ex) {
