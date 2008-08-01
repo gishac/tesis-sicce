@@ -7,6 +7,7 @@ import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdesktop.application.Action;
@@ -15,6 +16,9 @@ import org.jdesktop.application.FrameView;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
+import sicce.api.businesslogic.AlarmBizObject;
+import sicce.api.info.interfaces.IAlarm;
+import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.processor.Processor;
 import sicce.api.processor.viewer.controls.ChartPane;
@@ -32,13 +36,13 @@ public class SicceapiprocessorviewerView extends FrameView {
     public void setCurrentUser(IUserSicce currentUser) {
         this.currentUser = currentUser;
     }
-    
+
     public SicceapiprocessorviewerView(SingleFrameApplication app) {
         super(app);
     }
-    
-    public void Init(){
-        initComponents();        
+
+    public void Init() {
+        initComponents();
         OrganizeUIElements();
         SetTrayIcon();
         BuildPanes();
@@ -82,7 +86,6 @@ public class SicceapiprocessorviewerView extends FrameView {
     private ErrorsPane errorsPane;
     private TrayIcon trayIcon;
 
-  
     /**
      * gish@c
      * Retorna la instancia del control que administra los tabs
@@ -115,19 +118,25 @@ public class SicceapiprocessorviewerView extends FrameView {
         getTabManager().addTab("Detalle de Errores", errorsPane);
     }
 
-
     /**
      * 
      */
     private void RunProcessor() {
-      Processor.DoProcess(currentUser.getPowerMeters());
+        AlarmBizObject alarmBizObject = new AlarmBizObject();
+        for (IPowerMeter powerMeter : currentUser.getPowerMeters()) {
+            for (IAlarm alarm : powerMeter.getAlarms()) {
+                alarm.RegisterAlarmListener(alarmBizObject);
+                Processor.AddObserver((Observer)alarm);
+            }
+        }
+        Processor.DoProcess(currentUser.getPowerMeters());
     }
-    
+
     /**
      * 
      */
-    private void SetTrayIcon(){
-        if(SystemTray.isSupported()){
+    private void SetTrayIcon() {
+        if (SystemTray.isSupported()) {
             try {
                 SystemTray tray = SystemTray.getSystemTray();
                 trayIcon = new TrayIcon(getResourceMap().getImageIcon("TrayIcon").getImage(), getResourceMap().getString("ApplicationName"));
@@ -138,6 +147,4 @@ public class SicceapiprocessorviewerView extends FrameView {
             }
         }
     }
-    
-   
 }
