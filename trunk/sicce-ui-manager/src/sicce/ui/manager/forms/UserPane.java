@@ -51,6 +51,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
         getControlsToClear().add(txtLastName);
         getControlsToClear().add(txtName);
         getControlsToClear().add(txtPassword);
+        getControlsToClear().add(txtMail);
         getControlsToClear().add(cmbRole);
         getControlsToClear().add(gridPowerMeters);
         getControlsToEnable().add(txtFirstName);
@@ -60,6 +61,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
         getControlsToEnable().add(cmbRole);
         getControlsToEnable().add(gridUsers);
         getControlsToEnable().add(gridPowerMeters);
+        getControlsToEnable().add(txtMail);
         ComponentUtil.SetState(false, getControlsToEnable());
         txtName.setDocument(new JTextFieldLimit(20));
         txtLastName.setDocument(new JTextFieldLimit(20));
@@ -103,6 +105,8 @@ public class UserPane extends JTabExtended<IUserSicce> {
         txtPassword = new javax.swing.JPasswordField();
         jScrollPane2 = new javax.swing.JScrollPane();
         gridPowerMeters = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        txtMail = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         gridUsers = new javax.swing.JTable();
 
@@ -164,6 +168,12 @@ public class UserPane extends JTabExtended<IUserSicce> {
         gridPowerMeters.setName("gridPowerMeters"); // NOI18N
         jScrollPane2.setViewportView(gridPowerMeters);
 
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        txtMail.setText(resourceMap.getString("txtMail.text")); // NOI18N
+        txtMail.setName("txtMail"); // NOI18N
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -190,10 +200,17 @@ public class UserPane extends JTabExtended<IUserSicce> {
                         .addGap(40, 40, 40)
                         .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel1)))
                         .addGap(40, 40, 40)
-                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtMail)
+                            .addComponent(txtLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)))
@@ -222,8 +239,12 @@ public class UserPane extends JTabExtended<IUserSicce> {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(txtMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))
         );
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -287,6 +308,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
     private javax.swing.JComboBox cmbRole;
     private javax.swing.JTable gridPowerMeters;
     private javax.swing.JTable gridUsers;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -297,6 +319,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtLastName;
+    private javax.swing.JTextField txtMail;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
@@ -337,6 +360,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
             currentObject.setPasswordSicce(EncryptionProvider.Encrypt(new String(txtPassword.getPassword())));
             currentObject.setUsernameSicce(txtName.getText());
             currentObject.setLastname(txtLastName.getText());
+            currentObject.setEmail(txtMail.getText());
             
             if (IsObjectLoaded()) {
                 return Update();
@@ -393,6 +417,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
         roleComboBoxModel.setSelectedItem(currentObject.getRole(), roleComboBoxRenderer);
         txtPassword.setText(EncryptionProvider.Decrypt(currentObject.getPasswordSicce()));
         txtLastName.setText(currentObject.getLastname());
+        txtMail.setText(currentObject.getEmail());
         FillPowerMetersGrid();
         powerMeterTableModel.setReadOnly(true);
         powerMeterCellRenderer.setCurrentUser(currentObject);
