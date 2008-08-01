@@ -11,8 +11,13 @@
             <generator class="assigned" />
         </id>
         <property name="description" type="java.lang.String">
-            <column name="DESCRIPTION" length="45" />
+            <column name="DESCRIPTION" length="200" />
         </property>
+        
+        <property name="parameterKey" type="java.lang.String">
+            <column name="PARAMETER_KEY" length="100" />
+        </property>
+        
         <property name="value" type="java.lang.String">
             <column name="VALUE" length="200" />
         </property>

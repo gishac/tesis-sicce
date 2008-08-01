@@ -33,6 +33,10 @@ public interface IUserSicce {
     String getLastname();
 
     Integer getID();
+    
+    String getEmail();
+    
+    public void setEmail(String email);
 
     public Set<IAlarm> getAlarms();
 
