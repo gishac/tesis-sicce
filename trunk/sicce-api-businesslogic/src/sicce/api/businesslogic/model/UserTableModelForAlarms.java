@@ -5,7 +5,6 @@
 package sicce.api.businesslogic.model;
 
 import sicce.api.businesslogic.*;
-import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.businesslogic.factory.ClassFactory;
 import java.util.List;
 import java.util.Set;
@@ -85,7 +84,7 @@ public class UserTableModelForAlarms extends SicceTableModel<IUserSicce> {
         IUserSicce user = getDataSource().get(rowIndex);
         boolean state = false;
         for (IUserSicce activeUser : alarm.getAlarmUsers()) {
-            if (user.getID() == activeUser.getID()) {
+            if (user.getID().equals(activeUser.getID())) {
                 state = true;
                 break;
             }
@@ -119,7 +118,7 @@ public class UserTableModelForAlarms extends SicceTableModel<IUserSicce> {
      */
     private void RemoveUserFromAlarm(IUserSicce user, IAlarm alarm) {
         for (IUserSicce userInAlarm : alarm.getAlarmUsers()) {
-            if (userInAlarm.getID() == user.getID()) {
+            if (userInAlarm.getID().equals(user.getID())) {
                 user = userInAlarm;
                 break;
             }
