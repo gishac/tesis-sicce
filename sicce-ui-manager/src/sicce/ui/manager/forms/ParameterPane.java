@@ -6,11 +6,15 @@
 
 package sicce.ui.manager.forms;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import sicce.api.businesslogic.ParameterBizObject;
 import sicce.api.businesslogic.model.ParameterTableModel;
+import sicce.api.info.ConstantsProvider;
 import sicce.api.info.ToolBarStateInfo;
 import sicce.api.info.interfaces.IParameter;
+import sicce.api.util.JTextFieldInteger;
 import sicce.ui.manager.controls.JTabExtended;
 
 /**
@@ -21,15 +25,19 @@ public class ParameterPane extends JTabExtended {
     
     private ParameterTableModel parameterTableModel;
     private ParameterBizObject parameterBizObject;
-    private List<IParameter> parameters;
+    private HashMap<String,IParameter> parametersForMail;
+    List<IParameter> parameters;
+    
     
     /** Creates new form ParameterPane */
     public ParameterPane() {
         initComponents();
         parameterBizObject = new ParameterBizObject();
+        parametersForMail = new HashMap<String, IParameter>();
         this.setHandleToolBarStates(false);
         this.setToolBarStateInfo(new ToolBarStateInfo(false, true, false, false, false, false));
         this.getToolBarStateInfo().setAlwaysEnabledSave(true);
+        txtPort.setDocument(new JTextFieldInteger());
         FillGrid();
     }
     
@@ -44,6 +52,16 @@ public class ParameterPane extends JTabExtended {
         jScrollPane1 = new javax.swing.JScrollPane();
         parameterTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        txtSmtpServer = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtPort = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtPassword = new javax.swing.JTextField();
+        txtMailSender = new javax.swing.JTextField();
+        chkSSL = new javax.swing.JCheckBox();
 
         setName("Form"); // NOI18N
 
@@ -71,38 +89,135 @@ public class ParameterPane extends JTabExtended {
         jLabel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jLabel1.setName("jLabel1"); // NOI18N
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel1.border.title"))); // NOI18N
+        jPanel1.setName("jPanel1"); // NOI18N
+
+        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
+        jLabel2.setName("jLabel2"); // NOI18N
+
+        txtSmtpServer.setText(resourceMap.getString("txtSmtpServer.text")); // NOI18N
+        txtSmtpServer.setName("txtSmtpServer"); // NOI18N
+
+        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
+        jLabel3.setName("jLabel3"); // NOI18N
+
+        txtPort.setText(resourceMap.getString("txtPort.text")); // NOI18N
+        txtPort.setName("txtPort"); // NOI18N
+
+        jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
+        jLabel4.setName("jLabel4"); // NOI18N
+
+        jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
+        jLabel5.setName("jLabel5"); // NOI18N
+
+        txtPassword.setText(resourceMap.getString("txtPassword.text")); // NOI18N
+        txtPassword.setName("txtPassword"); // NOI18N
+
+        txtMailSender.setText(resourceMap.getString("txtMailSender.text")); // NOI18N
+        txtMailSender.setName("txtMailSender"); // NOI18N
+
+        chkSSL.setText(resourceMap.getString("chkSSL.text")); // NOI18N
+        chkSSL.setActionCommand(resourceMap.getString("chkSSL.actionCommand")); // NOI18N
+        chkSSL.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        chkSSL.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        chkSSL.setName("chkSSL"); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(chkSSL)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtPassword)
+                            .addComponent(txtMailSender)
+                            .addComponent(txtPort)
+                            .addComponent(txtSmtpServer, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
+                        .addContainerGap(469, Short.MAX_VALUE))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtSmtpServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtMailSender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkSSL)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addGap(25, 25, 25))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox chkSSL;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable parameterTable;
+    private javax.swing.JTextField txtMailSender;
+    private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtPort;
+    private javax.swing.JTextField txtSmtpServer;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void FillGrid() {
         parameters = parameterBizObject.GetAllParameters();
+        for(IParameter parameter : parameters){
+            if(parameterBizObject.getParameterCodesForMail().contains(parameter.getParameterKey()))
+                parametersForMail.put(parameter.getParameterKey(), parameter);
+        }
         parameterTableModel = new ParameterTableModel(parameters);
         parameterTable.setModel(parameterTableModel);
     }
@@ -110,7 +225,26 @@ public class ParameterPane extends JTabExtended {
     @Override
     public boolean Save() throws Exception {        
         parameterBizObject.Update(parameters);
+        parametersForMail.get(ConstantsProvider.SMTP_SERVER).setValue(txtSmtpServer.getText());
+        parametersForMail.get(ConstantsProvider.SMTP_PORT).setValue(txtPort.getText());
+        parametersForMail.get(ConstantsProvider.MAIL_SENDER).setValue(txtMailSender.getText());
+        parametersForMail.get(ConstantsProvider.MAIL_SENDER_PASSWORD).setValue(txtPassword.getText());
+        parametersForMail.get(ConstantsProvider.MAIL_USE_SSL).setValue(chkSSL.isSelected()? "true" : "false");
+        List<IParameter> mailParameters = new ArrayList<IParameter>(parametersForMail.values());
+        parameterBizObject.Update(mailParameters);
         return true; //Envia true para cancelar el edit
     }
+
+    @Override
+    public void SetUIElements() {
+        txtSmtpServer.setText(parametersForMail.get(ConstantsProvider.SMTP_SERVER).getValue());
+        txtPort.setText(parametersForMail.get(ConstantsProvider.SMTP_PORT).getValue());
+        txtMailSender.setText(parametersForMail.get(ConstantsProvider.MAIL_SENDER).getValue());
+        txtPassword.setText(parametersForMail.get(ConstantsProvider.MAIL_SENDER_PASSWORD).getValue());
+        boolean useSSL = Boolean.parseBoolean(parametersForMail.get(ConstantsProvider.MAIL_USE_SSL).getValue());
+        chkSSL.setSelected(useSSL);
+    }
+    
+    
     
 }

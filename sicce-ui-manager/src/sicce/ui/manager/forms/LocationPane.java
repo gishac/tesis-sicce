@@ -362,9 +362,7 @@ public class LocationPane extends JTabExtended<ILocation> {
             ltype = (ILocationType) cmbLocationType.getSelectedItem();
             currentObject.setLocationType(ltype);
             currentObject.setDescription(txtDescription.getText());
-            currentObject.setLocation(plocation);            
-            IPowerMeter pm = (IPowerMeter) PowerMeterDB.GetPowerMeterByDeviceID("02");          
-            currentObject.getPowerMeters().add(pm);
+            currentObject.setLocation(plocation);
             
             if (IsObjectLoaded()) {
                 return Update();

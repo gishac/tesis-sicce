@@ -6,10 +6,16 @@
 package sicce.ui.manager.forms;
 
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ListSelectionModel;
+import sicce.api.businesslogic.AlarmBizObject;
 import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.businesslogic.model.PowerMeterTableModelForAlarms;
 import sicce.api.businesslogic.UserBizObject;
+import sicce.api.businesslogic.model.AlarmTableModel;
+import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.businesslogic.model.UserTableModelForAlarms;
 import sicce.api.dataaccess.AlarmDB;
 import sicce.api.dataaccess.ScheduledDayDB;
@@ -31,6 +37,8 @@ public class AlarmPane extends JTabExtended<IAlarm> {
     private UserTableModelForAlarms userTableModel;
     private PowerMeterBizObject powerMeterBizObject;
     private UserBizObject userBizObject;
+    private AlarmTableModel alarmTableModel;
+    private AlarmBizObject alarmBizObject;
 
     /** Creates new form AlarmPane */
     public AlarmPane() {
@@ -62,6 +70,7 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         getControlsToEnable().add(chkFriday);
         getControlsToEnable().add(chkSaturday);
         getControlsToEnable().add(chkSunday);
+        alarmBizObject = new AlarmBizObject();
         powerMeterBizObject = new PowerMeterBizObject();
         userBizObject = new UserBizObject();
         FillPowerMetersGrid();
@@ -101,8 +110,14 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         jScrollPane3 = new javax.swing.JScrollPane();
         gridUsers = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
+        gridAlarms = new javax.swing.JTable();
 
         setName("Form"); // NOI18N
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(AlarmPane.class);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel1.border.title"))); // NOI18N
@@ -298,6 +313,20 @@ public class AlarmPane extends JTabExtended<IAlarm> {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
+        gridAlarms.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        gridAlarms.setName("gridAlarms"); // NOI18N
+        jScrollPane1.setViewportView(gridAlarms);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -319,6 +348,14 @@ public class AlarmPane extends JTabExtended<IAlarm> {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        if (currentObject == null) {
+            FillGrid();
+            FillUsersGrid();
+            FillPowerMetersGrid();
+        }
+    }//GEN-LAST:event_formComponentShown
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox chkFriday;
     private javax.swing.JCheckBox chkMonday;
@@ -330,6 +367,7 @@ public class AlarmPane extends JTabExtended<IAlarm> {
     private javax.swing.JComboBox cmbAlarmType;
     private javax.swing.JComboBox cmbEndTime;
     private javax.swing.JComboBox cmbStartTime;
+    private javax.swing.JTable gridAlarms;
     private javax.swing.JTable gridPowerMeters;
     private javax.swing.JTable gridUsers;
     private javax.swing.JPanel jPanel1;
@@ -411,11 +449,136 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         return cancelAction;
     }
 
+    @Override
+    public boolean Update() throws Exception {
+        cancelAction = false;
+        try {
+            AlarmDB.Update(currentObject);
+            ScheduledDayDB.Update(currentObject.getScheduledDays());
+            FillGrid();
+        } catch (Exception ex) {
+            cancelAction = true;
+        }
+        return cancelAction;
+    }
+
+    @Override
+    public boolean Delete() throws Exception {
+        cancelAction = false;
+        try {
+            AlarmDB.Delete(currentObject);
+            super.Delete();
+            FillGrid();
+
+        } catch (Exception ex) {
+            cancelAction = true;
+            throw ex;
+        }
+        return cancelAction;
+    }
+
+    @Override
+    public void FillGrid() {
+        alarmTableModel = new AlarmTableModel(alarmBizObject.GetAllAlarms());
+        gridAlarms.setModel(alarmTableModel);
+    }
+
+    @Override
+    public void CancelSave() {
+        if (currentObject != null) {
+            if (currentObject.getIdAlarm() != null) {
+                this.currentObject = AlarmDB.FindAlarmByID(currentObject.getIdAlarm());
+            } else {
+                this.currentObject = ClassFactory.getAlarmInstance();
+            }
+        }
+    }
+
+    @Override
+    public void RegisterSelectionListener() {
+        gridAlarms.getSelectionModel().addListSelectionListener(selectionListener);
+        gridAlarms.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    @Override
+    public void ItemSelected(int selectedIndex) {
+        super.ItemSelected(selectedIndex);
+        SicceTableModel<IAlarm> tableModel = (SicceTableModel<IAlarm>) gridAlarms.getModel();
+        currentObject = tableModel.getRow(selectedIndex);
+        SetUIElements();
+    }
+
+    @Override
+    public void SetUIElements() {
+        if (currentObject == null) {
+            return;
+        }
+        cmbStartTime.setSelectedIndex(0);
+        cmbEndTime.setSelectedIndex(0);
+        txtDescription.setText(currentObject.getDescription());
+        txtKwMax.setText(String.valueOf(currentObject.getMaxValueAllowed()));
+        switch (currentObject.getAlarmTypeEnum()) {
+            case Mail:
+                cmbAlarmType.setSelectedIndex(1);
+                break;
+            case SMS:
+                cmbAlarmType.setSelectedIndex(0);
+                break;
+        }
+
+        chkMonday.setSelected(false);
+        chkTuesday.setSelected(false);
+        chkWednesday.setSelected(false);
+        chkThursday.setSelected(false);
+        chkFriday.setSelected(false);
+        chkSaturday.setSelected(false);
+        chkSunday.setSelected(false);
+
+        for (IScheduleDay dayInSchedule : currentObject.getScheduledDays()) {
+            switch (dayInSchedule.getDayScheduled()) {
+                case Calendar.MONDAY:
+                    chkMonday.setSelected(true);
+                    break;
+                case Calendar.TUESDAY:
+                    chkTuesday.setSelected(true);
+                    break;
+                case Calendar.WEDNESDAY:
+                    chkWednesday.setSelected(true);
+                    break;
+                case Calendar.THURSDAY:
+                    chkThursday.setSelected(true);
+                    break;
+                case Calendar.FRIDAY:
+                    chkFriday.setSelected(true);
+                    break;
+                case Calendar.SATURDAY:
+                    chkSaturday.setSelected(true);
+                    break;
+                case Calendar.SUNDAY:
+                    chkSunday.setSelected(true);
+                    break;
+            }
+            cmbStartTime.setSelectedItem(dayInSchedule.getStartTime().toString());
+            cmbEndTime.setSelectedItem(dayInSchedule.getEndTime().toString());
+        }
+        FillUsersGrid();
+        FillPowerMetersGrid();
+    }
+
     /**
      * 
      * @param alarm
      */
     public void SetScheduledDays(IAlarm alarm) {
+
+        for (IScheduleDay scheduledDay : alarm.getScheduledDays()) {
+            try {
+                ScheduledDayDB.Delete(scheduledDay);
+            } catch (Exception ex) {
+                Logger.getLogger(AlarmPane.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        alarm.getScheduledDays().clear();
         SetScheduledDay(alarm, chkMonday.isSelected(), Calendar.MONDAY);
         SetScheduledDay(alarm, chkTuesday.isSelected(), Calendar.TUESDAY);
         SetScheduledDay(alarm, chkWednesday.isSelected(), Calendar.WEDNESDAY);
