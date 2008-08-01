@@ -16,4 +16,6 @@ public interface IParameter {
     String getDescription();
     void setValue(String value);
     String getValue();
+    void setParameterKey(String parameterKey);
+    String getParameterKey();
 }

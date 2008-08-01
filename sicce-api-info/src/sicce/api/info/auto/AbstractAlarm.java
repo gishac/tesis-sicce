@@ -156,7 +156,9 @@ public abstract class AbstractAlarm implements IAlarm {
     }
 
     public AlarmType getAlarmTypeEnum() {
-        return AlarmType.values()[getAlarmType()];
+        if(getAlarmType().intValue() == 1)
+            return AlarmType.Mail;
+        return AlarmType.SMS;
     }
 
     public void setAlarmTypeEnum(AlarmType alarmType) {

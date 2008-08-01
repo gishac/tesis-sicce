@@ -22,6 +22,7 @@ public abstract class AbstractUserSicce implements IUserSicce, java.io.Serializa
     protected String passwordSicce;
     protected Set<IAlarm> alarms = new HashSet<IAlarm>(0);
     protected Set<IPowerMeter> powerMeters = new HashSet(0);
+    protected String email;
 
     
 
@@ -132,5 +133,13 @@ public abstract class AbstractUserSicce implements IUserSicce, java.io.Serializa
 
     public void removeUserPowerMeter(IPowerMeter powerMeter) {
         this.powerMeters.remove(powerMeter);
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

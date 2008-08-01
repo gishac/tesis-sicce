@@ -86,12 +86,12 @@ public class AbstractScheduleDay {
         boolean isActive = false;
         int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         if(getStartTime() > getEndTime()){
-            if(currentHour >= getStartTime() || (currentHour >= 0 && currentHour < getEndTime()))
+            if(currentHour >= getStartTime().intValue() || (currentHour >= 0 && currentHour < getEndTime().intValue()))
                 isActive = true;            
         }
         else
         {
-            if(currentHour >= getStartTime() && currentHour <= getEndTime())
+            if(currentHour >= getStartTime().intValue() && currentHour < getEndTime().intValue())
                 isActive = true;
         }
         return isActive;
