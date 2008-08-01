@@ -20,6 +20,7 @@ public class ParameterDAO extends HibernateDaoSupport {
     private static final Log log = LogFactory.getLog(ParameterDAO.class);
     // property constants
     public static final String DESCRIPTION = "description";
+    public static final String PARAMETER_KEY = "parameterKey";
     public static final String VALUE = "value";
 
     protected void initDao() {
@@ -96,6 +97,10 @@ public class ParameterDAO extends HibernateDaoSupport {
 
     public List findByDescription(Object description) {
         return findByProperty(DESCRIPTION, description);
+    }
+    
+    public List findByKey(Object parameterKey) {
+        return findByProperty(PARAMETER_KEY, parameterKey);
     }
 
     public List findByValue(Object value) {

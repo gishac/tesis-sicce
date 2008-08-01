@@ -11,7 +11,8 @@ CREATE TABLE POWER_METER (
 
 CREATE TABLE PARAMETER (
   ID_PARAMETER INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  DESCRIPTION VARCHAR(100) NULL,
+  PARAMETER_KEY VARCHAR(100) NULL,
+  DESCRIPTION VARCHAR(200) NULL,
   VALUE VARCHAR(200) NULL,
   PRIMARY KEY(ID_PARAMETER)
 );
@@ -69,6 +70,7 @@ CREATE TABLE USER_SICCE (
   CODE_UCSG INTEGER UNSIGNED NULL,
   USERNAME_SICCE VARCHAR(20) NULL,
   PASSWORD_SICCE VARCHAR(100) NULL,
+  EMAIL VARCHAR(200) NULL,
   PRIMARY KEY(ID_USER_SICCE),
   INDEX USER_SICCE_FKIndex1(ID_ROLE),
   FOREIGN KEY(ID_ROLE)
@@ -219,7 +221,7 @@ CREATE TABLE SCHEDULE_DAY (
   INDEX ALARM_FKIndex1(ID_ALARM),
   FOREIGN KEY(ID_ALARM)
     REFERENCES ALARM(ID_ALARM)
-      ON DELETE NO ACTION
+      ON DELETE CASCADE
       ON UPDATE NO ACTION
 );
 
@@ -295,13 +297,18 @@ insert into option_role values(1,15);
 insert into location_type values(0,'Edificio');
 insert into location_type values(0,'Facultad');
 
-insert into PARAMETER values(0,'DIGI_PORT','2101');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_COMMAND','03');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES','03');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES','00');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES','00');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES','62');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_CRC_HI_BYTES','C4');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_CRC_LO_BYTES','67');
-insert into PARAMETER values(0,'READ_INTERVAL','10');
+insert into PARAMETER values(0,'DIGI_PORT','Puerto de Comunicación DIGI','2101');
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_COMMAND','Trama Modbus Comando','03');
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES', 'Trama Modbus Dirección Inicial Hi Bytes','03');
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES','Trama Modbus Dirección Inicial Lo Bytes','00');
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES','Trama Modbus Dirección Final Hi Bytes','00');
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES','Trama Modbus Dirección Final Lo Bytes','62');
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_CRC_HI_BYTES','Trama Modbus CRC Hi Bytes','C4');
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_CRC_LO_BYTES','Trama Modbus CRC Lo Bytes','67');
+insert into PARAMETER values(0,'READ_INTERVAL','Intervalo de tiempo entre lecturas (seg)','10');
+insert into PARAMETER values(0,'SMTP_SERVER','Servidor SMTP','smtp.gmail.com');
+insert into PARAMETER values(0,'SMTP_PORT','Puerto SMTP','587');
+insert into PARAMETER values(0,'MAIL_SENDER','Usuario de envio de mail','gishac@gmail.com');
+insert into PARAMETER values(0,'MAIL_SENDER_PASSWORD','Clave de usuario de envio de mail','gisbert');
+insert into PARAMETER values(0,'MAIL_USE_SSL','Usar SSL','true');
 

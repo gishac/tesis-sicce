@@ -28,7 +28,7 @@ public class ParameterDB {
     }
     
     public static IParameter GetParameterByKey(String parameterKey) throws Exception{
-        List<IParameter> result = DataAccessManager.getInstance().getParameterDB().findByDescription(parameterKey);
+        List<IParameter> result = DataAccessManager.getInstance().getParameterDB().findByKey(parameterKey);
         if(result == null || result.size() <= 0)
             throw new Exception("No se encontro el parametro " + parameterKey + ". Por favor comuniquese con el Adminsitrador del Sistema");
         return result.get(0);
