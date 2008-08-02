@@ -10,15 +10,11 @@ enclosed by brackets [] replaced by your own identifying information:
 "Portions Copyrighted [year] [name of copyright owner]" */
 package sicce.wizard.report;
 
-import java.awt.Rectangle;
 import java.util.Map;
-import javax.swing.JComponent;
-import javax.swing.UIManager;
 import org.jdesktop.application.ResourceMap;
-import org.netbeans.api.wizard.WizardDisplayer;
 import org.netbeans.spi.wizard.WizardBranchController;
-import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPanelProvider;
+import sicce.wizard.reports.models.ReportModel;
 
 
 
@@ -31,13 +27,18 @@ public class NewWizard extends WizardBranchController {
 
     protected ResourceMap resourceMap;
     
+  
+   public NewWizard (ResourceMap resourceMap, ReportModel reportSelected){
+     super( new InitialSteps( resourceMap, reportSelected) );
+     this.resourceMap = resourceMap;
+   }
+   
    public NewWizard (ResourceMap resourceMap)
    {
-     super( new InitialSteps( resourceMap ) );
-     this.resourceMap = resourceMap;
-   
-     
+     this(resourceMap, null);
    }
+   
+   
     protected WizardPanelProvider getPanelProviderForStep(String step, Map collectedData) {
           return null;
         
