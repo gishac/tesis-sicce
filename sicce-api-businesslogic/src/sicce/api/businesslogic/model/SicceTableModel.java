@@ -17,7 +17,7 @@ import sicce.api.info.interfaces.ISicceTableModel;
  */
 public abstract class SicceTableModel<T> extends AbstractTableModel implements ISicceTableModel {
 
-   List<T> dataSource;
+    protected List<T> dataSource;
     protected String[] columns = null;
     protected boolean readOnly;
 
