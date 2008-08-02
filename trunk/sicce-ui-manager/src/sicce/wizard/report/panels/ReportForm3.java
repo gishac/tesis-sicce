@@ -6,6 +6,7 @@
 package sicce.wizard.report.panels;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPage;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.api.info.Field;
-import sicce.ui.manager.handlers.FieldHandler;
+import sicce.wizard.reports.models.FieldHandler;
 import sicce.api.businesslogic.renderer.FieldsCellRenderer;
 import sicce.api.businesslogic.comparator.FieldsComparator;
 
@@ -27,20 +28,33 @@ public class ReportForm3 extends WizardPage {
 
     private final WizardController controller;
     private final Map wizardData;
-    public static final String KEY_SELECTED = "selectedFields";
-    public static final String KEY_GROUP = "groupFields";
-    private List selectedField = null;
-
+    public static final String KEY_FIELD = "KeyField";
+    public static final String VALUE_FIELDS = "ValueField";
+    public static final String KEY_BL_IS_LOADED = "isloaded";
+    private List selectedField = new ArrayList();
+    private List groupField = new ArrayList();
+    private FieldHandler pFieldHandler = new FieldHandler();
+    Boolean isloaded = false;
     /** Creates new form ReportDetail */
     public ReportForm3(WizardController controller, Map wizardData) {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
-        selectedField = (List) wizardData.get(KEY_SELECTED);
+        pFieldHandler = (FieldHandler) wizardData.get(KEY_FIELD);
+        groupField = pFieldHandler.getListGroupFields();
+        isloaded = (wizardData.get(KEY_BL_IS_LOADED)==null?false:(Boolean)wizardData.get(KEY_BL_IS_LOADED));
         fillSelectedFields();
-    }
+        
+        if (groupField!=null  && !groupField.isEmpty())
+            lstGroupFields.setCellRenderer(new FieldsCellRenderer());
+            lstGroupFields.setListData(groupField.toArray());
+            
+
+        }
 
     public void fillSelectedFields() {
+        
+        selectedField = pFieldHandler.getSelectedFields();
         if (selectedField.size() > 0) {
             lstSelectedFields.setCellRenderer(new FieldsCellRenderer());
             lstSelectedFields.setListData(selectedField.toArray());
@@ -49,21 +63,28 @@ public class ReportForm3 extends WizardPage {
 
     public void updateLists() {
         lstGroupFields.setCellRenderer(new FieldsCellRenderer());
-        lstSelectedFields.setListData(FieldHandler.getSelectedFields().toArray());
-        lstGroupFields.setListData(FieldHandler.getListGroupFields().toArray());
+        lstSelectedFields.setListData(selectedField.toArray());
+        lstGroupFields.setListData(pFieldHandler.getListGroupFields().toArray());
 
     }
 
     @Override
     protected String validateContents(Component component, Object event) {
 
-        if (component == null) {
-            return "Defina los criterios del reporte...";
+    
+        if(isloaded){
+            return null;
         }
-        wizardData.put(KEY_GROUP, FieldHandler.getListGroupFields());
+        
+        if (component == null) {
+            return null;
+        }
+            
+        wizardData.put(KEY_FIELD, pFieldHandler);
 
         if (lstSelectedFields.getModel().getSize() > 0) {
             try {
+                
                 controller.setForwardNavigationMode(WizardController.MODE_CAN_CONTINUE);
                 controller.setProblem(null);
 
@@ -115,7 +136,7 @@ public class ReportForm3 extends WizardPage {
         });
         jScrollPane1.setViewportView(lstGroupFields);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 40, 170, 230));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 40, 170, 300));
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
@@ -123,7 +144,7 @@ public class ReportForm3 extends WizardPage {
         lstSelectedFields.setName("lstSelectedFields"); // NOI18N
         jScrollPane2.setViewportView(lstSelectedFields);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 170, 230));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 170, 300));
 
         btnUp.setIcon(resourceMap.getIcon("btnUp.icon")); // NOI18N
         btnUp.setName("btnUp"); // NOI18N
@@ -178,7 +199,7 @@ public class ReportForm3 extends WizardPage {
         jLabel5.setName("jLabel5"); // NOI18N
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 110, -1));
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 460, 280));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 460, 350));
     }// </editor-fold>//GEN-END:initComponents
     private void btnAddFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFieldActionPerformed
         // TODO add your handling code here:
@@ -187,11 +208,11 @@ public class ReportForm3 extends WizardPage {
 
         for (int i = 0; i < field.length; i++) {
             tmp = (Field) field[i];
-            if (FieldHandler.CompareList(tmp, FieldHandler.getListGroupFields())) {
+            if (pFieldHandler.CompareList(tmp, pFieldHandler.getListGroupFields())) {
                 JOptionPaneExtended.showMessageDialog(this, "El campo " + tmp.getTitle() + " ya ha sido agregado.");
                 return;
             } else {
-                FieldHandler.addGroupField(tmp);
+                pFieldHandler.addGroupField(tmp);
             }
         }
         updateLists();
@@ -206,7 +227,7 @@ public class ReportForm3 extends WizardPage {
 
         for (int i = 0; i < field.length; i++) {
             tmp = (Field) field[i];
-            FieldHandler.removeGroupField(tmp);
+            pFieldHandler.removeGroupField(tmp);
         }
         updateLists();
     //  fillWizardMap(evt);
@@ -232,7 +253,7 @@ public class ReportForm3 extends WizardPage {
             Field selected = (Field) lstGroupFields.getModel().getElementAt(index);
             previous.setOrder(previous.getOrder() + 1);
             selected.setOrder(selected.getOrder() - 1);
-            Collections.sort(FieldHandler.getListGroupFields(), new FieldsComparator());
+            Collections.sort(pFieldHandler.getListGroupFields(), new FieldsComparator());
             updateLists();
             lstGroupFields.setSelectedIndex(index - 1);
         }
@@ -254,7 +275,7 @@ public class ReportForm3 extends WizardPage {
             selected.setOrder(selected.getOrder() + 1);
             next.setOrder(next.getOrder() - 1);
 
-            Collections.sort(FieldHandler.getListGroupFields(), new FieldsComparator());
+            Collections.sort(pFieldHandler.getListGroupFields(), new FieldsComparator());
             updateLists();
             lstGroupFields.setSelectedIndex(index + 1);
         }

@@ -23,7 +23,7 @@ import org.netbeans.spi.wizard.WizardPage;
 import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.businesslogic.model.SicceComboBoxModel;
 import sicce.api.info.Field;
-import sicce.ui.manager.handlers.FieldHandler;
+import sicce.wizard.reports.models.FieldHandler;
 import sicce.api.businesslogic.renderer.FieldsCellRenderer;
 import sicce.ui.manager.listeners.JTableButtonMouseListener;
 import sicce.api.businesslogic.renderer.JTableButtonRenderer;
@@ -40,30 +40,81 @@ public class ReportForm4 extends WizardPage {
 
     private final WizardController controller;
     private final Map wizardData;
-    public static final String KEY_SELECTED = "selectedFields";
+    public static final String KEY_FIELD = "KeyField";
+    public static final String VALUE_FIELDS = "ValueField";
     public static final String KEY_WHERE = "whereFields";
     public static final String KEY_BEGIN_DATE = "beginDate";
     public static final String KEY_FINISH_DATE = "finishDate";
-    public static final String KEY_MEASURE_FIELDS = "measureFields";
-    public static final String VALUE_MEASURE_FIELDS = "measure_Fields";
     public static final String KEY_BL_CHART = "blChart";
     public static final String KEY_FIELD_CHART = "FieldChart";
-    public static final String KEY_GROUP = "groupFields";
-    private FieldHandler filterField = new FieldHandler();
+    public static final String KEY_BL_IS_LOADED = "isloaded";
+    private FieldHandler pFieldHandler = new FieldHandler();
     SicceComboBoxModel selectedComboBoxModel;
     SicceComboBoxModel chartComboBoxModel;
     private ReportFilterTableModel reportTableModel;
     JComboBox operator;
     JButton searchField;
     TableCellRenderer defaultRenderer;
-   
-    
+    Boolean isloaded = false;
+
     public ReportForm4(WizardController controller, Map wizardData, ResourceMap resourceMap) {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
-        List filterList = null;
+        pFieldHandler = (FieldHandler) wizardData.get(KEY_FIELD);
+        List measures = pFieldHandler.getMeasureSelected(pFieldHandler.getSelectedFields());
+        isloaded = (wizardData.get(KEY_BL_IS_LOADED)==null?false:(Boolean)wizardData.get(KEY_BL_IS_LOADED));
+        pFieldHandler.setLstMeasureFields(measures);
+        if (isloaded){
+        Date starttmp = (Date) wizardData.get(KEY_BEGIN_DATE);
+        Date endtmp = (Date) wizardData.get(KEY_FINISH_DATE);
+        Boolean chart = (Boolean) wizardData.get(KEY_BL_CHART);
+        Field fieldChart = (Field) wizardData.get(KEY_FIELD_CHART);
+        setFromMap(starttmp, endtmp, fieldChart, chart);
+        }
+        
+        List filterList = (List) wizardData.get(KEY_WHERE);
+        fillGrid(resourceMap, filterList);
         LoadComboBox();
+        addJDateListener();
+
+    }
+
+    public void addJDateListener() {
+        dtpBeginDate.addPropertyChangeListener(new PropertyChangeListener() {
+
+            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+
+                if (validateDates(dtpBeginDate.getDate(), dtpFinishDate.getDate())) {
+                    controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
+                    controller.setProblem(null);
+                } else {
+                    controller.setProblem("Defina la fecha de fin del reporte...");
+                }
+            }
+        });
+
+        dtpFinishDate.addPropertyChangeListener(new PropertyChangeListener() {
+
+            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+
+                if (validateDates(dtpBeginDate.getDate(), dtpFinishDate.getDate())) {
+                    controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
+                    controller.setProblem(null);
+                } else {
+                    controller.setProblem("Defina correctamente las fechas del reporte.");
+                }
+            }
+        });
+    }
+
+    private void LoadComboBox() {
+        selectedComboBoxModel = new SicceComboBoxModel(pFieldHandler.fillfilterFields());
+        cboWhereItems.setModel(selectedComboBoxModel);
+        cboWhereItems.setRenderer(new FieldsCellRenderer());
+    }
+
+    public void fillGrid(ResourceMap resourceMap, List filterList) {
         Icon imgSearch = resourceMap.getIcon("search");
         reportTableModel = new ReportFilterTableModel(filterList, imgSearch);
         grdSearchFields.setModel(reportTableModel);
@@ -75,56 +126,46 @@ public class ReportForm4 extends WizardPage {
         defaultRenderer = grdSearchFields.getDefaultRenderer(JButton.class);
         grdSearchFields.setDefaultRenderer(JButton.class,
                 new JTableButtonRenderer(defaultRenderer));
-        //grdSearchFields.setPreferredScrollableViewportSize(new Dimension(30,20));
+
         grdSearchFields.addMouseListener(new JTableButtonMouseListener(grdSearchFields));
-         wizardData.put(KEY_MEASURE_FIELDS, FieldHandler.getMeasureSelected((List)wizardData.get(KEY_SELECTED)));
-        addJDateListener();
-        
+
+
     }
 
-    public void addJDateListener() {
-        dtpBeginDate.addPropertyChangeListener(new PropertyChangeListener() {
+    public void setFromMap(Date starttmp, Date endtmp, Field fieldChart, Boolean chart) {
+        if (starttmp != null) {
+            dtpBeginDate.setDate(starttmp);
+        }
+        if (endtmp != null) {
+            dtpFinishDate.setDate(endtmp);  
+        }  
+        if (chart != null) {
+            chkChart.setSelected(chart);
+        }
+        if (fieldChart != null) {
+            chartComboBoxModel = new SicceComboBoxModel(pFieldHandler.getListGroupFields());
+            cboGroupChart.setModel(chartComboBoxModel);
+            cboGroupChart.setRenderer(new FieldsCellRenderer());
+            cboGroupChart.setSelectedItem(fieldChart);
+        }
+       
 
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-
-                if (validateDates(dtpBeginDate.getDate(), dtpFinishDate.getDate())) {
-                    controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
-                    controller.setProblem(null);
-                }else{
-                    controller.setProblem("Defina la fecha de fin del reporte...");
-                }
-            }
-        });
-        
-          dtpFinishDate.addPropertyChangeListener(new PropertyChangeListener() {
-
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-
-                if (validateDates(dtpBeginDate.getDate(), dtpFinishDate.getDate())) {
-                    controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
-                    controller.setProblem(null);
-                }else{
-                    controller.setProblem("Defina correctamente las fechas del reporte.");
-                }
-            }
-        });
-    }
-
-    private void LoadComboBox() {
-        selectedComboBoxModel = new SicceComboBoxModel(filterField.fillfilterFields());
-        cboWhereItems.setModel(selectedComboBoxModel);
-        cboWhereItems.setRenderer(new FieldsCellRenderer());
     }
 
     @Override
     protected String validateContents(Component component, Object event) {
 
+        if(isloaded){
+         return null;
+        }
+        
         if (component == null) {
-            return "Defina los criterios del reporte...";
-        } 
-        wizardData.put(KEY_WHERE, reportTableModel.getDataSource());
-        wizardData.put(KEY_FIELD_CHART, cboGroupChart.getSelectedItem());
-        wizardData.put(KEY_BL_CHART,chkChart.isSelected());
+            return null;
+        }
+        
+            wizardData.put(KEY_WHERE, reportTableModel.getDataSource());
+            wizardData.put(KEY_FIELD_CHART, cboGroupChart.getSelectedItem());
+            wizardData.put(KEY_BL_CHART, chkChart.isSelected());
         return null;
     }
 
@@ -258,7 +299,7 @@ public class ReportForm4 extends WizardPage {
         add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 450, 50));
     }// </editor-fold>//GEN-END:initComponents
     private void btnAddFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFilterActionPerformed
-     
+
 
         if (cboWhereItems != null) {
             Field fieldSelected = (Field) cboWhereItems.getSelectedItem();
@@ -274,24 +315,23 @@ public class ReportForm4 extends WizardPage {
 }//GEN-LAST:event_btnAddFilterActionPerformed
 
     private void btndelFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndelFilterActionPerformed
-     
+
         if (grdSearchFields.getSelectedRow() >= 0) {
             reportTableModel.deleteFilter(grdSearchFields.getSelectedRow());
         }
     }//GEN-LAST:event_btndelFilterActionPerformed
 
     private void chkChartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkChartActionPerformed
-         if (chkChart.isSelected()){
+        if (chkChart.isSelected()) {
             cboGroupChart.setEnabled(true);
-            chartComboBoxModel = new SicceComboBoxModel((List) wizardData.get(KEY_GROUP));
+            chartComboBoxModel = new SicceComboBoxModel(pFieldHandler.getListGroupFields());
             cboGroupChart.setModel(chartComboBoxModel);
             cboGroupChart.setRenderer(new FieldsCellRenderer());
-            wizardData.put(KEY_BL_CHART,chkChart.isSelected());
+            wizardData.put(KEY_BL_CHART, chkChart.isSelected());
             wizardData.put(KEY_FIELD_CHART, cboGroupChart.getSelectedItem());
-         }
-        else {
+        } else {
             cboGroupChart.setEnabled(false);
-            wizardData.put(KEY_BL_CHART,chkChart.isSelected());
+            wizardData.put(KEY_BL_CHART, chkChart.isSelected());
         }
     }//GEN-LAST:event_chkChartActionPerformed
 
@@ -326,9 +366,9 @@ public class ReportForm4 extends WizardPage {
             }
             wizardData.put(KEY_BEGIN_DATE, dtpBeginDate.getDate());
             wizardData.put(KEY_FINISH_DATE, dtpFinishDate.getDate());
-           return true; 
+            return true;
         }
-       
+
 
         return false;
 

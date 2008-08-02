@@ -1,46 +1,28 @@
 package sicce.ui.manager.reports;
 
-import ar.com.fdvs.dj.domain.builders.ChartBuilderException;
-import sicce.api.info.Field;
 import ar.com.fdvs.dj.core.DJConstants;
 import ar.com.fdvs.dj.domain.AutoText;
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
-import ar.com.fdvs.dj.domain.DJChart;
-import ar.com.fdvs.dj.domain.DJChartOptions;
 import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.Style;
-import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
-import ar.com.fdvs.dj.domain.builders.ColumnBuilderException;
-import ar.com.fdvs.dj.domain.builders.DJChartBuilder;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
-import ar.com.fdvs.dj.domain.builders.GroupBuilder;
 import ar.com.fdvs.dj.domain.constants.Border;
 import ar.com.fdvs.dj.domain.constants.Font;
-import ar.com.fdvs.dj.domain.constants.GroupLayout;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Page;
 import ar.com.fdvs.dj.domain.constants.Transparency;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
 import java.awt.Color;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import sicce.api.info.interfaces.IFilter;
+import sicce.wizard.reports.models.FieldHandler;
 
 public class ReportTemplate extends GenerateDjReport {
 
-    public static final String KEY_SELECTED = "selectedFields";
-    public static final String KEY_GROUP = "groupFields";
+    public static final String KEY_FIELD = "KeyField";
     public static final String KEY_WHERE = "whereFields";
-    public static final String KEY_MEASURE_FIELDS = "measureFields";
     public static final String KEY_NAME = "name";
     public static final String KEY_BEGIN_DATE = "beginDate";
     public static final String KEY_FINISH_DATE = "finishDate";
@@ -53,15 +35,14 @@ public class ReportTemplate extends GenerateDjReport {
         ReportFeatures report = new ReportFeatures();
         DynamicQuery pQuery = new DynamicQuery();
         Map param = new HashMap();
-
-        List listSelected = (List) wizardData.get(KEY_SELECTED);
+        FieldHandler pFieldHandler = (FieldHandler) wizardData.get(KEY_FIELD);
+        List listSelected = pFieldHandler.getSelectedFields();
+        List listGroup = pFieldHandler.getListGroupFields();
+        List listMeasure = pFieldHandler.getLstMeasureFields();
         String title = (String) wizardData.get(KEY_NAME);
         Boolean pvertical = (Boolean) wizardData.get(KEY_ORT_VERTICAL);
         Boolean phorizontal = (Boolean) wizardData.get(KEY_ORT_HORIZONTAL);
-        List listGroup = (List) wizardData.get(KEY_GROUP);
-        List listMeasure = (List) wizardData.get(KEY_MEASURE_FIELDS);
-
-
+        
         /*Instanciamos los estilos para cada sección*/
         Style detailStyle = new Style();
         Style headerStyle = new Style();

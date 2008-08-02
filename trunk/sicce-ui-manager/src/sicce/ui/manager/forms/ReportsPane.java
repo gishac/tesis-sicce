@@ -7,19 +7,27 @@
 package sicce.ui.manager.forms;
 
 import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import org.jdesktop.application.ResourceMap;
 import sicce.api.businesslogic.renderer.JTableButtonRenderer;
 import sicce.api.businesslogic.ReportBizObject;
-import sicce.api.businesslogic.model.ReportTableModel;
+import sicce.wizard.reports.models.ReportTableModel;
 import sicce.api.info.interfaces.IReport;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.api.dataaccess.ReportDB;
 import sicce.api.info.ToolBarStateInfo;
 import sicce.ui.manager.listeners.JTbButtonReportMouseListener;
-
+import sicce.api.util.SerializableUtil;
+import sicce.wizard.reports.models.ReportModel;
 /**
  *
  * @author  Karu
@@ -37,11 +45,13 @@ public class ReportsPane extends JTabExtended<IReport> {
         initComponents();
         reportBizObj = new ReportBizObject();
         imgReport = resourceMap.getIcon("reportIcon");
+        TableColumn reportColumn = grdSavedReport.getColumnModel().getColumn(2);
+        reportColumn.setPreferredWidth(10);
         defaultRenderer = grdSavedReport.getDefaultRenderer(JButton.class);
         grdSavedReport.setDefaultRenderer(JButton.class,
 			       new JTableButtonRenderer(defaultRenderer));
         grdSavedReport.setPreferredScrollableViewportSize(new Dimension(150, 200));
-        grdSavedReport.addMouseListener(new JTbButtonReportMouseListener(grdSavedReport));
+        grdSavedReport.addMouseListener(new JTbButtonReportMouseListener(grdSavedReport, resourceMap, this));
 
         this.setHandleToolBarStates(false);
         this.setToolBarStateInfo(new ToolBarStateInfo(false, false, false, false, false, false));
@@ -62,6 +72,11 @@ public class ReportsPane extends JTabExtended<IReport> {
         grdSavedReport = new javax.swing.JTable();
 
         setName("Form"); // NOI18N
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportsPane.class);
@@ -89,6 +104,13 @@ public class ReportsPane extends JTabExtended<IReport> {
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 390, 210));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+          if (currentObject == null) {  
+            FillGrid();
+        }
+    }//GEN-LAST:event_formComponentShown
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -115,7 +137,24 @@ public class ReportsPane extends JTabExtended<IReport> {
   
     @Override
     public void FillGrid() {
-        reportModel = new ReportTableModel(reportBizObj.GetAllReport(), imgReport);
+        
+        List<ReportModel> reports= new ArrayList(0);
+        String directory = System.getProperty("user.dir") + File.separator + "rptSicce";
+        File reportsDirectory = new File(directory);
+        File[] files = reportsDirectory.listFiles();
+        
+        for(File reportFile : files){
+            try {
+                ReportModel report = (ReportModel) SerializableUtil.Deserialize(reportFile.getAbsolutePath());
+                reports.add(report);
+            } catch (IOException ex) {
+                Logger.getLogger(ReportsPane.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ReportsPane.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        reportModel = new ReportTableModel(reports, imgReport);
         grdSavedReport.setModel(reportModel);
     }
 
