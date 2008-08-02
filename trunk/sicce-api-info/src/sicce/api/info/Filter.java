@@ -5,13 +5,14 @@
 
 package sicce.api.info;
 
+import java.io.Serializable;
 import sicce.api.info.interfaces.IFilter;
 
 /**
  *
  * @author karu
  */
-public class Filter implements IFilter {
+public class Filter implements IFilter, Serializable {
     private Field field;
     private String operator;
     private String values;

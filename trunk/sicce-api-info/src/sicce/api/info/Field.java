@@ -5,11 +5,13 @@
 
 package sicce.api.info;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Karu
  */
-public class Field {
+public class Field implements Serializable {
 
     private Integer idField;
     private int order;
