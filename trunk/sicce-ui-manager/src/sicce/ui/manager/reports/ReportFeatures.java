@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sicce.api.info.Field;
+import sicce.wizard.reports.models.FieldHandler;
 
 /**
  *
@@ -31,13 +32,13 @@ import sicce.api.info.Field;
  */
 public class ReportFeatures {
 
-    public static final String KEY_GROUP = "groupFields";
-    public static final String KEY_MEASURE_FIELDS = "measureFields";
+    public static final String KEY_FIELD = "KeyField";
     public static final String KEY_BL_CHART = "blChart";
     public static final String KEY_FIELD_CHART = "FieldChart";
     public List<AbstractColumn> lstColumns = new ArrayList();
 
     public ReportFeatures() {
+         
     }
 
     /**
@@ -75,8 +76,9 @@ public class ReportFeatures {
      */
     public void createGroup(Map wizardData, DynamicReportBuilder drb, Style detailStyle, Style importeStyle, Style headerStyle) {
 
-        List listGroup = (List) wizardData.get(KEY_GROUP);
-        List listVariableMeasure = (List) wizardData.get(KEY_MEASURE_FIELDS);
+        FieldHandler pFieldHandler = (FieldHandler) wizardData.get(KEY_FIELD);
+        List listGroup = pFieldHandler.getListGroupFields();
+        List listVariableMeasure = pFieldHandler.getLstMeasureFields();
         Boolean chart = (Boolean) wizardData.get(KEY_BL_CHART);
         Field chartSelected = (Field) wizardData.get(KEY_FIELD_CHART);
 
@@ -167,7 +169,7 @@ public class ReportFeatures {
         try {
             DJChartBuilder cb = new DJChartBuilder();
             
-            DJChartBuilder builder2 = cb.addType(DJChart.PIE_CHART)
+            DJChartBuilder builder2 = cb.addType(DJChart.BAR_CHART)
                     .addOperation(DJChart.CALCULATION_SUM)
                     .addColumnsGroup(groupChart)
                     .setPosition(DJChartOptions.POSITION_FOOTER)
