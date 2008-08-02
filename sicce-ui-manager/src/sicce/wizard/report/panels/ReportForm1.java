@@ -12,6 +12,7 @@ import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPage;
 import org.netbeans.spi.wizard.WizardPanelNavResult;
 import sicce.ui.manager.forms.*;
+import sicce.wizard.reports.models.FieldHandler;
 
 /**
  *
@@ -22,17 +23,29 @@ public class ReportForm1 extends WizardPage {
     private final WizardController controller;
     private final Map wizardData;
     public static final String KEY_NAME = "name";
+    public static final String KEY_FIELD = "KeyField";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_ORT_VERTICAL = "ortVertical";
     public static final String KEY_ORT_HORIZONTAL = "ortHorizontal";
-
+    public static final String KEY_BL_IS_LOADED = "isloaded";
+    Boolean isloaded = false;    
+    private FieldHandler pFieldHandler = new FieldHandler();
     /** Creates new form ReportDetail */
     public ReportForm1(WizardController controller, Map wizardData) {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
-      
-
+        
+        isloaded = (wizardData.get(KEY_BL_IS_LOADED)==null?false:(Boolean)wizardData.get(KEY_BL_IS_LOADED));
+        
+        if (isloaded){
+          txtReportName.setText((String)wizardData.get(KEY_NAME));
+          txtDescription.setText((String)wizardData.get(KEY_DESCRIPTION));
+          rbHorizontal.setSelected((Boolean) wizardData.get(KEY_ORT_HORIZONTAL));
+          rbVertical.setSelected((Boolean) wizardData.get(KEY_ORT_VERTICAL));
+        }
+        
+        
     }
 
     /** This method is called from within the constructor to
@@ -109,7 +122,10 @@ public class ReportForm1 extends WizardPage {
     @Override
     protected String validateContents(Component component, Object event) {
     
-      
+        if(isloaded){
+            return null;
+        }
+        
         if ((component == txtReportName  || component == null || component == txtDescription) && (txtReportName.getText().trim().length() == 0)){                 
            return "Debe ingresar la información General del reporte...";
         } else {
@@ -117,6 +133,7 @@ public class ReportForm1 extends WizardPage {
             wizardData.put(KEY_DESCRIPTION, txtDescription.getText());  
             wizardData.put(KEY_ORT_HORIZONTAL, rbHorizontal.isSelected());
             wizardData.put(KEY_ORT_VERTICAL, rbVertical.isSelected());
+            
         }
       return null;
     }

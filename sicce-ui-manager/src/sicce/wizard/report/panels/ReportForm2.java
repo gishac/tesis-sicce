@@ -13,7 +13,7 @@ import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPage;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.api.info.Field;
-import sicce.ui.manager.handlers.FieldHandler;
+import sicce.wizard.reports.models.FieldHandler;
 import sicce.api.businesslogic.renderer.FieldsCellRenderer;
 import sicce.api.businesslogic.comparator.FieldsComparator;
 
@@ -25,19 +25,29 @@ public class ReportForm2 extends WizardPage {
 
     private final WizardController controller;
     private final Map wizardData;
-    public static final String KEY_SELECTED = "selectedFields";
-    public static final String VALUE_SELECTED_FIELDS = "selected_Fields";
-    private FieldHandler availableField = new FieldHandler();
-
+    public static final String KEY_FIELD = "KeyField";
+    public static final String VALUE_FIELDS = "ValueField";
+    public static final String KEY_BL_IS_LOADED = "isloaded";
+    private FieldHandler pFieldHandler = new FieldHandler();
+    Boolean isloaded = false;
     /** Creates new form ReportDetail */
     public ReportForm2(WizardController controller, Map wizardData) {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
         controller.setProblem("Seleccione el módulo deseado.");
-       
-        lstSelectedFields.putClientProperty(KEY_SELECTED, VALUE_SELECTED_FIELDS);
+        isloaded = (wizardData.get(KEY_BL_IS_LOADED)==null?false:(Boolean)wizardData.get(KEY_BL_IS_LOADED));
+        
+        if (isloaded) {
+            this.pFieldHandler = (FieldHandler) wizardData.get(KEY_FIELD);
+            lstSelectedFields.setCellRenderer(new FieldsCellRenderer());
+            lstAvailableFields.setListData(FieldHandler.CompareLists(pFieldHandler.getAvailableFields(), pFieldHandler.getSelectedFields()).toArray());
+            lstSelectedFields.setListData(pFieldHandler.getSelectedFields().toArray());
+            controller.setForwardNavigationMode(WizardController.MODE_CAN_CONTINUE);
+            controller.setProblem(null);
+        }
         fillCbModules();
+        fillAvailableFields();
         validateContents(this, null);
     }
 
@@ -51,56 +61,59 @@ public class ReportForm2 extends WizardPage {
 
     public void fillAvailableFields() {
         if (cbModules.getSelectedItem().equals("Zona")) {
-            FieldHandler.setListAvailableFields(availableField.fillZone());
-            List<Field> resultList = FieldHandler.CompareLists(FieldHandler.getAvailableFields(), FieldHandler.getSelectedFields());
+            pFieldHandler.setListAvailableFields(pFieldHandler.fillZone());
+            List<Field> resultList = FieldHandler.CompareLists(pFieldHandler.getAvailableFields(), pFieldHandler.getSelectedFields());
             lstAvailableFields.setCellRenderer(new FieldsCellRenderer());
             lstAvailableFields.setListData(resultList.toArray());
         }
 
         if (cbModules.getSelectedItem().equals("Ubicación")) {
-            FieldHandler.setListAvailableFields(availableField.fillLocation());
-            List<Field> resultList = FieldHandler.CompareLists(FieldHandler.getAvailableFields(), FieldHandler.getSelectedFields());
+            pFieldHandler.setListAvailableFields(pFieldHandler.fillLocation());
+            List<Field> resultList = FieldHandler.CompareLists(pFieldHandler.getAvailableFields(), pFieldHandler.getSelectedFields());
             lstAvailableFields.setCellRenderer(new FieldsCellRenderer());
             lstAvailableFields.setListData(resultList.toArray());
         }
 
         if (cbModules.getSelectedItem().equals("Medidor")) {
-            FieldHandler.setListAvailableFields(availableField.fillPowerMeter());
-            List<Field> resultList = FieldHandler.CompareLists(FieldHandler.getAvailableFields(), FieldHandler.getSelectedFields());
+            pFieldHandler.setListAvailableFields(pFieldHandler.fillPowerMeter());
+            List<Field> resultList = FieldHandler.CompareLists(pFieldHandler.getAvailableFields(), pFieldHandler.getSelectedFields());
             lstAvailableFields.setCellRenderer(new FieldsCellRenderer());
             lstAvailableFields.setListData(resultList.toArray());
 
         }
-         if (cbModules.getSelectedItem().equals("Mediciones")) {
-            FieldHandler.setListAvailableFields(availableField.fillMeasureFields());
-            List<Field> resultList = FieldHandler.CompareLists(FieldHandler.getAvailableFields(), FieldHandler.getSelectedFields());
+        if (cbModules.getSelectedItem().equals("Mediciones")) {
+            pFieldHandler.setListAvailableFields(pFieldHandler.fillMeasureFields());
+            List<Field> resultList = FieldHandler.CompareLists(pFieldHandler.getAvailableFields(), pFieldHandler.getSelectedFields());
             lstAvailableFields.setCellRenderer(new FieldsCellRenderer());
             lstAvailableFields.setListData(resultList.toArray());
-            
+
 
         }
     }
 
     public void updateLists() {
         lstSelectedFields.setCellRenderer(new FieldsCellRenderer());
-        lstAvailableFields.setListData(FieldHandler.CompareLists(FieldHandler.getAvailableFields(), FieldHandler.getSelectedFields()).toArray());
-        lstSelectedFields.setListData(FieldHandler.getSelectedFields().toArray());
-        wizardData.put(KEY_SELECTED, FieldHandler.getSelectedFields());
+        lstAvailableFields.setListData(FieldHandler.CompareLists(pFieldHandler.getAvailableFields(), pFieldHandler.getSelectedFields()).toArray());
+        lstSelectedFields.setListData(pFieldHandler.getSelectedFields().toArray());
+        wizardData.put(KEY_FIELD, pFieldHandler);
     }
 
     @Override
     protected String validateContents(Component component, Object event) {
 
-        if (component == null) {
-            return "Debe seleccionar los campos a mostrar en el reporte...";
+        if (isloaded) {
+            return null;
         }
-
-        if ((component == lstAvailableFields ||component == lstSelectedFields || component == cbModules) && (lstSelectedFields.getModel().getSize() == 0)) {
+        if (component == null) {
+            return "Seleccione los campos del reporte...";
+        }
+ 
+        if ((component == lstAvailableFields || component == lstSelectedFields || component == cbModules) && (lstSelectedFields.getModel().getSize() == 0)) {
             return "Defina los criterios del reporte...";
         } else {
             controller.setForwardNavigationMode(WizardController.MODE_CAN_CONTINUE);
-            wizardData.put(KEY_SELECTED, FieldHandler.getSelectedFields());
-                  }
+            wizardData.put(KEY_FIELD, pFieldHandler);
+        }
 
         return null;
     }
@@ -139,9 +152,9 @@ public class ReportForm2 extends WizardPage {
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         lstSelectedFields.setName("lstSelectedFields"); // NOI18N
-        lstSelectedFields.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                lstSelectedFieldsValueChanged(evt);
+        lstSelectedFields.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                lstSelectedFieldsPropertyChange(evt);
             }
         });
         jScrollPane1.setViewportView(lstSelectedFields);
@@ -233,8 +246,8 @@ public class ReportForm2 extends WizardPage {
 
         for (int i = 0; i < field.length; i++) {
             tmp = (Field) field[i];
-            tmp.setOrder(FieldHandler.getSelectedFields().size());
-            FieldHandler.addSelectedField(tmp);
+            tmp.setOrder(pFieldHandler.getSelectedFields().size());
+            pFieldHandler.addSelectedField(tmp);
         }
         updateLists();
         
@@ -248,18 +261,13 @@ public class ReportForm2 extends WizardPage {
 
         for (int i = 0; i < field.length; i++) {
             tmp = (Field) field[i];
-            FieldHandler.removeSelectedField(tmp);
+            pFieldHandler.removeSelectedField(tmp);
             updateLists();
         }
      
      
         
     }//GEN-LAST:event_btnRemoveFieldActionPerformed
-
-    private void lstSelectedFieldsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstSelectedFieldsValueChanged
-    // TODO add your handling code here:
-    // updateLists();
-    }//GEN-LAST:event_lstSelectedFieldsValueChanged
 
     private void btnUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpActionPerformed
         // TODO add your handling code here:
@@ -275,10 +283,10 @@ public class ReportForm2 extends WizardPage {
             Field selected = (Field) lstSelectedFields.getModel().getElementAt(index);
             previous.setOrder(index + 1);
             selected.setOrder(index - 1);
-            Collections.sort(FieldHandler.getSelectedFields(), new FieldsComparator());
+            Collections.sort(pFieldHandler.getSelectedFields(), new FieldsComparator());
             updateLists();
             lstSelectedFields.setSelectedIndex(index - 1);
-            
+
         }
   
         
@@ -299,12 +307,18 @@ public class ReportForm2 extends WizardPage {
             selected.setOrder(index + 1);
             next.setOrder(index - 1);
 
-            Collections.sort(FieldHandler.getSelectedFields(), new FieldsComparator());
+            Collections.sort(pFieldHandler.getSelectedFields(), new FieldsComparator());
             updateLists();
             lstSelectedFields.setSelectedIndex(index + 1);
+
         }
        
     }//GEN-LAST:event_btnDownActionPerformed
+
+    private void lstSelectedFieldsPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_lstSelectedFieldsPropertyChange
+    // TODO add your handling code here:
+       
+    }//GEN-LAST:event_lstSelectedFieldsPropertyChange
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddField;
