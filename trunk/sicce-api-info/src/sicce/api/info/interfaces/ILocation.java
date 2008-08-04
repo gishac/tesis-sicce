@@ -129,13 +129,15 @@ public interface ILocation {
     
     /**
      * Agrega un medidor a la ubicacion
-     * @param powerMeter
+     * @param powerMeter Medidor a ser asignado a la dependencia
+     * @see IPowerMeter
      */
     void addLocationPowerMeter(IPowerMeter powerMeter);
     
     /**
      * Remueve un medidor de la ubicacion
-     * @param powerMeter
+     * @param powerMeter Medidor a ser removido de la dependencia
+     * @see IPowerMeter
      */ 
     void removeLocationPowerMeter(IPowerMeter powerMeter);
 }

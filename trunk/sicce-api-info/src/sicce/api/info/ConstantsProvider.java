@@ -5,55 +5,83 @@
 package sicce.api.info;
 
 /**
- *
+ * Clase que contiene todas las constantes utilizadas en la aplicacion
  * @author gish@c
  */
 public class ConstantsProvider {
 
     /**
-     * 
+     * Codigo del parametro READ_INTERVAL
      */
     public static final String READ_INTERVAL = "READ_INTERVAL";
+    
     /**
-     * 
+     * Codigo del parametro DIGI_PORT
      */
     public static final String PORT = "DIGI_PORT";
+    
     /**
-     * 
+     * Codigo del parametro READ_HOLDING_REGISTERS_COMMAND 
      */
     public static final String READ_HOLDING_REGISTERS_COMMAND = "READ_HOLDING_REGISTERS_COMMAND";
+    
     /**
-     * 
+     * Codigo del parametro READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES = "READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES";
+    
     /**
-     * 
+     * Codigo del parametro READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES = "READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES";
+    
     /**
-     * 
+     * Codigo del parametro READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES = "READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES";
+    
     /**
-     * 
+     * Codigo del parametro READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES = "READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES";
+    
     /**
-     * 
+     * Codigo del parametro READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_CRC_HI_BYTES = "READ_HOLDING_REGISTERS_CRC_HI_BYTES";
+    
     /**
-     * 
+     * Codigo del parametro READ_HOLDING_REGISTERS_CRC_LO_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_CRC_LO_BYTES = "READ_HOLDING_REGISTERS_CRC_LO_BYTES";
+    
+    /**
+     * Codigo del parametro SMTP_SERVER
+     */
     public static final String SMTP_SERVER = "SMTP_SERVER";
+    
+    /**
+     * Codigo del parametro SMTP_PORT
+     */
     public static final String SMTP_PORT = "SMTP_PORT";
+    
+    /**
+     * Codigo del parametro MAIL_SENDER
+     */
     public static final String MAIL_SENDER = "MAIL_SENDER";
+    
+    /**
+     * Codigo del parametro MAIL_SENDER_PASSWORD
+     */
     public static final String MAIL_SENDER_PASSWORD = "MAIL_SENDER_PASSWORD";
+    
+    /**
+     * Codigo del parametro MAIL_USE_SSL
+     */
     public static final String MAIL_USE_SSL = "MAIL_USE_SSL";
 
     /**
-     * Opciones
+     * Opciones del menu
      */
     public enum OptionsProvider {
 
@@ -99,7 +127,7 @@ public class ConstantsProvider {
     }
 
     /**
-     * Tipo de render
+     * Tipo de render para obtener los valores en los renderers personalizados
      */
     public enum DisplayMemberRenderType {
 
@@ -108,7 +136,7 @@ public class ConstantsProvider {
     }
 
     /**
-     * Tipo de dialogo
+     * Tipo de retorno dialogo
      */
     public enum DialogResult {
 
@@ -135,24 +163,9 @@ public class ConstantsProvider {
     }
 
     /**
-     * Tipo de Agenda
+     * Tipo de consulta Modbus
      */
-    public enum ScheduleType {
-
-        Daily(1),
-        Planned(2);
-        private int scheduleType;
-
-        ScheduleType(int scheduleType) {
-            this.scheduleType = scheduleType;
-        }
-
-        public int getScheduleType() {
-            return scheduleType;
-        }
-    }
-
-    public enum RequestType {
+   public enum RequestType {
 
         HoldingRegisters(98),
         THD(10);
@@ -168,6 +181,9 @@ public class ConstantsProvider {
         }
     }
 
+   /**
+    * Registros disponibles en el medidor PM-500
+    */
     public enum ModbusRegister {
 
         InstantaneousCurrentPhase1(10, 14),

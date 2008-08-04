@@ -14,7 +14,7 @@ public interface IAlarmListener {
     /**
      * Metodo que ejecuta la accion que se realiza cuando la alarma es activada
      * @param alarm Alarma que fue activada
-     * @param powerMeter
+     * @param powerMeter Medidor que activo la alarma
      */
     void actionPerformed(IAlarm alarm, IPowerMeter powerMeter);
     
