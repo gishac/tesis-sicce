@@ -21,7 +21,7 @@ import sicce.api.businesslogic.comparator.FieldsComparator;
  *
  * @author  Karu
  */
-public class ReportForm2 extends WizardPage {
+public class ReportWizardStep2 extends WizardPage {
 
     private final WizardController controller;
     private final Map wizardData;
@@ -31,7 +31,7 @@ public class ReportForm2 extends WizardPage {
     private FieldHandler pFieldHandler = new FieldHandler();
     Boolean isloaded = false;
     /** Creates new form ReportDetail */
-    public ReportForm2(WizardController controller, Map wizardData) {
+    public ReportWizardStep2(WizardController controller, Map wizardData) {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
@@ -144,7 +144,7 @@ public class ReportForm2 extends WizardPage {
         setPreferredSize(new java.awt.Dimension(650, 500));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportForm2.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportWizardStep2.class);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("jPanel1.border.title"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("jPanel1.border.titleColor"))); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -262,10 +262,10 @@ public class ReportForm2 extends WizardPage {
         for (int i = 0; i < field.length; i++) {
             tmp = (Field) field[i];
             pFieldHandler.removeSelectedField(tmp);
-            updateLists();
+            
         }
      
-     
+     updateLists();
         
     }//GEN-LAST:event_btnRemoveFieldActionPerformed
 

@@ -28,14 +28,146 @@
 	<queryString><![CDATA[SELECT
      power_meter.`DESCRIPTION` AS power_meter_DESCRIPTION,
      power_meter.`IP_ADDRESS` AS power_meter_IP_ADDRESS,
-     power_meter.`SERIAL` AS power_meter_SERIAL
+     power_meter.`SERIAL` AS power_meter_SERIAL,
+     location.`DESCRIPTION` AS location_DESCRIPTION,
+     location.`ID_LOCATION` AS location_ID_LOCATION
 FROM
-     `power_meter` power_meter]]></queryString>
+     `power_meter` power_meter INNER JOIN `location_power_meter` location_power_meter ON power_meter.`ID_POWER_METER` = location_power_meter.`ID_POWER_METER`
+     INNER JOIN `location` location ON location_power_meter.`ID_LOCATION` = location.`ID_LOCATION`]]></queryString>
 
 	<field name="power_meter_DESCRIPTION" class="java.lang.String"/>
 	<field name="power_meter_IP_ADDRESS" class="java.lang.String"/>
 	<field name="power_meter_SERIAL" class="java.lang.String"/>
+	<field name="location_DESCRIPTION" class="java.lang.String"/>
+	<field name="location_ID_LOCATION" class="java.lang.Long"/>
 
+
+		<group  name="location_pmeter" >
+			<groupExpression><![CDATA[$F{location_ID_LOCATION}]]></groupExpression>
+			<groupHeader>
+			<band height="23"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="3"
+						y="5"
+						width="28"
+						height="16"
+						key="staticText-4"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="34"
+						y="5"
+						width="202"
+						height="16"
+						key="staticText-5"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Descripción]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="251"
+						y="5"
+						width="164"
+						height="16"
+						key="staticText-6"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Serial ]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="2"
+						y="4"
+						width="528"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="2"
+						y="21"
+						width="528"
+						height="0"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="4"
+						width="0"
+						height="19"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="32"
+						y="4"
+						width="0"
+						height="19"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="242"
+						y="4"
+						width="0"
+						height="19"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="530"
+						y="4"
+						width="0"
+						height="19"
+						key="line-7"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="421"
+						y="4"
+						width="0"
+						height="19"
+						key="line-14"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="422"
+						y="6"
+						width="107"
+						height="16"
+						key="staticText-9"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Dirección IP]]></text>
+				</staticText>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="18"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -93,12 +225,12 @@ FROM
 			</band>
 		</title>
 		<pageHeader>
-			<band height="34"  isSplitAllowed="true" >
+			<band height="18"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="5"
-						y="13"
-						width="163"
+						y="1"
+						width="131"
 						height="16"
 						key="staticText-3"/>
 					<box></box>
@@ -110,122 +242,33 @@ FROM
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="26"  isSplitAllowed="true" >
+			<band height="19"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="3"
-						y="8"
-						width="28"
+						x="5"
+						y="2"
+						width="67"
 						height="16"
-						key="staticText-4"/>
+						key="staticText-10"/>
 					<box></box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
-				<text><![CDATA[No.]]></text>
+				<text><![CDATA[Ubicación:]]></text>
 				</staticText>
-				<staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="34"
-						y="8"
-						width="202"
+						x="74"
+						y="2"
+						width="162"
 						height="16"
-						key="staticText-5"/>
+						key="textField-2"/>
 					<box></box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Verdana"/>
 					</textElement>
-				<text><![CDATA[Descripción]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="251"
-						y="8"
-						width="164"
-						height="16"
-						key="staticText-6"/>
-					<box></box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Serial ]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="2"
-						y="7"
-						width="528"
-						height="0"
-						key="line-1"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="2"
-						y="25"
-						width="528"
-						height="0"
-						key="line-2"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="1"
-						y="7"
-						width="0"
-						height="19"
-						key="line-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="32"
-						y="7"
-						width="0"
-						height="19"
-						key="line-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="242"
-						y="7"
-						width="0"
-						height="19"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="530"
-						y="7"
-						width="0"
-						height="19"
-						key="line-7"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="421"
-						y="7"
-						width="0"
-						height="19"
-						key="line-14"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<staticText>
-					<reportElement
-						x="422"
-						y="9"
-						width="107"
-						height="16"
-						key="staticText-9"/>
-					<box></box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Dirección IP]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{location_DESCRIPTION}]]></textFieldExpression>
+				</textField>
 			</band>
 		</columnHeader>
 		<detail>
@@ -339,19 +382,15 @@ FROM
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="30"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="50"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</pageFooter>
-		<lastPageFooter>
-			<band height="50"  isSplitAllowed="true" >
-			</band>
-		</lastPageFooter>
 		<summary>
-			<band height="50"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</summary>
 </jasperReport>

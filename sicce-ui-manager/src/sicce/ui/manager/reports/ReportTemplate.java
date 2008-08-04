@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import sicce.wizard.reports.models.FieldHandler;
 
-public class ReportTemplate extends GenerateDjReport {
+public class ReportTemplate extends GenerateDynamicReport {
 
     public static final String KEY_FIELD = "KeyField";
     public static final String KEY_WHERE = "whereFields";
@@ -51,7 +51,7 @@ public class ReportTemplate extends GenerateDjReport {
         Style importeStyle = new Style();
         /* Definir el formato para la cabecera del reporte - headerStyle -*/
         headerStyle.setFont(Font.VERDANA_SMALL_BOLD);
-        headerStyle.setBorder(Border.NO_BORDER);
+        headerStyle.setBorder(Border.THIN);
         headerStyle.setHorizontalAlign(HorizontalAlign.CENTER);
         headerStyle.setVerticalAlign(VerticalAlign.MIDDLE);
         headerStyle.setBackgroundColor(Color.gray);
@@ -73,19 +73,19 @@ public class ReportTemplate extends GenerateDjReport {
 
         importeStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
         importeStyle.setBlankWhenNull(true);
-        importeStyle.setBorder(Border.NO_BORDER);
+        importeStyle.setBorder(Border.THIN);
         importeStyle.setFont(Font.VERDANA_SMALL);
         importeStyle.getStreching();
 
 
         detailStyle.setHorizontalAlign(HorizontalAlign.LEFT);
         detailStyle.setBlankWhenNull(true);
-        detailStyle.setBorder(Border.NO_BORDER);
+        detailStyle.setBorder(Border.THIN);
         detailStyle.setFont(Font.VERDANA_SMALL);
-        //detailStyle.getStreching();
+        detailStyle.getStreching();
         
         Style oddRowStyle = new Style();
-		oddRowStyle.setBorder(Border.NO_BORDER);
+		oddRowStyle.setBorder(Border.THIN);
 		oddRowStyle.setBackgroundColor(Color.LIGHT_GRAY);
 		oddRowStyle.setTransparency(Transparency.OPAQUE);
 

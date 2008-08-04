@@ -36,7 +36,7 @@ import org.jdesktop.application.ResourceMap;
  *
  * @author  Karu
  */
-public class ReportForm4 extends WizardPage {
+public class ReportWizardStep4 extends WizardPage {
 
     private final WizardController controller;
     private final Map wizardData;
@@ -57,22 +57,24 @@ public class ReportForm4 extends WizardPage {
     TableCellRenderer defaultRenderer;
     Boolean isloaded = false;
 
-    public ReportForm4(WizardController controller, Map wizardData, ResourceMap resourceMap) {
+    public ReportWizardStep4(WizardController controller, Map wizardData, ResourceMap resourceMap) {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
+        
         pFieldHandler = (FieldHandler) wizardData.get(KEY_FIELD);
         List measures = pFieldHandler.getMeasureSelected(pFieldHandler.getSelectedFields());
-        isloaded = (wizardData.get(KEY_BL_IS_LOADED)==null?false:(Boolean)wizardData.get(KEY_BL_IS_LOADED));
+        isloaded = (wizardData.get(KEY_BL_IS_LOADED) == null ? false : (Boolean) wizardData.get(KEY_BL_IS_LOADED));
         pFieldHandler.setLstMeasureFields(measures);
-        if (isloaded){
-        Date starttmp = (Date) wizardData.get(KEY_BEGIN_DATE);
-        Date endtmp = (Date) wizardData.get(KEY_FINISH_DATE);
-        Boolean chart = (Boolean) wizardData.get(KEY_BL_CHART);
-        Field fieldChart = (Field) wizardData.get(KEY_FIELD_CHART);
-        setFromMap(starttmp, endtmp, fieldChart, chart);
+        if (isloaded) {
+            Date starttmp = (Date) wizardData.get(KEY_BEGIN_DATE);
+            Date endtmp = (Date) wizardData.get(KEY_FINISH_DATE);
+            Boolean chart = (Boolean) wizardData.get(KEY_BL_CHART);
+            Field fieldChart = (Field) wizardData.get(KEY_FIELD_CHART);
+            setFromMap(starttmp, endtmp, fieldChart, chart);
+            controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
         }
-        
+
         List filterList = (List) wizardData.get(KEY_WHERE);
         fillGrid(resourceMap, filterList);
         LoadComboBox();
@@ -84,8 +86,11 @@ public class ReportForm4 extends WizardPage {
         dtpBeginDate.addPropertyChangeListener(new PropertyChangeListener() {
 
             public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+                if (!propertyChangeEvent.getPropertyName().equals("date")) {  
+                    return;
+                }
 
-                if (validateDates(dtpBeginDate.getDate(), dtpFinishDate.getDate())) {
+                if (validateDates(dtpBeginDate.getDate(), dtpFinishDate.getDate())) {                    
                     controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
                     controller.setProblem(null);
                 } else {
@@ -97,8 +102,14 @@ public class ReportForm4 extends WizardPage {
         dtpFinishDate.addPropertyChangeListener(new PropertyChangeListener() {
 
             public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+                if (!propertyChangeEvent.getPropertyName().equals("date")) { 
+                    return;
+                }
 
                 if (validateDates(dtpBeginDate.getDate(), dtpFinishDate.getDate())) {
+                    wizardData.put(KEY_WHERE, reportTableModel.getDataSource());
+                    wizardData.put(KEY_FIELD_CHART, cboGroupChart.getSelectedItem());
+                    wizardData.put(KEY_BL_CHART, chkChart.isSelected());
                     controller.setForwardNavigationMode(WizardController.MODE_CAN_FINISH);
                     controller.setProblem(null);
                 } else {
@@ -137,8 +148,8 @@ public class ReportForm4 extends WizardPage {
             dtpBeginDate.setDate(starttmp);
         }
         if (endtmp != null) {
-            dtpFinishDate.setDate(endtmp);  
-        }  
+            dtpFinishDate.setDate(endtmp);
+        }
         if (chart != null) {
             chkChart.setSelected(chart);
         }
@@ -148,24 +159,24 @@ public class ReportForm4 extends WizardPage {
             cboGroupChart.setRenderer(new FieldsCellRenderer());
             cboGroupChart.setSelectedItem(fieldChart);
         }
-       
+
 
     }
 
     @Override
     protected String validateContents(Component component, Object event) {
 
-        if(isloaded){
-         return null;
-        }
-        
-        if (component == null) {
+        if (isloaded) {
             return null;
         }
-        
-            wizardData.put(KEY_WHERE, reportTableModel.getDataSource());
-            wizardData.put(KEY_FIELD_CHART, cboGroupChart.getSelectedItem());
-            wizardData.put(KEY_BL_CHART, chkChart.isSelected());
+
+        if (component == null) {
+            return "Ingrese las fechas del Reporte...";
+        }
+
+        wizardData.put(KEY_WHERE, reportTableModel.getDataSource());
+        wizardData.put(KEY_FIELD_CHART, cboGroupChart.getSelectedItem());
+        wizardData.put(KEY_BL_CHART, chkChart.isSelected());
         return null;
     }
 
@@ -196,7 +207,7 @@ public class ReportForm4 extends WizardPage {
         setName("Form"); // NOI18N
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportForm4.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportWizardStep4.class);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("jPanel1.border.title"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("jPanel1.border.titleColor"))); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

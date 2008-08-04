@@ -52,7 +52,7 @@ import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.JTabbedPaneExtended;
 import sicce.ui.manager.handlers.ExceptionHandler;
 import sicce.ui.manager.handlers.ToolBarHandler;
-import sicce.ui.manager.reports.GenerateReport;
+import sicce.ui.manager.reports.GenerateStaticReport;
 import sicce.wizard.report.NewWizard;
 
 /**
@@ -591,19 +591,19 @@ public class SicceuimanagerView extends FrameView {
                  WizardDisplayer.showWizard(new NewWizard(resourceMap).createWizard(), new Rectangle(20, 20, 700, 500));
                 break;
             case PowerMeterReport:
-                GenerateReport.GenerateStaticReport(null,option);
+                GenerateStaticReport.GenerateStaticReport(null,option);
                 break;
             case LocationTypeReport:
-                GenerateReport.GenerateStaticReport(null,option);
+                GenerateStaticReport.GenerateStaticReport(null,option);
                 break;
             case LocationReport:
-                GenerateReport.GenerateStaticReport(null,option);
+                GenerateStaticReport.GenerateStaticReport(null,option);
                 break;
             case UserReport:
-                GenerateReport.GenerateStaticReport(null,option);
+                GenerateStaticReport.GenerateStaticReport(null,option);
                 break;
             case ZoneReport:
-                GenerateReport.GenerateStaticReport(null,option);
+                GenerateStaticReport.GenerateStaticReport(null,option);
                 break;
         }
 
