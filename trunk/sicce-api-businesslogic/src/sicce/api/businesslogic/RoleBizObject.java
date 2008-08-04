@@ -30,7 +30,7 @@ public class RoleBizObject {
     public boolean PermissionExists(int optionID, IRole role){
         for(IOptionSicce permission : role.getPermissions())
         {
-            if(permission.getID() == optionID)
+            if(permission.getIdOptionSicce().equals(optionID))
                 return true;
         }
         return false;
