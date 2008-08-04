@@ -91,7 +91,7 @@ public class PermissionsTableModel extends SicceTableModel<IOptionSicce> {
         IOptionSicce option = getDataSource().get(rowIndex);
         boolean state = false;
         for (IOptionSicce activeOption : role.getPermissions()) {
-            if (option.getID() == activeOption.getID()) {
+            if (option.getIdOptionSicce().equals(activeOption.getIdOptionSicce())) {
                 state = true;
                 break;
             }
@@ -120,7 +120,7 @@ public class PermissionsTableModel extends SicceTableModel<IOptionSicce> {
      * @param role
      */
     private void AddPermissionToRole(IOptionSicce permission, IRole role) {
-        if (!roleBizObject.PermissionExists(permission.getID(), role)) {
+        if (!roleBizObject.PermissionExists(permission.getIdOptionSicce(), role)) {
             role.addPermission(permission);
         }
     }
@@ -133,7 +133,7 @@ public class PermissionsTableModel extends SicceTableModel<IOptionSicce> {
     private void RemovePermission(IOptionSicce permission, IRole role){
         for(IOptionSicce permissionInRole : role.getPermissions())
         {
-            if(permissionInRole.getID() == permission.getID()){
+            if(permissionInRole.getIdOptionSicce().equals(permission.getIdOptionSicce())){
                 permission = permissionInRole;
                 break;
             } 
