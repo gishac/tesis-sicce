@@ -10,9 +10,6 @@
             <column name="ID_ALARM" />
             <generator class="increment" />
         </id>
-        <property name="scheduleType" type="java.lang.Integer">
-            <column name="SCHEDULE_TYPE" />
-        </property>
         <property name="alarmType" type="java.lang.Integer">
             <column name="ALARM_TYPE" />
         </property>

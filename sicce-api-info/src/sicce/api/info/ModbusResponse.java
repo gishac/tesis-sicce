@@ -9,13 +9,24 @@ import sicce.api.info.interfaces.IModbusResponse;
 import sicce.api.info.interfaces.IPowerMeter;
 
 /**
- *
+ * Representacion de las respuestas Modbus
  * @author gish@c
  */
 public class ModbusResponse implements IModbusResponse {
 
+    /**
+     * Respuesta para la consulta de HoldingRegisters
+     */
     private String holdingRegistersResponse;
+    
+    /**
+     * Respuesta para la consulta de TDHValues
+     */
     private String thdValuesResponse;
+    
+    /**
+     * Medidor asociado a la respuesta Modbus
+     */
     private IPowerMeter powerMeter;
 
     public String getHoldingRegistersResponse() {

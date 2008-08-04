@@ -6,7 +6,6 @@ import java.util.Set;
 import sicce.api.info.auto.AbstractLocation;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.IMeasure;
-import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IZone;
 
 /**

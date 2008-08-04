@@ -13,8 +13,20 @@ import sicce.api.info.interfaces.IFilter;
  * @author karu
  */
 public class Filter implements IFilter, Serializable {
+    
+    /**
+     * Campo asignado que tiene asignado el filtro
+     */
     private Field field;
+    
+    /**
+     * 
+     */
     private String operator;
+    
+    /**
+     * 
+     */
     private String values;
 
     public Filter() {

@@ -7,7 +7,6 @@ package sicce.api.info.auto;
 import java.util.HashSet;
 import java.util.Set;
 import sicce.api.info.ConstantsProvider.AlarmType;
-import sicce.api.info.ConstantsProvider.ScheduleType;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IAlarmListener;
 import sicce.api.info.interfaces.IPowerMeter;
@@ -24,11 +23,6 @@ public abstract class AbstractAlarm implements IAlarm {
      * Identificador de la alarma
      */
     protected Integer idAlarm;
-    
-    /**
-     * Tipo de agendamiento de la alarma
-     */
-    protected Integer scheduleType;
     
     /**
      * Tipo de alarma
@@ -89,17 +83,15 @@ public abstract class AbstractAlarm implements IAlarm {
     /**
      * Constructor
      * @param idAlarm Identificador de la alarma
-     * @param scheduleType Tipo de agendamiento
      * @param alarmType Tipo de alarma
      * @param description Descripcion de la alarma
      * @param scheduledDays Dias de agendamiento
      * @param alarmUsers Usuarios suscritos a la alarma
      */
-    public AbstractAlarm(Integer idAlarm, int scheduleType,
+    public AbstractAlarm(Integer idAlarm,
             int alarmType, String description, Set scheduledDays,
             Set alarmUsers) {
         this.idAlarm = idAlarm;
-        this.scheduleType = scheduleType;
         this.alarmType = alarmType;
         this.description = description;
         this.scheduledDays = scheduledDays;
@@ -113,14 +105,6 @@ public abstract class AbstractAlarm implements IAlarm {
 
     public void setIdAlarm(Integer idAlarm) {
         this.idAlarm = idAlarm;
-    }
-
-    public Integer getScheduleType() {
-        return this.scheduleType;
-    }
-
-    public void setScheduleType(Integer scheduleType) {
-        this.scheduleType = scheduleType;
     }
 
     public Integer getAlarmType() {
@@ -163,14 +147,6 @@ public abstract class AbstractAlarm implements IAlarm {
 
     public void setAlarmTypeEnum(AlarmType alarmType) {
         setAlarmType(alarmType.getAlarmType());
-    }
-
-    public ScheduleType getScheduleTypeEnum() {
-        return ScheduleType.values()[getScheduleType() - 1];
-    }
-
-    public void setScheduleTypeEnum(ScheduleType scheduleType) {
-        setScheduleType(scheduleType.getScheduleType());
     }
 
     public boolean IsActive() {

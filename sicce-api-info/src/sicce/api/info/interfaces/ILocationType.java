@@ -25,7 +25,7 @@ public interface ILocationType {
     
     /**
      * Devuelve el identificador del tipo de dependencia
-     * @return
+     * @return Identificador del tipo de dependencia
      */
     int getID();
 }

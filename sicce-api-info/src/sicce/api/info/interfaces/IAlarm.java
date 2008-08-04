@@ -6,7 +6,6 @@ package sicce.api.info.interfaces;
 
 import java.util.Set;
 import sicce.api.info.ConstantsProvider.AlarmType;
-import sicce.api.info.ConstantsProvider.ScheduleType;
 
 /**
  * Define los metodos a ser implementados por las clases 
@@ -28,34 +27,7 @@ public interface IAlarm {
      */
     void setIdAlarm(Integer idAlarm);
     
-    /**
-     * Devuelve el tipo de agenda de la alarma en formato Integer
-     * @return Tipo de agenda de la alarma
-     */
-    Integer getScheduleType();
-    
-    /**
-     * Establece el tipo de agenda de la alarma 
-     * @param scheduleType Tipo de agenda en formato Integer para reemplazar a la enumeracion <strong>ScheduleType</strong>
-     * @see ScheduleType
-     */
-    void setScheduleType(Integer scheduleType);
-    
-    /**
-     * Devuelve el tipo de agenda de la alarma
-     * @return Tipo de agenda de la alarma
-     * @see ScheduleType
-     */
-    ScheduleType getScheduleTypeEnum();
-    
-    /**
-     * Establece el tipo de agenda de la alarma
-     * @param scheduleType Tipo de agenda de la alarma
-     * @see ScheduleType
-     */
-    void setScheduleTypeEnum(ScheduleType scheduleType);
-    
-    /**
+   /**
      * Devuelve el tipo de alarma en formato Integer
      * @return Tipo de alarma en formato Integer
      */
