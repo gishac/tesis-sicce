@@ -13,7 +13,6 @@ import sicce.api.info.ModbusRequest;
 import sicce.api.info.ModbusResponse;
 import sicce.api.info.OptionSicce;
 import sicce.api.info.PowerMeter;
-import sicce.api.info.Report;
 import sicce.api.info.Role;
 import sicce.api.info.ScheduleDay;
 import sicce.api.info.UserSicce;
@@ -27,7 +26,6 @@ import sicce.api.info.interfaces.IModbusRequest;
 import sicce.api.info.interfaces.IModbusResponse;
 import sicce.api.info.interfaces.IOptionSicce;
 import sicce.api.info.interfaces.IPowerMeter;
-import sicce.api.info.interfaces.IReport;
 import sicce.api.info.interfaces.IRole;
 import sicce.api.info.interfaces.IScheduleDay;
 import sicce.api.info.interfaces.IUserSicce;
@@ -87,9 +85,6 @@ public class ClassFactory {
         return new Measure();
     }
     
-    public static IReport getReportInstance(){
-        return new Report();
-    }
     
     public static IFilter getFilterInstance(){
         return new Filter();
