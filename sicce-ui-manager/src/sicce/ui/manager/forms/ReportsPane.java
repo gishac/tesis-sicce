@@ -19,11 +19,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import org.jdesktop.application.ResourceMap;
 import sicce.api.businesslogic.renderer.JTableButtonRenderer;
-import sicce.api.businesslogic.ReportBizObject;
 import sicce.wizard.reports.models.ReportTableModel;
-import sicce.api.info.interfaces.IReport;
 import sicce.ui.manager.controls.JTabExtended;
-import sicce.api.dataaccess.ReportDB;
 import sicce.api.info.ToolBarStateInfo;
 import sicce.ui.manager.listeners.JTbButtonReportMouseListener;
 import sicce.api.util.SerializableUtil;
@@ -32,9 +29,8 @@ import sicce.wizard.reports.models.ReportModel;
  *
  * @author  Karu
  */
-public class ReportsPane extends JTabExtended<IReport> {
+public class ReportsPane extends JTabExtended {
     
-    ReportBizObject reportBizObj;
     ReportTableModel reportModel;
      JButton searchField;
     TableCellRenderer defaultRenderer;
@@ -43,7 +39,6 @@ public class ReportsPane extends JTabExtended<IReport> {
     /** Creates new form ReportsPane */
     public ReportsPane(ResourceMap resourceMap) {
         initComponents();
-        reportBizObj = new ReportBizObject();
         imgReport = resourceMap.getIcon("reportIcon");
         TableColumn reportColumn = grdSavedReport.getColumnModel().getColumn(2);
         reportColumn.setPreferredWidth(10);
@@ -118,22 +113,7 @@ public class ReportsPane extends JTabExtended<IReport> {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-    
-  @Override
-    public boolean Delete() throws Exception {
-        cancelAction = false;
-        try {
-            super.Delete();
-            ReportDB.Delete(currentObject);
-            FillGrid();
-        } catch (Exception ex) {
-            cancelAction = true;
-            throw ex;
-        }
-        return cancelAction;
-    }
-
-    
+  
   
     @Override
     public void FillGrid() {
