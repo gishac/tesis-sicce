@@ -18,20 +18,6 @@ public class OptionSicce extends AbstractOptionSicce implements
     /** default constructor */
     public OptionSicce() {
     }
-
-    /** minimal constructor */
-    public OptionSicce(Integer idOptionSicce) {
-        super(idOptionSicce);
-    }
-
-    /** full constructor */
-    public OptionSicce(Integer idOptionSicce, String description, String icon,
-            Set<IRole> roles) {
-        super(idOptionSicce, description, icon, roles);
-    }
-
-    
-
    
     /**
      * 
