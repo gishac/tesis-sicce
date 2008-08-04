@@ -32,15 +32,22 @@
      location.`DESCRIPTION` AS location_DESCRIPTION,
      location_zone.`ID_ZONE` AS location_zone_ID_ZONE,
      location_zone.`ID_LOCATION` AS location_zone_ID_LOCATION,
-     zone.`DESCRIPTION` AS zone_DESCRIPTION
+     zone.`DESCRIPTION` AS zone_DESCRIPTION,
+     power_meter.`DESCRIPTION` AS power_meter_DESCRIPTION,
+     power_meter.`IP_ADDRESS` AS power_meter_IP_ADDRESS
 FROM
-     `location` location INNER JOIN `location_zone` location_zone ON location.`ID_LOCATION` = location_zone.`ID_LOCATION`
-     INNER JOIN `zone` zone ON location_zone.`ID_ZONE` = zone.`ID_ZONE`]]></queryString>
+     `location` location 
+     LEFT JOIN `location_zone` location_zone ON location.`ID_LOCATION` = location_zone.`ID_LOCATION`
+     LEFT JOIN `zone` zone ON location_zone.`ID_ZONE` = zone.`ID_ZONE`
+     INNER JOIN `location_power_meter` location_power_meter ON location.`ID_LOCATION` = location_power_meter.`ID_LOCATION`
+     INNER JOIN `power_meter` power_meter ON location_power_meter.`ID_POWER_METER` = power_meter.`ID_POWER_METER`]]></queryString>
 
 	<field name="location_DESCRIPTION" class="java.lang.String"/>
 	<field name="location_zone_ID_ZONE" class="java.lang.Long"/>
 	<field name="location_zone_ID_LOCATION" class="java.lang.Long"/>
 	<field name="zone_DESCRIPTION" class="java.lang.String"/>
+	<field name="power_meter_DESCRIPTION" class="java.lang.String"/>
+	<field name="power_meter_IP_ADDRESS" class="java.lang.String"/>
 
 
 		<group  name="Zone" >
@@ -63,8 +70,8 @@ FROM
 				<staticText>
 					<reportElement
 						x="34"
-						y="19"
-						width="259"
+						y="18"
+						width="196"
 						height="16"
 						key="staticText-5"/>
 					<box></box>
@@ -77,7 +84,7 @@ FROM
 					<reportElement
 						x="2"
 						y="17"
-						width="291"
+						width="528"
 						height="1"
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -86,7 +93,7 @@ FROM
 					<reportElement
 						x="1"
 						y="34"
-						width="291"
+						width="528"
 						height="0"
 						key="line-2"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -111,7 +118,7 @@ FROM
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="293"
+						x="231"
 						y="18"
 						width="0"
 						height="17"
@@ -131,7 +138,7 @@ FROM
 					</textElement>
 				<text><![CDATA[Zona:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="52"
 						y="1"
@@ -140,14 +147,58 @@ FROM
 						key="textField-1"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
-						<font/>
+						<font fontName="Verdana"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{zone_DESCRIPTION}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{zone_DESCRIPTION}==null?"No Asignada":$F{zone_DESCRIPTION})]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="529"
+						y="17"
+						width="0"
+						height="18"
+						key="line-13"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="230"
+						y="18"
+						width="164"
+						height="16"
+						key="staticText-7"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Medidor Asignado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="398"
+						y="18"
+						width="130"
+						height="16"
+						key="staticText-8"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Dirección IP]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="395"
+						y="17"
+						width="0"
+						height="18"
+						key="line-15"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="50"  isSplitAllowed="true" >
+			<band height="29"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -247,7 +298,7 @@ FROM
 					<reportElement
 						x="40"
 						y="0"
-						width="253"
+						width="191"
 						height="18"
 						key="textField"/>
 					<box></box>
@@ -269,7 +320,7 @@ FROM
 					<reportElement
 						x="2"
 						y="18"
-						width="291"
+						width="527"
 						height="0"
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -285,13 +336,57 @@ FROM
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="293"
+						x="231"
 						y="0"
 						width="0"
 						height="19"
 						key="line-12"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="529"
+						y="0"
+						width="0"
+						height="18"
+						key="line-14"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="395"
+						y="0"
+						width="0"
+						height="18"
+						key="line-16"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="237"
+						y="0"
+						width="158"
+						height="18"
+						key="textField-2"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{power_meter_DESCRIPTION}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="399"
+						y="0"
+						width="128"
+						height="16"
+						key="textField-3"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{power_meter_IP_ADDRESS}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>

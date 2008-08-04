@@ -23,10 +23,10 @@ import java.util.logging.Logger;
 import javax.swing.JComponent;
 import org.jdesktop.application.ResourceMap;
 import sicce.ui.manager.reports.ReportTemplate;
-import sicce.wizard.report.panels.ReportForm1;
-import sicce.wizard.report.panels.ReportForm2;
-import sicce.wizard.report.panels.ReportForm3;
-import sicce.wizard.report.panels.ReportForm4;
+import sicce.wizard.report.panels.ReportWizardStep1;
+import sicce.wizard.report.panels.ReportWizardStep2;
+import sicce.wizard.report.panels.ReportWizardStep3;
+import sicce.wizard.report.panels.ReportWizardStep4;
 import sicce.wizard.reports.models.ReportModel;
 
 /**
@@ -67,7 +67,7 @@ class InitialSteps extends WizardPanelProvider {
      * Creates a new instance of InitialSteps
      */
     InitialSteps(ResourceMap resourceMap, ReportModel report) {
-        super("UCSG Report Wizard", new String[]{GENERAL_INFORMATION, SELECTED_FIELDS, GROUP_FIELDS, WHERE_FIELDS},
+        super("SICCE - Asistente de Reportes", new String[]{GENERAL_INFORMATION, SELECTED_FIELDS, GROUP_FIELDS, WHERE_FIELDS},
                 new String[]{"Tipo de reporte", "Selección de Columnas", "Definición de Criterios", "Definición de Filtros"});
         this.resourceMap = resourceMap;
          this.report = report;
@@ -93,15 +93,15 @@ class InitialSteps extends WizardPanelProvider {
         switch (indexOfStep(id)) {
 
             case 0:
-                return new ReportForm1(controller, wizardData);
+                return new ReportWizardStep1(controller, wizardData);
 
             case 1:
-                return new ReportForm2(controller, wizardData);
+                return new ReportWizardStep2(controller, wizardData);
 
             case 2:
-                return new ReportForm3(controller, wizardData);
+                return new ReportWizardStep3(controller, wizardData);
             case 3:
-                return new ReportForm4(controller, wizardData, resourceMap);
+                return new ReportWizardStep4(controller, wizardData, resourceMap);
 
 
             default:

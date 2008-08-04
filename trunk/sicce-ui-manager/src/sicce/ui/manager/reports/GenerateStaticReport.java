@@ -27,7 +27,7 @@ import sicce.ui.manager.controls.JOptionPaneExtended;
  * ubicadas en el jar Reports.jar
  * @author Karu
  */
-public class GenerateReport {
+public class GenerateStaticReport {
 
     private static GetResourceDir resource;
 
@@ -44,7 +44,7 @@ public class GenerateReport {
     private static URL zoneReport = resource.getResourceDir("/Zonas.jasper");
     private static ResourceMap resourceMap;
 
-    public GenerateReport(ResourceMap resourceMap) {
+    public GenerateStaticReport(ResourceMap resourceMap) {
         this.resourceMap = resourceMap;
 
     }
@@ -91,9 +91,9 @@ public class GenerateReport {
             }
             validateReport(jasperPrint);
         } catch (JRException ex) {
-            Logger.getLogger(GenerateReport.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GenerateStaticReport.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(GenerateReport.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GenerateStaticReport.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return true;

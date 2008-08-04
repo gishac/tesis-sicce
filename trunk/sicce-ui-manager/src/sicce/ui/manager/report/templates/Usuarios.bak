@@ -240,7 +240,7 @@ FROM
 						height="18"
 						key="textField"/>
 					<box></box>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font fontName="Verdana"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>

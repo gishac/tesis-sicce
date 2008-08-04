@@ -18,7 +18,7 @@ import sicce.wizard.reports.models.FieldHandler;
  *
  * @author  Karu
  */
-public class ReportForm1 extends WizardPage {
+public class ReportWizardStep1 extends WizardPage {
 
     private final WizardController controller;
     private final Map wizardData;
@@ -29,9 +29,9 @@ public class ReportForm1 extends WizardPage {
     public static final String KEY_ORT_HORIZONTAL = "ortHorizontal";
     public static final String KEY_BL_IS_LOADED = "isloaded";
     Boolean isloaded = false;    
-    private FieldHandler pFieldHandler = new FieldHandler();
+  //  private FieldHandler pFieldHandler = new FieldHandler();
     /** Creates new form ReportDetail */
-    public ReportForm1(WizardController controller, Map wizardData) {
+    public ReportWizardStep1(WizardController controller, Map wizardData) {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
@@ -74,7 +74,7 @@ public class ReportForm1 extends WizardPage {
         setPreferredSize(new java.awt.Dimension(650, 500));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportForm1.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportWizardStep1.class);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("jPanel1.border.title"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("jPanel1.border.titleColor"))); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

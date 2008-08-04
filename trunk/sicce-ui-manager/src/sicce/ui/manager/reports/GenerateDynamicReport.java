@@ -25,7 +25,7 @@ import sicce.api.util.SerializableUtil;
 import sicce.wizard.reports.models.FieldHandler;
 import sicce.wizard.reports.models.ReportModel;
 
-public abstract class GenerateDjReport {
+public abstract class GenerateDynamicReport {
 
     protected JasperPrint jprint;
     protected JasperReport jreport;
@@ -95,7 +95,7 @@ public abstract class GenerateDjReport {
             SerializableUtil.Serialize(currentObject, fullPath);
             
         } catch (Exception ex) {
-            Logger.getLogger(GenerateDjReport.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GenerateDynamicReport.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

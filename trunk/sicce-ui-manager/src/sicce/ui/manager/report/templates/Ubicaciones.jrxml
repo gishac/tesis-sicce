@@ -26,16 +26,12 @@
 	<parameter name="logoUCSG" isForPrompting="false" class="java.net.URL"/>
 	<parameter name="logoSICCE" isForPrompting="false" class="java.net.URL"/>
 	<queryString><![CDATA[SELECT
-     power_meter.`DESCRIPTION` AS power_meter_DESCRIPTION,
      location.`DESCRIPTION` AS location_DESCRIPTION,
      location_type.`DESCRIPTION` AS location_type_DESCRIPTION,
      location.`PARENT_ID_LOCATION` AS location_PARENT_ID_LOCATION
 FROM
-     `location` location 
-     INNER JOIN `location_type` location_type ON location.`ID_LOCATION_TYPE` = location_type.`ID_LOCATION_TYPE`
-     INNER JOIN `power_meter` power_meter ON location.`POWER_METER_ID_POWER_METER` = power_meter.`ID_POWER_METER`]]></queryString>
+     `location` location INNER JOIN `location_type` location_type ON location.`ID_LOCATION_TYPE` = location_type.`ID_LOCATION_TYPE`]]></queryString>
 
-	<field name="power_meter_DESCRIPTION" class="java.lang.String"/>
 	<field name="location_DESCRIPTION" class="java.lang.String"/>
 	<field name="location_type_DESCRIPTION" class="java.lang.String"/>
 	<field name="location_PARENT_ID_LOCATION" class="java.lang.Long"/>
@@ -132,7 +128,7 @@ FROM
 					<reportElement
 						x="34"
 						y="8"
-						width="228"
+						width="282"
 						height="16"
 						key="staticText-5"/>
 					<box></box>
@@ -143,9 +139,9 @@ FROM
 				</staticText>
 				<staticText>
 					<reportElement
-						x="262"
+						x="327"
 						y="8"
-						width="128"
+						width="198"
 						height="16"
 						key="staticText-6"/>
 					<box></box>
@@ -153,19 +149,6 @@ FROM
 						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Tipo de Dependencia]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="401"
-						y="8"
-						width="129"
-						height="16"
-						key="staticText-7"/>
-					<box></box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Medidor Asignado]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -205,20 +188,11 @@ FROM
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="262"
+						x="322"
 						y="7"
 						width="0"
 						height="19"
 						key="line-5"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="390"
-						y="7"
-						width="0"
-						height="19"
-						key="line-6"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -233,7 +207,7 @@ FROM
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="20"  isSplitAllowed="true" >
+			<band height="18"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
@@ -251,7 +225,7 @@ FROM
 					<reportElement
 						x="41"
 						y="0"
-						width="221"
+						width="275"
 						height="18"
 						key="textField"/>
 					<box></box>
@@ -262,9 +236,9 @@ FROM
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="271"
+						x="327"
 						y="0"
-						width="119"
+						width="198"
 						height="18"
 						key="textField"/>
 					<box></box>
@@ -273,23 +247,10 @@ FROM
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{location_type_DESCRIPTION}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="401"
-						y="0"
-						width="129"
-						height="18"
-						key="textField"/>
-					<box></box>
-					<textElement>
-						<font fontName="Verdana"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{power_meter_DESCRIPTION}]]></textFieldExpression>
-				</textField>
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="0"
+						y="-1"
 						width="0"
 						height="19"
 						key="line-8"/>
@@ -298,7 +259,7 @@ FROM
 				<line direction="TopDown">
 					<reportElement
 						x="2"
-						y="18"
+						y="17"
 						width="528"
 						height="0"
 						key="line-9"/>
@@ -307,7 +268,7 @@ FROM
 				<line direction="TopDown">
 					<reportElement
 						x="32"
-						y="0"
+						y="-1"
 						width="0"
 						height="19"
 						key="line-10"/>
@@ -315,8 +276,8 @@ FROM
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="262"
-						y="0"
+						x="322"
+						y="-2"
 						width="0"
 						height="19"
 						key="line-11"/>
@@ -324,19 +285,10 @@ FROM
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="390"
-						y="0"
-						width="0"
-						height="19"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
 						x="530"
 						y="0"
 						width="0"
-						height="19"
+						height="18"
 						key="line-13"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
