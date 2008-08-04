@@ -9,16 +9,14 @@ package sicce.api.processor.viewer.controls;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
+import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import org.jdesktop.application.ResourceMap;
-import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.info.ComboBoxItem;
 import sicce.api.info.ConstantsProvider.ModbusRegister;
@@ -34,9 +32,10 @@ import sicce.api.processor.viewer.handlers.MeasureVisibilityHandler;
 public class LogPane extends javax.swing.JPanel {
     
     /** Creates new form LogPane */
-    public LogPane(ResourceMap resourceMap) {
+    public LogPane(ResourceMap resourceMap, Set<IPowerMeter> powerMetersForCurrentUser) {
         initComponents();
         this.resourceMap = resourceMap;
+        this.powerMetersForCurrentUser = powerMetersForCurrentUser;
         this.logList.setModel(getListModel());
         LoadAvailablePowerMeters();
         measureVisibilityHandler = MeasureVisibilityHandler.getInstance();
@@ -119,6 +118,7 @@ public class LogPane extends javax.swing.JPanel {
     private DefaultListModel listModel;
     private JPanel powerMetersPane;
     private ResourceMap resourceMap;
+    private Set<IPowerMeter> powerMetersForCurrentUser;
     
     
     private MeasureVisibilityHandler measureVisibilityHandler;
@@ -164,21 +164,19 @@ public class LogPane extends javax.swing.JPanel {
      * 
      */
     public void LoadAvailablePowerMeters(){
-        PowerMeterBizObject powerMeterBizObject = new PowerMeterBizObject();
-        List<IPowerMeter> powerMeters = powerMeterBizObject.GetAllPowerMeter();
-        IPowerMeter virtual1 = ClassFactory.getPowerMeterInstance();
-        virtual1.setSerial("v1");
-        virtual1.setDescription("Medidor virtual 1");
+//        IPowerMeter virtual1 = ClassFactory.getPowerMeterInstance();
+//        virtual1.setSerial("v1");
+//        virtual1.setDescription("Medidor virtual 1");
+//        
+//        powerMetersForCurrentUser.add(virtual1);
+//        
+//        IPowerMeter virtual2 = ClassFactory.getPowerMeterInstance();
+//        virtual2.setSerial("v2");
+//        virtual2.setDescription("Medidor virtual 2");
+//        
+//        powerMetersForCurrentUser.add(virtual2);
         
-        powerMeters.add(virtual1);
-        
-        IPowerMeter virtual2 = ClassFactory.getPowerMeterInstance();
-        virtual2.setSerial("v2");
-        virtual2.setDescription("Medidor virtual 2");
-        
-        powerMeters.add(virtual2);
-        
-        for (IPowerMeter powerMeter : powerMeters) {
+        for (IPowerMeter powerMeter : powerMetersForCurrentUser) {
             JCheckBox checkbox = new JCheckBox(powerMeter.getDescription());
             checkbox.setName(powerMeter.getSerial());
             checkbox.setSelected(true);

@@ -7,7 +7,9 @@ import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
+import java.util.HashSet;
 import java.util.Observer;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdesktop.application.Action;
@@ -47,6 +49,20 @@ public class SicceapiprocessorviewerView extends FrameView {
         SetTrayIcon();
         BuildPanes();
         RunProcessor();
+    }
+    
+    Set<IPowerMeter> powerMetersForCurrentUser;
+
+    private Set<IPowerMeter> getPowerMetersForCurrentUser() {
+        if (powerMetersForCurrentUser == null) {
+            powerMetersForCurrentUser = new HashSet<IPowerMeter>();
+            for (IPowerMeter powerMeter : currentUser.getPowerMeters()) {
+                if (powerMeter.getLocations().size() > 0) {
+                    powerMetersForCurrentUser.add(powerMeter);
+                }
+            }
+        }
+        return powerMetersForCurrentUser;
     }
 
     @Action
@@ -108,9 +124,9 @@ public class SicceapiprocessorviewerView extends FrameView {
      * 
      */
     private void BuildPanes() {
-        chartPane = new ChartPane(getResourceMap().getString("ChartTitle"), getResourceMap());
-        logPane = new LogPane(getResourceMap());
-        measuresPane = new MeasuresPane();
+        chartPane = new ChartPane(getResourceMap().getString("ChartTitle"), getResourceMap(),getPowerMetersForCurrentUser());
+        logPane = new LogPane(getResourceMap(),getPowerMetersForCurrentUser());
+        measuresPane = new MeasuresPane(getPowerMetersForCurrentUser());
         errorsPane = new ErrorsPane(trayIcon);
         getTabManager().addTab("Gráficos del Consumo Eléctrico", chartPane);
         getTabManager().addTab("Log de Lecturas del Consumo Eléctrico", logPane);
@@ -123,13 +139,13 @@ public class SicceapiprocessorviewerView extends FrameView {
      */
     private void RunProcessor() {
         AlarmBizObject alarmBizObject = new AlarmBizObject();
-        for (IPowerMeter powerMeter : currentUser.getPowerMeters()) {
+        for (IPowerMeter powerMeter : getPowerMetersForCurrentUser()) {
             for (IAlarm alarm : powerMeter.getAlarms()) {
                 alarm.RegisterAlarmListener(alarmBizObject);
-                Processor.AddObserver((Observer)alarm);
+                Processor.AddObserver((Observer) alarm);
             }
         }
-        Processor.DoProcess(currentUser.getPowerMeters());
+        Processor.DoProcess(getPowerMetersForCurrentUser());
     }
 
     /**

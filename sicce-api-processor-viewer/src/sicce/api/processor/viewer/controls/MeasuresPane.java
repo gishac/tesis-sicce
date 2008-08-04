@@ -6,6 +6,9 @@
 
 package sicce.api.processor.viewer.controls;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.businesslogic.model.SicceComboBoxModel;
 import sicce.api.businesslogic.renderer.SicceComboBoxRenderer;
@@ -27,15 +30,18 @@ public class MeasuresPane extends javax.swing.JPanel {
     }
     private SicceComboBoxModel<IPowerMeter> powerMetersComboModel;
     private SicceComboBoxRenderer powerMetersComboRenderer;
-    private PowerMeterBizObject powerMeterBizObject;
+    private Set<IPowerMeter> powerMetersForCurrentUser;
     
     /** Creates new form MeasuresPane */
-    public MeasuresPane() {
+    public MeasuresPane(Set<IPowerMeter> powerMetersForCurrentUser) {
         initComponents();
+        this.powerMetersForCurrentUser = powerMetersForCurrentUser;
         measureViewHandler = new MeasureViewHandler(measuresTable,txtPhaseToPhaseVoltage1To2,txtPhaseToPhaseVoltage2To3,txtPhaseToPhaseVoltage3To1,
                 txtTotalActivePower,txtTotalApparentPower,txtTotalReactivePower);
-        powerMeterBizObject = new PowerMeterBizObject();
-        powerMetersComboModel = new SicceComboBoxModel<IPowerMeter>(powerMeterBizObject.GetActivePowerMeter());
+        List<IPowerMeter> powerMeters = new ArrayList();
+        for(IPowerMeter powerMeter : powerMetersForCurrentUser)
+            powerMeters.add(powerMeter);
+        powerMetersComboModel = new SicceComboBoxModel<IPowerMeter>(powerMeters);
         powerMetersComboRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method, "getSerial", DisplayMemberRenderType.Method);
         cmbCurrentPowerMeter.setModel(powerMetersComboModel);
         cmbCurrentPowerMeter.setRenderer(powerMetersComboRenderer);

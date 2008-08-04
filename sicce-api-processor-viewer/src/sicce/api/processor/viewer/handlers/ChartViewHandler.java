@@ -15,6 +15,7 @@ import java.awt.GradientPaint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartPanel;
@@ -30,7 +31,6 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.RectangleInsets;
 import sicce.api.businesslogic.MeasureBizObject;
 import sicce.api.businesslogic.PowerMeterBizObject;
-import sicce.api.info.ConstantsProvider.ModbusRegister;
 import sicce.api.info.interfaces.IMeasure;
 import sicce.api.info.interfaces.IPowerMeter;
 
@@ -50,7 +50,13 @@ public class ChartViewHandler {
     private int currentRegisterID;
     private String currentRegisterName;
     private String chartTitle;
+    private Set<IPowerMeter> powerMetersForCurrentUser;
 
+    
+    public ChartViewHandler(Set<IPowerMeter> powerMetersForCurrentUser){
+        this.powerMetersForCurrentUser = powerMetersForCurrentUser;
+    }
+    
     /**
      * 
      * @return
@@ -89,17 +95,16 @@ public class ChartViewHandler {
      * @return
      */
     private TimeSeriesCollection BuildSeries() {
-        PowerMeterBizObject powerMeterBizObject = new PowerMeterBizObject();
-        List<IPowerMeter> powerMeters = powerMeterBizObject.GetAllPowerMeter();
-        for (IPowerMeter powerMeter : powerMeters) {
+       
+        for (IPowerMeter powerMeter : powerMetersForCurrentUser) {
             TimeSeries timeSeries = new TimeSeries(powerMeter.getDescription(), Millisecond.class);
             getSeries().addSeries(timeSeries);
             getSeriesMap().put(powerMeter.getSerial(), timeSeries);
-            getSeries().addSeries(virtual1);
-            getSeries().addSeries(virtual2);
-
-            getSeriesMap().put("v1", virtual1);
-            getSeriesMap().put("v2", virtual2);
+//            getSeries().addSeries(virtual1);
+//            getSeries().addSeries(virtual2);
+//
+//            getSeriesMap().put("v1", virtual1);
+//            getSeriesMap().put("v2", virtual2);
         }
         return getSeries();
     }
@@ -191,8 +196,8 @@ public class ChartViewHandler {
     public void ProcessMeasure(IMeasure measure) {
         TimeSeries powerMeterSeries = getSeriesMap().get(measure.getPowerMeter().getSerial());
         powerMeterSeries.add(new Millisecond(), GetMeasure(measure));
-        virtual1.add(new Millisecond(), Math.random() * 1000);
-        virtual2.add(new Millisecond(), Math.random() * 1000);
+//        virtual1.add(new Millisecond(), Math.random() * 1000);
+//        virtual2.add(new Millisecond(), Math.random() * 1000);
     }
 
     /**
