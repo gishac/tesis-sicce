@@ -45,7 +45,6 @@
         <mapping resource="sicce/api/info/Alarm.hbm.xml" />
         <mapping resource="sicce/api/info/ScheduleDay.hbm.xml" />
         <mapping resource="sicce/api/info/Group.hbm.xml" />
-        <mapping resource="sicce/api/info/Report.hbm.xml" />
         
     </session-factory>
     
