@@ -21,7 +21,6 @@ public class DataAccessManager {
     private AlarmDAO alarmDB;
     private ScheduleDayDAO scheduleDayDB;
     private GroupDAO groupDB;
-    private ReportDAO reportDB;
     private static DataAccessManager instance;
     private ConnectDAO connectionDB;
 
@@ -132,15 +131,7 @@ public class DataAccessManager {
     public void setGroupDB(GroupDAO groupDB) {
         this.groupDB = groupDB;
     }
-    
-    public ReportDAO getReportDB() {
-        return reportDB;
-    }
-
-    public void setReportDB(ReportDAO reportDB) {
-        this.reportDB = reportDB;
-    }
-
+  
     public ConnectDAO getConnectionDB() {
         return connectionDB;
     }
