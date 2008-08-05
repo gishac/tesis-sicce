@@ -7,6 +7,7 @@ package sicce.ui.manager.reports;
 import java.awt.Component;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -42,6 +43,9 @@ public class GenerateStaticReport {
     private static URL locationReport = resource.getResourceDir("/Ubicaciones.jasper");
     private static URL userReport = resource.getResourceDir("/Usuarios.jasper");
     private static URL zoneReport = resource.getResourceDir("/Zonas.jasper");
+    private static URL ConsumptionbyZoneReport = resource.getResourceDir("/ConsumptionbyZone.jasper");
+    private static URL ConsumptionbyLocationReport = resource.getResourceDir("/ConsumptionbyLocation.jasper");
+    
     private static ResourceMap resourceMap;
 
     public GenerateStaticReport(ResourceMap resourceMap) {
@@ -50,7 +54,7 @@ public class GenerateStaticReport {
     }
 
     private static boolean checkResource(Component pComponentePadre) {
-        if (urlLogoUCSG == null || urlLogoSICCE == null || pmeterReport == null || locationReport == null || lTypeReport == null || zoneReport == null) {
+        if (urlLogoUCSG == null || urlLogoSICCE == null || pmeterReport == null || locationReport == null || lTypeReport == null || zoneReport == null || ConsumptionbyLocationReport == null || ConsumptionbyZoneReport == null ) {
             JOptionPane.showMessageDialog(pComponentePadre, resourceMap.getString("errorReport"), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -88,6 +92,7 @@ public class GenerateStaticReport {
                 case ZoneReport:
                     jasperPrint = JasperFillManager.fillReport(zoneReport.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
                     break;
+                    
             }
             validateReport(jasperPrint);
         } catch (JRException ex) {
@@ -100,6 +105,38 @@ public class GenerateStaticReport {
 
     }
 
+     public static boolean GenerateStaticConsumptionReport(Component pComponentePadre,  Boolean plocation, Boolean pzone, Date startDate, Date endDate) {
+        try {
+
+            if (!checkResource(pComponentePadre)) {
+                return false;
+            }
+             Map pCriterios = new HashMap();
+
+            //Agrego las imagenes que lleve todo reporte
+            pCriterios.put("logoUCSG", urlLogoUCSG);
+            pCriterios.put("logoSICCE", urlLogoSICCE);
+            pCriterios.put("startDate", startDate);
+            pCriterios.put("endDate", endDate);
+            JasperPrint jasperPrint = null;
+
+            if (plocation){
+                    jasperPrint = JasperFillManager.fillReport(ConsumptionbyLocationReport.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
+            }
+            if (pzone){
+                    jasperPrint = JasperFillManager.fillReport(ConsumptionbyZoneReport.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
+            }
+             validateReport(jasperPrint);
+ } catch (JRException ex) {
+            Logger.getLogger(GenerateStaticReport.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GenerateStaticReport.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return true;
+
+    }
+    
    
     public static void validateReport(JasperPrint jasperPrint) {
         if (jasperPrint.getPages().size() < 0) {
