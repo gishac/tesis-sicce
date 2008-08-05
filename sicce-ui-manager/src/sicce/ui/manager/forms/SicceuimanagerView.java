@@ -605,6 +605,9 @@ public class SicceuimanagerView extends FrameView {
             case ZoneReport:
                 GenerateStaticReport.GenerateStaticReport(null,option);
                 break;
+            case ConsumptionReport:
+                
+                break;
         }
 
     }
