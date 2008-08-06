@@ -5,9 +5,9 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
     
     <bean id="sessionFactory"
-   class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+          class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="configLocation"
-    value="classpath:hibernate.cfg.xml">
+                  value="classpath:hibernate.cfg.xml">
         </property>
     </bean>
     
@@ -26,11 +26,7 @@
             <ref bean="sessionFactory" />
         </property>
     </bean>
-    <bean id="UnitMeasureDAO" class="sicce.api.dataaccess.UnitMeasureDAO">
-        <property name="sessionFactory">
-            <ref bean="sessionFactory" />
-        </property>
-    </bean>
+    
     <bean id="ParameterDAO" class="sicce.api.dataaccess.ParameterDAO">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
@@ -66,7 +62,7 @@
             <ref bean="sessionFactory" />
         </property>
     </bean>
-     <bean id="ConnectDAO" class="sicce.api.dataaccess.ConnectDAO">
+    <bean id="ConnectDAO" class="sicce.api.dataaccess.ConnectDAO">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
@@ -88,7 +84,7 @@
     </bean>
     
     <bean id="DataAccessManager" class="sicce.api.dataaccess.DataAccessManager" abstract="false" lazy-init="default"
-   autowire="default" dependency-check="default">
+          autowire="default" dependency-check="default">
         <property name="roleDB">
             <ref bean="RoleDAO" />
         </property>
@@ -113,16 +109,14 @@
         <property name="powerMeterDB">
             <ref bean="PowerMeterDAO" />
         </property>
-        <property name="unitMeasureDB">
-            <ref bean="UnitMeasureDAO" />
-        </property>	
-         <property name="zoneDB">
+        
+        <property name="zoneDB">
             <ref bean="ZoneDAO" />
         </property>
         <property name="connectionDB">
             <ref bean="ConnectDAO" />
         </property> 
-
+        
         <property name="alarmDB">
             <ref bean="AlarmDAO" />
         </property>	
@@ -132,7 +126,7 @@
         <property name="groupDB">
             <ref bean="GroupDAO" />
         </property>
-       
+        
     </bean>
     
     
