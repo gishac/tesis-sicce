@@ -3,6 +3,7 @@
  */
 package sicce.ui.manager.forms;
 
+import com.ibm.icu.impl.UBiDiProps;
 import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.l2fprod.common.swing.JTaskPane;
@@ -46,6 +47,7 @@ import sicce.api.info.eventobjects.ToolBarEventObject;
 import sicce.api.info.interfaces.IGroup;
 import sicce.api.info.interfaces.IOptionSicce;
 import sicce.api.info.interfaces.IUserSicce;
+import sicce.api.util.ComponentUtil;
 import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.controls.JTabExtended;
@@ -53,6 +55,7 @@ import sicce.ui.manager.controls.JTabbedPaneExtended;
 import sicce.ui.manager.handlers.ExceptionHandler;
 import sicce.ui.manager.handlers.ToolBarHandler;
 import sicce.ui.manager.reports.GenerateStaticReport;
+import sicce.ui.manager.reports.ReportConsumptionFrm;
 import sicce.wizard.report.NewWizard;
 
 /**
@@ -593,9 +596,6 @@ public class SicceuimanagerView extends FrameView {
             case PowerMeterReport:
                 GenerateStaticReport.GenerateStaticReport(null,option);
                 break;
-            case LocationTypeReport:
-                GenerateStaticReport.GenerateStaticReport(null,option);
-                break;
             case LocationReport:
                 GenerateStaticReport.GenerateStaticReport(null,option);
                 break;
@@ -606,7 +606,9 @@ public class SicceuimanagerView extends FrameView {
                 GenerateStaticReport.GenerateStaticReport(null,option);
                 break;
             case ConsumptionReport:
-                
+                ReportConsumptionFrm report = new ReportConsumptionFrm();
+                ComponentUtil.CenterFormInScreen(report, report.getToolkit());
+                report.setVisible(true);
                 break;
         }
 
