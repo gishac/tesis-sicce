@@ -125,6 +125,7 @@ public class ReportsPane extends JTabExtended {
         
         for(File reportFile : files){
             try {
+                if(reportFile.isDirectory()) continue;
                 ReportModel report = (ReportModel) SerializableUtil.Deserialize(reportFile.getAbsolutePath());
                 reports.add(report);
             } catch (IOException ex) {
