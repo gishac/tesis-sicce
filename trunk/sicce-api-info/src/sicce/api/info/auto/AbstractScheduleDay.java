@@ -22,6 +22,7 @@ public class AbstractScheduleDay implements Serializable, IScheduleDay {
     
     /**
      * Alarma que tiene asignado el dia
+     * @see IAlarm
      */
     protected IAlarm alarm;
     

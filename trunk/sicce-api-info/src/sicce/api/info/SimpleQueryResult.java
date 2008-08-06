@@ -8,12 +8,17 @@ package sicce.api.info;
 import sicce.api.info.interfaces.ISimpleQueryResult;
 
 /**
- *
+ * Representacion de los resultados de una consulta simple
  * @author karu
  */
 public class SimpleQueryResult implements ISimpleQueryResult {
+    
+    /**
+     * Resultado de la consulta
+     */
     private String result;
 
+    
     public String getResult() {
         return result;
     }
