@@ -25,7 +25,7 @@ public class RoleTableModel extends SicceTableModel<IRole> {
             case 0:
                 return rowIndex + 1;
             case 1:
-                return role.getID();
+                return role.getIdRole();
             case 2:
                 return role.getDescription();
             default:
