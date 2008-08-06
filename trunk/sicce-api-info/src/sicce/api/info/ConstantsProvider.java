@@ -79,6 +79,11 @@ public class ConstantsProvider {
      * Codigo del parametro MAIL_USE_SSL
      */
     public static final String MAIL_USE_SSL = "MAIL_USE_SSL";
+    
+    /**
+     * Codigo del parametro KWH_VALUE
+     */
+    public static final String KWH_VALUE = "KWH_VALUE";
 
     /**
      * Opciones del menu

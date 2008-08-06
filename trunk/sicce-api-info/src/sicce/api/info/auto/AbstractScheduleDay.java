@@ -4,43 +4,50 @@
  */
 package sicce.api.info.auto;
 
+import java.io.Serializable;
 import java.util.Calendar;
-import sicce.api.info.Alarm;
 import sicce.api.info.interfaces.IAlarm;
+import sicce.api.info.interfaces.IScheduleDay;
 
 /**
- *
+ * Clases que representa a los dias de agenda de alarmas
  * @author gish@c
  */
-public class AbstractScheduleDay {
+public class AbstractScheduleDay implements Serializable, IScheduleDay {
 
+    /**
+     * Identificador del dia de agendamiento
+     */
     protected Integer idScheduleDay;
+    
+    /**
+     * Alarma que tiene asignado el dia
+     */
     protected IAlarm alarm;
+    
+    /**
+     * Dia de agendamiento
+     */
     protected Integer dayScheduled;
+    
+    /**
+     * Hora de inicio de la alarma
+     */
     protected Integer startTime;
+    
+    /**
+     * Hora de fin da la alarma
+     */
     protected Integer endTime;
 
     // Constructors
-    /** default constructor */
+    
+    /**
+     * Constructor
+     */
     public AbstractScheduleDay() {
     }
-
-    /** minimal constructor */
-    public AbstractScheduleDay(Integer idScheduleDay, Alarm alarm) {
-        this.idScheduleDay = idScheduleDay;
-        this.alarm = alarm;
-    }
-
-    /** full constructor */
-    public AbstractScheduleDay(Integer idScheduleDay, Alarm alarm,
-            Integer dayScheduled, Integer startTime, Integer endTime) {
-        this.idScheduleDay = idScheduleDay;
-        this.alarm = alarm;
-        this.dayScheduled = dayScheduled;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-
+    
     // Property accessors
     public Integer getIdScheduleDay() {
         return this.idScheduleDay;

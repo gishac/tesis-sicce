@@ -6,13 +6,12 @@
 package sicce.api.info;
 
 import sicce.api.info.auto.AbstractScheduleDay;
-import sicce.api.info.interfaces.IScheduleDay;
 
 /**
- *
+ * Clases que representa a los dias de agenda de alarmas
  * @author gish@c
  */
-public class ScheduleDay extends AbstractScheduleDay implements IScheduleDay {
+public class ScheduleDay extends AbstractScheduleDay {
 
         
 }

@@ -16,18 +16,14 @@
         <property name="ipAddress" type="java.lang.String">
             <column name="IP_ADDRESS" length="16" />
         </property>
-        <property name="logStatus" type="java.lang.Byte">
-            <column name="LOG_STATUS" />
-        </property>
+        
         <property name="serial" type="java.lang.String">
             <column name="SERIAL" length="20" />
         </property>
         <property name="deviceID" type="java.lang.String">
             <column name="DEVICE_ID" length="20" />
         </property>
-        <property name="status2" type="java.lang.Byte">
-            <column name="STATUS_2" />
-        </property>
+        
         <set name="measures" inverse="true">
             <key>
                 <column name="ID_POWER_METER" not-null="true" />
