@@ -4,17 +4,11 @@
  */
 package sicce.api.processor;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sicce.api.businesslogic.PowerMeterBizObject;
@@ -27,40 +21,51 @@ import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IPowerMeterWatcher;
 
 /**
- *
+ * Representacion de un observador de medidor
  * @author gish@c
  */
 public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher {
 
     /**
      * Medidor a ser observado
+     * @see IPowerMeter
      */
     private IPowerMeter powerMeter;
-
-    public IPowerMeter getPowerMeter() {
-        return this.powerMeter;
-    }
+    
     /**
      * Gestor de logica para el medidor
+     * @see PowerMeterBizObject
      */
     private PowerMeterBizObject powerMeterBizObject;
 
+    /**
+     * Devuelve el medidor a ser observado
+     * @return Medidor a ser observado
+     * @see IPowerMeter
+     */
+    public IPowerMeter getPowerMeter() {
+        return this.powerMeter;
+    }
+    
+    /**
+     * Establece el gestor de logica para el medidor
+     * @return Gestor de logica para el medidor
+     * @see PowerMeterBizObject
+     */ 
     public PowerMeterBizObject getpowerMeterBizObject() {
         return powerMeterBizObject;
     }
 
     /**
-     * 
-     * @param powerMeter
+     * Constructor
+     * @param powerMeter Medidor a ser observado
+     * @see IPowerMeter
      */
     public PowerMeterWatcher(IPowerMeter powerMeter) {
         this.powerMeter = powerMeter;
         this.powerMeterBizObject = new PowerMeterBizObject();
     }
 
-    /**
-     * Realiza el proceso de lectura del medidor
-     */
     public void Watch() {
         try {
             
@@ -85,19 +90,11 @@ public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher 
         }
     }
 
-    /**
-     * 
-     * @param observer
-     */
     public void AddObserver(Observer observer) {
         addObserver(observer);
     }
 
-    /**
-     * 
-     * @param ex
-     */
-    private void NotifyException(Exception ex) {
+    public void NotifyException(Exception ex) {
         setChanged();
         notifyObservers(ex);
     }
