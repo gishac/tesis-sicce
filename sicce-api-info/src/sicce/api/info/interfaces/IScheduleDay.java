@@ -27,12 +27,14 @@ public interface IScheduleDay {
     /**
      * Devuelve la alarma que tiene asignado el dia
      * @return Alarma que tiene asignado el dia
+     * @see IAlarm
      */
     IAlarm getAlarm();
     
     /**
      * Establece la alarma que tiene asignado el dia
      * @param alarm Alarma que tiene asignado el dia
+     * @see IAlarm
      */
     void setAlarm(IAlarm alarm);
     
