@@ -9,7 +9,7 @@ import java.io.Serializable;
 import sicce.api.info.interfaces.IFilter;
 
 /**
- *
+ * Representacion de los filtros
  * @author karu
  */
 public class Filter implements IFilter, Serializable {
@@ -20,15 +20,18 @@ public class Filter implements IFilter, Serializable {
     private Field field;
     
     /**
-     * 
+     * Operador de comparacion usado en el filtro
      */
     private String operator;
     
     /**
-     * 
+     * Valores para ser usados en la comparacion del filtro
      */
     private String values;
 
+    /**
+     * Constructor
+     */
     public Filter() {
     }
 
