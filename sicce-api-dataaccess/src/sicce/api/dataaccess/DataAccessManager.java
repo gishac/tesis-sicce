@@ -16,7 +16,6 @@ public class DataAccessManager {
     private OptionSicceDAO optionDB;
     private ParameterDAO parameterDB;
     private PowerMeterDAO powerMeterDB;
-    private UnitMeasureDAO unitMeasureDB;
     private ZoneDAO zoneDB;
     private AlarmDAO alarmDB;
     private ScheduleDayDAO scheduleDayDB;
@@ -106,14 +105,6 @@ public class DataAccessManager {
 
     public void setPowerMeterDB(PowerMeterDAO powerMeterDB) {
         this.powerMeterDB = powerMeterDB;
-    }
-
-    public UnitMeasureDAO getUnitMeasureDB() {
-        return unitMeasureDB;
-    }
-
-    public void setUnitMeasureDB(UnitMeasureDAO unitMeasureDB) {
-        this.unitMeasureDB = unitMeasureDB;
     }
 
     public ZoneDAO getZoneDB() {
