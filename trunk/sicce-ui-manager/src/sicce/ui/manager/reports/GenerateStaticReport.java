@@ -39,7 +39,6 @@ public class GenerateStaticReport {
     private static URL urlLogoUCSG = resource.getResourceDir("/small_ucsg.jpg");
     private static URL urlLogoSICCE = resource.getResourceDir("/small_sice.jpg");
     private static URL pmeterReport = resource.getResourceDir("/Medidores.jasper");
-    private static URL lTypeReport = resource.getResourceDir("/TiposDependencia.jasper");
     private static URL locationReport = resource.getResourceDir("/Ubicaciones.jasper");
     private static URL userReport = resource.getResourceDir("/Usuarios.jasper");
     private static URL zoneReport = resource.getResourceDir("/Zonas.jasper");
@@ -54,7 +53,7 @@ public class GenerateStaticReport {
     }
 
     private static boolean checkResource(Component pComponentePadre) {
-        if (urlLogoUCSG == null || urlLogoSICCE == null || pmeterReport == null || locationReport == null || lTypeReport == null || zoneReport == null || ConsumptionbyLocationReport == null || ConsumptionbyZoneReport == null ) {
+        if (urlLogoUCSG == null || urlLogoSICCE == null || pmeterReport == null || locationReport == null || zoneReport == null || ConsumptionbyLocationReport == null || ConsumptionbyZoneReport == null ) {
             JOptionPane.showMessageDialog(pComponentePadre, resourceMap.getString("errorReport"), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -83,9 +82,6 @@ public class GenerateStaticReport {
                 case LocationReport:
                     jasperPrint = JasperFillManager.fillReport(locationReport.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
                     break;
-                case LocationTypeReport:
-                    jasperPrint = JasperFillManager.fillReport(lTypeReport.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
-                    break;
                 case UserReport:
                     jasperPrint = JasperFillManager.fillReport(userReport.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
                     break;
@@ -105,7 +101,7 @@ public class GenerateStaticReport {
 
     }
 
-     public static boolean GenerateStaticConsumptionReport(Component pComponentePadre,  Boolean plocation, Boolean pzone, Date startDate, Date endDate) {
+     public static boolean GenerateStaticConsumptionReport(Component pComponentePadre,  Boolean plocation, Boolean pzone, Date startDate, Date endDate, Double cost) {
         try {
 
             if (!checkResource(pComponentePadre)) {
@@ -118,6 +114,7 @@ public class GenerateStaticReport {
             pCriterios.put("logoSICCE", urlLogoSICCE);
             pCriterios.put("startDate", startDate);
             pCriterios.put("endDate", endDate);
+            pCriterios.put("cost", cost);
             JasperPrint jasperPrint = null;
 
             if (plocation){
