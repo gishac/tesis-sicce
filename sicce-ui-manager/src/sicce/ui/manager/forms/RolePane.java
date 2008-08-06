@@ -292,8 +292,8 @@ public class RolePane extends JTabExtended<IRole> {
     @Override
     public void CancelSave() {
         if (currentObject != null) {
-            if (currentObject.getID() != null) {
-                IRole originalInstance = RoleDB.FindRoleByID(currentObject.getID());
+            if (currentObject.getIdRole() != null) {
+                IRole originalInstance = RoleDB.FindRoleByID(currentObject.getIdRole());
                 this.currentObject.getPermissions().clear();
                 this.currentObject.getPermissions().addAll(originalInstance.getPermissions());
             } else {
