@@ -45,11 +45,11 @@
             <many-to-many class="sicce.api.info.Location" column="ID_LOCATION" />
         </set>
         
-        <set name="users" inverse="true" table="user_power_meter" lazy="false">
+        <set name="userPowerMeters" inverse="true">
             <key>
-                <column name="ID_POWER_METER" not-null="true" />
+                <column name="ID_POWER_METER" />
             </key>
-            <many-to-many class="sicce.api.info.UserSicce" column="ID_USER_SICCE" />
+            <one-to-many class="sicce.api.info.UserPowerMeter" />
         </set>
         
     </class>

@@ -7,6 +7,7 @@ import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.IMeasure;
 import sicce.api.info.interfaces.IPowerMeter;
+import sicce.api.info.interfaces.IUserPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
 
 /**
@@ -58,9 +59,9 @@ public abstract class AbstractPowerMeter implements java.io.Serializable, IPower
     protected Set<ILocation> locations = new HashSet<ILocation>(0);
     
     /**
-     * Usuario que tiene asignado el medidor
+     * Usuarios que tienen asignado el medidor
      */
-    protected Set<IUserSicce> users = new HashSet<IUserSicce>(0);
+    protected Set<IUserPowerMeter> userPowerMeters = new HashSet(0);
     
 
     // Constructors
@@ -138,12 +139,12 @@ public abstract class AbstractPowerMeter implements java.io.Serializable, IPower
         this.locations = locations;
     }
     
-    public Set<IUserSicce> getUsers() {
-        return users;
+    public Set<IUserPowerMeter> getUserPowerMeters() {
+        return userPowerMeters;
     }
 
-    public void setUsers(Set<IUserSicce> users) {
-        this.users = users;
+    public void setUserPowerMeters(Set<IUserPowerMeter> userPowerMeters) {
+        this.userPowerMeters = userPowerMeters;
     }
             
 }

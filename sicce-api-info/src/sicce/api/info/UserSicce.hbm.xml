@@ -20,11 +20,11 @@
             <many-to-many class="sicce.api.info.Alarm" column="ID_ALARM" />
         </set>
         
-        <set name="powerMeters" table="user_power_meter" lazy="false">
+        <set name="userPowerMeters" inverse="true">
             <key>
                 <column name="ID_USER_SICCE" not-null="true" />
             </key>
-            <many-to-many class="sicce.api.info.PowerMeter" column="ID_POWER_METER" />
+            <one-to-many class="sicce.api.info.UserPowerMeter" />
         </set>
         
         <property name="name" type="java.lang.String">
