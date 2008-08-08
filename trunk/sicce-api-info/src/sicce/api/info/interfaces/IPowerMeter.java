@@ -104,15 +104,19 @@ public interface IPowerMeter {
      * Establece el usuario que tiene asignado el medidor
      * @return Usuario que tiene asignado el medidor
      * @see IUserSicce
-     */
+     *
     public Set<IUserSicce> getUsers();
 
     /**
      * Establece el usuario que tiene asignado el medidor
      * @return Usuario que tiene asignado el medidor
      * @see IUserSicce
-     */
-    public void setUsers(Set<IUserSicce> users);
+     *
+    public void setUsers(Set<IUserSicce> users);*/
+    
+    public Set<IUserPowerMeter> getUserPowerMeters();
+
+    public void setUserPowerMeters(Set<IUserPowerMeter> userPowerMeters);
     
     /**
      * Devuelve las mediciones realizadas en el medidor

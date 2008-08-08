@@ -5,6 +5,7 @@ import java.util.Set;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IRole;
+import sicce.api.info.interfaces.IUserPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
 
 /**
@@ -14,61 +15,50 @@ import sicce.api.info.interfaces.IUserSicce;
 public abstract class AbstractUserSicce implements IUserSicce, java.io.Serializable {
 
     // Fields
-    
     /**
      * Identificador del usuario
      */
     protected Integer idUserSicce;
-    
     /**
      * Rol del usuario
      */
     protected IRole role;
-    
     /**
      * Nombre el usuario
      */
     protected String name;
-    
     /**
      * Apellido del usuario
      */
     protected String lastname;
-    
     /**
      * 
      */
     protected Integer codeUcsg;
-    
     /**
      * Login del usuario
      */
     protected String usernameSicce;
-    
     /**
      * Password del usuario
      */
     protected String passwordSicce;
-    
     /**
      * Alarmas a las que esta suscrito el usuario
      */
     protected Set<IAlarm> alarms = new HashSet<IAlarm>(0);
     
     /**
-     * Medidores a ser monitoreados por el usuario
+     * Medidores asignados al usuario
      */
-    protected Set<IPowerMeter> powerMeters = new HashSet(0);
+    protected Set<IUserPowerMeter> userPowerMeters = new HashSet(0);
     
     /**
      * Email del usuario
      */
     protected String email;
 
-    
-
     // Constructors
-    
     /**
      * Constructor
      */
@@ -139,23 +129,27 @@ public abstract class AbstractUserSicce implements IUserSicce, java.io.Serializa
     public void setAlarms(Set<IAlarm> alarms) {
         this.alarms = alarms;
     }
-    
-    public Set<IPowerMeter> getPowerMeters() {
-        return powerMeters;
+
+    public Set<IUserPowerMeter> getUserPowerMeters() {
+        return userPowerMeters;
     }
 
+    public void setUserPowerMeters(Set<IUserPowerMeter> userPowerMeters) {
+        this.userPowerMeters = userPowerMeters;
+    }
+
+    /*public Set<IPowerMeter> getPowerMeters() {
+    return powerMeters;
+    }
     public void setPowerMeters(Set<IPowerMeter> powerMeters) {
-        this.powerMeters = powerMeters;
+    this.powerMeters = powerMeters;
     }
-    
     public void addUserPowerMeter(IPowerMeter powerMeter) {
-        this.powerMeters.add(powerMeter);
+    this.powerMeters.add(powerMeter);
     }
-
     public void removeUserPowerMeter(IPowerMeter powerMeter) {
-        this.powerMeters.remove(powerMeter);
-    }
-    
+    this.powerMeters.remove(powerMeter);
+    }*/
     public String getEmail() {
         return email;
     }
