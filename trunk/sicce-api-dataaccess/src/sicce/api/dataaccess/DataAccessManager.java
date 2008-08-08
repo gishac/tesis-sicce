@@ -22,6 +22,9 @@ public class DataAccessManager {
     private GroupDAO groupDB;
     private static DataAccessManager instance;
     private ConnectDAO connectionDB;
+    private UserPowerMeterDAO userPowerMeterDB;
+
+    
 
     public static void setInstance(DataAccessManager instance) {
         DataAccessManager.instance = instance;
@@ -129,6 +132,14 @@ public class DataAccessManager {
 
     public void setConnectionDB(ConnectDAO connectionDB) {
         this.connectionDB = connectionDB;
+    }
+    
+    public UserPowerMeterDAO getUserPowerMeterDB() {
+        return userPowerMeterDB;
+    }
+
+    public void setUserPowerMeterDB(UserPowerMeterDAO userPowerMeterDB) {
+        this.userPowerMeterDB = userPowerMeterDB;
     }
     
     public static DataAccessManager getInstance() {

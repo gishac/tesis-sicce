@@ -83,6 +83,12 @@
         </property>
     </bean>
     
+     <bean id="UserPowerMeterDAO" class="sicce.api.dataaccess.UserPowerMeterDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
     <bean id="DataAccessManager" class="sicce.api.dataaccess.DataAccessManager" abstract="false" lazy-init="default"
           autowire="default" dependency-check="default">
         <property name="roleDB">
@@ -125,6 +131,9 @@
         </property>
         <property name="groupDB">
             <ref bean="GroupDAO" />
+        </property>
+        <property name="userPowerMeterDB">
+            <ref bean="UserPowerMeterDAO" />
         </property>
         
     </bean>

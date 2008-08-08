@@ -18,7 +18,7 @@
         </property>
         <property name="connection.username">root</property>
         <property name="connection.url">
-            jdbc:mysql://192.168.8.199:3306/sicce?characterEncoding=UTF-8
+            jdbc:mysql://localhost:3306/sicce?characterEncoding=UTF-8
         </property>
         <property name="dialect">
             org.hibernate.dialect.MySQLInnoDBDialect
@@ -26,15 +26,14 @@
         <property name="myeclipse.connection.profile">
             MySqlDriver
         </property>
-        <property name="connection.password">ENC(YY3bWJ9Z+a1Ih+LDzwwD3g==)</property>
+        <property name="connection.password">ENC(0l5JTiR+gW+Qdewg6LCs1Q==)</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver
         </property>
         <property name="connection.autocommit">true</property>
         <property name="hibernate.show_sql">false</property>
         <mapping resource="sicce/api/info/Zone.hbm.xml" />
         <mapping resource="sicce/api/info/UserSicce.hbm.xml" />
-        <mapping resource="sicce/api/info/Role.hbm.xml" />
-        <mapping resource="sicce/api/info/UnitMeasure.hbm.xml" />
+        <mapping resource="sicce/api/info/Role.hbm.xml" /> 
         <mapping resource="sicce/api/info/Parameter.hbm.xml" />
         <mapping resource="sicce/api/info/LocationType.hbm.xml" />
         <mapping resource="sicce/api/info/PowerMeter.hbm.xml" />
@@ -44,6 +43,8 @@
         <mapping resource="sicce/api/info/Alarm.hbm.xml" />
         <mapping resource="sicce/api/info/ScheduleDay.hbm.xml" />
         <mapping resource="sicce/api/info/Group.hbm.xml" />
+        <mapping resource="sicce/api/info/UserPowerMeter.hbm.xml" />
+        
         
     </session-factory>
     
