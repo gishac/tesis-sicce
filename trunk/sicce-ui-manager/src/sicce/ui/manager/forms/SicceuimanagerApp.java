@@ -55,8 +55,7 @@ public class SicceuimanagerApp extends SingleFrameApplication {
      */
     public static void main(String[] args) {
         EncryptionProvider.RegisterHibernateEncryptor();
-        ReportDAO report = new ReportDAO();
-     report.callSpConsumption(Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+      
         launch(SicceuimanagerApp.class, args);
     }
 }
