@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.netbeans.spi.wizard.Wizard;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardPage;
+import org.netbeans.spi.wizard.WizardPanelNavResult;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.api.info.Field;
 import sicce.wizard.reports.models.FieldHandler;
@@ -43,8 +45,8 @@ public class ReportWizardStep3 extends WizardPage {
         pFieldHandler = (FieldHandler) wizardData.get(KEY_FIELD);
         groupField = pFieldHandler.getListGroupFields();
         isloaded = (wizardData.get(KEY_BL_IS_LOADED)==null?false:(Boolean)wizardData.get(KEY_BL_IS_LOADED));
-        fillSelectedFields();
-        
+       // fillSelectedFields();
+        updateLists();
         if (groupField!=null  && !groupField.isEmpty())
             lstGroupFields.setCellRenderer(new FieldsCellRenderer());
             lstGroupFields.setListData(groupField.toArray());
@@ -62,11 +64,18 @@ public class ReportWizardStep3 extends WizardPage {
     }
 
     public void updateLists() {
+        selectedField = pFieldHandler.getSelectedFields();
+        if (selectedField.size() > 0) {
+            lstSelectedFields.setCellRenderer(new FieldsCellRenderer());
+            lstSelectedFields.setListData(selectedField.toArray());
+        }
         lstGroupFields.setCellRenderer(new FieldsCellRenderer());
         lstSelectedFields.setListData(selectedField.toArray());
         lstGroupFields.setListData(pFieldHandler.getListGroupFields().toArray());
 
     }
+
+
 
     @Override
     protected String validateContents(Component component, Object event) {

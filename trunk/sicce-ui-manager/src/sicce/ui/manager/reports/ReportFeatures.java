@@ -38,7 +38,7 @@ public class ReportFeatures {
     public List<AbstractColumn> lstColumns = new ArrayList();
 
     public ReportFeatures() {
-         
+
     }
 
     /**
@@ -47,26 +47,23 @@ public class ReportFeatures {
      * @param drb
      * @throws ar.com.fdvs.dj.domain.builders.ColumnBuilderException
      */
-    public void CreateColumns(List<Field> listSelected, DynamicReportBuilder drb, Style detailStyle, Style headerStyle) {
+    public List<AbstractColumn> CreateColumns(List<Field> listSelected, DynamicReportBuilder drb, Style detailStyle, Style headerStyle) {
 
-
-
+        List<AbstractColumn> listColumn = new ArrayList();
         for (Field fieldSelected : (List<Field>) listSelected) {
             try {
 
                 AbstractColumn column = ColumnBuilder.getInstance()
                         .setColumnProperty(fieldSelected.getAliasField(), fieldSelected.getDataType())
-                        .setTitle(fieldSelected.getTitle())
-                        .setWidth(fieldSelected.getSize())
-                        .setStyle(detailStyle)
-                        .setHeaderStyle(headerStyle)
-                        .build();
-
+                        .setTitle(fieldSelected.getTitle()).setWidth(fieldSelected.getSize()).setStyle(detailStyle)
+                        .setHeaderStyle(headerStyle).build();
+                listColumn.add(column);
                 drb.addColumn(column);
             } catch (ColumnBuilderException ex) {
                 Logger.getLogger(ReportTemplate.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return listColumn;
     }
 //setStyleType(fieldSelected, importeStyle, detailStyle)
     /**
@@ -74,96 +71,59 @@ public class ReportFeatures {
      * @param listGroup
      * @param drb
      */
-    public void createGroup(Map wizardData, DynamicReportBuilder drb, Style detailStyle, Style headerStyle) {
+    public void createGroup(List<AbstractColumn> listColumn, Map wizardData, DynamicReportBuilder drb) {
 
-        FieldHandler pFieldHandler = (FieldHandler) wizardData.get(KEY_FIELD);
-        List listGroup = pFieldHandler.getListGroupFields();
-        List listVariableMeasure = pFieldHandler.getLstMeasureFields();
         Boolean chart = (Boolean) wizardData.get(KEY_BL_CHART);
         Field chartSelected = (Field) wizardData.get(KEY_FIELD_CHART);
-
-        if (listGroup.size() < 0) {
+        FieldHandler field = (FieldHandler) wizardData.get(KEY_FIELD);
+        List listGroup = field.getListGroupFields();
+        ColumnsGroup columnsGroup = new ColumnsGroup();
+        if (listColumn.size() < 0) {
             return;
         }
-
-        for (Field fieldGroup : (List<Field>) listGroup) {
-            try {
-                GroupBuilder groupBuilder = addFooterVariables(listVariableMeasure, detailStyle, headerStyle);
-                AbstractColumn column = ColumnBuilder.getInstance()
-                        .setColumnProperty(fieldGroup.getAliasField(), fieldGroup.getDataType())
-                        .setTitle(fieldGroup.getTitle())
-                        .setStyle(detailStyle)
-                        .setHeaderStyle(headerStyle)
-                       // .setWidth(fieldGroup.getSize())
-                        .build();
-                ColumnsGroup columnsGroup = groupBuilder.setCriteriaColumn((PropertyColumn) column)
-                        .setGroupLayout(GroupLayout.DEFAULT)
-                      //  .setDefaultFooterVariableStyle(detailStyle)
-                        .build();
-
-                drb.addGroup(columnsGroup);
-                if (chart) {
-                    if (fieldGroup.getIdField() == chartSelected.getIdField()) {
-                        addChart(columnsGroup, drb);
-                    }
+        List<AbstractColumn> columnMeasure = getMeasuresColumns(listColumn);
+        List<AbstractColumn> columnGroup = getColumnsGroup(listColumn, listGroup);
+        String columnGraph = null;
+        for (AbstractColumn column : (List<AbstractColumn>) columnGroup) {
+            GroupBuilder groupBuilder = addFooterVariables(columnMeasure);
+            columnsGroup = groupBuilder.setCriteriaColumn((PropertyColumn) column)
+                    .setStartInNewPage(chart)
+                    .setGroupLayout(GroupLayout.DEFAULT_WITH_HEADER).build();
+            
+            drb.addGroup(columnsGroup);
+            columnGraph = column.getTitle();
+        }
+         if (chart && chartSelected!=null) {
+                if (chartSelected.getTitle().equals(columnGraph)) {
+                    addChart(columnsGroup, drb);
                 }
-            } catch (ColumnBuilderException ex) {
-                Logger.getLogger(ReportTemplate.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        }
     }
 
-    public void addGlobalVariables(List<Field> listVariableMeasure, DynamicReportBuilder drb, Style footerVariables, Style importeStyle, Style headerStyle) {
+    public void addGlobalVariables(List<AbstractColumn> listColumns, DynamicReportBuilder drb, Style footerVariables, Style importeStyle, Style headerStyle) {
 
-        if (listVariableMeasure.size() < 0) {
+        List<AbstractColumn> listMeasure = getMeasuresColumns(listColumns);
+        
+        if (listMeasure.size() < 0) {
             return;
         }
-
-        for (Field fieldMeasure : (List<Field>) listVariableMeasure) {
-            try {
-                AbstractColumn columnMeasure = ColumnBuilder.getInstance()
-                        .setColumnProperty(fieldMeasure.getAliasField(), fieldMeasure.getDataType())
-                        .setTitle(fieldMeasure.getTitle())
-                        .setStyle(importeStyle)
-                        .setHeaderStyle(headerStyle)
-                        .setFieldDescription("Totales:")
-                        //.setFixedWidth(true) 
-                        //.setWidth(fieldMeasure.getSize())
-                        .setPattern("0.00")
-                        .build();
-                drb.addGlobalFooterVariable(columnMeasure, ColumnsGroupVariableOperation.SUM, footerVariables);
-                
-            } catch (ColumnBuilderException ex) {
-                Logger.getLogger(ReportTemplate.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        for (AbstractColumn columnMeasure : (List<AbstractColumn>) listMeasure) {
+            drb.addGlobalFooterVariable(columnMeasure, ColumnsGroupVariableOperation.SUM, footerVariables);
         }
-
 
     }
 
-    public GroupBuilder addFooterVariables(List<Field> listVariableMeasure, Style detailStyle, Style headerStyle) {
+    public GroupBuilder addFooterVariables(List<AbstractColumn> listMeasure) {
 
-        if (listVariableMeasure.size() < 0) {
+        if (listMeasure.size() < 0) {
             return null;
         }
 
         GroupBuilder groupBuilder = new GroupBuilder();
-        for (Field fieldMeasure : (List<Field>) listVariableMeasure) {
-            try {
-                AbstractColumn columnMeasure = ColumnBuilder.getInstance()
-                        .setColumnProperty(fieldMeasure.getAliasField(), fieldMeasure.getDataType())
-                        .setTitle(fieldMeasure.getTitle())
-                       // .setStyle(detailStyle)
-                       // .setHeaderStyle(headerStyle)
-                      //  .setWidth(fieldMeasure.getSize())
-                        .build();
-                groupBuilder.addFooterVariable(columnMeasure, ColumnsGroupVariableOperation.SUM);
-                lstColumns.add(columnMeasure);
+        for (AbstractColumn columnMeasure : (List<AbstractColumn>) listMeasure) {
+            groupBuilder.addFooterVariable(columnMeasure, ColumnsGroupVariableOperation.SUM);
+            lstColumns.add(columnMeasure);
 
-            } catch (ColumnBuilderException ex) {
-                Logger.getLogger(ReportTemplate.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
 
         return groupBuilder;
@@ -172,22 +132,20 @@ public class ReportFeatures {
     public void addChart(ColumnsGroup groupChart, DynamicReportBuilder drb) {
         try {
             DJChartBuilder cb = new DJChartBuilder();
-            int chartHeight = 200;
+            int chartHeight = 150;
             DJChartBuilder builder2 = cb.addType(DJChart.BAR_CHART)
                     .addOperation(DJChart.CALCULATION_SUM)
                     .addColumnsGroup(groupChart)
-                    .setPosition(DJChartOptions.POSITION_FOOTER)
+                    .setPosition(DJChartOptions.POSITION_HEADER)
+                    .setCentered(true)
                     .setHeight(chartHeight)
                     .setShowLabels(true).setShowLegend(true);
-            
+
             for (AbstractColumn column : (List<AbstractColumn>) lstColumns) {
                 builder2 = builder2.addColumn(column);
             }
             DJChart chart = builder2.build();
-
-
-
-            drb.addChart(chart); //add chart
+            drb.addChart(chart);
         } catch (ChartBuilderException ex) {
             Logger.getLogger(ReportTemplate.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -203,5 +161,29 @@ public class ReportFeatures {
             tmp = importeStyle;
         }
         return tmp;
+    }
+
+    public List<AbstractColumn> getMeasuresColumns(List<AbstractColumn> listColumn) {
+        List<AbstractColumn> listMeasure = new ArrayList();
+        for (AbstractColumn columnMeasure : (List<AbstractColumn>) listColumn) {
+            if (columnMeasure.getValueClassNameForExpression().equals(Double.class.getName())) {
+                listMeasure.add(columnMeasure);
+            }
+        }
+
+        return listMeasure;
+    }
+
+    public List<AbstractColumn> getColumnsGroup(List<AbstractColumn> listColumn, List<Field> listfield) {
+        List<AbstractColumn> listGroup = new ArrayList();
+        for (AbstractColumn column : (List<AbstractColumn>) listColumn) {
+            for (Field fieldgroup : (List<Field>) listfield) {
+                if (column.getTitle().equals(fieldgroup.getTitle())) {
+                    listGroup.add(column);
+                }
+            }
+        }
+
+        return listGroup;
     }
 }

@@ -2,22 +2,16 @@ package sicce.ui.manager.reports;
 
 import ar.com.fdvs.dj.core.DJConstants;
 import ar.com.fdvs.dj.domain.AutoText;
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
 import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.Style;
-import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
-import ar.com.fdvs.dj.domain.builders.GroupBuilder;
 import ar.com.fdvs.dj.domain.constants.Border;
 import ar.com.fdvs.dj.domain.constants.Font;
-import ar.com.fdvs.dj.domain.constants.GroupLayout;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Page;
 import ar.com.fdvs.dj.domain.constants.Transparency;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,10 +49,10 @@ public class ReportTemplate extends GenerateDynamicReport {
         Style headerStyle = new Style();
         Style titleStyle = new Style();
         Style footerVariables = new Style();
-        
+        Style oddRowStyle = new Style();
         /* Definir el formato para la cabecera del reporte - headerStyle -*/
         headerStyle.setFont(Font.VERDANA_SMALL_BOLD);
-        headerStyle.setBorder(Border.THIN);
+        headerStyle.setBorder(Border.NO_BORDER);
         headerStyle.setHorizontalAlign(HorizontalAlign.CENTER);
         headerStyle.setVerticalAlign(VerticalAlign.MIDDLE);
         headerStyle.setBackgroundColor(Color.LIGHT_GRAY);
@@ -68,7 +62,7 @@ public class ReportTemplate extends GenerateDynamicReport {
 
         /* Definir el formato para la cabecera del reporte - headerStyle -*/
         footerVariables.setFont(Font.VERDANA_SMALL);
-        footerVariables.setBorder(Border.THIN);
+        footerVariables.setBorder(Border.NO_BORDER);
         footerVariables.setTextColor(Color.BLUE);
         footerVariables.setHorizontalAlign(HorizontalAlign.RIGHT);
        // footerVariables.getStreching();
@@ -79,14 +73,20 @@ public class ReportTemplate extends GenerateDynamicReport {
 
         detStyle.setHorizontalAlign(HorizontalAlign.LEFT);
         detStyle.setBlankWhenNull(true);
-        detStyle.setBorder(Border.THIN);
+        detStyle.setBorder(Border.NO_BORDER);
         detStyle.setFont(Font.VERDANA_SMALL);
+        
+        oddRowStyle.setBorder(Border.NO_BORDER);
+	oddRowStyle.setBackgroundColor(Color.lightGray);
+	oddRowStyle.setTransparency(Transparency.TRANSPARENT);
       
         DynamicReportBuilder drb = new DynamicReportBuilder();
         drb.setTitle(title).setMargins(30, 20, 30, 15)
                 .setDefaultStyles(headerStyle, titleStyle, detStyle, footerVariables)
                 .setTitleStyle(titleStyle)
                 .setGrandTotalLegend("Totales :")
+                .setPrintBackgroundOnOddRows(true)
+                .setOddRowBackgroundStyle(oddRowStyle)
                 .setWhenResourceMissing(DJConstants.WHEN_RESOURCE_MISSING_TYPE_EMPTY)
                 .setWhenNoDataNoPages();
 
@@ -94,7 +94,7 @@ public class ReportTemplate extends GenerateDynamicReport {
                 
         //String imagePath = resourceMap.getResourcesDir() + "/" + resourceMap.getString("small_ucsg");
         //drb.addImageBanner(imagePath, new Integer(197), new Integer(60), ImageBanner.ALIGN_RIGHT);
-        report.CreateColumns(listSelected, drb, detStyle, headerStyle);
+        List<AbstractColumn> columns = report.CreateColumns(listSelected, drb, detStyle, headerStyle);
 
         drb.setUseFullPageWidth(true);
         if (phorizontal) {
@@ -109,12 +109,13 @@ public class ReportTemplate extends GenerateDynamicReport {
         String stFieldGroup = null;
 
         if (listGroup != null && !listGroup.isEmpty()) {
+            drb.setPrintColumnNames(false);
             stFieldGroup = pQuery.createQueryGroupby(listGroup); 
-            report.createGroup(wizardData, drb, detStyle, headerStyle);
+            report.createGroup(columns,wizardData, drb);
         }
-//        else{
-//            report.addGlobalVariables(listMeasure, drb, footerVariables, detStyle, headerStyle);
-//        }
+        else{
+            report.addGlobalVariables(columns, drb, footerVariables, detStyle, headerStyle);
+        }
 
         String joins = pQuery.getJoins();
 
