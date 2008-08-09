@@ -47,7 +47,7 @@ public class ReportFeatures {
      * @param drb
      * @throws ar.com.fdvs.dj.domain.builders.ColumnBuilderException
      */
-    public void CreateColumns(List<Field> listSelected, DynamicReportBuilder drb, Style detailStyle, Style importeStyle, Style headerStyle) {
+    public void CreateColumns(List<Field> listSelected, DynamicReportBuilder drb, Style detailStyle, Style headerStyle) {
 
 
 
@@ -58,7 +58,7 @@ public class ReportFeatures {
                         .setColumnProperty(fieldSelected.getAliasField(), fieldSelected.getDataType())
                         .setTitle(fieldSelected.getTitle())
                         .setWidth(fieldSelected.getSize())
-                        .setStyle(setStyleType(fieldSelected, importeStyle, detailStyle))
+                        .setStyle(detailStyle)
                         .setHeaderStyle(headerStyle)
                         .build();
 
@@ -68,13 +68,13 @@ public class ReportFeatures {
             }
         }
     }
-
+//setStyleType(fieldSelected, importeStyle, detailStyle)
     /**
      * 
      * @param listGroup
      * @param drb
      */
-    public void createGroup(Map wizardData, DynamicReportBuilder drb, Style detailStyle, Style importeStyle, Style headerStyle) {
+    public void createGroup(Map wizardData, DynamicReportBuilder drb, Style detailStyle, Style headerStyle) {
 
         FieldHandler pFieldHandler = (FieldHandler) wizardData.get(KEY_FIELD);
         List listGroup = pFieldHandler.getListGroupFields();
@@ -88,16 +88,17 @@ public class ReportFeatures {
 
         for (Field fieldGroup : (List<Field>) listGroup) {
             try {
-                GroupBuilder groupBuilder = addFooterVariables(listVariableMeasure, importeStyle, headerStyle);
+                GroupBuilder groupBuilder = addFooterVariables(listVariableMeasure, detailStyle, headerStyle);
                 AbstractColumn column = ColumnBuilder.getInstance()
                         .setColumnProperty(fieldGroup.getAliasField(), fieldGroup.getDataType())
                         .setTitle(fieldGroup.getTitle())
-                        .setStyle(setStyleType(fieldGroup, importeStyle, detailStyle))
+                        .setStyle(detailStyle)
                         .setHeaderStyle(headerStyle)
-                        .setWidth(fieldGroup.getSize())
+                       // .setWidth(fieldGroup.getSize())
                         .build();
                 ColumnsGroup columnsGroup = groupBuilder.setCriteriaColumn((PropertyColumn) column)
                         .setGroupLayout(GroupLayout.DEFAULT)
+                      //  .setDefaultFooterVariableStyle(detailStyle)
                         .build();
 
                 drb.addGroup(columnsGroup);
@@ -126,10 +127,13 @@ public class ReportFeatures {
                         .setTitle(fieldMeasure.getTitle())
                         .setStyle(importeStyle)
                         .setHeaderStyle(headerStyle)
-                        .setWidth(fieldMeasure.getSize())
+                        .setFieldDescription("Totales:")
+                        //.setFixedWidth(true) 
+                        //.setWidth(fieldMeasure.getSize())
                         .setPattern("0.00")
                         .build();
                 drb.addGlobalFooterVariable(columnMeasure, ColumnsGroupVariableOperation.SUM, footerVariables);
+                
             } catch (ColumnBuilderException ex) {
                 Logger.getLogger(ReportTemplate.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -138,7 +142,7 @@ public class ReportFeatures {
 
     }
 
-    public GroupBuilder addFooterVariables(List<Field> listVariableMeasure, Style importeStyle, Style headerStyle) {
+    public GroupBuilder addFooterVariables(List<Field> listVariableMeasure, Style detailStyle, Style headerStyle) {
 
         if (listVariableMeasure.size() < 0) {
             return null;
@@ -150,9 +154,9 @@ public class ReportFeatures {
                 AbstractColumn columnMeasure = ColumnBuilder.getInstance()
                         .setColumnProperty(fieldMeasure.getAliasField(), fieldMeasure.getDataType())
                         .setTitle(fieldMeasure.getTitle())
-                        .setStyle(importeStyle)
-                        .setHeaderStyle(headerStyle)
-                        .setWidth(fieldMeasure.getSize())
+                       // .setStyle(detailStyle)
+                       // .setHeaderStyle(headerStyle)
+                      //  .setWidth(fieldMeasure.getSize())
                         .build();
                 groupBuilder.addFooterVariable(columnMeasure, ColumnsGroupVariableOperation.SUM);
                 lstColumns.add(columnMeasure);
@@ -168,11 +172,12 @@ public class ReportFeatures {
     public void addChart(ColumnsGroup groupChart, DynamicReportBuilder drb) {
         try {
             DJChartBuilder cb = new DJChartBuilder();
-            
+            int chartHeight = 200;
             DJChartBuilder builder2 = cb.addType(DJChart.BAR_CHART)
                     .addOperation(DJChart.CALCULATION_SUM)
                     .addColumnsGroup(groupChart)
                     .setPosition(DJChartOptions.POSITION_FOOTER)
+                    .setHeight(chartHeight)
                     .setShowLabels(true).setShowLegend(true);
             
             for (AbstractColumn column : (List<AbstractColumn>) lstColumns) {

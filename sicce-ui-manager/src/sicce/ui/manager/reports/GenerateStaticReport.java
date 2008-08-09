@@ -42,8 +42,8 @@ public class GenerateStaticReport {
     private static URL locationReport = resource.getResourceDir("/Ubicaciones.jasper");
     private static URL userReport = resource.getResourceDir("/Usuarios.jasper");
     private static URL zoneReport = resource.getResourceDir("/Zonas.jasper");
-    private static URL ConsumptionbyZoneReport = resource.getResourceDir("/ConsumptionbyZone.jasper");
-    private static URL ConsumptionbyLocationReport = resource.getResourceDir("/ConsumptionbyLocation.jasper");
+    private static URL ConsumptionbyZoneReport = resource.getResourceDir("/ConsumptionByZone.jasper");
+    private static URL ConsumptionbyLocationReport = resource.getResourceDir("/ConsumptionByLocations.jasper");
     
     private static ResourceMap resourceMap;
 

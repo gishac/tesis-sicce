@@ -40,18 +40,17 @@ public class ReportsPane extends JTabExtended {
     public ReportsPane(ResourceMap resourceMap) {
         initComponents();
         imgReport = resourceMap.getIcon("reportIcon");
-        TableColumn reportColumn = grdSavedReport.getColumnModel().getColumn(2);
-        reportColumn.setPreferredWidth(10);
         defaultRenderer = grdSavedReport.getDefaultRenderer(JButton.class);
         grdSavedReport.setDefaultRenderer(JButton.class,
 			       new JTableButtonRenderer(defaultRenderer));
         grdSavedReport.setPreferredScrollableViewportSize(new Dimension(150, 200));
         grdSavedReport.addMouseListener(new JTbButtonReportMouseListener(grdSavedReport, resourceMap, this));
-
+        
         this.setHandleToolBarStates(false);
         this.setToolBarStateInfo(new ToolBarStateInfo(false, false, false, false, false, false));
         FillGrid();
-         
+       
+       
     }
     
     /** This method is called from within the constructor to
@@ -95,9 +94,9 @@ public class ReportsPane extends JTabExtended {
         grdSavedReport.setName("grdSavedReport"); // NOI18N
         jScrollPane1.setViewportView(grdSavedReport);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 320, 150));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 520, 150));
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 390, 210));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 590, 250));
     }// </editor-fold>//GEN-END:initComponents
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -135,8 +134,11 @@ public class ReportsPane extends JTabExtended {
             }
             
         }
+        TableColumn reportColumn = grdSavedReport.getColumnModel().getColumn(2);
+        reportColumn.setPreferredWidth(10); 
         reportModel = new ReportTableModel(reports, imgReport);
         grdSavedReport.setModel(reportModel);
+       
     }
 
   
