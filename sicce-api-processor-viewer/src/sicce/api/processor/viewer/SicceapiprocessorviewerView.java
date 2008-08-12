@@ -21,6 +21,7 @@ import javax.swing.JTabbedPane;
 import sicce.api.businesslogic.AlarmBizObject;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IPowerMeter;
+import sicce.api.info.interfaces.IUserPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.processor.Processor;
 import sicce.api.processor.viewer.controls.ChartPane;
@@ -50,15 +51,16 @@ public class SicceapiprocessorviewerView extends FrameView {
         BuildPanes();
         RunProcessor();
     }
-    
     Set<IPowerMeter> powerMetersForCurrentUser;
 
     private Set<IPowerMeter> getPowerMetersForCurrentUser() {
         if (powerMetersForCurrentUser == null) {
             powerMetersForCurrentUser = new HashSet<IPowerMeter>();
-            for (IPowerMeter powerMeter : currentUser.getPowerMeters()) {
-                if (powerMeter.getLocations().size() > 0) {
-                    powerMetersForCurrentUser.add(powerMeter);
+            for (IUserPowerMeter userPowerMeter : currentUser.getUserPowerMeters()) {
+                if (userPowerMeter.getPowerMeter().getLocations().size() > 0) {
+                    if (userPowerMeter.getMonitor() != null && userPowerMeter.getMonitor().equals(Byte.valueOf("1"))) {
+                        powerMetersForCurrentUser.add(userPowerMeter.getPowerMeter());
+                    }
                 }
             }
         }
@@ -124,8 +126,8 @@ public class SicceapiprocessorviewerView extends FrameView {
      * 
      */
     private void BuildPanes() {
-        chartPane = new ChartPane(getResourceMap().getString("ChartTitle"), getResourceMap(),getPowerMetersForCurrentUser());
-        logPane = new LogPane(getResourceMap(),getPowerMetersForCurrentUser());
+        chartPane = new ChartPane(getResourceMap().getString("ChartTitle"), getResourceMap(), getPowerMetersForCurrentUser());
+        logPane = new LogPane(getResourceMap(), getPowerMetersForCurrentUser());
         measuresPane = new MeasuresPane(getPowerMetersForCurrentUser());
         errorsPane = new ErrorsPane(trayIcon);
         getTabManager().addTab("Gráficos del Consumo Eléctrico", chartPane);
