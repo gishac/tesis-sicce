@@ -10,10 +10,10 @@
             <column name="ID_USER_POWER_METER" />
             <generator class="increment" />
         </id>
-        <many-to-one name="powerMeter" class="sicce.api.info.PowerMeter" fetch="select">
+        <many-to-one name="powerMeter" class="sicce.api.info.PowerMeter" fetch="select" lazy="false">
             <column name="ID_POWER_METER" />
         </many-to-one>
-        <many-to-one name="userSicce" class="sicce.api.info.UserSicce" fetch="select">
+        <many-to-one name="userSicce" class="sicce.api.info.UserSicce" fetch="select" lazy="false">
             <column name="ID_USER_SICCE" not-null="true" />
         </many-to-one>
         <property name="assigned" type="java.lang.Byte">
