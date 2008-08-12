@@ -14,7 +14,7 @@
             <column name="CODE" length="6" />
         </property>
         <property name="description" type="java.lang.String">
-            <column name="DESCRIPTION" length="20" />
+            <column name="DESCRIPTION" length="50" />
         </property>
 		
         <set name="locations" table="location_zone" lazy="false" >

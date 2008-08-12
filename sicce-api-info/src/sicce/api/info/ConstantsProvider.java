@@ -100,11 +100,11 @@ public class ConstantsProvider {
         Alarm(8),
         Wizard(9),
         PowerMeterReport(10),
-        LocationReport(11),
-        UserReport(12),
-        ZoneReport(13),
-        SavedReport(14),
-        ConsumptionReport(15);
+        LocationReport(12),
+        UserReport(13),
+        ZoneReport(14),
+        SavedReport(15),
+        ConsumptionReport(16);
         private int taskID;
 
         OptionsProvider(int taskID) {
