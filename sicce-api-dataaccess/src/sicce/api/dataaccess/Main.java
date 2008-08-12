@@ -20,16 +20,21 @@ public class Main {
     
      EncryptionProvider.RegisterHibernateEncryptor();
      
-     IUserSicce user = DataAccessManager.getInstance().getUserDB().findById(1);
-     IPowerMeter powerMeter = DataAccessManager.getInstance().getPowerMeterDB().findById(1);
+     IUserSicce user = DataAccessManager.getInstance().getUserDB().findById(2);
+     
+     for(IUserPowerMeter powerMetersForUser : user.getUserPowerMeters()){
+         System.out.println(powerMetersForUser.getPowerMeter().getDescription());
+     }
+     
+     /*IPowerMeter powerMeter = DataAccessManager.getInstance().getPowerMeterDB().findById(1);
      
      IUserPowerMeter upm = new UserPowerMeter();
      upm.setUserSicce(user);
      upm.setPowerMeter(powerMeter);
      upm.setMonitor(Byte.valueOf("1"));
-     upm.setAssigned(Byte.valueOf("0"));
+     upm.setAssigned(Byte.valueOf("0"));*/
      
-     DataAccessManager.getInstance().getUserPowerMeterDB().save(upm);
+     //DataAccessManager.getInstance().getUserPowerMeterDB().save(upm);
      
     }
 }

@@ -20,6 +20,8 @@ public class UserPowerMeterDAO extends HibernateDaoSupport {
     // property constants
     public static final String ASSIGNED = "assigned";
     public static final String MONITOR = "monitor";
+    public static final String USER = "userSicce";
+    public static final String POWER_METER = "powerMeter";
 
     @Override
     protected void initDao() {
@@ -33,6 +35,17 @@ public class UserPowerMeterDAO extends HibernateDaoSupport {
             log.debug("save successful");
         } catch (RuntimeException re) {
             log.error("save failed", re);
+            throw re;
+        }
+    }
+    
+    public void update(IUserPowerMeter userPowerMeter) {
+        log.debug("updating UserPowerMeter instance");
+        try {
+            getHibernateTemplate().update(userPowerMeter);
+            log.debug("update successful");
+        } catch (RuntimeException re) {
+            log.error("update failed", re);
             throw re;
         }
     }
