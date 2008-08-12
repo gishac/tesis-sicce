@@ -28,6 +28,7 @@ import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.IParameter;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
+import sicce.api.util.MailUtil;
 
 /**
  *
@@ -35,24 +36,26 @@ import sicce.api.info.interfaces.IUserSicce;
  */
 public class AlarmBizObject implements IAlarmListener {
 
-    private HashMap<String,IParameter> parametersForMail; 
-    private HashMap<String,IParameter> getparametersForMail(){
-        if(parametersForMail == null){
+    private HashMap<String, IParameter> parametersForMail;
+
+    private HashMap<String, IParameter> getparametersForMail() {
+        if (parametersForMail == null) {
             parametersForMail = new HashMap<String, IParameter>();
             ParameterBizObject parameterBizObject = new ParameterBizObject();
             List<IParameter> parameters = parameterBizObject.GetAllParameters();
-            for(IParameter parameter : parameters){
-                if(parameterBizObject.getParameterCodesForMail().contains(parameter.getParameterKey()))
+            for (IParameter parameter : parameters) {
+                if (parameterBizObject.getParameterCodesForMail().contains(parameter.getParameterKey())) {
                     parametersForMail.put(parameter.getParameterKey(), parameter);
+                }
             }
         }
         return parametersForMail;
     }
-    
-    public AlarmBizObject(){
-        
+
+    public AlarmBizObject() {
+
     }
-    
+
     /**
      * Indica si la alarma ya tiene asignado el medidor
      * @param powerMeterID
@@ -76,7 +79,7 @@ public class AlarmBizObject implements IAlarmListener {
      */
     public boolean UserExists(int userID, IAlarm alarm) {
         for (IUserSicce user : alarm.getAlarmUsers()) {
-            if (user.getID() == userID) {
+            if (user.getIdUserSicce().intValue() == userID) {
                 return true;
             }
         }
@@ -96,41 +99,23 @@ public class AlarmBizObject implements IAlarmListener {
      * @param alarm
      */
     public void actionPerformed(IAlarm alarm, IPowerMeter powerMeter) {
-        if(alarm.getAlarmTypeEnum() == ConstantsProvider.AlarmType.Mail)
-            SendMail(alarm, powerMeter);        
+        if (alarm.getAlarmTypeEnum() == ConstantsProvider.AlarmType.Mail) {
+            SendMail(alarm, powerMeter);
+        }
     }
 
     public void SendMail(IAlarm alarm, IPowerMeter powerMeter) {
-        
-        if(alarm.getAlarmUsers().size() <= 0)
+        if (alarm.getAlarmUsers().size() <= 0) {
             return;
-        
+        }
         Properties props = new Properties();
         props.put("mail.smtps.auth", getparametersForMail().get(ConstantsProvider.MAIL_USE_SSL).getValue());
         props.put("mail.smtp.host", getparametersForMail().get(ConstantsProvider.SMTP_SERVER).getValue());
         props.put("mail.smtp.port", getparametersForMail().get(ConstantsProvider.SMTP_PORT).getValue());
-        Session session = Session.getInstance(props, null);
-        try {
-            Message mailMessage = new MimeMessage(session);
-            mailMessage.setFrom(new InternetAddress(getparametersForMail().get(ConstantsProvider.MAIL_SENDER).getValue()));
-            InternetAddress[] addresses = new InternetAddress[alarm.getAlarmUsers().size()];
-            for(int index = 0; index <= alarm.getAlarmUsers().size()-1; index++){
-                addresses[index] = new InternetAddress(((IUserSicce) alarm.getAlarmUsers().toArray()[index]).getEmail());
-            }
-            mailMessage.setRecipients(Message.RecipientType.TO, addresses);
-            mailMessage.setSubject("SICCE Alerta " + Calendar.getInstance().getTime().toString());
-            mailMessage.setSentDate(new Date());
-            mailMessage.setDataHandler(new DataHandler(new ByteArrayDataSource("Ha ocurrido un error al tratar de procesar las lecturas del medidor : " + 
-                    powerMeter.getDescription() + " asignado a la dependencia: " + ((ILocation) powerMeter.getLocations().toArray()[0]).getDescription() +".<br /><br /> <strong>SICCE Monitor <br /> UCSG</strong> ","text/html")));
-            SMTPTransport transport = (SMTPTransport) session.getTransport("smtps");
-            transport.connect(getparametersForMail().get(ConstantsProvider.SMTP_SERVER).getValue(), getparametersForMail().get(ConstantsProvider.MAIL_SENDER).getValue(),getparametersForMail().get(ConstantsProvider.MAIL_SENDER_PASSWORD).getValue());
-            transport.sendMessage(mailMessage,mailMessage.getAllRecipients());
-            
-        } catch (IOException ex) {
-            Logger.getLogger(AlarmBizObject.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MessagingException ex) {
-            System.out.println(ex.getMessage());
-        }
-
+        String body = "La alarma " + alarm.getDescription() + " ha sido activada por el medidor : " +
+                powerMeter.getDescription() + " asignado a la dependencia: " + ((ILocation) powerMeter.getLocations().toArray()[0]).getDescription() + ".<br /><br /> <strong>SICCE Monitor <br /> UCSG</strong> ";
+        MailUtil.SendMail(props, getparametersForMail().get(ConstantsProvider.SMTP_SERVER).getValue(),
+                getparametersForMail().get(ConstantsProvider.MAIL_SENDER).getValue(), "SICCE Alerta " + Calendar.getInstance().getTime().toString(),
+                alarm.getAlarmUsers(), body, getparametersForMail().get(ConstantsProvider.MAIL_SENDER_PASSWORD).getValue());
     }
 }

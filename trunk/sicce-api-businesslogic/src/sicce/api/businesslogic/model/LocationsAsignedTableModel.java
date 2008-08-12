@@ -62,7 +62,7 @@ public class LocationsAsignedTableModel extends SicceTableModel<ILocation> {
      * @return
      */
     public Set<ILocation> getLocationsZone() {
-        return this.zone.getLocationsInZone();
+        return this.zone.getLocations();
     }
     
     /**
@@ -82,7 +82,7 @@ public class LocationsAsignedTableModel extends SicceTableModel<ILocation> {
      * @param zone
      */
     public void RemoveLocationZone(ILocation locationAsigned, IZone zone){
-        for(ILocation locationInRole : zone.getLocationsInZone())
+        for(ILocation locationInRole : zone.getLocations())
         {
             if(locationInRole.getID() == locationAsigned.getID()){
                 locationAsigned = locationInRole;

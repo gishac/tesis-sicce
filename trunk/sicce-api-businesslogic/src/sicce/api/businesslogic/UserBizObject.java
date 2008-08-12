@@ -26,11 +26,11 @@ public class UserBizObject {
      * @return
      */
     public boolean PowerMeterExists(String powerMeterID, IUserSicce user) {
-        for (IPowerMeter powerMeter : user.getPowerMeters()) {
+        /*for (IPowerMeter powerMeter : user.getPowerMeters()) {
             if (powerMeter.getSerial().equals(powerMeterID)) {
                 return true;
             }
-        }
+        }*/
         return false;
     }
 }

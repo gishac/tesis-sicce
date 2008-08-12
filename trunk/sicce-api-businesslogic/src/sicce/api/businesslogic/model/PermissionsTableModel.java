@@ -32,7 +32,7 @@ public class PermissionsTableModel extends SicceTableModel<IOptionSicce> {
         } else {
             this.role = role;
         }
-        this.columns = new String[]{"Opción", "Estado"};
+        this.columns = new String[]{"Opción", "Asignar"};
         this.dataSource = dataSource;
         this.roleBizObject = new RoleBizObject();
     }
