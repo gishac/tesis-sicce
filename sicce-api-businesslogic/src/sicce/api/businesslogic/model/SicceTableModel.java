@@ -21,10 +21,6 @@ public abstract class SicceTableModel<T> extends AbstractTableModel implements I
     protected String[] columns = null;
     protected boolean readOnly;
 
-    /**
-     * Devuelve la fuente de datos asignada para el modelo
-     * @return
-     */
     public List<T> getDataSource() {
         if (dataSource == null) {
             dataSource = new ArrayList<T>();
@@ -32,15 +28,9 @@ public abstract class SicceTableModel<T> extends AbstractTableModel implements I
         return dataSource;
     }
     
-    /**
-     * Setea la fuente de datos del modelo
-     * @param dataSource
-     */
     public void setDataSource(List dataSource) {
         this.dataSource = dataSource;
     }
-    
-    
 
     /**
      * Constructor
@@ -50,7 +40,7 @@ public abstract class SicceTableModel<T> extends AbstractTableModel implements I
 
     /**
      * Constructor
-     * @param dataSource Fuente de datos para el modelo
+     * @param dataSource Fuente de datos para la tabla
      */
     public SicceTableModel(List<T> dataSource) {
         this.dataSource = dataSource;
@@ -58,7 +48,7 @@ public abstract class SicceTableModel<T> extends AbstractTableModel implements I
     
      /**
      * Constructor
-     * @param dataSource Fuente de datos para el modelo
+     * @param dataSource Fuente de datos para la tabla
      */
     public SicceTableModel(Set<T> dataSource) {
         if(dataSource != null){
@@ -68,16 +58,16 @@ public abstract class SicceTableModel<T> extends AbstractTableModel implements I
     }
 
     /**
-     * 
-     * @return El numero de elementos a mostrar en la tabla
+     * Devuelve la cantidad de filas en la tabla
+     * @return Cantidad de filas en la tabla
      */
     public int getRowCount() {
         return getDataSource().size();
     }
 
     /**
-     * 
-     * @return El numero de columnas a mostrar en la tabla
+     * Devuelve la cantidad de columnas en la tabla
+     * @return cantidad de columnas en la tabla
      */
     public int getColumnCount() {
         return columns.length;
@@ -85,7 +75,7 @@ public abstract class SicceTableModel<T> extends AbstractTableModel implements I
 
     /**
      * Devuelve el nombre de la columna en la tabla
-     * @param column Indice de la columna
+     * @param column Indice de la columna en la tabla
      * @return
      */
     @Override
@@ -97,17 +87,12 @@ public abstract class SicceTableModel<T> extends AbstractTableModel implements I
      * Devuelve el valor en la celda en la fila y columna 
      * @param rowIndex Numero de fila
      * @param columnIndex Numero de columna
-     * @return
+     * @return Valor en la celda en la fila y columna 
      */
     public Object getValueAt(int rowIndex, int columnIndex) {
         throw new UnsupportedOperationException("The method is not implemented");
     }
 
-    /**
-     * Devuelve el objeto cargado en la fila
-     * @param index Fila del objeto a leer
-     * @return
-     */
     public T getRow(int index) {
         if (getRowCount() > index) {
             return getDataSource().get(index);
@@ -115,29 +100,16 @@ public abstract class SicceTableModel<T> extends AbstractTableModel implements I
         return null;
     }
 
-    /**
-     * Ajusta el Tamaño de una columna específica, dentro de un jgrid
-     * @param column Columna a Ajustar
-     * @param size Tamaño de la columna.
-     */
     public void SetColumnSize(TableColumn column, int size) {
         column.setMinWidth(size);
         column.setPreferredWidth(size);
         column.setResizable(true);
     }
 
-    /**
-     * Indica si la tabla es de solo lectura
-     * @return
-     */
     public boolean isReadOnly() {
         return readOnly;
     }
 
-    /**
-     * Setea el estado de lectura de la tabla
-     * @param readOnly
-     */
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
         

@@ -27,7 +27,7 @@ public class UserTableModelForAlarms extends SicceTableModel<IUserSicce> {
             this.alarm = alarm;
         }
         this.dataSource = dataSource;
-        columns = new String[]{"Nombre", "Estado"};
+        columns = new String[]{"Nombre", "Asignar"};
         alarmBizObject = new AlarmBizObject();
     }
 
@@ -84,7 +84,7 @@ public class UserTableModelForAlarms extends SicceTableModel<IUserSicce> {
         IUserSicce user = getDataSource().get(rowIndex);
         boolean state = false;
         for (IUserSicce activeUser : alarm.getAlarmUsers()) {
-            if (user.getID().equals(activeUser.getID())) {
+            if (user.getIdUserSicce().equals(activeUser.getIdUserSicce())) {
                 state = true;
                 break;
             }
@@ -106,7 +106,7 @@ public class UserTableModelForAlarms extends SicceTableModel<IUserSicce> {
      * @param alarm
      */
     private void AddUserToAlarm(IUserSicce user, IAlarm alarm) {
-        if (!alarmBizObject.UserExists(user.getID(), alarm)) {
+        if (!alarmBizObject.UserExists(user.getIdUserSicce(), alarm)) {
             alarm.addAlarmUser(user);
         }
     }
@@ -118,7 +118,7 @@ public class UserTableModelForAlarms extends SicceTableModel<IUserSicce> {
      */
     private void RemoveUserFromAlarm(IUserSicce user, IAlarm alarm) {
         for (IUserSicce userInAlarm : alarm.getAlarmUsers()) {
-            if (userInAlarm.getID().equals(user.getID())) {
+            if (userInAlarm.getIdUserSicce().equals(user.getIdUserSicce())) {
                 user = userInAlarm;
                 break;
             }

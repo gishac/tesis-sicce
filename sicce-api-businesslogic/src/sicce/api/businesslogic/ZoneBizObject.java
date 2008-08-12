@@ -29,7 +29,7 @@ public class ZoneBizObject {
 
     public boolean LocationsExists(int optionID, IZone zone) {
     
-            for (ILocation locations : zone.getLocationsInZone()) {
+            for (ILocation locations : zone.getLocations()) {
                 if (locations.getID() == optionID) {
                     return true;
                 }

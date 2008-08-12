@@ -51,11 +51,11 @@ public class PowerMeterUserCellRenderer extends JLabel implements TableCellRende
         IPowerMeter powerMeter = tableModel.getRow(row);
         this.setText(value.toString());
         if (IsAssigned(powerMeter)) {
-            IUserSicce user = powerMeter.getUsers().iterator().next();
+            /*IUserSicce user = powerMeter.getUsers().iterator().next();
             this.setToolTipText("El medidor ya se encuentra asignado al usuario " + user.getName() + " " + user.getLastname());
             this.setBackground(Color.LIGHT_GRAY);
             this.setForeground(Color.BLACK);
-            this.setFont(new Font(this.getFont().getName(), Font.BOLD, this.getFont().getSize()));
+            this.setFont(new Font(this.getFont().getName(), Font.BOLD, this.getFont().getSize()));*/
         } else {
             SetDefaultValues();
         }
@@ -69,14 +69,14 @@ public class PowerMeterUserCellRenderer extends JLabel implements TableCellRende
      * @return
      */
     private boolean IsAssigned(IPowerMeter powerMeter) {
-        if (powerMeter.getUsers().size() > 0) {
+        /*if (powerMeter.getUsers().size() > 0) {
             IUserSicce user = powerMeter.getUsers().iterator().next();
-            if (currentUser == null || !user.getID().equals(currentUser.getID())) {
+            if (currentUser == null || !user.getIdUserSicce().equals(currentUser.getIdUserSicce())) {
                 return true;
             } else {
                 return false;
             }
-        }
+        }*/
         return false;
     }
 

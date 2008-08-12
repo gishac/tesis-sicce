@@ -4,11 +4,15 @@
  */
 package sicce.api.businesslogic.model;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import sicce.api.businesslogic.UserBizObject;
 import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.info.interfaces.IPowerMeter;
+import sicce.api.info.interfaces.IUserPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
 
 /**
@@ -17,8 +21,8 @@ import sicce.api.info.interfaces.IUserSicce;
  */
 public class PowerMeterTableModelForUsers extends SicceTableModel<IPowerMeter> {
 
-    private UserBizObject userBizObject;
     private IUserSicce user;
+    private Map<Integer, IUserPowerMeter> powerMetersForUser;
 
     public PowerMeterTableModelForUsers(List<IPowerMeter> dataSource, IUserSicce user) {
         if (user == null) {
@@ -27,8 +31,8 @@ public class PowerMeterTableModelForUsers extends SicceTableModel<IPowerMeter> {
             this.user = user;
         }
         this.dataSource = dataSource;
-        columns = new String[]{"Descripción", "Estado"};
-        userBizObject = new UserBizObject();
+        columns = new String[]{"Descripción", "Asignado", "Monitorear"};
+        powerMetersForUser = new HashMap<Integer, IUserPowerMeter>();
     }
 
     @Override
@@ -41,9 +45,11 @@ public class PowerMeterTableModelForUsers extends SicceTableModel<IPowerMeter> {
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         if (columnIndex == 1) {
-            boolean result = !isReadOnly();
-            result &= !IsAssigned(getRow(rowIndex));
-            return result;
+            return !isReadOnly();
+        } else if (columnIndex == 2) {
+            boolean isReadOnly = !isReadOnly();
+            boolean ismonitored = IsMonitoredByOtherUser(getRow(rowIndex));
+            return isReadOnly && !ismonitored;
         }
         return false;
     }
@@ -54,6 +60,8 @@ public class PowerMeterTableModelForUsers extends SicceTableModel<IPowerMeter> {
             case 0:
                 return String.class;
             case 1:
+                return Boolean.class;
+            case 2:
                 return Boolean.class;
             default:
                 return String.class;
@@ -67,12 +75,14 @@ public class PowerMeterTableModelForUsers extends SicceTableModel<IPowerMeter> {
                 return;
             }
             boolean checked = Boolean.parseBoolean(value.toString());
-            IPowerMeter option = getDataSource().get(rowIndex);
-            if (checked) {
-                AddPowerMeterToUser(option, user);
-            }
-            if (!checked) {
-                RemovePowerMeter(option, user);
+            IPowerMeter powerMeter = getDataSource().get(rowIndex);
+            switch (columnIndex) {
+                case 1:
+                    SetPowerMeterAssignment(powerMeter, user, checked);
+                    break;
+                case 2:
+                    SetPowerMeterDoMonitor(powerMeter, user, checked);
+                    break;
             }
         }
     }
@@ -80,64 +90,139 @@ public class PowerMeterTableModelForUsers extends SicceTableModel<IPowerMeter> {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         IPowerMeter powerMeter = getDataSource().get(rowIndex);
-        boolean state = false;
-        for (IPowerMeter activePowerMeter : user.getPowerMeters()) {
-            if (powerMeter.getSerial().equals(activePowerMeter.getSerial())) {
-                state = true;
-                break;
-            }
-        }
+        boolean assigned = IsAssigned(powerMeter);
+        boolean monitor = IsMonitored(powerMeter);
         switch (columnIndex) {
             case 0:
                 return powerMeter.getDescription();
             case 1:
-                return state;
+                return assigned;
+            case 2:
+                return monitor;
             default:
                 return null;
         }
     }
 
     /**
-     * Agrega un medidor a ser monitoreado por el usuario
+     * 
      * @param powerMeter
-     * @param alarm
+     * @param user
+     * @param assign
      */
-    private void AddPowerMeterToUser(IPowerMeter powerMeter, IUserSicce user) {
-        if (!userBizObject.PowerMeterExists(powerMeter.getSerial(), user)) {
-            user.addUserPowerMeter(powerMeter);
+    private void SetPowerMeterAssignment(IPowerMeter powerMeter, IUserSicce user, boolean assign) {
+        IUserPowerMeter userPowerMeter;
+        if (powerMetersForUser.containsKey(powerMeter.getIdPowerMeter())) {
+            userPowerMeter = powerMetersForUser.get(powerMeter.getIdPowerMeter());
+        } else {
+            userPowerMeter = ClassFactory.getUserPowerMeterInstance();
+            userPowerMeter.setPowerMeter(powerMeter);
+            userPowerMeter.setUserSicce(user);
+            powerMetersForUser.put(powerMeter.getIdPowerMeter(), userPowerMeter);
         }
-    }
-
-    /**
-     * Elimina un medidor del monitoreo del usuario
-     * @param powerMeter
-     * @param alarm
-     */
-    private void RemovePowerMeter(IPowerMeter powerMeter, IUserSicce user) {
-        for (IPowerMeter powerMeterInAlarm : user.getPowerMeters()) {
-            if (powerMeterInAlarm.getSerial().equals(powerMeter.getSerial())) {
-                powerMeter = powerMeterInAlarm;
+        userPowerMeter.setAssigned(assign ? Byte.parseByte("1") : Byte.parseByte("0"));
+        boolean exists = false;
+        for (IUserPowerMeter item : user.getUserPowerMeters()) {
+            if (item.getPowerMeter().getIdPowerMeter().equals(powerMeter.getIdPowerMeter())) {
+                item.setAssigned(userPowerMeter.getAssigned());
+                exists = true;
                 break;
             }
         }
-        user.removeUserPowerMeter(powerMeter);
+        if (!exists) {
+            user.getUserPowerMeters().add(userPowerMeter);
+        }
     }
 
     /**
-     * Retorna la coleccion de medidores asignados
+     * 
+     * @param powerMeter
+     * @param user
+     * @param assign
+     */
+    private void SetPowerMeterDoMonitor(IPowerMeter powerMeter, IUserSicce user, boolean doMonitor) {
+        IUserPowerMeter userPowerMeter;
+        if (powerMetersForUser.containsKey(powerMeter.getIdPowerMeter())) {
+            userPowerMeter = powerMetersForUser.get(powerMeter.getIdPowerMeter());
+        } else {
+            userPowerMeter = ClassFactory.getUserPowerMeterInstance();
+            userPowerMeter.setPowerMeter(powerMeter);
+            userPowerMeter.setUserSicce(user);
+            powerMetersForUser.put(powerMeter.getIdPowerMeter(), userPowerMeter);
+            
+        }
+        userPowerMeter.setMonitor(doMonitor ? Byte.parseByte("1") : Byte.parseByte("0"));
+        boolean exists = false;
+        for (IUserPowerMeter item : user.getUserPowerMeters()) {
+            if (item.getPowerMeter().getIdPowerMeter().equals(powerMeter.getIdPowerMeter())) {
+                item.setMonitor(userPowerMeter.getMonitor());
+                exists = true;
+                break;
+            }
+        }
+        if(!exists){
+            user.getUserPowerMeters().add(userPowerMeter);
+        }
+    }
+
+    /**
+     * 
      * @return
      */
-    public Set<IPowerMeter> getPowerMeters() {
-        return this.user.getPowerMeters();
+    public Set<IUserPowerMeter> getPowerMeters() {
+        return this.user.getUserPowerMeters();
     }
-    
+
+    /**
+     * 
+     * @param powerMeter
+     * @return
+     */
     private boolean IsAssigned(IPowerMeter powerMeter) {
-        if (powerMeter.getUsers().size() > 0) {
-            IUserSicce userAssigned = powerMeter.getUsers().iterator().next();
-            if (user == null || !userAssigned.getID().equals(user.getID())) {
-                return true;
-            } else {
-                return false;
+        if (this.user.getUserPowerMeters().size() > 0) {
+            for (IUserPowerMeter userPowerMeterInUser : user.getUserPowerMeters()) {
+                if (userPowerMeterInUser.getPowerMeter().getIdPowerMeter().equals(powerMeter.getIdPowerMeter())) {
+                    if (userPowerMeterInUser.getAssigned() != null) {
+                        return userPowerMeterInUser.getAssigned().equals(Byte.valueOf("1"));
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 
+     * @param powerMeter
+     * @return
+     */
+    private boolean IsMonitored(IPowerMeter powerMeter) {
+        if (this.user.getUserPowerMeters().size() > 0) {
+            for (IUserPowerMeter userPowerMeterInUser : user.getUserPowerMeters()) {
+                if (userPowerMeterInUser.getPowerMeter().getIdPowerMeter().equals(powerMeter.getIdPowerMeter())) {
+                    if (userPowerMeterInUser.getMonitor() != null) {
+                        return userPowerMeterInUser.getMonitor().equals(Byte.valueOf("1"));
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 
+     * @param powerMeter
+     * @return
+     */
+    private boolean IsMonitoredByOtherUser(IPowerMeter powerMeter) {
+        if (powerMeter.getUserPowerMeters().size() > 0) {
+            for (IUserPowerMeter userPowerMeter : powerMeter.getUserPowerMeters()) {
+                if ((userPowerMeter.getPowerMeter().getIdPowerMeter().equals(powerMeter.getIdPowerMeter())) &&
+                        (userPowerMeter.getMonitor() != null && userPowerMeter.getMonitor().equals(Byte.valueOf("1")))) {
+                    if (!userPowerMeter.getUserSicce().getIdUserSicce().equals(user.getIdUserSicce() != null ? user.getIdUserSicce() : Integer.valueOf("-1"))) {
+                        return true;
+                    }
+                }
             }
         }
         return false;

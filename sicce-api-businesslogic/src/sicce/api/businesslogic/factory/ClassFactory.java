@@ -15,6 +15,7 @@ import sicce.api.info.OptionSicce;
 import sicce.api.info.PowerMeter;
 import sicce.api.info.Role;
 import sicce.api.info.ScheduleDay;
+import sicce.api.info.UserPowerMeter;
 import sicce.api.info.UserSicce;
 import sicce.api.info.Zone;
 import sicce.api.info.interfaces.IAlarm;
@@ -28,6 +29,7 @@ import sicce.api.info.interfaces.IOptionSicce;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IRole;
 import sicce.api.info.interfaces.IScheduleDay;
+import sicce.api.info.interfaces.IUserPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.info.interfaces.IZone;
 
@@ -64,29 +66,32 @@ public class ClassFactory {
     public static IZone getZoneInstance() {
         return new Zone();
     }
-    
-    public static IAlarm getAlarmInstance(){
+
+    public static IAlarm getAlarmInstance() {
         return new Alarm();
     }
-    
-    public static IScheduleDay getScheduleInstance(){
+
+    public static IScheduleDay getScheduleInstance() {
         return new ScheduleDay();
     }
-    
-    public static IModbusRequest getModbusRequest(){
+
+    public static IModbusRequest getModbusRequest() {
         return new ModbusRequest();
     }
-    
-    public static IModbusResponse getModbusResponse(){
+
+    public static IModbusResponse getModbusResponse() {
         return new ModbusResponse();
     }
-    
-    public static IMeasure getMeasure(){
+
+    public static IMeasure getMeasure() {
         return new Measure();
     }
-    
-    
-    public static IFilter getFilterInstance(){
+
+    public static IFilter getFilterInstance() {
         return new Filter();
+    }
+    
+    public static IUserPowerMeter getUserPowerMeterInstance(){
+        return new UserPowerMeter();
     }
 }
