@@ -6,7 +6,6 @@
 package sicce.ui.manager.forms;
 
 import java.awt.Component;
-import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.factory.ClassFactory;
@@ -332,9 +331,12 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
         if (!Validator.ValidateField(null, null, 0, txtSerial, true, "el serial del medidor", 3)) {
             return false;
         }
-//        if (!Validator.validateIpAddress(null, txtIpAddress.getText())) {
-//            return false;
-//        }
+        if (!Validator.validateIpAddress(null, txtIpAddress.getText())) {
+            return false;
+        }
+        if (!Validator.ValidateField(null, null, 0, txtDeviceID, true, "el identificador del medidor", 2)) {
+            return false;
+        }
         if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción del medidor", 2)) {
             return false;
         }

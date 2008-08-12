@@ -5,7 +5,6 @@
  */
 package sicce.ui.manager.forms;
 
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.factory.ClassFactory;
@@ -22,7 +21,6 @@ import sicce.api.info.interfaces.IZone;
 import sicce.api.util.ComponentUtil;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.SearchDialog;
-import sicce.api.info.ToolBarStateInfo;
 import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 
@@ -257,7 +255,7 @@ public class ZonePane extends JTabExtended<IZone> {
             location = searchLocationDialog.getSearchResult();
             if (location != null) {
                 lasignedTableModel.AddLocationToZone(location, currentObject);
-                lasignedTableModel = new LocationsAsignedTableModel(currentObject.getLocationsInZone(), currentObject);
+                lasignedTableModel = new LocationsAsignedTableModel(currentObject.getLocations(), currentObject);
                 grdLocationAsigned.setModel(lasignedTableModel);
             }
         }
@@ -409,7 +407,7 @@ public class ZonePane extends JTabExtended<IZone> {
      */
     private void FillLocationsAsignedGrid() {
         lasignedTableModel = null;
-        lasignedTableModel = new LocationsAsignedTableModel((currentObject != null) ? currentObject.getLocationsInZone() : null, currentObject);
+        lasignedTableModel = new LocationsAsignedTableModel((currentObject != null) ? currentObject.getLocations() : null, currentObject);
         grdLocationAsigned.setModel(lasignedTableModel);
         grdLocationAsigned.setEnabled(true);
     }
@@ -417,10 +415,10 @@ public class ZonePane extends JTabExtended<IZone> {
     @Override
     public void CancelSave() {
         if (currentObject != null) {
-            if (currentObject.getID() != null) {
-                IZone originalInstance = ZoneDB.FindZoneByID(currentObject.getID());
-                this.currentObject.getLocationsInZone().clear();
-                this.currentObject.getLocationsInZone().addAll(originalInstance.getLocationsInZone());
+            if (currentObject.getIdZone() != null) {
+                IZone originalInstance = ZoneDB.FindZoneByID(currentObject.getIdZone());
+                this.currentObject.getLocations().clear();
+                this.currentObject.getLocations().addAll(originalInstance.getLocations());
             } else {
                 this.currentObject = ClassFactory.getZoneInstance();
             }

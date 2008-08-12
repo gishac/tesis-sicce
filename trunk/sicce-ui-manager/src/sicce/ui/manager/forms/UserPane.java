@@ -18,6 +18,7 @@ import sicce.api.businesslogic.model.PowerMeterTableModelForUsers;
 import sicce.api.businesslogic.model.UserTableModel;
 import sicce.api.businesslogic.renderer.PowerMeterUserCellRenderer;
 import sicce.api.dataaccess.UserDB;
+import sicce.api.dataaccess.UserPowerMeterDB;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 import sicce.api.info.interfaces.IRole;
@@ -361,11 +362,12 @@ public class UserPane extends JTabExtended<IUserSicce> {
             currentObject.setUsernameSicce(txtName.getText());
             currentObject.setLastname(txtLastName.getText());
             currentObject.setEmail(txtMail.getText());
-            
+
             if (IsObjectLoaded()) {
                 return Update();
             }
             UserDB.Save(currentObject);
+            UserPowerMeterDB.Save(currentObject.getUserPowerMeters());
             powerMeterCellRenderer.setCurrentUser(currentObject);
             FillGrid();
         } catch (Exception ex) {
@@ -392,6 +394,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
         cancelAction = false;
         try {
             UserDB.Update(currentObject);
+            UserPowerMeterDB.Update(currentObject.getUserPowerMeters());
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -438,8 +441,8 @@ public class UserPane extends JTabExtended<IUserSicce> {
     @Override
     public void CancelSave() {
         if (currentObject != null) {
-            if (currentObject.getID() != null) {
-                IUserSicce originalInstance = UserDB.FindUserByID(currentObject.getID());
+            if (currentObject.getIdUserSicce() != null) {
+                IUserSicce originalInstance = UserDB.FindUserByID(currentObject.getIdUserSicce());
                 this.currentObject = originalInstance;
             } else {
                 this.currentObject = ClassFactory.getUserInstance();
@@ -463,11 +466,11 @@ public class UserPane extends JTabExtended<IUserSicce> {
         }
         return true;
     }
-    
+
     /**
-     * 
+     *
      */
-    private void FillPowerMetersGrid(){
+    private void FillPowerMetersGrid() {
         powerMeterTableModel = null;
         powerMeterTableModel = new PowerMeterTableModelForUsers(powerMeterBizObject.GetAllPowerMeter(), currentObject);
         gridPowerMeters.setModel(powerMeterTableModel);
