@@ -5,6 +5,7 @@
 package sicce.api.businesslogic.factory;
 
 import sicce.api.info.Alarm;
+import sicce.api.info.ExceptionSicce;
 import sicce.api.info.Filter;
 import sicce.api.info.Location;
 import sicce.api.info.LocationType;
@@ -19,6 +20,7 @@ import sicce.api.info.UserPowerMeter;
 import sicce.api.info.UserSicce;
 import sicce.api.info.Zone;
 import sicce.api.info.interfaces.IAlarm;
+import sicce.api.info.interfaces.IExceptionSicce;
 import sicce.api.info.interfaces.IFilter;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
@@ -93,5 +95,9 @@ public class ClassFactory {
     
     public static IUserPowerMeter getUserPowerMeterInstance(){
         return new UserPowerMeter();
+    }
+    
+    public static IExceptionSicce getExceptionSicceInstance(){
+        return new ExceptionSicce();
     }
 }
