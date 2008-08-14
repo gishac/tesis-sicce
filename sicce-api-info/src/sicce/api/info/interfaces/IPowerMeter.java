@@ -100,22 +100,19 @@ public interface IPowerMeter {
      */
     public void setLocations(Set<ILocation> locations);
 
-    /**
-     * Establece el usuario que tiene asignado el medidor
-     * @return Usuario que tiene asignado el medidor
-     * @see IUserSicce
-     *
-    public Set<IUserSicce> getUsers();
-
-    /**
-     * Establece el usuario que tiene asignado el medidor
-     * @return Usuario que tiene asignado el medidor
-     * @see IUserSicce
-     *
-    public void setUsers(Set<IUserSicce> users);*/
     
+    /**
+     * Devuelve los usuarios que tienen asignado el medidor
+     * @return Usuarios que tienen asignado el medidor
+     * @see IUserPowerMeter
+     */
     public Set<IUserPowerMeter> getUserPowerMeters();
 
+    /**
+     * Establece los usuarios que tienen asignado el medidor
+     * @param userPowerMeters Grupo de Usuarios que tienen asignado el medidor
+     * @see IUserPowerMeter
+     */
     public void setUserPowerMeters(Set<IUserPowerMeter> userPowerMeters);
     
     /**

@@ -112,36 +112,18 @@ public interface IUserSicce {
      */
     public void setAlarms(Set<IAlarm> alarms);
 
-    
-    public Set<IUserPowerMeter> getUserPowerMeters();
-
-    public void setUserPowerMeters(Set<IUserPowerMeter> userPowerMeters);
-    
-    
     /**
      * Devuelve los medidores asociados al usuario
      * @return Medidores asociados al usuario
-     * @see IPowerMeter
-     *
-    public Set<IPowerMeter> getPowerMeters();
+     * @see IUserPowerMeter
+     */
+    public Set<IUserPowerMeter> getUserPowerMeters();
 
     /**
      * Establece los medidores asociados al usuario
-     * @param powerMeters Medidores asociados al usuario
-     *
-    public void setPowerMeters(Set<IPowerMeter> powerMeters);
+     * @param userPowerMeters Medidores asociados al usuario
+     * @see IUserPowerMeter
+     */
+    public void setUserPowerMeters(Set<IUserPowerMeter> userPowerMeters);
     
-    /**
-     * Agrega un medidor a ser monitoreado por el usuario
-     * @param powerMeter Medidor a ser monitoreado por el usuario
-     * @see IPowerMeter
-     *
-    public void addUserPowerMeter(IPowerMeter powerMeter);
-
-    /**
-     * Remueve un medidor de los asignados al usuario
-     * @param powerMeter Medidor a ser removido
-     * @see IPowerMeter
-     *
-    public void removeUserPowerMeter(IPowerMeter powerMeter);*/
 }
