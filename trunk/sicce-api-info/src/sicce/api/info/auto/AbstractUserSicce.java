@@ -3,7 +3,6 @@ package sicce.api.info.auto;
 import java.util.HashSet;
 import java.util.Set;
 import sicce.api.info.interfaces.IAlarm;
-import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IRole;
 import sicce.api.info.interfaces.IUserPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
@@ -137,19 +136,7 @@ public abstract class AbstractUserSicce implements IUserSicce, java.io.Serializa
     public void setUserPowerMeters(Set<IUserPowerMeter> userPowerMeters) {
         this.userPowerMeters = userPowerMeters;
     }
-
-    /*public Set<IPowerMeter> getPowerMeters() {
-    return powerMeters;
-    }
-    public void setPowerMeters(Set<IPowerMeter> powerMeters) {
-    this.powerMeters = powerMeters;
-    }
-    public void addUserPowerMeter(IPowerMeter powerMeter) {
-    this.powerMeters.add(powerMeter);
-    }
-    public void removeUserPowerMeter(IPowerMeter powerMeter) {
-    this.powerMeters.remove(powerMeter);
-    }*/
+    
     public String getEmail() {
         return email;
     }
