@@ -23,9 +23,9 @@ public class DataAccessManager {
     private static DataAccessManager instance;
     private ConnectDAO connectionDB;
     private UserPowerMeterDAO userPowerMeterDB;
+    private ExceptionSicceDAO exceptionDB;
 
     
-
     public static void setInstance(DataAccessManager instance) {
         DataAccessManager.instance = instance;
     }
@@ -140,6 +140,14 @@ public class DataAccessManager {
 
     public void setUserPowerMeterDB(UserPowerMeterDAO userPowerMeterDB) {
         this.userPowerMeterDB = userPowerMeterDB;
+    }
+    
+    public ExceptionSicceDAO getExceptionDB() {
+        return exceptionDB;
+    }
+
+    public void setExceptionDB(ExceptionSicceDAO exceptionDB) {
+        this.exceptionDB = exceptionDB;
     }
     
     public static DataAccessManager getInstance() {
