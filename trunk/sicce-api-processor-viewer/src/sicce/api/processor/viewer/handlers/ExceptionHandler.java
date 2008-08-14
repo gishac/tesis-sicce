@@ -11,9 +11,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import sicce.api.businesslogic.ParameterBizObject;
+import sicce.api.businesslogic.factory.ClassFactory;
+import sicce.api.dataaccess.ExceptionSicceDB;
 import sicce.api.info.ConstantsProvider;
+import sicce.api.info.interfaces.IExceptionSicce;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.IParameter;
 import sicce.api.info.interfaces.IPowerMeter;
@@ -80,6 +85,7 @@ public class ExceptionHandler {
                     "\n" + "Comuníquese con el Administrador del sistema.",
                     TrayIcon.MessageType.ERROR);
         }
+        LogException(powerMeter, ex);
         SendMail(powerMeter, errorMessage);
         this.exceptionList.addElement(errorOrigin);
     }
@@ -102,5 +108,28 @@ public class ExceptionHandler {
         MailUtil.SendMail(props, getparametersForMail().get(ConstantsProvider.SMTP_SERVER).getValue(),
                 getparametersForMail().get(ConstantsProvider.MAIL_SENDER).getValue(), "SICCE Error " + Calendar.getInstance().getTime().toString(),
                 to, errorMessage, getparametersForMail().get(ConstantsProvider.MAIL_SENDER_PASSWORD).getValue());
+    }
+    
+    /**
+     * 
+     * @param powerMeter
+     * @param ex
+     */
+    private void LogException(IPowerMeter powerMeter, Exception ex){
+        try {
+            IExceptionSicce exception = ClassFactory.getExceptionSicceInstance();
+            exception.setDateException(Calendar.getInstance().getTime());
+            exception.setIdPowerMeter(powerMeter.getIdPowerMeter());
+            exception.setMessage(ex.getMessage());
+            StringBuilder stackBuilder = new StringBuilder(60000);
+            for(StackTraceElement stackElement : ex.getStackTrace()){
+                stackBuilder.append("at " + stackElement.getClassName() + "." + stackElement.getMethodName() + "(" + stackElement.getFileName() + ":" + stackElement.getLineNumber() + ") - ");
+            }
+            stackBuilder.trimToSize();
+            exception.setStackTrace(stackBuilder.toString());
+            ExceptionSicceDB.Save(exception);
+        } catch (Exception ex1) {
+            Logger.getLogger(ExceptionHandler.class.getName()).log(Level.SEVERE, null, ex1);
+        }
     }
 }
