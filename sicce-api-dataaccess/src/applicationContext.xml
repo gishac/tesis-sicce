@@ -83,7 +83,13 @@
         </property>
     </bean>
     
-     <bean id="UserPowerMeterDAO" class="sicce.api.dataaccess.UserPowerMeterDAO">
+    <bean id="UserPowerMeterDAO" class="sicce.api.dataaccess.UserPowerMeterDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
+    <bean id="ExceptionSicceDAO" class="sicce.api.dataaccess.ExceptionSicceDAO">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
@@ -134,6 +140,9 @@
         </property>
         <property name="userPowerMeterDB">
             <ref bean="UserPowerMeterDAO" />
+        </property>
+        <property name="exceptionDB">
+            <ref bean="ExceptionSicceDAO" />
         </property>
         
     </bean>
