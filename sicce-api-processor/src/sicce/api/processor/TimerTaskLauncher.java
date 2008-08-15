@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import sicce.api.info.interfaces.IPowerMeterWatcher;
 
 /**
- *
+ * Clase que ejecuta al proceso de lecturas en lotes de manera asincronica
  * @author gish@c
  */
 public class TimerTaskLauncher {
@@ -41,8 +41,9 @@ public class TimerTaskLauncher {
     private int READ_TIMEOUT = 60;
 
     /**
-     * 
-     * @param powerMeter
+     * Constructor
+     * @param powerMetersToWatch Medidores a monitorear 
+     * @param readInterval Tiempo entre lecturas en segundos
      */
     public TimerTaskLauncher(List<IPowerMeterWatcher> powerMetersToWatch, int readInterval) {
         this.powerMetersToWatch = powerMetersToWatch;
@@ -69,7 +70,8 @@ public class TimerTaskLauncher {
     }
 
     /**
-     * Inicia el proceso de lecturas con el intervalo especificado
+     * Inicia la tarea que ejecuta el proceso de lecturas cada N segundos, basado en la propiedad 
+     * <strong>readInterval</strong>
      */
     public void BeginTasks() {
         Timer timer = new Timer();

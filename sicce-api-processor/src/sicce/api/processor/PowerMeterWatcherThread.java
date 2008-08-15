@@ -4,22 +4,24 @@
  */
 package sicce.api.processor;
 
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sicce.api.info.interfaces.IPowerMeterWatcher;
 
 /**
- *
+ * Representacion de un observador de medidor asincronico
  * @author gish@c
  */
 public class PowerMeterWatcherThread implements Runnable {
 
+    /**
+     * Objeto observador de medidor
+     */
     private IPowerMeterWatcher watcher;
 
     /**
-     * 
-     * @param watcher
+     * Constructor 
+     * @param watcher Objeto observador de medidor
      */
     public PowerMeterWatcherThread(IPowerMeterWatcher watcher) {
         
@@ -27,7 +29,7 @@ public class PowerMeterWatcherThread implements Runnable {
     }
 
     /**
-     * 
+     * Inicia el proceso asincronico de monitoreo del medidor
      */
     public void run() {
         try {

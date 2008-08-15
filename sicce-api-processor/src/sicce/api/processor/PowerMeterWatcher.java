@@ -31,7 +31,6 @@ public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher 
      * @see IPowerMeter
      */
     private IPowerMeter powerMeter;
-    
     /**
      * Gestor de logica para el medidor
      * @see PowerMeterBizObject
@@ -46,12 +45,12 @@ public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher 
     public IPowerMeter getPowerMeter() {
         return this.powerMeter;
     }
-    
+
     /**
      * Establece el gestor de logica para el medidor
      * @return Gestor de logica para el medidor
      * @see PowerMeterBizObject
-     */ 
+     */
     public PowerMeterBizObject getpowerMeterBizObject() {
         return powerMeterBizObject;
     }
@@ -66,15 +65,18 @@ public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher 
         this.powerMeterBizObject = new PowerMeterBizObject();
     }
 
+    /**
+     * Realiza el proceso de monitoreo sobre el medidor
+     */
     public void Watch() {
         try {
-            
+
             HashMap<RequestType, IModbusResponse> powerMeterData = powerMeterBizObject.ReadPowerMeterData(this.powerMeter);
             IMeasure measure = powerMeterBizObject.ProcessPowerMeterData(powerMeterData);
             MeasureDB.Save(measure);
             setChanged();
             notifyObservers(measure);
-            
+
         } catch (UnknownHostException ex) {
             Logger.getLogger(PowerMeterWatcher.class.getName()).log(Level.SEVERE, null, ex);
             NotifyException(ex);
@@ -90,10 +92,18 @@ public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher 
         }
     }
 
+    /**
+     * Agrega un observador para monitorear las actividades del medidor
+     * @param observer Observador para monitorear las actividades del medidor
+     */
     public void AddObserver(Observer observer) {
         addObserver(observer);
     }
 
+    /**
+     * Notifica a los observadores cuando ocurre una excepcion en el proceso
+     * @param ex Excepcion registrada
+     */
     public void NotifyException(Exception ex) {
         setChanged();
         notifyObservers(ex);

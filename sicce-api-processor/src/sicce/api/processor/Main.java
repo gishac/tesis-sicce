@@ -4,16 +4,15 @@
  */
 package sicce.api.processor;
 /**
- *
+ * Punto de entrada del api de procesamiento
  * @author gish@c
  */
 public class Main {
 
     /**
-     * @param args the command line arguments
+     * @param args Argumentos
      */
-    public static void main(String[] args) {
-        Processor.AddObserver(new ProcessorObserver());
+    public static void main(String[] args) {        
         Processor.DoProcess();
     }
 }
