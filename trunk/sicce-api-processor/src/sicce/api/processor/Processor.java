@@ -19,11 +19,14 @@ import sicce.api.info.interfaces.IPowerMeterWatcher;
 import sicce.api.util.EncryptionProvider;
 
 /**
- *
+ * Clase que administra el proceso de lecturas
  * @author gish@c
  */
 public class Processor {
 
+    /**
+     * Observadores registrados
+     */
     private static List<Observer> observers;
 
     /**
@@ -38,16 +41,16 @@ public class Processor {
     }
 
     /**
-     * Registra un observador para los controladores de medidores
-     * @param observer
+     * Registra un observador para los monitorear las lecturas de los medidores
+     * @param observer Observador para los monitorear las lecturas de los medidores
      */
     public static void AddObserver(Observer observer) {
         getObservers().add(observer);
     }
 
     /**
-     * Setea los observadores a los controladores de medidor
-     * @param watcher
+     * Setea los observadores para monitorear las lecturas de los medidores
+     * @param watcher Observadores para monitorear las lecturas de los medidores
      */
     private static void SetObservers(IPowerMeterWatcher watcher) {
         for (Observer observer : getObservers()) {
@@ -55,8 +58,15 @@ public class Processor {
         }
     }
     
+    /**
+     * Medidores a ser monitoreados
+     */
     private static Set<IPowerMeter> powerMeters;
 
+    /**
+     * Devuelve los medidores a ser monitoreados
+     * @return Medidores a ser monitoreados
+     */
     private static Set<IPowerMeter> getPowerMeters() {
         if(powerMeters == null){
             powerMeters = new HashSet<IPowerMeter>();
@@ -64,13 +74,17 @@ public class Processor {
         return powerMeters;
     }
     
+    /**
+     * Establece los medidores a ser monitoreados
+     * @param powerMetersParam
+     */
     private static void setPowerMeters(Set<IPowerMeter> powerMetersParam){
         powerMeters = powerMetersParam;
     }
     
    /**
-    * 
-    * @param powerMetersParam
+    * Inicia el proceso de monitoreo de los medidores
+    * @param powerMetersParam Medidores a monitorear
     */
     public static void DoProcess(Set<IPowerMeter> powerMetersParam) {
         try {
@@ -82,7 +96,7 @@ public class Processor {
     }
 
     /**
-     * Realiza el proceso de lectura de los medidores
+     * Inicia el proceso de monitoreo de los medidores
      */
     public static void DoProcess() {
         try {
