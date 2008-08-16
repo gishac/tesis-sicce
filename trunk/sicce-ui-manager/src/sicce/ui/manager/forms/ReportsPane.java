@@ -21,6 +21,7 @@ import sicce.api.businesslogic.renderer.JTableButtonRenderer;
 import sicce.wizard.reports.models.ReportTableModel;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.api.info.ToolBarStateInfo;
+import sicce.api.info.interfaces.IUserSicce;
 import sicce.ui.manager.listeners.JTbButtonReportMouseListener;
 import sicce.api.util.SerializableUtil;
 import sicce.wizard.reports.models.ReportModel;
@@ -37,14 +38,14 @@ public class ReportsPane extends JTabExtended {
     Icon imgReport;
 
     /** Creates new form ReportsPane */
-    public ReportsPane(ResourceMap resourceMap) {
+    public ReportsPane(ResourceMap resourceMap, IUserSicce userSicce) {
         initComponents();
         imgReport = resourceMap.getIcon("reportIcon");
         defaultRenderer = grdSavedReport.getDefaultRenderer(JButton.class);
         grdSavedReport.setDefaultRenderer(JButton.class,
                 new JTableButtonRenderer(defaultRenderer));
         grdSavedReport.setPreferredScrollableViewportSize(new Dimension(150, 200));
-        grdSavedReport.addMouseListener(new JTbButtonReportMouseListener(grdSavedReport, resourceMap, this));
+        grdSavedReport.addMouseListener(new JTbButtonReportMouseListener(grdSavedReport, resourceMap, this, userSicce));
         
         this.setHandleToolBarStates(false);
         this.setToolBarStateInfo(new ToolBarStateInfo(false, false, false, false, false, false));

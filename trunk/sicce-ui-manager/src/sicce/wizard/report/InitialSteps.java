@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
 import org.jdesktop.application.ResourceMap;
+import sicce.api.info.interfaces.IUserSicce;
 import sicce.ui.manager.reports.ReportTemplate;
 import sicce.wizard.report.panels.ReportWizardStep1;
 import sicce.wizard.report.panels.ReportWizardStep2;
@@ -57,6 +58,7 @@ class InitialSteps extends WizardPanelProvider {
     private ReportTemplate template = new ReportTemplate();
     private ResourceMap resourceMap;
     private ReportModel report;
+    private IUserSicce currentUser;
     List selectedField = null;
     List groupField = null;
     String title = null;
@@ -66,11 +68,12 @@ class InitialSteps extends WizardPanelProvider {
     /**
      * Creates a new instance of InitialSteps
      */
-    InitialSteps(ResourceMap resourceMap, ReportModel report) {
+    InitialSteps(ResourceMap resourceMap, ReportModel report, IUserSicce currentUser) {
         super("SICCE - Asistente de Reportes", new String[]{GENERAL_INFORMATION, SELECTED_FIELDS, GROUP_FIELDS, WHERE_FIELDS},
                 new String[]{"Tipo de reporte", "Selección de Columnas", "Definición de Criterios", "Definición de Filtros"});
         this.resourceMap = resourceMap;
          this.report = report;
+         this.currentUser = currentUser;
     }
 
     protected JComponent createPanel(final WizardController controller,
@@ -116,7 +119,7 @@ class InitialSteps extends WizardPanelProvider {
     public Object finish(Map wizardData) {
         try {
 
-            template.runReport(wizardData);
+            template.runReport(wizardData, currentUser);
 
         } catch (Exception ex) {
             Logger.getLogger(InitialSteps.class.getName()).log(Level.SEVERE, null, ex);

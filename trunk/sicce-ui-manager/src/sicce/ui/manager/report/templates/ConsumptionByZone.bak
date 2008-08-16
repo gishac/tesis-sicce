@@ -28,12 +28,9 @@
 	</parameter>
 	<parameter name="logoUCSG" isForPrompting="false" class="java.net.URL"/>
 	<parameter name="logoSICCE" isForPrompting="false" class="java.net.URL"/>
-	<parameter name="startDate" isForPrompting="false" class="java.util.Date">
-		<defaultValueExpression ><![CDATA[new Date()]]></defaultValueExpression>
-	</parameter>
-	<parameter name="endDate" isForPrompting="false" class="java.util.Date">
-		<defaultValueExpression ><![CDATA[new Date()]]></defaultValueExpression>
-	</parameter>
+	<parameter name="startDate" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="endDate" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="iduser" isForPrompting="false" class="java.lang.Integer"/>
 	<queryString><![CDATA[SELECT
      power_meter.`DESCRIPTION` AS power_meter_DESCRIPTION,
      location.`DESCRIPTION` AS location_DESCRIPTION,
@@ -46,13 +43,15 @@
 FROM
      `location` location INNER JOIN `location_power_meter` location_power_meter ON location.`ID_LOCATION` = location_power_meter.`ID_LOCATION`
      INNER JOIN `power_meter` power_meter ON location_power_meter.`ID_POWER_METER` = power_meter.`ID_POWER_METER`
+     INNER JOIN `user_power_meter` user_power_meter ON user_power_meter.`ID_POWER_METER` = power_meter.`ID_POWER_METER`
      INNER JOIN `tmp_end_date` tmp_end_date ON location_power_meter.`ID_POWER_METER` = tmp_end_date.`ID_POWER_METER`
      INNER JOIN `tmp_start_date` tmp_start_date ON location_power_meter.`ID_POWER_METER` = tmp_start_date.`ID_POWER_METER`
      LEFT JOIN `location_zone` location_zone ON location.`ID_LOCATION` = location_zone.`ID_LOCATION`
      LEFT JOIN `zone` zone ON location_zone.`ID_ZONE` = zone.`ID_ZONE`
 WHERE
      tmp_end_date.`ID_LOCATION` = location.`ID_LOCATION`
-     and tmp_start_date.`ID_LOCATION` = location.`ID_LOCATION`]]></queryString>
+     and tmp_start_date.`ID_LOCATION` = location.`ID_LOCATION`
+     and user_power_meter.`ID_USER_SICCE` = $P{iduser}]]></queryString>
 
 	<field name="power_meter_DESCRIPTION" class="java.lang.String"/>
 	<field name="location_DESCRIPTION" class="java.lang.String"/>

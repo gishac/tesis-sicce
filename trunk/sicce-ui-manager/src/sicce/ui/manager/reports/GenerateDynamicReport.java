@@ -16,6 +16,7 @@ import net.sf.jasperreports.view.JasperViewer;
 import sicce.api.dataaccess.DataAccessManager;
 import sicce.api.info.Field;
 import sicce.api.info.OptionSicce;
+import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.util.SerializableUtil;
 import sicce.wizard.reports.models.FieldHandler;
 import sicce.wizard.reports.models.ReportModel;
@@ -39,11 +40,11 @@ public abstract class GenerateDynamicReport {
     public static final String KEY_BL_CHART = "blChart";
     public static final String KEY_BL_IS_LOADED = "isloaded";
     
-    public abstract DynamicReport buildReport(Map wizardData) throws Exception;
+    public abstract DynamicReport buildReport(Map wizardData,IUserSicce userSicce ) throws Exception;
 
-    public void runReport(Map wizardData) throws Exception {
+    public void runReport(Map wizardData, IUserSicce userSicce) throws Exception {
         wizardData.put(KEY_BL_IS_LOADED, new Boolean(true));
-        dreport = buildReport(wizardData);
+        dreport = buildReport(wizardData, userSicce);
         jprint = DynamicJasperHelper.generateJasperPrint(dreport, new ClassicLayoutManager(), DataAccessManager.getInstance().getConnectionDB().getConnection(), params);	//Creates the JasperPrint object, we pass as a Parameter
         JasperViewer.viewReport(jprint, false);
         jreport = DynamicJasperHelper.generateJasperReport(dreport, new ClassicLayoutManager());

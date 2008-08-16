@@ -3,29 +3,37 @@
  *
  * Created on August 3, 2008, 9:24 PM
  */
-
 package sicce.ui.manager.reports;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jdesktop.application.ResourceMap;
 import sicce.api.businesslogic.ParameterBizObject;
 import sicce.api.dataaccess.ParameterDAO;
 import sicce.api.dataaccess.ParameterDB;
 import sicce.api.dataaccess.ReportDAO;
 import sicce.api.info.ConstantsProvider;
 import sicce.api.info.interfaces.IParameter;
+import sicce.api.info.interfaces.IUserSicce;
+import sicce.ui.manager.controls.JOptionPaneExtended;
 
 /**
  *
  * @author  gish@c
  */
 public class ReportConsumptionFrm extends javax.swing.JFrame {
-    
+
     /** Creates new form ReportConsumptionFrm */
     Double cost;
-    public ReportConsumptionFrm() {
+    GenerateStaticReport staticReport;
+    private static ResourceMap resourceMap;
+    private static IUserSicce currentUser;
+
+    public ReportConsumptionFrm(ResourceMap resourceMap, IUserSicce currentUser) {
         try {
             initComponents();
+            this.resourceMap = resourceMap;
+            this.currentUser = currentUser;
             IParameter paramKwh = ParameterDB.GetParameterByKey(ConstantsProvider.KWH_VALUE);
             txtKwh.setText(paramKwh.getValue());
             cost = Double.valueOf(paramKwh.getValue());
@@ -33,7 +41,7 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
             Logger.getLogger(ReportConsumptionFrm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -54,7 +62,7 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
         rbLocation = new javax.swing.JRadioButton();
         btnGenerate = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportConsumptionFrm.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
@@ -64,7 +72,7 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         dtpStartDate.setName("dtpStartDate"); // NOI18N
-        jPanel1.add(dtpStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 30, 100, -1));
+        jPanel1.add(dtpStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 100, -1));
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
@@ -72,10 +80,10 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
 
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, 120, -1));
 
         dtpEndDate.setName("dtpEndDate"); // NOI18N
-        jPanel1.add(dtpEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, 100, -1));
+        jPanel1.add(dtpEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 30, 100, -1));
 
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
@@ -111,19 +119,19 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(rbZone)
                         .addGap(32, 32, 32)
                         .addComponent(rbLocation)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
-                        .addComponent(btnGenerate)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGenerate))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,35 +143,40 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
                     .addComponent(rbZone)
                     .addComponent(rbLocation)
                     .addComponent(btnGenerate))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void rbZoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbZoneActionPerformed
-        // TODO add your handling code here:
+    // TODO add your handling code here:
 }//GEN-LAST:event_rbZoneActionPerformed
 
     private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
         // TODO add your handling code here:
-     ReportDAO report = new ReportDAO();
-     report.callSpConsumption(dtpStartDate.getDate(), dtpEndDate.getDate());
-     GenerateStaticReport.GenerateStaticConsumptionReport(null, rbLocation.isSelected(),rbZone.isSelected(), dtpStartDate.getDate(), dtpEndDate.getDate(), cost);          
-        
+        if (rbLocation.isSelected() || rbZone.isSelected()) {
+            ReportDAO report = new ReportDAO();
+            staticReport = new GenerateStaticReport(resourceMap);
+            report.callSpConsumption(dtpStartDate.getDate(), dtpEndDate.getDate());
+            staticReport.GenerateStaticConsumptionReport(null, currentUser, rbLocation.isSelected(), rbZone.isSelected(), dtpStartDate.getDate(), dtpEndDate.getDate(), cost);
+        }
+        else
+        {
+           JOptionPaneExtended.showMessageDialog(null, "Seleccione el tipo de Reporte");
+        }
 }//GEN-LAST:event_btnGenerateActionPerformed
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
-                new ReportConsumptionFrm().setVisible(true);
+                new ReportConsumptionFrm(resourceMap, currentUser).setVisible(true);
             }
         });
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerate;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -177,5 +190,4 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
     private javax.swing.JRadioButton rbZone;
     private javax.swing.JTextField txtKwh;
     // End of variables declaration//GEN-END:variables
-    
 }

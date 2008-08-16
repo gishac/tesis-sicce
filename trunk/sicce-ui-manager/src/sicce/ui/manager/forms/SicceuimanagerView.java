@@ -64,7 +64,7 @@ import sicce.wizard.report.NewWizard;
 public class SicceuimanagerView extends FrameView {
 
     private IUserSicce currentUser;
-
+    private GenerateStaticReport report;
     public void setCurrentUser(IUserSicce currentUser) {
         this.currentUser = currentUser;
     }
@@ -82,7 +82,7 @@ public class SicceuimanagerView extends FrameView {
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
-
+        report = new GenerateStaticReport(resourceMap);
         //statusAnimationLabel.setIcon(idleIcon);
         //progressBar.setVisible(false);
         OrganizeUIElements();
@@ -499,7 +499,7 @@ public class SicceuimanagerView extends FrameView {
                     }
                 }
                 else if (optionSicce.getGroup().getIdGroup() == 3) {
-                    setActionReport(option, getResourceMap());
+                    setActionReport(option, getResourceMap(),currentUser);
                            
                     }
                 }
@@ -533,7 +533,7 @@ public class SicceuimanagerView extends FrameView {
         zonePane = new ZonePane();
         parameterPane = new ParameterPane();
         alarmPane = new AlarmPane();
-        reportPane = new ReportsPane(getResourceMap());
+        reportPane = new ReportsPane(getResourceMap(), currentUser);
 
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
@@ -587,28 +587,25 @@ public class SicceuimanagerView extends FrameView {
          * 
          */
         
-        private static void setActionReport(OptionsProvider option, ResourceMap resourceMap) {
+        private  void setActionReport(OptionsProvider option, ResourceMap resourceMap, IUserSicce currentUser) {
         
         switch (option) {
             case Wizard:
-                 WizardDisplayer.showWizard(new NewWizard(resourceMap).createWizard(), new Rectangle(20, 20, 700, 500));
+                 WizardDisplayer.showWizard(new NewWizard(resourceMap, currentUser).createWizard(), new Rectangle(20, 20, 700, 500));
                 break;
-            case PowerMeterReport:
-                GenerateStaticReport.GenerateStaticReport(null,option);
+            case UserPowerMeterReport:
+                report.GenerateStaticReport(null, option,currentUser,resourceMap );
                 break;
-            case LocationReport:
-                GenerateStaticReport.GenerateStaticReport(null,option);
-                break;
-            case UserReport:
-                GenerateStaticReport.GenerateStaticReport(null,option);
-                break;
-            case ZoneReport:
-                GenerateStaticReport.GenerateStaticReport(null,option);
-                break;
+            case UserPowerMeterAlarm:
+                report.GenerateStaticReport(null, option,currentUser, resourceMap);
+                break;    
+            case UserPowerMeterException:
+                report.GenerateStaticReport(null, option,currentUser, resourceMap);
+                break;          
             case ConsumptionReport:
-                ReportConsumptionFrm report = new ReportConsumptionFrm();
-                ComponentUtil.CenterFormInScreen(report, report.getToolkit());
-                report.setVisible(true);
+                ReportConsumptionFrm reportConsumption = new ReportConsumptionFrm(resourceMap, currentUser);
+                ComponentUtil.CenterFormInScreen(reportConsumption, reportConsumption.getToolkit());
+                reportConsumption.setVisible(true);
                 break;
         }
 

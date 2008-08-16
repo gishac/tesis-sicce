@@ -31,6 +31,7 @@ import sicce.api.businesslogic.model.ReportFilterTableModel;
 import sicce.api.info.interfaces.IFilter;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 import org.jdesktop.application.ResourceMap;
+import sicce.api.info.interfaces.IUserSicce;
 
 /**
  *
@@ -48,6 +49,7 @@ public class ReportWizardStep4 extends WizardPage {
     public static final String KEY_BL_CHART = "blChart";
     public static final String KEY_FIELD_CHART = "FieldChart";
     public static final String KEY_BL_IS_LOADED = "isloaded";
+    public static final String KEY_USER = "currentUser"; 
     private FieldHandler pFieldHandler = new FieldHandler();
     SicceComboBoxModel selectedComboBoxModel;
     SicceComboBoxModel chartComboBoxModel;
@@ -61,6 +63,7 @@ public class ReportWizardStep4 extends WizardPage {
         initComponents();
         this.controller = controller;
         this.wizardData = wizardData;
+      
         
         pFieldHandler = (FieldHandler) wizardData.get(KEY_FIELD);
         List measures = pFieldHandler.getMeasureSelected(pFieldHandler.getSelectedFields());

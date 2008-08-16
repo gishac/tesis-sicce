@@ -126,7 +126,8 @@ public class ReportWizardStep1 extends WizardPage {
             return null;
         }
         
-        if ((component == txtReportName  || component == null || component == txtDescription) && (txtReportName.getText().trim().length() == 0)){                 
+        if ((component == txtReportName  || component == null && !rbHorizontal.isSelected() && !rbVertical.isSelected() || component == txtDescription)
+                && (txtReportName.getText().trim().length() == 0)){                 
            return "Debe ingresar la información General del reporte...";
         } else {
             wizardData.put(KEY_NAME, txtReportName.getText());  

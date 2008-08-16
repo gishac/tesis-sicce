@@ -14,6 +14,7 @@ import java.util.Map;
 import org.jdesktop.application.ResourceMap;
 import org.netbeans.spi.wizard.WizardBranchController;
 import org.netbeans.spi.wizard.WizardPanelProvider;
+import sicce.api.info.interfaces.IUserSicce;
 import sicce.wizard.reports.models.ReportModel;
 
 
@@ -28,14 +29,14 @@ public class NewWizard extends WizardBranchController {
     protected ResourceMap resourceMap;
     
   
-   public NewWizard (ResourceMap resourceMap, ReportModel reportSelected){
-     super( new InitialSteps( resourceMap, reportSelected) );
+   public NewWizard (ResourceMap resourceMap, ReportModel reportSelected, IUserSicce currentUser){
+     super( new InitialSteps( resourceMap, reportSelected, currentUser) );
      this.resourceMap = resourceMap;
    }
    
-   public NewWizard (ResourceMap resourceMap)
+   public NewWizard (ResourceMap resourceMap, IUserSicce currentUser)
    {
-     this(resourceMap, null);
+     this(resourceMap, null, currentUser);
    }
    
    

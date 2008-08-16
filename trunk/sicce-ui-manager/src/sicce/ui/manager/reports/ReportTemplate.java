@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import sicce.api.info.interfaces.IUserSicce;
 import sicce.wizard.reports.models.FieldHandler;
 
 public class ReportTemplate extends GenerateDynamicReport {
@@ -31,7 +32,7 @@ public class ReportTemplate extends GenerateDynamicReport {
     public static final String KEY_ORT_HORIZONTAL = "ortHorizontal";
     public List<AbstractColumn> lstColumns = new ArrayList();
 
-    public DynamicReport buildReport(Map wizardData) throws Exception {
+    public DynamicReport buildReport(Map wizardData, IUserSicce userSicce) throws Exception {
 
         ReportFeatures report = new ReportFeatures();
         DynamicQuery pQuery = new DynamicQuery();
@@ -105,7 +106,7 @@ public class ReportTemplate extends GenerateDynamicReport {
         }
         String stFieldSelected = pQuery.createQueryFields(listSelected);
         String stFiltertmp = pQuery.createWhereClause(wizardData, drb);
-        String stFilterWhere = (stFiltertmp != null ? " WHERE " + stFiltertmp : "");
+        String stFilterWhere = (stFiltertmp != null ? " WHERE user_power_meter.ID_USER_SICCE = " + userSicce.getIdUserSicce() + " AND "+ stFiltertmp : "");
         String stFieldGroup = null;
 
         if (listGroup != null && !listGroup.isEmpty()) {

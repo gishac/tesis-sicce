@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.application.ResourceMap;
 import org.netbeans.api.wizard.WizardDisplayer;
+import sicce.api.info.interfaces.IUserSicce;
 import sicce.ui.manager.forms.ReportsPane;
 import sicce.wizard.report.NewWizard;
 import sicce.wizard.reports.models.ReportModel;
@@ -29,6 +30,7 @@ public class JTbButtonReportMouseListener implements MouseListener {
     private JTable ptable;
     ResourceMap resourceMap;
     ReportsPane reportPane;
+    IUserSicce userSicce;
 
     private void __forwardEventToButton(MouseEvent e) {
         TableColumnModel columnModel = ptable.getColumnModel();
@@ -38,17 +40,18 @@ public class JTbButtonReportMouseListener implements MouseListener {
         if (column == 2) { 
                     SicceTableModel<ReportModel> tableModel = (SicceTableModel<ReportModel>) ptable.getModel();
                     ReportModel report = tableModel.getRow(row);
-                    WizardDisplayer.showWizard(new NewWizard(resourceMap, report).createWizard(), new Rectangle(20, 20, 700, 500));             
+                    WizardDisplayer.showWizard(new NewWizard(resourceMap, report, userSicce).createWizard(), new Rectangle(20, 20, 700, 500));             
                     reportPane.FillGrid();
             }
         }
 
     public
 
-     JTbButtonReportMouseListener(JTable table, ResourceMap resourceMap, ReportsPane reportPane) {
+     JTbButtonReportMouseListener(JTable table, ResourceMap resourceMap, ReportsPane reportPane, IUserSicce userSicce) {
         ptable = table;
         this.resourceMap = resourceMap;
         this.reportPane = reportPane;
+        this.userSicce = userSicce;
     }
 
     public void mouseClicked(MouseEvent e) {

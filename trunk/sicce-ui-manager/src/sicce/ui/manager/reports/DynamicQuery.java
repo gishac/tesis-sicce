@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import sicce.api.info.Field;
 import sicce.api.info.interfaces.IFilter;
+import sicce.api.info.interfaces.IUserSicce;
 
 /**
  *
@@ -72,11 +73,14 @@ public class DynamicQuery {
 
     public String getJoins() {
         String joins = "FROM measure " +
-                "INNER JOIN location ON measure.ID_LOCATION = location.ID_LOCATION " +
-                "INNER JOIN power_meter ON measure.ID_POWER_METER = power_meter.ID_POWER_METER " +
-                "INNER JOIN location_type ON location.ID_LOCATION_TYPE = location_type.ID_LOCATION_TYPE " +
-                "LEFT JOIN location_zone ON location.ID_LOCATION = location_zone.ID_LOCATION " +
-                "LEFT JOIN zone ON location_zone.ID_ZONE = zone.ID_ZONE ";
+                " INNER JOIN location_power_meter ON location_power_meter.ID_POWER_METER = measure.ID_POWER_METER " +
+                " INNER JOIN location ON location.ID_LOCATION = location_power_meter.ID_LOCATION " +
+                " INNER JOIN power_meter ON power_meter.ID_POWER_METER = location_power_meter.ID_POWER_METER " +
+                " INNER JOIN user_power_meter ON user_power_meter.ID_POWER_METER = power_meter.ID_POWER_METER " +
+                " INNER JOIN location_type ON location.ID_LOCATION_TYPE = location_type.ID_LOCATION_TYPE " +
+                " LEFT JOIN location_zone ON location.ID_LOCATION = location_zone.ID_LOCATION " +
+                " LEFT JOIN zone ON zone.ID_ZONE = location_zone.ID_ZONE ";
+              
         return joins;
     }
 
