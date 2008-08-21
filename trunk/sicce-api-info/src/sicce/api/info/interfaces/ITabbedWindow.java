@@ -77,32 +77,32 @@ public interface ITabbedWindow {
     boolean IsActive();
     
     /**
-     * Invoca al metodo que carga la tabla de items mostrada en el tab
+     * Carga la tabla de items mostrada en el tab
      */
     void FillGrid();
     
     /**
-     * Invoca al metodo que registra el objeto para monitorear la seleccion de items en la tabla del tab
+     * Registra el objeto para monitorear la seleccion de items en la tabla del tab
      */
     void RegisterSelectionListener();
     
     /**
-     * Invoca al metodo para actualizar los objetos de interfaz con los valores del objeto actual cargado
+     * Actualiza los objetos de interfaz con los valores del objeto actual cargado
      */
     void SetUIElements();
     
     /**
-     * Invoca al metodo que regitra el objeto para monitorear las actividades del toolbar
+     * Registra el objeto para monitorear las actividades del toolbar
      */
     void RegisterToolBarStateInfo();
     
     /**
-     * Invoca al metodo que coloca al formulario en el estado inicial
+     * Coloca al formulario en el estado inicial
      */
     void SetDefaultState();
     
     /**
-     * Invoca al metodo que actualiza los estados del toolbar
+     * Actualiza los estados del toolbar
      */
     void RefreshToolBarState();
     
@@ -114,28 +114,34 @@ public interface ITabbedWindow {
     ToolBarAction getTabState();
     
     /**
-     * Invoca al metodo que borra todos los datos del formulario
+     * Borra todos los datos del formulario
      */
     void Clear();
     
     /**
-     * Invoca el metodo que cierra el tab
+     * Cierra el tab
      */
     void Close();
     
     /**
-     * Invoca al metodo que se ejecuta luego de grabar los datos del formulario
+     * Metodo que se ejecuta luego de grabar los datos del formulario
      */
     void AfterSave();
     
     /**
-     * Invoca al metodo que indica que se cancelo la accion de cerrar el formulario
+     * Metodo que indica que se cancelo la accion de cerrar el formulario
      */
     void CancelSave();
     
     /**
-     * Invoca al metodo que indica que se cancelo la seleccion de un item en la tabla del tab
+     * Metodo que indica que se cancelo la seleccion de un item en la tabla del tab
      * @param previousIndexSelected Indice del elemento seleccionado previamente
      */
     void ItemSelectionCanceled(int previousIndexSelected);
+    
+    /**
+     * Indica si hay un objeto cargado en el tab
+     * @return
+     */
+    boolean IsObjectLoaded();
 }
