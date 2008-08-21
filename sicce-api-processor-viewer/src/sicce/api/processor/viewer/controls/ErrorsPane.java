@@ -3,7 +3,6 @@
  *
  * Created on July 20, 2008, 6:44 PM
  */
-
 package sicce.api.processor.viewer.controls;
 
 import java.awt.TrayIcon;
@@ -12,28 +11,47 @@ import sicce.api.processor.Processor;
 import sicce.api.processor.viewer.handlers.ExceptionHandler;
 
 /**
- *
+ * Panel para mostrar los errores ocurridos durante el monitoreo
  * @author  gish@c
  */
 public class ErrorsPane extends javax.swing.JPanel {
-    
+
+    /**
+     * Manejador del Tray del sistema
+     */
     private TrayIcon trayIcon;
-    private ExceptionHandler exceptionHandler;
-    private DefaultListModel listModel;
     
-    private DefaultListModel getListModel(){
-        if(listModel == null){
+    /**
+     * Manejador de datos del panel de excepciones
+     */
+    private ExceptionHandler exceptionHandler;
+    /**
+     * Modelo de lista para mostrar las excepciones
+     */
+    private DefaultListModel listModel;
+
+    /**
+     * Devuelve el modelo de lista para mostrar las excepciones
+     * @return Modelo de lista para mostrar las excepciones
+     */
+    private DefaultListModel getListModel() {
+        if (listModel == null) {
             listModel = new DefaultListModel();
         }
         return listModel;
     }
-    
-    /** Creates new form ErrorsPane */
+
+    /**
+     * Constructor
+     */
     public ErrorsPane() {
         initComponents();
     }
-    
-    /** Creates new form ErrorsPane */
+
+    /**
+     * Constructor 
+     * @param trayIcon Manejador del Tray del sistema
+     */
     public ErrorsPane(TrayIcon trayIcon) {
         this();
         this.trayIcon = trayIcon;
@@ -41,7 +59,7 @@ public class ErrorsPane extends javax.swing.JPanel {
         this.exceptionHandler = new ExceptionHandler(trayIcon, getListModel());
         AttachExceptionHandlerToDataProcessor();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -75,15 +93,15 @@ public class ErrorsPane extends javax.swing.JPanel {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList errorList;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
- 
-     private void AttachExceptionHandlerToDataProcessor(){
+
+    /**
+     * Agrega el manejador de excepciones como observador de eventos 
+     */
+    private void AttachExceptionHandlerToDataProcessor() {
         Processor.AddObserver(exceptionHandler.getExceptionObserver());
     }
-    
 }

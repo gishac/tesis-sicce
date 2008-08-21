@@ -3,13 +3,11 @@
  *
  * Created on July 14, 2008, 10:13 PM
  */
-
 package sicce.api.processor.viewer.controls;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.businesslogic.model.SicceComboBoxModel;
 import sicce.api.businesslogic.renderer.SicceComboBoxRenderer;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
@@ -18,38 +16,63 @@ import sicce.api.processor.Processor;
 import sicce.api.processor.viewer.handlers.MeasureViewHandler;
 
 /**
- *
+ * Panel para mostrar datos generales de los medidores
  * @author  gish@c
  */
 public class MeasuresPane extends javax.swing.JPanel {
-    
+
+    /**
+     * Manejador de datos del panel
+     */
     private MeasureViewHandler measureViewHandler;
 
+    /**
+     * Devuelve el manejador de datos del panel
+     * @return Manejador de datos del panel
+     */
     public MeasureViewHandler getMeasureViewHandler() {
         return measureViewHandler;
     }
-    private SicceComboBoxModel<IPowerMeter> powerMetersComboModel;
-    private SicceComboBoxRenderer powerMetersComboRenderer;
-    private Set<IPowerMeter> powerMetersForCurrentUser;
     
-    /** Creates new form MeasuresPane */
+    /**
+     * Objeto para manejar el modelo de datos del combo
+     */
+    private SicceComboBoxModel<IPowerMeter> powerMetersComboModel;
+    
+    /**
+     * Objeto para dibujar los valores en el combo
+     */
+    private SicceComboBoxRenderer powerMetersComboRenderer;
+    
+    /**
+     * Medidores a ser visualizados en el panel
+     */
+    private Set<IPowerMeter> powerMetersForCurrentUser;
+
+    
+    /**
+     * Constructor
+     * @param powerMetersForCurrentUser Medidores a ser visualizados en el panel
+     */
     public MeasuresPane(Set<IPowerMeter> powerMetersForCurrentUser) {
         initComponents();
         this.powerMetersForCurrentUser = powerMetersForCurrentUser;
-        measureViewHandler = new MeasureViewHandler(measuresTable,txtPhaseToPhaseVoltage1To2,txtPhaseToPhaseVoltage2To3,txtPhaseToPhaseVoltage3To1,
-                txtTotalActivePower,txtTotalApparentPower,txtTotalReactivePower);
+        measureViewHandler = new MeasureViewHandler(measuresTable, txtPhaseToPhaseVoltage1To2, txtPhaseToPhaseVoltage2To3, txtPhaseToPhaseVoltage3To1,
+                txtTotalActivePower, txtTotalApparentPower, txtTotalReactivePower);
         List<IPowerMeter> powerMeters = new ArrayList();
-        for(IPowerMeter powerMeter : powerMetersForCurrentUser)
+        for (IPowerMeter powerMeter : powerMetersForCurrentUser) {
             powerMeters.add(powerMeter);
+        }
         powerMetersComboModel = new SicceComboBoxModel<IPowerMeter>(powerMeters);
         powerMetersComboRenderer = new SicceComboBoxRenderer("getDescription", DisplayMemberRenderType.Method, "getSerial", DisplayMemberRenderType.Method);
         cmbCurrentPowerMeter.setModel(powerMetersComboModel);
         cmbCurrentPowerMeter.setRenderer(powerMetersComboRenderer);
         AttachMeasureToDataProcessor();
-        if(cmbCurrentPowerMeter.getItemCount() > 0)
+        if (cmbCurrentPowerMeter.getItemCount() > 0) {
             cmbCurrentPowerMeter.setSelectedIndex(0);
+        }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -283,19 +306,17 @@ public class MeasuresPane extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
     private void cmbCurrentPowerMeterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCurrentPowerMeterActionPerformed
         IPowerMeter powerMeter = (IPowerMeter) cmbCurrentPowerMeter.getSelectedItem();
         measureViewHandler.setActivePowerMeter(powerMeter);
     }//GEN-LAST:event_cmbCurrentPowerMeterActionPerformed
-    
+
     /**
-     * 
+     * Agrega el manejador de datos como observador de eventos 
      */
-    private void AttachMeasureToDataProcessor(){
+    private void AttachMeasureToDataProcessor() {
         Processor.AddObserver(getMeasureViewHandler().getMeasureObserver());
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cmbCurrentPowerMeter;
     private javax.swing.JLabel jLabel1;
@@ -316,5 +337,4 @@ public class MeasuresPane extends javax.swing.JPanel {
     private javax.swing.JTextField txtTotalApparentPower;
     private javax.swing.JTextField txtTotalReactivePower;
     // End of variables declaration//GEN-END:variables
-    
 }

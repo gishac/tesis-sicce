@@ -17,7 +17,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import org.jdesktop.application.ResourceMap;
-import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.info.ComboBoxItem;
 import sicce.api.info.ConstantsProvider.ModbusRegister;
 import sicce.api.info.interfaces.IPowerMeter;
@@ -26,12 +25,16 @@ import sicce.api.processor.viewer.handlers.LogViewHandler;
 import sicce.api.processor.viewer.handlers.MeasureVisibilityHandler;
 
 /**
- *
+ * Panel para mostrar el log de las lecturas de los medidores
  * @author  gish@c
  */
 public class LogPane extends javax.swing.JPanel {
     
-    /** Creates new form LogPane */
+    /**
+     * Constructor 
+     * @param resourceMap Manejador de recursos
+     * @param powerMetersForCurrentUser Medidores a ser monitoreados en el panel
+     */
     public LogPane(ResourceMap resourceMap, Set<IPowerMeter> powerMetersForCurrentUser) {
         initComponents();
         this.resourceMap = resourceMap;
@@ -115,14 +118,35 @@ public class LogPane extends javax.swing.JPanel {
     private javax.swing.JToolBar logPaneToolbar;
     // End of variables declaration//GEN-END:variables
     
+    /**
+     * Modelo de lista para mostrar el log
+     */
     private DefaultListModel listModel;
+    
+    /**
+     * Panel para mostrar los medidores disponibles
+     */
     private JPanel powerMetersPane;
+    
+    /**
+     * Manejador de recursos
+     */
     private ResourceMap resourceMap;
+    
+    /**
+     * Medidores a ser visualizados en el log
+     */
     private Set<IPowerMeter> powerMetersForCurrentUser;
     
-    
+    /**
+     * Manejador de las mediciones visibles
+     */
     private MeasureVisibilityHandler measureVisibilityHandler;
     
+    /**
+     * Devuelve el modelo de lista para mostrar el log
+     * @return Modelo de lista para mostrar el log
+     */
     private DefaultListModel getListModel(){
         if(listModel == null){
             listModel = new DefaultListModel();
@@ -130,7 +154,15 @@ public class LogPane extends javax.swing.JPanel {
         return listModel;
     }
     
+    /**
+     * Manejador de datos del panel
+     */
     private LogViewHandler logHandler;
+    
+    /**
+     * Devuelve el manejador de datos del panel
+     * @return Manejador de datos del panel
+     */
     private LogViewHandler getLogHandler(){
         if(logHandler == null){
             logHandler = new LogViewHandler(getListModel());
@@ -139,8 +171,8 @@ public class LogPane extends javax.swing.JPanel {
     }
     
     /**
-     * 
-     * @return
+     * Devuelve el panel donde se muestran los medidores a visualizar
+     * @return Panel donde se muestran los medidores a visualizar
      */
      public JPanel getPowerMetersPane() {
         if (powerMetersPane == null) {
@@ -153,7 +185,7 @@ public class LogPane extends javax.swing.JPanel {
     }
     
     /**
-     * 
+     * Agrega el manejador del log como observador de eventos de las lecturas de los medidores
      */
     private void AttachLogToDataProcessor(){
         Processor.AddObserver(getLogHandler().getLogObserver());
@@ -161,21 +193,9 @@ public class LogPane extends javax.swing.JPanel {
 
     
     /**
-     * 
+     * Carga los medidores disponibles en el panel de medidores
      */
     public void LoadAvailablePowerMeters(){
-//        IPowerMeter virtual1 = ClassFactory.getPowerMeterInstance();
-//        virtual1.setSerial("v1");
-//        virtual1.setDescription("Medidor virtual 1");
-//        
-//        powerMetersForCurrentUser.add(virtual1);
-//        
-//        IPowerMeter virtual2 = ClassFactory.getPowerMeterInstance();
-//        virtual2.setSerial("v2");
-//        virtual2.setDescription("Medidor virtual 2");
-//        
-//        powerMetersForCurrentUser.add(virtual2);
-        
         for (IPowerMeter powerMeter : powerMetersForCurrentUser) {
             JCheckBox checkbox = new JCheckBox(powerMeter.getDescription());
             checkbox.setName(powerMeter.getSerial());

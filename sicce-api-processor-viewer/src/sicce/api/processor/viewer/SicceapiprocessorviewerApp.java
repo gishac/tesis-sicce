@@ -10,12 +10,13 @@ import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.EncryptionProvider;
 
 /**
- * The main class of the application.
+ * Clase principal de la aplicacion
+ * @author gish@c
  */
 public class SicceapiprocessorviewerApp extends SingleFrameApplication {
 
     /**
-     * At startup create and show the main frame of the application.
+     * Crea y muestra el formulario principal de la aplicacion
      */
     @Override protected void startup() {
         
@@ -33,23 +34,23 @@ public class SicceapiprocessorviewerApp extends SingleFrameApplication {
     }
 
     /**
-     * This method is to initialize the specified window by injecting resources.
-     * Windows shown in our application come fully initialized from the GUI
-     * builder, so this additional configuration is not needed.
+     * Inicializa la ventana inyectando los recursos
+     * @param root
      */
     @Override protected void configureWindow(java.awt.Window root) {
     }
 
     /**
-     * A convenient static getter for the application instance.
-     * @return the instance of SicceapiprocessorviewerApp
+     * Devuelve la instancia de la aplicacion
+     * @return Instancia de la aplicacion
      */
     public static SicceapiprocessorviewerApp getApplication() {
         return Application.getInstance(SicceapiprocessorviewerApp.class);
     }
 
-    /**
-     * Main method launching the application.
+    /*
+     * Metodo principal de inicio de la aplicacion
+     * @param args
      */
     public static void main(String[] args) {
         EncryptionProvider.RegisterHibernateEncryptor();

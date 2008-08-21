@@ -11,34 +11,34 @@ import sicce.api.info.interfaces.IPowerMeterWatcher;
 import sicce.api.processor.viewer.handlers.MeasureViewHandler;
 
 /**
- *
+ * Objeto observador para el panel de parametros generales
  * @author gish@c
  */
 public class MeasureObserver implements Observer {
 
     /**
-     * 
+     * Manejador de datos del panel de parametros generales
      */
     private MeasureViewHandler measureHandler;
 
     /**
-     * 
-     * @param measureHandler
+     * Constructor
+     * @param measureHandler Manejador de datos del panel de parametros generales
      */
     public MeasureObserver(MeasureViewHandler measureHandler) {
         this.measureHandler = measureHandler;
     }
 
     /**
-     * 
-     * @param o
-     * @param arg
+     * Notificacion de lectura
+     * @param powerMeterWatcher Medidor observado
+     * @param arg Argumento de la lectura
      */
-    public void update(Observable o, Object arg) {
+    public void update(Observable powerMeterWatcher, Object arg) {
         if (!(arg instanceof Exception)) {
-            IPowerMeterWatcher powerMeterWatcher = (IPowerMeterWatcher) o;
+            IPowerMeterWatcher watcher = (IPowerMeterWatcher) powerMeterWatcher;
             IMeasure measure = (IMeasure) arg;
-            this.measureHandler.ProcessMeasure(powerMeterWatcher.getPowerMeter(), measure);
+            this.measureHandler.ProcessMeasure(watcher.getPowerMeter(), measure);
         }
     }
 }

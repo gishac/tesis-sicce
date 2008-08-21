@@ -12,11 +12,8 @@ import java.util.Observer;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import sicce.api.businesslogic.AlarmBizObject;
 import sicce.api.info.interfaces.IAlarm;
@@ -30,29 +27,33 @@ import sicce.api.processor.viewer.controls.LogPane;
 import sicce.api.processor.viewer.controls.MeasuresPane;
 
 /**
- * The application's main frame.
+ * Formulario principal del visor
+ * @author gish@c
  */
 public class SicceapiprocessorviewerView extends FrameView {
 
+    /**
+     * Usuario actual de la aplicacion
+     */
     private IUserSicce currentUser;
 
+    /**
+     * Establece el usuario actual de la aplicacion
+     * @param currentUser Usuario actual de la aplicacion
+     */
     public void setCurrentUser(IUserSicce currentUser) {
         this.currentUser = currentUser;
     }
+    
+    /**
+     * Medidores asignados al usuario actual de la aplicacion
+     */
+    private Set<IPowerMeter> powerMetersForCurrentUser;
 
-    public SicceapiprocessorviewerView(SingleFrameApplication app) {
-        super(app);
-    }
-
-    public void Init() {
-        initComponents();
-        OrganizeUIElements();
-        SetTrayIcon();
-        BuildPanes();
-        RunProcessor();
-    }
-    Set<IPowerMeter> powerMetersForCurrentUser;
-
+    /**
+     * Devuelve los medidores asignados al usuario actual de la aplicacion
+     * @return Medidores asignados al usuario actual de la aplicacion
+     */
     private Set<IPowerMeter> getPowerMetersForCurrentUser() {
         if (powerMetersForCurrentUser == null) {
             powerMetersForCurrentUser = new HashSet<IPowerMeter>();
@@ -67,15 +68,26 @@ public class SicceapiprocessorviewerView extends FrameView {
         return powerMetersForCurrentUser;
     }
 
-    @Action
-    public void showAboutBox() {
-        if (aboutBox == null) {
-            JFrame mainFrame = SicceapiprocessorviewerApp.getApplication().getMainFrame();
-            aboutBox = new SicceapiprocessorviewerAboutBox(mainFrame);
-            aboutBox.setLocationRelativeTo(mainFrame);
-        }
-        SicceapiprocessorviewerApp.getApplication().show(aboutBox);
+    /**
+     * Constructor
+     * @param app Punto de entrada de la aplicacion
+     */
+    public SicceapiprocessorviewerView(SingleFrameApplication app) {
+        super(app);
     }
+
+    /**
+     * Inicializa todos los componentes del formulario
+     */
+    public void Init() {
+        initComponents();
+        OrganizeUIElements();
+        SetTrayIcon();
+        BuildPanes();
+        RunProcessor();
+    }
+    
+    
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -96,17 +108,40 @@ public class SicceapiprocessorviewerView extends FrameView {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel mainPanel;
     // End of variables declaration//GEN-END:variables
-    private JDialog aboutBox;
+    
+    /**
+     * Control que administra los tabs
+     */
     private JTabbedPane tabManager;
+    
+    /**
+     * Panel para mostrar el grafico
+     */
     private ChartPane chartPane;
+    
+    /**
+     * Panel para mostrar las lecturas en forma de log
+     */
     private LogPane logPane;
+    
+    /**
+     * Panel para mostrar registros especificos del medidor
+     */
     private MeasuresPane measuresPane;
+    
+    /**
+     * Panel para mostrar los errores ocurridos
+     */
     private ErrorsPane errorsPane;
+    
+    /**
+     * Manejador del Tray del sistema
+     */
     private TrayIcon trayIcon;
 
     /**
-     * gish@c
-     * Retorna la instancia del control que administra los tabs
+     * Devuelve el control que administra los tabs
+     * @return Control que administra los tabs
      */
     public JTabbedPane getTabManager() {
         if (tabManager == null) {
@@ -116,14 +151,14 @@ public class SicceapiprocessorviewerView extends FrameView {
     }
 
     /**
-     * 
+     * Establece la ubicacion de los objetos en el panel
      */
     private void OrganizeUIElements() {
         this.getFrame().getContentPane().add(getTabManager(), BorderLayout.CENTER);
     }
 
     /**
-     * 
+     * Crea los paneles que van a ser mostrados en el visor
      */
     private void BuildPanes() {
         chartPane = new ChartPane(getResourceMap().getString("ChartTitle"), getResourceMap(), getPowerMetersForCurrentUser());
@@ -137,7 +172,7 @@ public class SicceapiprocessorviewerView extends FrameView {
     }
 
     /**
-     * 
+     * Inicia el proceso de lecturas de los medidores
      */
     private void RunProcessor() {
         AlarmBizObject alarmBizObject = new AlarmBizObject();
@@ -151,7 +186,7 @@ public class SicceapiprocessorviewerView extends FrameView {
     }
 
     /**
-     * 
+     * Establece el icono en el Tray del sistema
      */
     private void SetTrayIcon() {
         if (SystemTray.isSupported()) {
