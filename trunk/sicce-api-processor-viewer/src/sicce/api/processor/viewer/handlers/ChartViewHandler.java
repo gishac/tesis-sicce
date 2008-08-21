@@ -12,9 +12,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -30,47 +28,69 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.RectangleInsets;
 import sicce.api.businesslogic.MeasureBizObject;
-import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.info.interfaces.IMeasure;
 import sicce.api.info.interfaces.IPowerMeter;
 
 /**
- *
+ * Manejador de datos del panel grafico
  * @author gish@c
  */
 public class ChartViewHandler {
 
+    /**
+     * Lista de series que se muestran en el grafico
+     */
     private TimeSeriesCollection series;
+    
+    /**
+     * Diccionario de series que se muestran en el grafico indexado por el serial del medidor
+     */
     private HashMap<String, TimeSeries> seriesMap;
-    private TimeSeries virtual1 = new TimeSeries("Medidor virtual 1", Millisecond.class);
-    private TimeSeries virtual2 = new TimeSeries("Medidor virtual 2", Millisecond.class);
-    private List<String> nonVisiblePowerMeters;
+    //private TimeSeries virtual1 = new TimeSeries("Medidor virtual 1", Millisecond.class);
+    //private TimeSeries virtual2 = new TimeSeries("Medidor virtual 2", Millisecond.class);
+   
+    /**
+     * Panel donde se muestra el grafico
+     */
     private ChartPanel chartPanel;
+    
+    /**
+     * Objeto que dibuja el grafico
+     */
     private JFreeChart chart;
+    
+    /**
+     * Codigo del registro del medidor que se esta visualizando en el grafico
+     */
     private int currentRegisterID;
+    
+    /**
+     * Descripcion del registro del medidor que esta visualizando en el grafico
+     */
     private String currentRegisterName;
+    
+    /**
+     * Titulo del grafico
+     */
     private String chartTitle;
+    
+    /**
+     * Medidores disponibles para visualizar en el grafico
+     */
     private Set<IPowerMeter> powerMetersForCurrentUser;
 
-    
+    /**
+     * Constructor
+     * @param powerMetersForCurrentUser
+     */
     public ChartViewHandler(Set<IPowerMeter> powerMetersForCurrentUser){
         this.powerMetersForCurrentUser = powerMetersForCurrentUser;
     }
     
-    /**
-     * 
-     * @return
-     */
-    private List<String> getNonVisiblePowerMeters() {
-        if (nonVisiblePowerMeters == null) {
-            nonVisiblePowerMeters = new ArrayList<String>();
-        }
-        return nonVisiblePowerMeters;
-    }
 
     /**
-     * 
-     * @return
+     * Devuelve la lista de series que se muestran en el grafico
+     * @return Lista de series que se muestran en el grafico
      */
     private TimeSeriesCollection getSeries() {
         if (series == null) {
@@ -80,8 +100,8 @@ public class ChartViewHandler {
     }
 
     /**
-     * 
-     * @return
+     * Devuelve el diccionario de series que se muestran en el grafico indexado por el serial del medidor
+     * @return Diccionario de series que se muestran en el grafico indexado por el serial del medidor
      */
     private HashMap<String, TimeSeries> getSeriesMap() {
         if (seriesMap == null) {
@@ -91,8 +111,8 @@ public class ChartViewHandler {
     }
 
     /**
-     * 
-     * @return
+     * Construye las series a mostrarse en el grafico basandose en los medidores disponibles
+     * @return Series a mostrarse en el grafico basandose en los medidores disponibles
      */
     private TimeSeriesCollection BuildSeries() {
        
@@ -110,8 +130,8 @@ public class ChartViewHandler {
     }
 
     /**
-     * 
-     * @return
+     * Configura el eje de las X en el grafico
+     * @return Eje X configurado
      */
     private DateAxis ConfigureXAxis() {
         DateAxis xAxis = new DateAxis("Hora de Lectura");
@@ -125,8 +145,8 @@ public class ChartViewHandler {
     }
 
     /**
-     * 
-     * @return
+     * Configura el eje de las Y en el grafico
+     * @return Eje Y configurado
      */
     private NumberAxis ConfigureYAxis() {
         NumberAxis yAxis = new NumberAxis("Lecturas");
@@ -136,11 +156,11 @@ public class ChartViewHandler {
     }
 
     /**
-     * 
-     * @param dataset
-     * @param xAxis
-     * @param yAxis
-     * @param renderer
+     * Construye el area donde se muestra el grafico
+     * @param dataset Series a ser mostradas en el grafico
+     * @param xAxis Eje X
+     * @param yAxis Eje y
+     * @param renderer Objeto para dibujar los elementos del grafico
      * @return
      */
     private XYPlot BuildPlot(TimeSeriesCollection dataset, DateAxis xAxis, NumberAxis yAxis, XYItemRenderer renderer) {
@@ -155,8 +175,8 @@ public class ChartViewHandler {
     }
 
     /**
-     * 
-     * @return
+     * Configura el objeto para dibujar los elementos del grafico
+     * @return Objeto para dibujar los elementos del grafico
      */
     private XYSplineRenderer ConfigureChartRenderer() {
         XYSplineRenderer renderer = new XYSplineRenderer();
@@ -169,9 +189,9 @@ public class ChartViewHandler {
     }
 
     /**
-     * 
-     * @param chartTitle
-     * @return
+     * Construye el grafico a ser visualizado
+     * @param chartTitle Titulo del chart
+     * @return Panel donde se dibuja el grafico
      */
     public ChartPanel BuildChart(String chartTitle) {
         this.chartTitle = chartTitle;
@@ -190,8 +210,8 @@ public class ChartViewHandler {
     }
 
     /**
-     * 
-     * @param measure
+     * Agrega el valor de la nueva lectura al grafico
+     * @param measure Lectura realizada
      */
     public void ProcessMeasure(IMeasure measure) {
         TimeSeries powerMeterSeries = getSeriesMap().get(measure.getPowerMeter().getSerial());
@@ -201,16 +221,17 @@ public class ChartViewHandler {
     }
 
     /**
-     * 
-     * @return
+     * Devuelve ol objeto observador para monitorear el proceso de lecturas
+     * @return objeto observador para monitorear el proceso de lecturas
+     * @see ChartObserver
      */
     public ChartObserver getChartObserver() {
         return new ChartObserver(this);
     }
 
     /**
-     * 
-     * @param powerMeterSerial
+     * Agrega o remueve una serie del grafico
+     * @param powerMeterSerial Codigo del medidor
      * @param state
      */
     public void HandlePowerMeterVisibility(String powerMeterSerial, boolean state) {
@@ -222,9 +243,9 @@ public class ChartViewHandler {
     }
     
     /**
-     * 
-     * @param registerID
-     * @param registerName
+     * Cambia el titulo del grafico cuando se selecciona otro registro del medidor a monitorear
+     * @param registerID Codigo del registro a monitorear
+     * @param registerName Descripcion del registro a monitorear
      */
     public void HandleMeasureChanged(int registerID, String registerName){
         currentRegisterID = registerID;
@@ -239,16 +260,16 @@ public class ChartViewHandler {
     
     
     /**
-     * 
-     * @param measure
-     * @return
+     * Procesa la lectura para obtener el valor del registro que se esta monitoreando actualmente
+     * @param measure Lectura a procesar
+     * @return Valor del registro
      */
     private double GetMeasure(IMeasure measure){
         return new MeasureBizObject().GetMeasure(measure, currentRegisterID);
     }
     
     /**
-     * 
+     * Guarda una imagen del grafico actual
      */
     public void SaveChart(){
         try {

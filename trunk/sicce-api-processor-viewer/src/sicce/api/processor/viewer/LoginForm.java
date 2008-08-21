@@ -22,24 +22,46 @@ import sicce.api.util.ComponentUtil;
 import sicce.api.util.EncryptionProvider;
 
 /**
- *
+ * Formulario para realizar el login del usuario
  * @author  gish@c
  */
 public class LoginForm extends javax.swing.JDialog {
     
+    /**
+     * Resultado del dialogo del formulario
+     */
     private DialogResult dialogResult;
+    
+    /**
+     * Manejador de recursos
+     */
     private ResourceMap resourceMap;
+    
+    /**
+     * Usuario actual de la aplicacion
+     */
     private IUserSicce currentUser;
 
+    /**
+     * Devuelve el usuario actual de la aplicacion
+     * @return Usuario actual de la aplicacion
+     */
     public IUserSicce getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Devuelve el resultado del dialogo del formulario
+     * @return
+     */
     public DialogResult getDialogResult() {
         return dialogResult;
     }
     
-    /** Creates new form LoginForm */
+    /**
+     * Constructor
+     * @param resourceMap Manejador de recursos
+     */
     public LoginForm(ResourceMap resourceMap)
     {
         this();
@@ -47,7 +69,9 @@ public class LoginForm extends javax.swing.JDialog {
         this.resourceMap = resourceMap;
     }
     
-    /** Creates new form LoginForm */
+    /**
+     * Constructor
+     */
     public LoginForm() {
         super(new JFrame(),"",true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -174,7 +198,9 @@ public class LoginForm extends javax.swing.JDialog {
         Exit();
     }//GEN-LAST:event_btnCancelActionPerformed
     
-    
+    /**
+     * Cierra el formulario
+     */
     private void Exit(){
         dialogResult = DialogResult.Cancel;
         this.dispose();

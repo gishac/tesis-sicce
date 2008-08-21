@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sicce.api.processor.viewer.handlers;
 
 import java.util.ArrayList;
@@ -17,31 +16,48 @@ import sicce.api.businesslogic.renderer.SicceComboBoxRenderer;
 import sicce.api.info.ComboBoxItem;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 import sicce.api.info.ConstantsProvider.ModbusRegister;
+
 /**
- *
+ * Administrador de datos del combo de parametros disponibles
  * @author gish@c
  */
 public class MeasureVisibilityHandler {
 
-    private HashMap<ModbusRegister,String> registersInViews;
-    
-    public HashMap<ModbusRegister,String> getRegistersInViews(){
-        if(registersInViews == null)
+    /**
+     * Registros disponibles a seleccionar para monitorear
+     */
+    private HashMap<ModbusRegister, String> registersInViews;
+
+    /**
+     * Devuelve los registros disponibles a seleccionar para monitorear
+     * @return
+     */
+    public HashMap<ModbusRegister, String> getRegistersInViews() {
+        if (registersInViews == null) {
             registersInViews = new HashMap<ModbusRegister, String>();
+        }
         return registersInViews;
     }
-    
+    /**
+     * Instancia del objeto MeasureVisibilityHandler
+     */
     private static MeasureVisibilityHandler instance;
-    public static MeasureVisibilityHandler getInstance(){
-        if(instance == null)
+
+    /**
+     * Devuelve la instancia del objeto MeasureVisibilityHandler
+     * @return Instancia del objeto MeasureVisibilityHandler
+     */
+    public static MeasureVisibilityHandler getInstance() {
+        if (instance == null) {
             instance = new MeasureVisibilityHandler();
+        }
         return instance;
     }
-    
+
     /**
-     * 
+     * Constructor
      */
-    private MeasureVisibilityHandler(){
+    private MeasureVisibilityHandler() {
         getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase1, "Intensidad Instantánea, Fase 1");
         getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase2, "Intensidad Instantánea, Fase 2");
         getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase3, "Intensidad Instantánea, Fase 3");
@@ -63,27 +79,26 @@ public class MeasureVisibilityHandler {
         getRegistersInViews().put(ModbusRegister.ReactivePowerPhase2, "Potencia Reactiva, Fase 2");
         getRegistersInViews().put(ModbusRegister.ReactivePowerPhase3, "Potencia Reactiva, Fase 3");
         getRegistersInViews().put(ModbusRegister.ApparentPowerPhase1, "Potencia Aparente, Fase 1");
-        getRegistersInViews().put(ModbusRegister.ApparentPowerPhase2, "Potencia Aparente, Fase 2");        
+        getRegistersInViews().put(ModbusRegister.ApparentPowerPhase2, "Potencia Aparente, Fase 2");
     }
-    
+
     /**
-     * 
-     * @param cmbMeasures
+     * Llena el combo con los posibles registros del medidor a visualizar
+     * @param cmbMeasures Combo a ser cargado con los registros disponibles del medidor
      */
-    public void FillMeasures(JComboBox cmbMeasures){
+    public void FillMeasures(JComboBox cmbMeasures) {
         List<ComboBoxItem<ModbusRegister>> registers = new ArrayList<ComboBoxItem<ModbusRegister>>();
-        for(Entry<ModbusRegister,String> entry : getRegistersInViews().entrySet()){
+        for (Entry<ModbusRegister, String> entry : getRegistersInViews().entrySet()) {
             ComboBoxItem<ModbusRegister> item = new ComboBoxItem<ModbusRegister>();
             item.setId(entry.getValue());
             item.setValue(entry.getKey());
             registers.add(item);
         }
-        Collections.sort(registers,new ComboBoxItemComparator());
+        Collections.sort(registers, new ComboBoxItemComparator());
         SicceComboBoxRenderer comboRenderer = new SicceComboBoxRenderer("getId", DisplayMemberRenderType.Method, "getValue", DisplayMemberRenderType.Method);
         cmbMeasures.setRenderer(comboRenderer);
         cmbMeasures.setModel(new SicceComboBoxModel(registers));
         cmbMeasures.setSelectedIndex(1);
-        
+
     }
-    
 }

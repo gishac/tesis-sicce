@@ -28,15 +28,30 @@ import sicce.api.processor.viewer.observers.ExceptionObserver;
 import sicce.api.util.MailUtil;
 
 /**
- *
+ * Manejador de excepciones
  * @author gish@c
  */
 public class ExceptionHandler {
 
+    /**
+     * Manejador del Tray del sistema
+     */
     private TrayIcon trayIcon;
+    
+    /**
+     * Modelo de lista para mostrar las excepciones
+     */
     private DefaultListModel exceptionList;
+    
+    /**
+     * Mapa de objetos con la configuracion para el envio de correos electronicos
+     */
     private HashMap<String, IParameter> parametersForMail;
 
+    /**
+     * Devuelve el mapa de objetos con la configuracion para el envio de correos electronicos
+     * @return
+     */
     private HashMap<String, IParameter> getparametersForMail() {
         if (parametersForMail == null) {
             parametersForMail = new HashMap<String, IParameter>();
@@ -52,8 +67,9 @@ public class ExceptionHandler {
     }
 
     /**
-     * 
-     * @param trayIcon
+     * Constructor
+     * @param trayIcon Manejador del Tray del sistema
+     * @param exceptionList Modelo de lista para mostrar las excepciones
      */
     public ExceptionHandler(TrayIcon trayIcon, DefaultListModel exceptionList) {
         this.trayIcon = trayIcon;
@@ -61,9 +77,9 @@ public class ExceptionHandler {
     }
 
     /**
-     * 
-     * @param trayIcon
-     * @return
+     * Devuelve el objeto observador para monitorear el proceso de lecturas
+     * @return Objeto observador para monitorear el proceso de lecturas
+     * @see ExceptionObserver
      */
     public ExceptionObserver getExceptionObserver() {
         return new ExceptionObserver(this);
@@ -71,8 +87,9 @@ public class ExceptionHandler {
     }
 
     /**
-     * 
-     * @param ex
+     * Maneja la excepcion ocurrida durante las lecturas
+     * @param ex Excepcion generada
+     * @param powerMeter Medidor que origina la excepcion
      */
     public void HandleException(Exception ex, IPowerMeter powerMeter) {
         String errorOrigin = Calendar.getInstance().getTime() + " - Ocurrio un error en el medidor: " + powerMeter.getDescription() + ". ERROR => " +
@@ -91,8 +108,9 @@ public class ExceptionHandler {
     }
 
     /**
-     * 
-     * @param powerMeter
+     * Envia el correo electronico de la excepcion a todos los usuarios que tienen asignado el medidor
+     * @param powerMeter Medidor que origina la excepcion
+     * @param errorMessage Mensaje de error
      */
     private void SendMail(IPowerMeter powerMeter, String errorMessage) {
         Properties props = new Properties();
@@ -111,9 +129,9 @@ public class ExceptionHandler {
     }
     
     /**
-     * 
-     * @param powerMeter
-     * @param ex
+     * Almacena la informacion de los errores ocurridso en la base de datos
+     * @param powerMeter Medidor que origina la excepcion
+     * @param ex Excepcion generada
      */
     private void LogException(IPowerMeter powerMeter, Exception ex){
         try {

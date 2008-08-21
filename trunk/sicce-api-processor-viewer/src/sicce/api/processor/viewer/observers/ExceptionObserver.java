@@ -2,43 +2,41 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sicce.api.processor.viewer.observers;
 
-import java.awt.TrayIcon;
 import java.util.Observable;
 import java.util.Observer;
 import sicce.api.info.interfaces.IPowerMeterWatcher;
 import sicce.api.processor.viewer.handlers.ExceptionHandler;
 
 /**
- *
+ * Objeto observador de excepciones
  * @author gish@c
  */
 public class ExceptionObserver implements Observer {
 
-    
-    private ExceptionHandler exceptionHandler;
-    
-   
     /**
-     * 
-     * @param trayIcon
+     * Manejador de datos del panel de excepciones
      */
-    public ExceptionObserver(ExceptionHandler exceptionHandler){
+    private ExceptionHandler exceptionHandler;
+
+    /**
+     * Constructor
+     * @param exceptionHandler Manejador de datos del panel de excepciones
+     */
+    public ExceptionObserver(ExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
     }
-    
+
     /**
-     * 
-     * @param o
-     * @param arg
+     * Notificacion de lectura
+     * @param powerMeterWatcher Medidor observado
+     * @param arg Argumento de la lectura
      */
-    public void update(Observable o, Object arg) {
-        if(arg instanceof Exception){
-            IPowerMeterWatcher powerMeterWatcher = (IPowerMeterWatcher) o;
-            this.exceptionHandler.HandleException((Exception)arg, powerMeterWatcher.getPowerMeter());
+    public void update(Observable powerMeterWatcher, Object arg) {
+        if (arg instanceof Exception) {
+            IPowerMeterWatcher watcher = (IPowerMeterWatcher) powerMeterWatcher;
+            this.exceptionHandler.HandleException((Exception) arg, watcher.getPowerMeter());
         }
     }
-
 }

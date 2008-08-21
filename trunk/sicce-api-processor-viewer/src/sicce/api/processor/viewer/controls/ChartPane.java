@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import org.jdesktop.application.ResourceMap;
 import org.jfree.chart.ChartPanel;
-import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.info.ComboBoxItem;
 import sicce.api.info.ConstantsProvider.ModbusRegister;
 import sicce.api.info.interfaces.IPowerMeter;
@@ -25,21 +24,44 @@ import sicce.api.processor.viewer.handlers.ChartViewHandler;
 import sicce.api.processor.viewer.handlers.MeasureVisibilityHandler;
 
 /**
- *
+ * Panel grafico de monitoreo de las mediciones
  * @author  gish@c
  */
 public class ChartPane extends javax.swing.JPanel {
 
+    /**
+     * Manejador de datos del grafico
+     */
     private ChartViewHandler chartHandler;
+    
+    /**
+     * Titulo del grafico
+     */
     private String chartTitle;
+    
+    /**
+     * Manejador de las mediciones visibles
+     */
     private MeasureVisibilityHandler measureVisibilityHandler;
+    
+    /**
+     * Panel para mostrar los medidores disponibles
+     */
     private JPanel powerMetersPane;
+    
+    /**
+     * Manejador de recursos
+     */
     private ResourceMap resourceMap;
+    
+    /**
+     * Medidores a ser visualizados en el grafico
+     */
     private Set<IPowerMeter> powerMetersForCurrentUser;
     
     /**
-     * 
-     * @return
+     * Devuelve el manejador de datos del grafico
+     * @return Manejador de datos del grafico
      */
     private ChartViewHandler getChartHandler() {
         if (chartHandler == null) {
@@ -48,7 +70,12 @@ public class ChartPane extends javax.swing.JPanel {
         return chartHandler;
     }
 
-    /** Creates new form ChartPane */
+    /**
+     * Constructor
+     * @param chartTitle Titulo del chart
+     * @param resourceMap Manejador de recursos
+     * @param powerMetersForCurrentUser Medidores a ser visualizados en el grafico
+     */
     public ChartPane(String chartTitle, ResourceMap resourceMap,Set<IPowerMeter> powerMetersForCurrentUser) {
         initComponents();
         this.chartTitle = chartTitle;
@@ -129,7 +156,7 @@ public class ChartPane extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * 
+     * Guarda una imagen del grafico actual
      * @param evt
      */
     private void btnSaveGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveGraphActionPerformed
@@ -137,7 +164,7 @@ public class ChartPane extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSaveGraphActionPerformed
 
     /**
-     * 
+     * Seleciona el parametro a ser visualizado en el grafico
      * @param evt
      */
     private void cmbMeasuresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMeasuresActionPerformed
@@ -156,8 +183,8 @@ public class ChartPane extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     
     /**
-     * 
-     * @return
+     * Devuelve el panel donde se muestran los medidores a visualizar
+     * @return Panel donde se muestran los medidores a visualizar
      */
      public JPanel getPowerMetersPane() {
         if (powerMetersPane == null) {
@@ -170,7 +197,7 @@ public class ChartPane extends javax.swing.JPanel {
     }
     
     /**
-     * 
+     * Crea el chart
      */
     private void BuildChart() {
         ChartViewHandler chartUIHandler = getChartHandler();
@@ -179,34 +206,23 @@ public class ChartPane extends javax.swing.JPanel {
     }
 
     /**
-     * 
+     * Agrega el manejador de datos del grafico como observador de eventos de las lecturas de los medidores
      */
     private void AttachChartToDataProcessor() {
         Processor.AddObserver(getChartHandler().getChartObserver());
     }
 
     /**
-     * 
+     * Guarda una imagen del grafico actual
      */
     public void SaveChart(){
         getChartHandler().SaveChart();
     }
     
     /**
-     * 
+     * Carga los medidores a monitorear en el panel de medidores disponibles
      */
     public void LoadAvailablePowerMeters(){
-//        IPowerMeter virtual1 = ClassFactory.getPowerMeterInstance();
-//        virtual1.setSerial("v1");
-//        virtual1.setDescription("Medidor virtual 1");
-//        
-//        powerMetersForCurrentUser.add(virtual1);
-//        
-//        IPowerMeter virtual2 = ClassFactory.getPowerMeterInstance();
-//        virtual2.setSerial("v2");
-//        virtual2.setDescription("Medidor virtual 2");
-//        
-//        powerMetersForCurrentUser.add(virtual2);
         
         for (IPowerMeter powerMeter : powerMetersForCurrentUser) {
             JCheckBox checkbox = new JCheckBox(powerMeter.getDescription());
