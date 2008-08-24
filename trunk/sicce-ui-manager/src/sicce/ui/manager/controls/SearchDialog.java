@@ -8,37 +8,60 @@ package sicce.ui.manager.controls;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.List;
-import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.ComponentUtil;
 
 /**
- *
+ * Formulario de dialogo para mostrar la pantalla de busquedas
  * @author  gish@c
  */
 public class SearchDialog<T> extends javax.swing.JDialog {
 
+    /**
+     * Panel para realizar las busquedas
+     */
     private SearchPane<T> searchPane;
-    private final Dimension PREFERRED_SIZE = new Dimension(500,400);
+    /**
+     * Tamaño predefinido de la pantalla de busqueda
+     */
+    private final Dimension PREFERRED_SIZE = new Dimension(500, 400);
 
-    /** Creates new form SearchDialog */
+    /**
+     * Constructor
+     * @param parent Formulario que invoca la ventana de dialogo
+     * @param modal Indica si el dialogo es de tipo Modal
+     */
     public SearchDialog(java.awt.Frame parent, boolean modal) {
         super(parent, "Búsqueda", modal);
         initComponents();
         this.setSize(PREFERRED_SIZE);
     }
 
+    /**
+     * Constructor
+     * @param parent Formulario que invoca la ventana de dialogo
+     * @param modal Indica si el dialogo es de tipo Modal
+     * @param tableModel Modelo de datos sobre el cual se realiza la busqueda
+     */
     public SearchDialog(java.awt.Frame parent, boolean modal, SicceTableModel<T> tableModel) {
         this(parent, modal);
         searchPane = new SearchPane<T>(this, tableModel);
         this.getContentPane().add(searchPane, BorderLayout.CENTER);
         ComponentUtil.CenterFormInScreen(this, this.getToolkit());
     }
-    
-    public SearchDialog(java.awt.Frame parent, boolean modal, SicceTableModel<T> tableModel, int lstModel) {
+
+    /**
+     * Constructor
+     * @param parent Formulario que invoca la ventana de dialogo
+     * @param modal Indica si el dialogo es de tipo Modal
+     * @param tableModel Modelo de datos sobre el cual se realiza la busqueda
+     * @param selectionMode Tipo de seleccion; <strong>0</strong>, seleccion unitaria; 
+     * <strong>1</strong>, seleccion multiple
+     */
+    public SearchDialog(java.awt.Frame parent, boolean modal, SicceTableModel<T> tableModel, int selectionMode) {
         this(parent, modal);
-        searchPane = new SearchPane<T>(this, tableModel, lstModel);
+        searchPane = new SearchPane<T>(this, tableModel, selectionMode);
         this.getContentPane().add(searchPane, BorderLayout.CENTER);
         ComponentUtil.CenterFormInScreen(this, this.getToolkit());
     }
@@ -56,18 +79,29 @@ public class SearchDialog<T> extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    /**
+     * Devuelvel el resultado del dialogo de busqueda
+     * @return Resultado del dialogo de busqueda
+     */
     public DialogResult getDialogResult() {
         return searchPane.getDialogResult();
     }
 
+    /**
+     * Devuelve la seleccion en el formulario de busqueda
+     * @return Seleccion en el formulario de busqueda
+     */
     public T getSearchResult() {
         return searchPane.getSearchResult();
     }
-    
-    public List<T> getResultList(){
+
+    /**
+     * Devuelve la seleccion en el formulario de busqueda
+     * @return Seleccion en el formulario de busqueda
+     */
+    public List<T> getResultList() {
         return searchPane.getResultList();
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

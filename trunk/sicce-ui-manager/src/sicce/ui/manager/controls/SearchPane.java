@@ -7,7 +7,6 @@ package sicce.ui.manager.controls;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import javax.swing.JDialog;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -15,35 +14,70 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
-import sicce.api.info.interfaces.ISimpleQueryResult;
 
 /**
- *
+ * Panel para realizar busquedas
  * @author  gish@c
  */
 public class SearchPane<T> extends javax.swing.JPanel {
 
+    /**
+     * Ventana de dialogo para mostrar el panel de busquedas
+     */
     private JDialog parentDialog;
+    /**
+     * Resultado del dialogo
+     */
     private DialogResult dialogResult;
+    /**
+     * Seleccion en el formulario de busqueda
+     */
     private T searchResult;
-    private List<T> resultList = new ArrayList();
+    /**
+     * Seleccion en el formulario de busqueda
+     */
+    private List<T> resultList = new ArrayList<T>();
 
+    /**
+     * Devuelve los elementos seleccionados en el formulario de busqueda
+     * @return
+     */
     public List<T> getResultList() {
         return resultList;
     }
 
+    /**
+     * Establece los elementos seleccionados en el formulario de busqueda
+     * @param resultList
+     */
     public void setResultList(List<T> resultList) {
         this.resultList = resultList;
     }
+    /**
+     * Modelo de datos sobre el que se realizan las busquedas
+     */
     SicceTableModel<T> tableModel;
+    /**
+     * Objeto para realizar la ordenacion en la tabla
+     */
     private final TableRowSorter<TableModel> rowSorter;
-    private int lstModel;
+    /**
+     * Modo de seleccion en el formulario
+     */
+    private int selectionMode;
 
+    /**
+     * Devuelve el resultado del dialogo
+     * @return
+     */
     public DialogResult getDialogResult() {
         return dialogResult;
     }
 
-    /** Creates new form SearchPane */
+    /**
+     * Constructor
+     * @param tableModel Modelo de datos sobre el que se realizan las busquedas
+     */
     public SearchPane(SicceTableModel<T> tableModel) {
         initComponents();
         this.tableModel = tableModel;
@@ -54,23 +88,33 @@ public class SearchPane<T> extends javax.swing.JPanel {
         dialogResult = DialogResult.Cancel;
     }
 
-    /** Creates new form SearchPane */
+    /**
+     * Constructor
+     * @param parentDialog Ventana de dialogo para mostrar el panel de busquedas
+     * @param tableModel Modelo de datos sobre el que se realizan las busquedas
+     */
     public SearchPane(JDialog parentDialog, SicceTableModel<T> tableModel) {
         this(tableModel);
         this.parentDialog = parentDialog;
 
     }
 
-    public SearchPane(JDialog parentDialog, SicceTableModel<T> tableModel, int lstModel) {
+    /**
+     * Constructor
+     * @param parentDialog Ventana de dialogo para mostrar el panel de busquedas
+     * @param tableModel Modelo de datos sobre el que se realizan las busquedas
+     * @param selectionMode Modo de seleccion en el formulario
+     */
+    public SearchPane(JDialog parentDialog, SicceTableModel<T> tableModel, int selectionMode) {
         this(tableModel);
         this.parentDialog = parentDialog;
-        this.lstModel = lstModel;
-        tableResults.getSelectionModel().setSelectionMode(lstModel);
+        this.selectionMode = selectionMode;
+        tableResults.getSelectionModel().setSelectionMode(selectionMode);
     }
 
     /**
      * Devuelve el elemento seleccionado en la busqueda
-     * @return
+     * @return Elemento seleccionado en la busqueda
      */
     public T getSearchResult() {
         return searchResult;
@@ -172,25 +216,25 @@ public class SearchPane<T> extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-      
+
         if (tableResults.getSelectedRow() >= 0) {
             dialogResult = DialogResult.Ok;
-            switch (lstModel){
+            switch (selectionMode) {
                 case (ListSelectionModel.SINGLE_SELECTION):
                     searchResult = ((SicceTableModel<T>) tableResults.getModel()).getRow(rowSorter.convertRowIndexToModel(tableResults.getSelectedRow()));
-                    parentDialog.dispose();    
+                    parentDialog.dispose();
                     break;
                 case (ListSelectionModel.MULTIPLE_INTERVAL_SELECTION):
-                     int[] selected = tableResults.getSelectedRows();
-                      for(int value : selected){                     
+                    int[] selected = tableResults.getSelectedRows();
+                    for (int value : selected) {
                         searchResult = ((SicceTableModel<T>) tableResults.getModel()).getRow(rowSorter.convertRowIndexToModel(value));
                         resultList.add(searchResult);
                     }
-                    parentDialog.dispose();    
+                    parentDialog.dispose();
                     break;
-            
-        }
-        } else{
+
+            }
+        } else {
             JOptionPaneExtended.showMessageDialog(this, "Debe seleccionar un elemento de la lista");
         }
         

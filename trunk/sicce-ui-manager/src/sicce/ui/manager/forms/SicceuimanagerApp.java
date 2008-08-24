@@ -4,11 +4,8 @@
 
 package sicce.ui.manager.forms;
 
-import java.util.Calendar;
-import javax.swing.JFrame;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
-import sicce.api.dataaccess.ReportDAO;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.EncryptionProvider;
 

@@ -3,7 +3,6 @@
  *
  * Created on March 23, 2008, 7:37 PM
  */
-
 package sicce.ui.manager.forms;
 
 import java.awt.event.ActionEvent;
@@ -22,40 +21,64 @@ import sicce.api.util.EncryptionProvider;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 
 /**
- *
+ * Formulario para realizar el login del usuario
  * @author  gish@c
  */
 public class LoginForm extends javax.swing.JDialog {
-    
+
+    /**
+     * Resultado del dialogo del formulario
+     */
     private DialogResult dialogResult;
+    
+    /**
+     * Manejador de recursos
+     */
     private ResourceMap resourceMap;
+    
+    /**
+     * Usuario actual de la aplicacion
+     */
     private IUserSicce currentUser;
 
+    /**
+     * Devuelve el usuario actual de la aplicacion
+     * @return Usuario actual de la aplicacion 
+     */
     public IUserSicce getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Devuelve el resultado del dialogo del formulario
+     * @return Resultado del dialogo del formulario
+     */
     public DialogResult getDialogResult() {
         return dialogResult;
     }
-    
-    /** Creates new form LoginForm */
-    public LoginForm(ResourceMap resourceMap)
-    {
+
+    /**
+     * Constructor
+     * @param resourceMap Manejador de recursos
+     */
+    public LoginForm(ResourceMap resourceMap) {
         this();
         this.setTitle(resourceMap.getString("ApplicationName"));
         this.resourceMap = resourceMap;
     }
-    
-    /** Creates new form LoginForm */
+
+    /**
+     * Constructor
+     */
     public LoginForm() {
-        super(new JFrame(),"",true);
+        super(new JFrame(), "", true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         initComponents();
         ComponentUtil.CenterFormInScreen(this, this.getToolkit());
         getRootPane().setDefaultButton(btnLogin);
         KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
         Action escapeAction = new AbstractAction() {
+
             public void actionPerformed(ActionEvent e) {
                 Exit();
             }
@@ -63,7 +86,7 @@ public class LoginForm extends javax.swing.JDialog {
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
         getRootPane().getActionMap().put("ESCAPE", escapeAction);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -159,30 +182,29 @@ public class LoginForm extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         IUserSicce user = UserDB.FindUserByLogin(txtUser.getText());
         String password = new String(txtPassword.getPassword());
-        if(user != null && EncryptionProvider.Decrypt(user.getPasswordSicce()).equals(password)){
+        if (user != null && EncryptionProvider.Decrypt(user.getPasswordSicce()).equals(password)) {
             this.currentUser = user;
             dialogResult = DialogResult.Ok;
             this.dispose();
-        }
-        else{
-            JOptionPaneExtended.showMessageDialog(null,resourceMap.getString("LoginFailed"), resourceMap.getString("ApplicationName"), JOptionPaneExtended.INFORMATION_MESSAGE);
+        } else {
+            JOptionPaneExtended.showMessageDialog(null, resourceMap.getString("LoginFailed"), resourceMap.getString("ApplicationName"), JOptionPaneExtended.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         Exit();
     }//GEN-LAST:event_btnCancelActionPerformed
-    
-    
-    private void Exit(){
+
+    /**
+     * Cierra el formulario
+     */
+    private void Exit() {
         dialogResult = DialogResult.Cancel;
         this.dispose();
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnLogin;
@@ -192,5 +214,4 @@ public class LoginForm extends javax.swing.JDialog {
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
-    
 }

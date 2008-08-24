@@ -18,18 +18,35 @@ import sicce.api.util.JTextFieldInteger;
 import sicce.ui.manager.controls.JTabExtended;
 
 /**
- *
+ * Panel para la administracion de parametros del sistema
  * @author  gish@c
  */
 public class ParameterPane extends JTabExtended {
     
+    /**
+     * Modelo de tabla para mostrar los parametros existentes
+     */
     private ParameterTableModel parameterTableModel;
+    
+    /**
+     * Objeto para manejar la logica de los parametros
+     */
     private ParameterBizObject parameterBizObject;
+    
+    /**
+     * Parametros para el envio de correo electronico
+     */
     private HashMap<String,IParameter> parametersForMail;
-    List<IParameter> parameters;
+    
+    /**
+     * Parametros disponbiles para configurar
+     */
+    private List<IParameter> parameters;
     
     
-    /** Creates new form ParameterPane */
+    /**
+     * Constructor
+     */
     public ParameterPane() {
         initComponents();
         parameterBizObject = new ParameterBizObject();

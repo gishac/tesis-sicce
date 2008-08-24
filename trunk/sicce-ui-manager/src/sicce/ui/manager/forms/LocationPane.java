@@ -13,19 +13,16 @@ import sicce.api.businesslogic.LocationBizObject;
 import sicce.api.businesslogic.model.LocationTableModel;
 import sicce.api.businesslogic.LocationTypeBizObject;
 import sicce.api.businesslogic.PowerMeterBizObject;
-import sicce.api.businesslogic.model.PowerMeterTableModel;
 import sicce.api.businesslogic.model.PowerMeterTableModelForLocations;
 import sicce.api.businesslogic.model.SicceComboBoxModel;
 import sicce.api.businesslogic.renderer.SicceComboBoxRenderer;
 import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.businesslogic.renderer.PowerMeterLocationCellRenderer;
 import sicce.api.dataaccess.LocationDB;
-import sicce.api.dataaccess.PowerMeterDB;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
-import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.util.ComponentUtil;
 import sicce.api.util.JTextFieldLimit;
 import sicce.api.util.Validator;
@@ -34,23 +31,64 @@ import sicce.ui.manager.controls.SearchDialog;
 import sicce.ui.manager.handlers.ExceptionHandler;
 
 /**
- *
+ * Panel para la administracion de dependencias
  * @author  gish@c
  */
 public class LocationPane extends JTabExtended<ILocation> {
 
-    SicceComboBoxModel<ILocationType> locationTypeComboBoxModel;
-    SicceComboBoxRenderer locationTypeComboBoxRenderer;
-    LocationTypeBizObject locationTypeBizObject;
-    LocationBizObject locationBizObject;
-    LocationTableModel locationTableModel;
-    PowerMeterBizObject pmeterBizObject;
+    /**
+     * Modelo de datos para el combo de Tipo de dependencia
+     */
+    private SicceComboBoxModel<ILocationType> locationTypeComboBoxModel;
+    
+    /**
+     * Objeto para dibujar los valores en el combo de Tipo de dependencia
+     */
+    private SicceComboBoxRenderer locationTypeComboBoxRenderer;
+    
+    /**
+     * Objeto para manejar logica del tipo de dependencia
+     */
+    private LocationTypeBizObject locationTypeBizObject;
+    
+    /**
+     * Objeto para manejar la logica de las dependencias
+     */
+    private LocationBizObject locationBizObject;
+    
+    /**
+     * Modelo de tabla para mostrar las dependencias existentes
+     */
+    private LocationTableModel locationTableModel;
+    
+    /**
+     * Objeto para manejar la logica de los medidores
+     */
+    private PowerMeterBizObject pmeterBizObject;
+    
+    /**
+     * Dependencia que contiene a la dependencia actual
+     */
     private ILocation plocation;
+    
+    /**
+     * Tipo de dependencia
+     */
     private ILocationType ltype;
+    
+    /**
+     * Modelo de tabla de los medidores a mostrar en el panel de dependencias
+     */
     private PowerMeterTableModelForLocations powerMeterTableModel;
-     private PowerMeterLocationCellRenderer powerMeterCellRenderer;
+    
+    /**
+     * Objeto para dibujar los valores en la tabla de medidores
+     */
+    private PowerMeterLocationCellRenderer powerMeterCellRenderer;
 
-    /** Creates new form LocationPane */
+    /**
+     * Constructor
+     */
     public LocationPane() {
         initComponents();
         txtDescription.setDocument(new JTextFieldLimit(200));
@@ -279,7 +317,7 @@ public class LocationPane extends JTabExtended<ILocation> {
         );
     }// </editor-fold>//GEN-END:initComponents
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        if(currentObject == null){
+        if (currentObject == null) {
             LoadComboBoxes();
             FillGrid();
         }
@@ -288,7 +326,7 @@ public class LocationPane extends JTabExtended<ILocation> {
     private void btnSearchUbicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchUbicationActionPerformed
         SearchDialog<ILocation> searchLocationDialog = new SearchDialog<ILocation>(new JFrame(), true, new LocationTableModel(locationBizObject.GetAllLocations()));
         searchLocationDialog.setVisible(true);
-        
+
         DialogResult result = searchLocationDialog.getDialogResult();
         if (result == DialogResult.Ok) {
             plocation = searchLocationDialog.getSearchResult();
@@ -303,8 +341,6 @@ public class LocationPane extends JTabExtended<ILocation> {
         plocation = null;
         txtUbication.setText("");
     }//GEN-LAST:event_btnClearLocationActionPerformed
-        
-   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClearLocation;
     private javax.swing.JButton btnSearchUbication;
@@ -363,7 +399,7 @@ public class LocationPane extends JTabExtended<ILocation> {
             currentObject.setLocationType(ltype);
             currentObject.setDescription(txtDescription.getText());
             currentObject.setLocation(plocation);
-            
+
             if (IsObjectLoaded()) {
                 return Update();
             }
@@ -442,17 +478,14 @@ public class LocationPane extends JTabExtended<ILocation> {
         txtDescription.setText(currentObject.getDescription());
         if (currentObject.getLocation() != null) {
             txtUbication.setText(currentObject.getLocation().getDescription());
-        }
-        else{
+        } else {
             txtUbication.setText("");
         }
         powerMeterCellRenderer.setCurrentUser(currentObject);
         FillPowerMetersGrid();
         powerMeterTableModel.setReadOnly(true);
-        locationTypeComboBoxModel.setSelectedItem(currentObject.getLocationType(),locationTypeComboBoxRenderer);
+        locationTypeComboBoxModel.setSelectedItem(currentObject.getLocationType(), locationTypeComboBoxRenderer);
     }
-    
-    
 
     @Override
     public boolean CheckFields() {
@@ -466,11 +499,11 @@ public class LocationPane extends JTabExtended<ILocation> {
         }
         return true;
     }
-    
+
     /**
-     * 
+     * Llena la tabla de medidores con los medidores disponibles
      */
-    private void FillPowerMetersGrid(){
+    private void FillPowerMetersGrid() {
         powerMeterTableModel = null;
         powerMeterTableModel = new PowerMeterTableModelForLocations(pmeterBizObject.GetAllPowerMeter(), currentObject);
         gridPowerMeters.setModel(powerMeterTableModel);
