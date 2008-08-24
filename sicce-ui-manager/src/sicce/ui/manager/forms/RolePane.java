@@ -6,7 +6,6 @@
 package sicce.ui.manager.forms;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.businesslogic.OptionBizObject;
@@ -25,17 +24,35 @@ import sicce.ui.manager.controls.SearchDialog;
 import sicce.ui.manager.handlers.ExceptionHandler;
 
 /**
- *
+ * Panel para la administracion de roles
  * @author  gish@c
  */
 public class RolePane extends JTabExtended<IRole> {
 
+    /**
+     * Modelo de tabla para mostrar los roles existentes
+     */
     private RoleTableModel roleTableModel;
+    
+    /**
+     * Modelo de tabla para mostrar los permisos disponibles
+     */
     private PermissionsTableModel permissionsTableModel;
+    
+    /**
+     * Objeto para manejar la logica de los roles
+     */
     private RoleBizObject roleBizObject;
+    
+    /**
+     * Objeto para manejar la logica de las opciones
+     */
     private OptionBizObject optionBizObject;
 
-    /** Creates new form LocationTypePane */
+    
+    /**
+     * Constructor
+     */
     public RolePane() {
         initComponents();
         txtDescription.setDocument(new JTextFieldLimit(20));
@@ -310,7 +327,7 @@ public class RolePane extends JTabExtended<IRole> {
     }
 
     /**
-     * Carga el grid con los permisos asignados al rol
+     * Llena la tabla de permisos con los permisos disponibles
      */
     private void FillPermissionsGrid() {
         permissionsTableModel = null;

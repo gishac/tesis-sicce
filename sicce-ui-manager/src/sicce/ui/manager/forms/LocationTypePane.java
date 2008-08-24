@@ -21,16 +21,27 @@ import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.util.Validator;
 import sicce.ui.manager.controls.SearchDialog;
 import sicce.ui.manager.handlers.ExceptionHandler;
+
 /**
- *
+ * Panel para la administracion de los tipos de dependencia
  * @author  gish@c
  */
 public class LocationTypePane extends JTabExtended<ILocationType> {
     
-    private ILocationType locationType;
+    /**
+     * Objeto para manejar la logica del tipo de dependencia
+     */
     LocationTypeBizObject ltypeBizObject;
+    
+    /**
+     * Modelo de tabla para mostrar los tipos de dependencias existentes
+     */
     LocationTypeTableModel ltypeTableModel;
-    /** Creates new form LocationTypePane */
+    
+    
+    /**
+     * Constructor
+     */
     public LocationTypePane() {
         initComponents();
         getControlsToClear().add(txtDescription); 

@@ -36,16 +36,49 @@ import sicce.ui.manager.controls.SearchDialog;
  */
 public class UserPane extends JTabExtended<IUserSicce> {
 
+    /**
+     * Modelo de datos para el combo de roles
+     */
     private SicceComboBoxModel<IRole> roleComboBoxModel;
+    
+    /**
+     * Objeto para dibujar los valores en el combo de roles
+     */
     private SicceComboBoxRenderer roleComboBoxRenderer;
+    
+    /**
+     * Objeto para manejar la logica de los roles
+     */
     private RoleBizObject roleBizObject;
+    
+    /**
+     * Objeto para manejar la logica de los usuarios
+     */
     private UserBizObject userBizObject;
+    
+    /**
+     * Modelo de tabla para mostrar los usuarios existentes
+     */
     private UserTableModel userTableModel;
+    
+    /**
+     * Modelo de tabla para mostrar los medidores existentes
+     */
     private PowerMeterTableModelForUsers powerMeterTableModel;
+    
+    /**
+     * Objeto para manejar la logica de los medidores
+     */
     private PowerMeterBizObject powerMeterBizObject;
+    
+    /**
+     * Objeto para dibujar los valores en la tabla de medidores
+     */
     private PowerMeterUserCellRenderer powerMeterCellRenderer;
 
-    /** Creates new form LocationPane */
+    /**
+     * Constructor
+     */
     public UserPane() {
         initComponents();
         getControlsToClear().add(txtFirstName);

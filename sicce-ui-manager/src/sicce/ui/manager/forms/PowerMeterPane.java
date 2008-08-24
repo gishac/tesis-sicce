@@ -28,11 +28,20 @@ import sicce.ui.manager.handlers.ExceptionHandler;
  * @author  gish@c
  */
 public class PowerMeterPane extends JTabExtended<IPowerMeter> {
-    
-    PowerMeterBizObject pmeterBizObject;
-    PowerMeterTableModel pmeterTableModel;
 
-    /** Creates new form PowerMeterPane */
+    /**
+     * Objeto para manejar la logica de los medidores
+     */
+    private PowerMeterBizObject pmeterBizObject;
+    
+    /**
+     * Modelo de tabla para mostrar los medidores existentes
+     */
+    private PowerMeterTableModel pmeterTableModel;
+
+    /**
+     * Constructor
+     */
     public PowerMeterPane() {
         initComponents();
         getControlsToClear().add(txtSerial);
@@ -50,11 +59,6 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
         ComponentUtil.SetState(false, getControlsToEnable());
         pmeterBizObject = new PowerMeterBizObject();
         FillGrid();
-    }
-
-    /** Creates new form PowerMeterPane */
-    public PowerMeterPane(Object option) {
-        initComponents();
     }
 
     /** This method is called from within the constructor to
@@ -283,12 +287,12 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
 
     @Override
     public DialogResult Search() {
-         SearchDialog<IPowerMeter> searchPmeterDialog = new SearchDialog<IPowerMeter>(new JFrame(), true, new PowerMeterTableModel(pmeterBizObject.GetAllPowerMeter()));
+        SearchDialog<IPowerMeter> searchPmeterDialog = new SearchDialog<IPowerMeter>(new JFrame(), true, new PowerMeterTableModel(pmeterBizObject.GetAllPowerMeter()));
         searchPmeterDialog.setVisible(true);
         DialogResult result = searchPmeterDialog.getDialogResult();
         if (result == DialogResult.Ok) {
             currentObject = searchPmeterDialog.getSearchResult();
-        SetUIElements();
+            SetUIElements();
         }
         return result;
     }
@@ -309,7 +313,7 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
         SicceTableModel<IPowerMeter> tableModel = (SicceTableModel<IPowerMeter>) grdPowerMeter.getModel();
-        currentObject = tableModel.getRow(selectedIndex);     
+        currentObject = tableModel.getRow(selectedIndex);
         SetUIElements();
     }
 
@@ -355,8 +359,6 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
         txtDescription.setText(currentObject.getDescription());
         txtDeviceID.setText(currentObject.getDeviceID());
     }
-    
-    
 }
     
     

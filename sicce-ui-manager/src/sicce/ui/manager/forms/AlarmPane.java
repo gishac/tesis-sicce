@@ -28,19 +28,44 @@ import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.handlers.ExceptionHandler;
 
 /**
- *
+ * Panel para la administracion de alarmas
  * @author  gish@c
  */
 public class AlarmPane extends JTabExtended<IAlarm> {
 
+    /**
+     * Modelo de tabla para mostrar los medidores disponibles
+     */
     private PowerMeterTableModelForAlarms powerMeterTableModel;
+    
+    /**
+     * Modelo de tabla para mostrar los usuarios disponibles
+     */
     private UserTableModelForAlarms userTableModel;
+    
+    /**
+     * Objeto para manejar logica de los medidores
+     */
     private PowerMeterBizObject powerMeterBizObject;
+    
+    /**
+     * Objeto para manejar logica de los usuarios
+     */
     private UserBizObject userBizObject;
+    
+    /**
+     * Modelo de tabla para mostrar las alarmas existentes
+     */
     private AlarmTableModel alarmTableModel;
+    
+    /**
+     * Objeto para manejar logica de las alarmas
+     */
     private AlarmBizObject alarmBizObject;
 
-    /** Creates new form AlarmPane */
+    /**
+     * Constructor
+     */
     public AlarmPane() {
         initComponents();
         txtDescription.setDocument(new JTextFieldLimit(254));
@@ -393,7 +418,7 @@ public class AlarmPane extends JTabExtended<IAlarm> {
     }
 
     /**
-     * 
+     * Llena la tabla de medidores con los medidores disponibles
      */
     private void FillPowerMetersGrid() {
         powerMeterTableModel = null;
@@ -403,7 +428,7 @@ public class AlarmPane extends JTabExtended<IAlarm> {
     }
 
     /**
-     * 
+     * Llena la tabla de usuarios con los usuarios disponibles
      */
     private void FillUsersGrid() {
         userTableModel = null;
@@ -566,8 +591,8 @@ public class AlarmPane extends JTabExtended<IAlarm> {
     }
 
     /**
-     * 
-     * @param alarm
+     * Establece los dias en los que se configura la alarma
+     * @param alarm Alarma a la que se le asignaran los dias
      */
     public void SetScheduledDays(IAlarm alarm) {
 
@@ -589,10 +614,11 @@ public class AlarmPane extends JTabExtended<IAlarm> {
     }
 
     /**
-     * 
-     * @param alarm
-     * @param checked
-     * @param day
+     * Establece el dia en el que estara disponible la alarma
+     * @param alarm Alarma a la que se le asignara el dia
+     * @param checked <strong> True </string>, si el dia es asignado a la alarma; <strong> False </strong>,
+     * si el dia no es asignado a la alarma
+     * @param day Dia en el cual se quiere habilitar o deshabilitar la alarma
      */
     public void SetScheduledDay(IAlarm alarm, boolean checked, int day) {
         if (checked) {

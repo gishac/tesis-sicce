@@ -25,19 +25,39 @@ import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 
 /**
- *
+ * Panel para la administracion de zonas
  * @author  gish@c
  */
 public class ZonePane extends JTabExtended<IZone> {
 
-    ZoneBizObject zoneBizObject;
-    LocationBizObject locationBizObject;
-    LocationTableModel locationTableModel;
-    LocationsAsignedTableModel lasignedTableModel;
+    /**
+     * Objeto para manejar la logica de las zonas
+     */
+    private ZoneBizObject zoneBizObject;
+    
+    /**
+     * Objeto para manejar la logica de las dependencias
+     */
+    private LocationBizObject locationBizObject;
+    
+    /**
+     * Modelo de tabla para mostrar las dependencias disponibles
+     */
+    private LocationsAsignedTableModel lasignedTableModel;
+    
+    /**
+     * Objeto para cargar las dependencias a ser asignadas a la zona
+     */
     private ILocation location;
-    ZoneTableModel zoneTableModel;
+    
+    /**
+     * Modelo de tabla para mostrar las zonas existentes
+     */
+    private ZoneTableModel zoneTableModel;
 
-    /** Creates new form LocationTypePane */
+    /**
+     * Constructor
+     */
     public ZonePane() {
         initComponents();
         getControlsToClear().add(txtDescription);
@@ -319,7 +339,7 @@ public class ZonePane extends JTabExtended<IZone> {
         }
         super.Save();
         cancelAction = false;
-        
+
         try {
             currentObject.setDescription(txtDescription.getText());
             if (IsObjectLoaded()) {

@@ -16,7 +16,7 @@ import sicce.api.info.interfaces.ITabbedWindow;
 import sicce.ui.manager.listeners.CloseTabListener;
 
 /**
- *
+ * Contenedor de los tabs de la aplicacion
  * @author gish@c
  */
 public class JTabbedPaneExtended extends JTabbedPane {
@@ -25,22 +25,50 @@ public class JTabbedPaneExtended extends JTabbedPane {
      * Mantiene la instancia del tab actual
      */
     private ITabbedWindow currentTab;
+    
+    /**
+     * Manejador de recursos
+     */
     private ResourceMap resourceMap;
+    
+    /**
+     * Opciones de Si, No, Cancelar a mostrar en los cuadros de dialogo
+     */
     private String[] optionsText;
+    
+    /**
+     * Indica si alguna operacion fue producto
+     */
     private boolean internalEvent;
 
+    /**
+     * Devuelve las opciones de Si, No, Cancelar a mostrar en los cuadros de dialogo
+     * @return Opciones de Si, No, Cancelar a mostrar en los cuadros de dialogo
+     */
     public String[] getOptionsText() {
         return optionsText;
     }
 
+    /**
+     * Establece las opciones de Si, No, Cancelar a mostrar en los cuadros de dialogo
+     * @param optionsText Opciones de Si, No, Cancelar a mostrar en los cuadros de dialogo
+     */
     public void setOptionsText(String[] optionsText) {
         this.optionsText = optionsText;
     }
 
+    /**
+     * Devuelve el manejador de recursos
+     * @return Manejador de recursos
+     */
     public ResourceMap getResourceMap() {
         return resourceMap;
     }
 
+    /**
+     * Establece el manejador de recursos
+     * @param resourceMap Manejador de recursos
+     */
     public void setResourceMap(ResourceMap resourceMap) {
         this.resourceMap = resourceMap;
     }
@@ -83,7 +111,7 @@ public class JTabbedPaneExtended extends JTabbedPane {
     /**
      * Administra el cambio de tabs
      * @param newTabIndex -1 si el evento no es un cambio de tab
-     * @param tabClosing true si se esta cerrando el tab
+     * @param tabClosing <strong> True </strong>, si se esta cerrando el tab
      * @return
      * @throws java.lang.Exception
      */
@@ -100,7 +128,7 @@ public class JTabbedPaneExtended extends JTabbedPane {
     
     /**
      * Administra el cambio de tabs
-     * @param newSelectedTab
+     * @param newSelectedTab Nuevo tab seleccionado
      * @return
      * @throws java.lang.Exception
      */
@@ -153,10 +181,14 @@ public class JTabbedPaneExtended extends JTabbedPane {
     
     
     /**
-     * Contiene la lista de tabs que aloja el control
+     * Lista de tabs alojados en el control
      */
     private List<ITabbedWindow> tabs;
 
+    /**
+     * Devuelve la lista de tabs alojados en el control
+     * @return Lista de tabs alojados en el control
+     */
     public List<ITabbedWindow> getTabs() {
         if (tabs == null) {
             tabs = new ArrayList<ITabbedWindow>();
@@ -166,7 +198,7 @@ public class JTabbedPaneExtended extends JTabbedPane {
 
     /**
      * Agrega un tab al panel
-     * @param tab
+     * @param tab Tab a ser agregado
      */
     public void AddTab(JTabExtended tab) {
         tab.setParentPane(this);
@@ -177,7 +209,7 @@ public class JTabbedPaneExtended extends JTabbedPane {
 
     /**
      * Remueve un tab del panel
-     * @param index
+     * @param index Indice del tab a remover
      */
     public void RemoveTab(int index) {
         getTabs().remove(index);
@@ -185,16 +217,16 @@ public class JTabbedPaneExtended extends JTabbedPane {
     }
 
     /**
-     * Devuelve el tab actualmente visible
-     * @return
+     * Devuelve el tab que se encuentra visible
+     * @return Tab que se encuentra visible
      */
     public ITabbedWindow getCurrentTab() {
         return currentTab;
     }
 
     /**
-     * Setea el tab actual
-     * @param currentTab
+     * Establece el tab actual
+     * @param currentTab Tab seleccionado
      */
     public void setCurrentTab(ITabbedWindow currentTab) {
         this.currentTab = currentTab;
@@ -207,8 +239,8 @@ public class JTabbedPaneExtended extends JTabbedPane {
     }
 
     /**
-     * Setea el tab actual
-     * @param index
+     * Establece el tab actual
+     * @param index Indice del tab seleccionado
      */
     public void setCurrentTab(int index) {
         if (getTabs().size() > index && index >= 0) {
@@ -220,16 +252,16 @@ public class JTabbedPaneExtended extends JTabbedPane {
 
     /**
      * Devuelve el indice del tab actual
-     * @return
-     */
+     * @return Indice del tab actual
+     */ 
     public int getCurrentTabIndex() {
         return getTabIndex(this.currentTab);
     }
     
     /**
      * Devuelve el indice de un tab en el panel
-     * @param tab
-     * @return
+     * @param tab Tab del cual se busca el indice
+     * @return Indice de un tab en el panel
      */
     public int getTabIndex(ITabbedWindow tab){
         for (int i = 0; i <= this.getComponentCount() - 1; i++) {
