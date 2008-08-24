@@ -31,7 +31,7 @@ public interface IToolBarStateListener  extends EventListener  {
     void setListSelectionListener(ListSelectionListener selectionListener);
     
     /**
-     * Registra el toolbar a ser monitoreado
+     * Registra el objeto para monitorear la seleccion de items en la tabla del tab
      */
     void RegisterSelectionListener();
 }
