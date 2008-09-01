@@ -19,6 +19,7 @@ import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.businesslogic.model.PowerMeterTableModel;
 import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.info.ConstantsProvider.DialogResult;
+import sicce.api.util.JTextFieldInteger;
 import sicce.api.util.Validator;
 import sicce.ui.manager.controls.SearchDialog;
 import sicce.ui.manager.handlers.ExceptionHandler;
@@ -53,7 +54,7 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
         getControlsToEnable().add(txtDescription);
         getControlsToEnable().add(txtDeviceID);
         txtSerial.setDocument(new JTextFieldLimit(20));
-        txtDeviceID.setDocument(new JTextFieldLimit(20));
+        txtDeviceID.setDocument(new JTextFieldInteger(20));
         txtIpAddress.setDocument(new JTextFieldLimit(16));
         txtDescription.setDocument(new JTextFieldLimit(200));
         ComponentUtil.SetState(false, getControlsToEnable());
