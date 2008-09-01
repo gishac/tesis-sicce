@@ -8,6 +8,7 @@ package sicce.ui.manager.forms;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import sicce.api.businesslogic.AlarmBizObject;
 import sicce.api.businesslogic.factory.ClassFactory;
@@ -19,12 +20,14 @@ import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.businesslogic.model.UserTableModelForAlarms;
 import sicce.api.dataaccess.AlarmDB;
 import sicce.api.dataaccess.ScheduledDayDB;
+import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IScheduleDay;
 import sicce.api.util.ComponentUtil;
 import sicce.api.util.JTextFieldLimit;
 import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JTabExtended;
+import sicce.ui.manager.controls.SearchDialog;
 import sicce.ui.manager.handlers.ExceptionHandler;
 
 /**
@@ -37,27 +40,22 @@ public class AlarmPane extends JTabExtended<IAlarm> {
      * Modelo de tabla para mostrar los medidores disponibles
      */
     private PowerMeterTableModelForAlarms powerMeterTableModel;
-    
     /**
      * Modelo de tabla para mostrar los usuarios disponibles
      */
     private UserTableModelForAlarms userTableModel;
-    
     /**
      * Objeto para manejar logica de los medidores
      */
     private PowerMeterBizObject powerMeterBizObject;
-    
     /**
      * Objeto para manejar logica de los usuarios
      */
     private UserBizObject userBizObject;
-    
     /**
      * Modelo de tabla para mostrar las alarmas existentes
      */
     private AlarmTableModel alarmTableModel;
-    
     /**
      * Objeto para manejar logica de las alarmas
      */
@@ -629,5 +627,17 @@ public class AlarmPane extends JTabExtended<IAlarm> {
             alarm.getScheduledDays().add(scheduledDay);
             scheduledDay.setAlarm(currentObject);
         }
+    }
+
+    @Override
+    public DialogResult Search() {
+        SearchDialog<IAlarm> searchPmeterDialog = new SearchDialog<IAlarm>(new JFrame(), true, new AlarmTableModel(alarmBizObject.GetAllAlarms()));
+        searchPmeterDialog.setVisible(true);
+        DialogResult result = searchPmeterDialog.getDialogResult();
+        if (result == DialogResult.Ok) {
+            currentObject = searchPmeterDialog.getSearchResult();
+            SetUIElements();
+        }
+        return result;
     }
 }
