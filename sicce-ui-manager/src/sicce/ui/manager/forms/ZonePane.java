@@ -213,6 +213,8 @@ public class ZonePane extends JTabExtended<IZone> {
                 .addContainerGap(130, Short.MAX_VALUE))
         );
 
+        jPanel1.getAccessibleContext().setAccessibleName(resourceMap.getString("jPanel1.AccessibleContext.accessibleName")); // NOI18N
+
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         gridZones.setModel(new javax.swing.table.DefaultTableModel(
