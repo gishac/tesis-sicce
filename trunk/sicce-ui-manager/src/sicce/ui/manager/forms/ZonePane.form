@@ -115,13 +115,16 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Asignar Ubicaciones">
+                <TitledBorder title="Asignar Dependencias">
                   <Property name="titleX" resourceKey="jPanel1.border.title"/>
                 </TitledBorder>
               </Border>
             </Property>
             <Property name="name" type="java.lang.String" value="jPanel1" noResource="true"/>
           </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" resourceKey="jPanel1.AccessibleContext.accessibleName"/>
+          </AccessibilityProperties>
 
           <Layout>
             <DimensionLayout dim="0">
