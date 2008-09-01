@@ -12,7 +12,6 @@ import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.jdesktop.application.ResourceMap;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.ConstantsProvider.ToolBarAction;
 import sicce.api.info.ToolBarStateInfo;
@@ -22,29 +21,58 @@ import sicce.api.info.interfaces.IToolBarStateListener;
 import sicce.ui.manager.controls.JTabbedPaneExtended;
 
 /**
- * Clase que administra todos los eventos generados por el toolbar y notifica los estados
+ * Administra todos los eventos generados por el toolbar y notifica los estados
  * generados por las acciones del toolbar
  * @author gish@c
  */
 public class ToolBarHandler implements ListSelectionListener {
 
-    JToolBar toolBar;
-    JTabbedPaneExtended tabManager;
+    /**
+     * Toolbar a ser administrado
+     */
+    private JToolBar toolBar;
+    
+    /**
+     * Objeto administrador de tabs
+     * @see JTabbedPaneExtended
+     */
+    private JTabbedPaneExtended tabManager;
+    
+    /**
+     * Objeto con informacion de los estados del toolbar
+     */
     private ToolBarStateInfo toolBarStateInfo;
+    
+    /**
+     * Indica si se ejecuto un proceso interno
+     */
     private boolean internalEvent;
 
+    /**
+     * Devuelve el objeto con informacion de los estados del toolbar
+     * @return Objeto con informacion de los estados del toolbar
+     */
     public ToolBarStateInfo getToolBarStateInfo() {
         return toolBarStateInfo;
     }
 
+    /**
+     * Establece el objeto con informacion de los estados del toolbar
+     * @param toolBarStateInfo Objeto con informacion de los estados del toolbar
+     */
     public void setToolBarStateInfo(ToolBarStateInfo toolBarStateInfo) {
         this.toolBarStateInfo = toolBarStateInfo;
     }
+    
     /**
-     * Lista de objetos que monitorea los eventos del toolbar
+     * Objetos que monitorean los eventos del toolbar
      */
     private Vector<IToolBarStateListener> toolBarStateListeners;
 
+    /**
+     * Devuelve los objetos que monitorean los eventos del toolbar
+     * @return
+     */
     public Vector<IToolBarStateListener> getToolBarStateListeners() {
         if (toolBarStateListeners == null) {
             toolBarStateListeners = new Vector<IToolBarStateListener>();
@@ -60,7 +88,9 @@ public class ToolBarHandler implements ListSelectionListener {
 
     /**
      * Constructor
-     * @param toolBar
+     * @param toolBar Toolbar a ser administrado
+     * @param tabManager Objeto administrador de tabs
+     * @see JTabbedPaneExtended
      */
     public ToolBarHandler(JToolBar toolBar, JTabbedPaneExtended tabManager) {
         this.toolBar = toolBar;
@@ -80,7 +110,7 @@ public class ToolBarHandler implements ListSelectionListener {
 
     /**
      * Remueve un listener
-     * @param listener
+     * @param listener Listener a remover
      */
     public void RemoveToolBarStateListener(IToolBarStateListener listener) {
         getToolBarStateListeners().remove(listener);
@@ -88,7 +118,7 @@ public class ToolBarHandler implements ListSelectionListener {
 
     /**
      * Notifica a todos los listeners que ha cambiado el estado del toolbar
-     * @param eventArgument
+     * @param eventArgument Objeto con argumentos de la accion
      */
     public void ToolBarStateChanged(ToolBarEventObject eventArgument) throws Exception {
 
@@ -109,7 +139,8 @@ public class ToolBarHandler implements ListSelectionListener {
 
     /**
      * Activa o desactiva los los botones del toolbar segun el estado actual
-     * @param eventArgument
+     * @param curentAction Accion del toolbar
+     * @param eventArgument Objeto con argumentos de la accion
      */
     private void HandleToolBarStates(ToolBarAction curentAction, ToolBarEventObject eventArgument) {
         switch (curentAction) {
@@ -146,7 +177,7 @@ public class ToolBarHandler implements ListSelectionListener {
 
     /**
      * Activa o desactiva los los botones del toolbar segun el estado actual
-     * @param eventArgument
+     * @param eventArgument Objeto con argumentos de la accion
      */
     private void HandleToolBarStates(ToolBarEventObject eventArgument) {
         if (eventArgument.getCancelEvent()) {
@@ -196,7 +227,7 @@ public class ToolBarHandler implements ListSelectionListener {
 
     /**
      * Metodo implementado de la interfaz ListSelectionListener
-     * @param e
+     * @param e Objeto con argumentos de la accion
      */
     public void valueChanged(ListSelectionEvent e) {
         try {
@@ -239,8 +270,8 @@ public class ToolBarHandler implements ListSelectionListener {
     }
 
     /**
-     * 
-     * @param currentAction
+     * Actualiza el estado del toolbar
+     * @param currentAction Accion con la que se va a colocar el estado del toolbar
      */
     public void RefreshState(ToolBarAction currentAction) {
         HandleToolBarStates(currentAction, new ToolBarEventObject(toolBar, currentAction));

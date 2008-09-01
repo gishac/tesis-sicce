@@ -24,6 +24,7 @@ import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IScheduleDay;
 import sicce.api.util.ComponentUtil;
+import sicce.api.util.JTextFieldInteger;
 import sicce.api.util.JTextFieldLimit;
 import sicce.api.util.Validator;
 import sicce.ui.manager.controls.JTabExtended;
@@ -94,6 +95,7 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         getControlsToEnable().add(chkSaturday);
         getControlsToEnable().add(chkSunday);
         alarmBizObject = new AlarmBizObject();
+        txtKwMax.setDocument(new JTextFieldInteger());
         powerMeterBizObject = new PowerMeterBizObject();
         userBizObject = new UserBizObject();
         FillPowerMetersGrid();
@@ -539,14 +541,16 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         cmbStartTime.setSelectedIndex(0);
         cmbEndTime.setSelectedIndex(0);
         txtDescription.setText(currentObject.getDescription());
-        txtKwMax.setText(String.valueOf(currentObject.getMaxValueAllowed()));
-        switch (currentObject.getAlarmTypeEnum()) {
-            case Mail:
-                cmbAlarmType.setSelectedIndex(1);
-                break;
-            case SMS:
-                cmbAlarmType.setSelectedIndex(0);
-                break;
+        txtKwMax.setText((currentObject.getMaxValueAllowed() != null)? String.valueOf(currentObject.getMaxValueAllowed()) : null);
+        if (currentObject.getAlarmType() != null) {
+            switch (currentObject.getAlarmTypeEnum()) {
+                case Mail:
+                    cmbAlarmType.setSelectedIndex(1);
+                    break;
+                case SMS:
+                    cmbAlarmType.setSelectedIndex(0);
+                    break;
+            }
         }
 
         chkMonday.setSelected(false);
