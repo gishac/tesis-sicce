@@ -366,8 +366,8 @@ public class LocationPane extends JTabExtended<ILocation> {
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            super.Delete();
             LocationDB.Delete(currentObject);
+            super.Delete();
             FillGrid();
 
         } catch (Exception ex) {

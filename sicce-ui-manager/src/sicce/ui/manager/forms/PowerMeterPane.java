@@ -7,7 +7,9 @@ package sicce.ui.manager.forms;
 
 import java.awt.Component;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import org.jdesktop.application.ResourceMap;
 import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.dataaccess.PowerMeterDB;
 import sicce.api.info.interfaces.IPowerMeter;
@@ -34,11 +36,19 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
      * Objeto para manejar la logica de los medidores
      */
     private PowerMeterBizObject pmeterBizObject;
-    
     /**
      * Modelo de tabla para mostrar los medidores existentes
      */
     private PowerMeterTableModel pmeterTableModel;
+
+    /**
+     * Constructor
+     * @param resourceMap Manejador de recursos
+     */
+    public PowerMeterPane(ResourceMap resourceMap) {
+        this();
+        this.resourceMap = resourceMap;
+    }
 
     /**
      * Constructor
@@ -238,11 +248,13 @@ public class PowerMeterPane extends JTabExtended<IPowerMeter> {
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            super.Delete();
+
             PowerMeterDB.Delete(currentObject);
+            super.Delete();
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
+            JOptionPane.showMessageDialog(this, "No se puede eliminar el medidor ya que tiene datos históricos asociados.", resourceMap.getString("ApplicationName"), JOptionPane.INFORMATION_MESSAGE);
             throw ex;
         }
         return cancelAction;
