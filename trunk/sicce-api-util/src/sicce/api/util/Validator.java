@@ -19,10 +19,8 @@ import javax.swing.text.JTextComponent;
 
 
 /**
- * Esta Clase define M�todos para realizar Validaciones 
- * en su mayor�a con Controles Swing y los datos que contienen.
- * Permite controlar Validaciones en los Ingresos y Actualizaciones 
- * de los campos donde estos se apliquen.
+ * Define metodos para realizar Validaciones sobre controles swing y los datos que contienen.
+ * @author gish@c
  */
 public class Validator
 {
