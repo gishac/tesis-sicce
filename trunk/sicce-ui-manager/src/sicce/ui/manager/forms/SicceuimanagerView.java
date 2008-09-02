@@ -527,7 +527,7 @@ public class SicceuimanagerView extends FrameView {
     private void CreateForms() {
         rolePane = new RolePane();
         userPane = new UserPane();
-        pmeterPane = new PowerMeterPane();
+        pmeterPane = new PowerMeterPane(getResourceMap());
         lTypePane = new LocationTypePane();
         locationPane = new LocationPane();
         zonePane = new ZonePane();
