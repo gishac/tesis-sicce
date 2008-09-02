@@ -11,8 +11,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 /**
- *
- * @author TMS - The Microserv S.A
+ * 
+ * @author gish@c
  */
 public class FocusHelper
 {
