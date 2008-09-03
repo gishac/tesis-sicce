@@ -55,7 +55,7 @@ public class RolePane extends JTabExtended<IRole> {
      */
     public RolePane() {
         initComponents();
-        txtDescription.setDocument(new JTextFieldLimit(20));
+        txtDescription.setDocument(new JTextFieldLimit(150));
         getControlsToClear().add(txtDescription);
         getControlsToClear().add(gridPermissions);
         getControlsToEnable().add(txtDescription);
