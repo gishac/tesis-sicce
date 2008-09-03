@@ -303,3 +303,30 @@ insert into PARAMETER values(0,'MAIL_SENDER_PASSWORD','Clave de usuario de envio
 insert into PARAMETER values(0,'MAIL_USE_SSL','Usar SSL','true');
 insert into PARAMETER values(0,'KWH_VALUE','Valor Kw/h','0.06');
 
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `sicce`.`sp_getConsumption` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getConsumption`(IN  startDate DATE, IN  endDate DATE)
+BEGIN
+
+DROP TABLE IF EXISTS tmp_start_date;
+create table tmp_start_date AS
+select id_measure, id_power_meter, id_location, date_measure, total_active_power
+from measure where date_measure in (select max(date_measure)
+from measure
+where date_measure between startDate and startDate + 1
+group by id_power_meter, id_location);
+
+
+DROP TABLE IF EXISTS tmp_end_date;
+create table tmp_end_date AS select id_measure, id_power_meter, id_location, date_measure, total_active_power
+from measure where date_measure in (select max(date_measure)
+from measure
+where date_measure between endDate and endDate + 1
+group by id_power_meter, id_location);
+
+select "exito";
+END $$
+
+DELIMITER ;
+
