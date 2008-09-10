@@ -25,6 +25,18 @@ public interface IPowerMeterWatcher {
     IPowerMeter getPowerMeter();
     
     /**
+     * Indica si el medidor esta bloqueado y no se pueden realizar lecturas sobre el
+     * @return <strong> True </strong>, si el medidor esta bloqueado; <strong> False </strong>, si esta desbloqueado
+     */
+    public boolean isLocked();
+
+    /**
+     * Establece si se bloquean las lecturas sobre el medidor
+     * @param locked <strong> True </strong>, para bloquear el medidor; <strong> False </strong>, para desbloquearlo
+     */
+    public void setLocked(boolean locked);
+    
+    /**
      * Objeto observador que puede monitorear las actividades del medidor
      * @param observer Observador que puede monitorear las actividades del medidor
      */

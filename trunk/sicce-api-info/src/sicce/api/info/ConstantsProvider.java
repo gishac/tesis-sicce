@@ -253,4 +253,13 @@ public class ConstantsProvider {
 
         }
     }
+    
+    /**
+     * Tipo de mensajes entre el cliente y el servidor de lecturas
+     */
+    public enum MessageType{
+        Authentication,
+        Notification,
+        Logout
+    }
 }
