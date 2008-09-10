@@ -41,10 +41,6 @@ public class PowerMeterDB {
         return DataAccessManager.getInstance().getPowerMeterDB().findAll();
     }
     
-    public static List GetActivePowerMeter() {
-        return DataAccessManager.getInstance().getPowerMeterDB().findByStatus2(new Byte((byte)1));
-    }
-    
     /**
      * 
      * @param deviceID
