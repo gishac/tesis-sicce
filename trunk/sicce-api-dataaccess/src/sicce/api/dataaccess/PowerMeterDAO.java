@@ -26,7 +26,6 @@ public class PowerMeterDAO extends HibernateDaoSupport {
     public static final String LOG_STATUS = "logStatus";
     public static final String SERIAL = "serial";
     public static final String DEVICE_ID = "deviceID";
-    public static final String STATUS2 = "status2";
 
     protected void initDao() {
     // do nothing
@@ -119,9 +118,6 @@ public class PowerMeterDAO extends HibernateDaoSupport {
         return findByProperty(SERIAL, serial);
     }
 
-    public List findByStatus2(Object status2) {
-        return findByProperty(STATUS2, status2);
-    }
 
     public List findAll() {
         log.debug("finding all PowerMeter instances");
