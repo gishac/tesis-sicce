@@ -31,14 +31,7 @@ public class PowerMeterBizObject {
         return PowerMeterDB.GetAllPowerMeter();
     }
     
-    /**
-     * 
-     * @return
-     */
-    public List<IPowerMeter> GetActivePowerMeter() {
-        return PowerMeterDB.GetActivePowerMeter();
-    }
-
+    
     /**
      * 
      * @param powerMeter
