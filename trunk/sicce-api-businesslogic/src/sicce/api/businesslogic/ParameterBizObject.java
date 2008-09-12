@@ -34,6 +34,10 @@ public class ParameterBizObject {
     public List<IParameter> GetAllParameters() {
         return ParameterDB.GetAllParameters();
     }
+    
+    public List<IParameter> GetAllConfiguragleParameters() {
+        return ParameterDB.GetAllConfigurableParameters();
+    }
 
     public void Save(IParameter parameter) {
         ParameterDB.Save(parameter);
