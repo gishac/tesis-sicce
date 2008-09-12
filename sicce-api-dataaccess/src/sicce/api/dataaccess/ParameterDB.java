@@ -27,6 +27,10 @@ public class ParameterDB {
         return DataAccessManager.getInstance().getParameterDB().findAll();
     }
     
+    public static List<IParameter> GetAllConfigurableParameters(){
+        return DataAccessManager.getInstance().getParameterDB().findByConfigurable(new Byte("1"));
+    }
+    
     public static IParameter GetParameterByKey(String parameterKey) throws Exception{
         List<IParameter> result = DataAccessManager.getInstance().getParameterDB().findByKey(parameterKey);
         if(result == null || result.size() <= 0)

@@ -22,6 +22,7 @@ public class ParameterDAO extends HibernateDaoSupport {
     public static final String DESCRIPTION = "description";
     public static final String PARAMETER_KEY = "parameterKey";
     public static final String VALUE = "value";
+    public static final String CONFIGURABLE = "configurable";
 
     protected void initDao() {
     // do nothing
@@ -105,6 +106,10 @@ public class ParameterDAO extends HibernateDaoSupport {
 
     public List findByValue(Object value) {
         return findByProperty(VALUE, value);
+    }
+    
+    public List findByConfigurable(Object configurable) {
+        return findByProperty(CONFIGURABLE, configurable);
     }
 
     public List findAll() {
