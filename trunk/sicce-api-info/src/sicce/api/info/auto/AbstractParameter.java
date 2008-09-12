@@ -29,6 +29,13 @@ public abstract class AbstractParameter implements java.io.Serializable, IParame
      * Codigo del parametro
      */
     private String parameterKey;
+    
+    /**
+     * Indica si el parametro es configurable o no
+     */
+    protected Byte configurable;
+
+    
 
     // Constructors
     
@@ -69,5 +76,13 @@ public abstract class AbstractParameter implements java.io.Serializable, IParame
 
     public String getParameterKey() {
         return this.parameterKey;
+    }
+    
+    public Byte getConfigurable() {
+        return configurable;
+    }
+
+    public void setConfigurable(Byte configurable) {
+        this.configurable = configurable;
     }
 }

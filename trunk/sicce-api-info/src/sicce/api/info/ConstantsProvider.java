@@ -14,76 +14,94 @@ public class ConstantsProvider {
      * Codigo del parametro READ_INTERVAL
      */
     public static final String READ_INTERVAL = "READ_INTERVAL";
-    
     /**
      * Codigo del parametro DIGI_PORT
      */
     public static final String PORT = "DIGI_PORT";
-    
     /**
      * Codigo del parametro READ_HOLDING_REGISTERS_COMMAND 
      */
     public static final String READ_HOLDING_REGISTERS_COMMAND = "READ_HOLDING_REGISTERS_COMMAND";
-    
     /**
      * Codigo del parametro READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES = "READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES";
-    
     /**
      * Codigo del parametro READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES = "READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES";
-    
     /**
      * Codigo del parametro READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES = "READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES";
-    
     /**
      * Codigo del parametro READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES = "READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES";
-    
     /**
      * Codigo del parametro READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_CRC_HI_BYTES = "READ_HOLDING_REGISTERS_CRC_HI_BYTES";
-    
     /**
      * Codigo del parametro READ_HOLDING_REGISTERS_CRC_LO_BYTES
      */
     public static final String READ_HOLDING_REGISTERS_CRC_LO_BYTES = "READ_HOLDING_REGISTERS_CRC_LO_BYTES";
-    
     /**
      * Codigo del parametro SMTP_SERVER
      */
     public static final String SMTP_SERVER = "SMTP_SERVER";
-    
     /**
      * Codigo del parametro SMTP_PORT
      */
     public static final String SMTP_PORT = "SMTP_PORT";
-    
     /**
      * Codigo del parametro MAIL_SENDER
      */
     public static final String MAIL_SENDER = "MAIL_SENDER";
-    
     /**
      * Codigo del parametro MAIL_SENDER_PASSWORD
      */
     public static final String MAIL_SENDER_PASSWORD = "MAIL_SENDER_PASSWORD";
-    
     /**
      * Codigo del parametro MAIL_USE_SSL
      */
     public static final String MAIL_USE_SSL = "MAIL_USE_SSL";
-    
     /**
-     * Codigo del parametro KWH_VALUE
+     * Codigo del parametro KWH_VALUE_1
      */
-    public static final String KWH_VALUE = "KWH_VALUE";
+    public static final String KWH_VALUE_1 = "KWH_VALUE_1";
+    /**
+     * Codigo del parametro KWH_VALUE_2
+     */
+    public static final String KWH_VALUE_2 = "KWH_VALUE_2";
+    /**
+     * Codigo del parametro SERVER_READ_TIMEOUT_INTERVAL
+     */
+    public static final String SERVER_READ_TIMEOUT_INTERVAL = "SERVER_READ_TIMEOUT_INTERVAL";
+    /**
+     * Codigo del parametro SERVER_MAX_INACTIVITY_ALLOWED
+     */
+    public static final String SERVER_MAX_INACTIVITY_ALLOWED = "SERVER_MAX_INACTIVITY_ALLOWED";
+    /**
+     * Codigo del parametro FEE_STREET_LIGHTNING
+     */
+    public static final String FEE_STREET_LIGHTNING = "FEE_STREET_LIGHTNING";
+    /**
+     * Codigo del parametro FEE_GARBAGE_COLLECT
+     */
+    public static final String FEE_GARBAGE_COLLECT = "FEE_GARBAGE_COLLECT";
+    /**
+     * Codigo del parametro FEE_FIRE_DEPARTMENT
+     */
+    public static final String FEE_FIRE_DEPARTMENT = "FEE_FIRE_DEPARTMENT";
+    /**
+     * Codigo del parametro SERVER_IP
+     */
+    public static final String SERVER_IP = "SERVER_IP";
+    /**
+     * Codigo del parametro SERVER_PORT
+     */
+    public static final String SERVER_PORT = "SERVER_PORT";
 
     /**
      * Opciones del menu
@@ -170,7 +188,7 @@ public class ConstantsProvider {
     /**
      * Tipo de consulta Modbus
      */
-   public enum RequestType {
+    public enum RequestType {
 
         HoldingRegisters(98),
         THD(10);
@@ -186,9 +204,9 @@ public class ConstantsProvider {
         }
     }
 
-   /**
-    * Registros disponibles en el medidor PM-500
-    */
+    /**
+     * Registros disponibles en el medidor PM-500
+     */
     public enum ModbusRegister {
 
         InstantaneousCurrentPhase1(10, 14),
@@ -253,11 +271,12 @@ public class ConstantsProvider {
 
         }
     }
-    
+
     /**
      * Tipo de mensajes entre el cliente y el servidor de lecturas
      */
-    public enum MessageType{
+    public enum MessageType {
+
         Authentication,
         Notification,
         Logout

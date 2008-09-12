@@ -21,5 +21,9 @@
         <property name="value" type="java.lang.String">
             <column name="VALUE" length="200" />
         </property>
+        
+        <property name="configurable" type="java.lang.Byte">
+            <column name="CONFIGURABLE" />
+        </property>
     </class>
 </hibernate-mapping>
