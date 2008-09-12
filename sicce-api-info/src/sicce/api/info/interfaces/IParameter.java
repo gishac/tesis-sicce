@@ -58,4 +58,16 @@ public interface IParameter {
      * @return Codigo del parametro
      */
     String getParameterKey();
+    
+    /**
+     * Indica si el parametro es configurable
+     * @return Si el parametro es configurable
+     */
+    public Byte getConfigurable();
+
+    /**
+     * Establece si el parametro es configurable
+     * @param configurable <strong> 1 </strong>, si el parametro es configurable; <strong> 0 </strong>, si el parametro no es configurable
+     */
+    public void setConfigurable(Byte configurable);
 }
