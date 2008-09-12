@@ -12,6 +12,7 @@ CREATE TABLE PARAMETER (
   PARAMETER_KEY VARCHAR(100) NULL,
   DESCRIPTION VARCHAR(200) NULL,
   VALUE VARCHAR(200) NULL,
+  CONFIGURABLE BOOL default true,
   PRIMARY KEY(ID_PARAMETER)
 );
 
@@ -285,21 +286,27 @@ insert into option_role values(1,14);
 insert into location_type values(0,'Edificio');
 insert into location_type values(0,'Facultad');
 
-insert into PARAMETER values(0,'DIGI_PORT','Puerto de Comunicación DIGI','2101');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_COMMAND','Trama Modbus Comando','03');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES', 'Trama Modbus Dirección Inicial Hi Bytes','03');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES','Trama Modbus Dirección Inicial Lo Bytes','00');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES','Trama Modbus Dirección Final Hi Bytes','00');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES','Trama Modbus Dirección Final Lo Bytes','62');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_CRC_HI_BYTES','Trama Modbus CRC Hi Bytes','C4');
-insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_CRC_LO_BYTES','Trama Modbus CRC Lo Bytes','67');
-insert into PARAMETER values(0,'READ_INTERVAL','Intervalo de tiempo entre lecturas (seg)','10');
-insert into PARAMETER values(0,'SMTP_SERVER','Servidor SMTP','smtp.gmail.com');
-insert into PARAMETER values(0,'SMTP_PORT','Puerto SMTP','587');
-insert into PARAMETER values(0,'MAIL_SENDER','Usuario de envio de mail','gishac@gmail.com');
-insert into PARAMETER values(0,'MAIL_SENDER_PASSWORD','Clave de usuario de envio de mail','gisbert');
-insert into PARAMETER values(0,'MAIL_USE_SSL','Usar SSL','true');
-insert into PARAMETER values(0,'KWH_VALUE','Valor Kw/h','0.06');
+insert into PARAMETER values(0,'DIGI_PORT','Puerto de Comunicación DIGI','2101',1);
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_COMMAND','Trama Modbus Comando','03',0);
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_START_ADDRESS_HI_BYTES', 'Trama Modbus Dirección Inicial Hi Bytes','03',0);
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_START_ADDRESS_LO_BYTES','Trama Modbus Dirección Inicial Lo Bytes','00',0);
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES','Trama Modbus Dirección Final Hi Bytes','00',0);
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES','Trama Modbus Dirección Final Lo Bytes','62',0);
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_CRC_HI_BYTES','Trama Modbus CRC Hi Bytes','C4',0);
+insert into PARAMETER values(0,'READ_HOLDING_REGISTERS_CRC_LO_BYTES','Trama Modbus CRC Lo Bytes','67',0);
+insert into PARAMETER values(0,'READ_INTERVAL','Intervalo de tiempo entre lecturas (seg)','10',1);
+insert into PARAMETER values(0,'SERVER_READ_TIMEOUT_INTERVAL','Intervalo de tiempo entre monitoreo de clientes en el servidor (seg)','20',1);
+insert into PARAMETER values(0,'SERVER_MAX_INACTIVITY_ALLOWED','Máximo tiempo de inactividad permitido a los clientes (seg)','30',1);
+insert into PARAMETER values(0,'SMTP_SERVER','Servidor SMTP','smtp.gmail.com',1);
+insert into PARAMETER values(0,'SMTP_PORT','Puerto SMTP','587',1);
+insert into PARAMETER values(0,'MAIL_SENDER','Usuario de envio de mail','gishac@gmail.com',1);
+insert into PARAMETER values(0,'MAIL_SENDER_PASSWORD','Clave de usuario de envio de mail','gisbert',1);
+insert into PARAMETER values(0,'MAIL_USE_SSL','Usar SSL','true',1);
+insert into PARAMETER values(0,'KWH_VALUE_1','Valor Kw/h 7/22','0.06',1);
+insert into PARAMETER values(0,'KWH_VALUE_2','Valor Kw/h 22/7','0.06',1);
+insert into PARAMETER values(0,'FEE_STREET_LIGHTNING','Tasa Alumbrado Público','0',1);
+insert into PARAMETER values(0,'FEE_GARBAGE_COLLECT','Tasa Recolección Basura','0',1);
+insert into PARAMETER values(0,'FEE_FIRE_DEPARTMENT','Tasa Cuerpo de Bomberos','0',1);
 
 DELIMITER $$
 
