@@ -6,6 +6,7 @@
 package sicce.api.processor;
 
 import java.util.TimerTask;
+import sicce.api.info.interfaces.ITimerLauncher;
 
 /**
  * Clase que representa una tarea que se ejecuta en un tiempo determinado
@@ -14,20 +15,20 @@ import java.util.TimerTask;
 public class TimerTaskExtended extends TimerTask {
 
     /**
-     * Objeto que ejecuta el proceso asincronico de monitoreo en lotes 
+     * Objeto que ejecuta el proceso asincronico 
      */
-    private TimerTaskLauncher taskLauncher;
+    private ITimerLauncher taskLauncher;
     
     /**
      * Constructor
      * @param taskLauncher
      */
-    public TimerTaskExtended(TimerTaskLauncher taskLauncher){
+    public TimerTaskExtended(ITimerLauncher taskLauncher){
         this.taskLauncher = taskLauncher;
     }
     
     /**
-     * Inicia la tarea que ejecuta el monitoreo de los medidores
+     * Inicia la tarea
      */
     @Override
     public synchronized void run() {

@@ -12,12 +12,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sicce.api.info.interfaces.IPowerMeterWatcher;
+import sicce.api.info.interfaces.ITimerLauncher;
 
 /**
  * Clase que ejecuta al proceso de lecturas en lotes de manera asincronica
  * @author gish@c
  */
-public class TimerTaskLauncher {
+public class TimerTaskLauncher implements ITimerLauncher {
 
     /**
      * Medidores a ser controlados

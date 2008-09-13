@@ -45,6 +45,26 @@ public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher 
     public IPowerMeter getPowerMeter() {
         return this.powerMeter;
     }
+    /**
+     * Indica si el medidor esta bloqueado y no se pueden realizar lecturas sobre el
+     */
+    private boolean locked;
+
+    /**
+     * Indica si el medidor esta bloqueado y no se pueden realizar lecturas sobre el
+     * @return
+     */
+    public boolean isLocked() {
+        return locked;
+    }
+
+    /**
+     * Establece si se bloquean las lecturas sobre el medidor
+     * @param locked
+     */
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
 
     /**
      * Establece el gestor de logica para el medidor
@@ -71,11 +91,16 @@ public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher 
     public void Watch() {
         try {
 
+            if (isLocked()) {
+                System.out.println("Medidor: " + this.getPowerMeter().getDescription() + " Bloqueado");
+                return;
+            }
             HashMap<RequestType, IModbusResponse> powerMeterData = powerMeterBizObject.ReadPowerMeterData(this.powerMeter);
             IMeasure measure = powerMeterBizObject.ProcessPowerMeterData(powerMeterData);
             MeasureDB.Save(measure);
             setChanged();
             notifyObservers(measure);
+
 
         } catch (UnknownHostException ex) {
             Logger.getLogger(PowerMeterWatcher.class.getName()).log(Level.SEVERE, null, ex);
