@@ -8,7 +8,7 @@
     <class name="sicce.api.info.PowerMeter" table="power_meter" catalog="sicce">
         <id name="idPowerMeter" type="java.lang.Integer">
             <column name="ID_POWER_METER" />
-            <generator class="increment" ></generator>
+            <generator class="identity" ></generator>
         </id>
         <property name="description" type="java.lang.String">
             <column name="DESCRIPTION" />

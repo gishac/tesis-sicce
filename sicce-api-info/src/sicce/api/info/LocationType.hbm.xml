@@ -8,7 +8,7 @@
     <class name="sicce.api.info.LocationType" table="location_type" catalog="sicce">
         <id name="idLocationType" type="java.lang.Integer">
             <column name="ID_LOCATION_TYPE" />
-            <generator class="increment" />
+            <generator class="identity" />
         </id>
         <property name="description" type="java.lang.String">
             <column name="DESCRIPTION" length="40" not-null="true" />

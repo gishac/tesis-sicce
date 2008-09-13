@@ -8,7 +8,7 @@
     <class name="sicce.api.info.OptionSicce" table="option_sicce" catalog="sicce">
         <id name="idOptionSicce" type="java.lang.Integer">
             <column name="ID_OPTION_SICCE" />
-            <generator class="increment" />
+            <generator class="identity" />
         </id>
         <property name="description" type="java.lang.String">
             <column name="DESCRIPTION" length="50" />

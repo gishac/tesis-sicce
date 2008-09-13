@@ -8,7 +8,7 @@
     <class name="sicce.api.info.ScheduleDay" table="schedule_day" catalog="sicce">
         <id name="idScheduleDay" type="java.lang.Integer">
             <column name="ID_SCHEDULE_DAY" />
-            <generator class="increment" />
+            <generator class="identity" />
         </id>
         <many-to-one name="alarm" class="sicce.api.info.Alarm" fetch="select">
             <column name="ID_ALARM" not-null="true" />
