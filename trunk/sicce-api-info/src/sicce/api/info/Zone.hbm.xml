@@ -8,7 +8,7 @@
     <class name="sicce.api.info.Zone" table="zone" catalog="sicce">
         <id name="idZone" type="java.lang.Integer">
             <column name="ID_ZONE" />
-            <generator class="increment" />
+            <generator class="identity" />
         </id>      
 		<property name="code" type="java.lang.String">
             <column name="CODE" length="6" />

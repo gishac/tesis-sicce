@@ -8,7 +8,7 @@
     <class name="sicce.api.info.UserSicce" table="user_sicce" catalog="sicce">
         <id name="idUserSicce" type="java.lang.Integer">
             <column name="ID_USER_SICCE" />
-            <generator class="increment" />
+            <generator class="identity" />
         </id>
         <many-to-one name="role" class="sicce.api.info.Role" fetch="select" lazy="false">
             <column name="ID_ROLE" not-null="true" />

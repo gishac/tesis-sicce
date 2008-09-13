@@ -8,7 +8,7 @@
     <class name="sicce.api.info.Location" table="location" catalog="sicce">
         <id name="idLocation" type="java.lang.Integer">
             <column name="ID_LOCATION" />
-            <generator class="increment" />
+            <generator class="identity" />
         </id>
         <many-to-one name="locationType" class="sicce.api.info.LocationType" fetch="select" lazy="false">
             <column name="ID_LOCATION_TYPE" not-null="true" />

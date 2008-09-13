@@ -8,7 +8,7 @@
     <class name="sicce.api.info.Measure" table="measure" catalog="sicce">
         <id name="idMeasure" type="java.lang.Integer">
             <column name="ID_MEASURE" />
-            <generator class="increment" />
+            <generator class="identity" />
         </id>
         <many-to-one name="powerMeter" class="sicce.api.info.PowerMeter" fetch="select">
             <column name="ID_POWER_METER" not-null="true" />

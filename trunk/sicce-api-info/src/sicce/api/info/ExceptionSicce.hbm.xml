@@ -8,7 +8,7 @@
     <class name="sicce.api.info.ExceptionSicce" table="exception" catalog="sicce">
         <id name="idException" type="java.lang.Integer">
             <column name="ID_EXCEPTION" />
-            <generator class="increment"></generator>
+            <generator class="identity"></generator>
         </id>
         <property name="idPowerMeter" type="java.lang.Integer">
             <column name="ID_POWER_METER" not-null="true" />
