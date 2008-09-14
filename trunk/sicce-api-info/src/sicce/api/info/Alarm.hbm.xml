@@ -23,7 +23,7 @@
         <property name="minValueAllowed" type="java.lang.Integer">
             <column name="MIN_VALUE_ALLOWED" />
         </property>
-        <property name="measure" type="java.lang.String">
+        <property name="measure" type="java.lang.Integer">
             <column name="MEASURE" />
         </property>
         
