@@ -43,15 +43,10 @@ public class JTextFieldInteger extends PlainDocument {
             if (str.length() > 0) {
                 Toolkit.getDefaultToolkit().beep();
                 str = str.substring(0, str.length() - 1);
+                super.insertString(offset, str, a);
             } else {
                 return;
             }
-        }
-        try {
-            super.insertString(offset, str, a);
-        } catch (NumberFormatException exp) {
-            Toolkit.getDefaultToolkit().beep();
-            return;
         }
     }
 }
