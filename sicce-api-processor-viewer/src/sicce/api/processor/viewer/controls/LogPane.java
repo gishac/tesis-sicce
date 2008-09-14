@@ -28,15 +28,17 @@ import sicce.api.processor.viewer.handlers.MeasureVisibilityHandler;
  * Panel para mostrar el log de las lecturas de los medidores
  * @author  gish@c
  */
-public class LogPane extends javax.swing.JPanel {
+public class LogPane extends DataDisplayer {
     
     /**
      * Constructor 
      * @param resourceMap Manejador de recursos
      * @param powerMetersForCurrentUser Medidores a ser monitoreados en el panel
+     * @param processor Objeto para procesar las lecturas de los medidores
      */
-    public LogPane(ResourceMap resourceMap, Set<IPowerMeter> powerMetersForCurrentUser) {
+    public LogPane(ResourceMap resourceMap, Set<IPowerMeter> powerMetersForCurrentUser, Processor processor) {
         initComponents();
+        this.processor = processor;
         this.resourceMap = resourceMap;
         this.powerMetersForCurrentUser = powerMetersForCurrentUser;
         this.logList.setModel(getListModel());
@@ -129,11 +131,6 @@ public class LogPane extends javax.swing.JPanel {
     private JPanel powerMetersPane;
     
     /**
-     * Manejador de recursos
-     */
-    private ResourceMap resourceMap;
-    
-    /**
      * Medidores a ser visualizados en el log
      */
     private Set<IPowerMeter> powerMetersForCurrentUser;
@@ -188,7 +185,7 @@ public class LogPane extends javax.swing.JPanel {
      * Agrega el manejador del log como observador de eventos de las lecturas de los medidores
      */
     private void AttachLogToDataProcessor(){
-        Processor.AddObserver(getLogHandler().getLogObserver());
+        processor.AddObserver(getLogHandler().getLogObserver());
     }
 
     
