@@ -27,7 +27,7 @@ import sicce.api.processor.viewer.handlers.MeasureVisibilityHandler;
  * Panel grafico de monitoreo de las mediciones
  * @author  gish@c
  */
-public class ChartPane extends javax.swing.JPanel {
+public class ChartPane extends DataDisplayer {
 
     /**
      * Manejador de datos del grafico
@@ -49,10 +49,6 @@ public class ChartPane extends javax.swing.JPanel {
      */
     private JPanel powerMetersPane;
     
-    /**
-     * Manejador de recursos
-     */
-    private ResourceMap resourceMap;
     
     /**
      * Medidores a ser visualizados en el grafico
@@ -76,9 +72,10 @@ public class ChartPane extends javax.swing.JPanel {
      * @param resourceMap Manejador de recursos
      * @param powerMetersForCurrentUser Medidores a ser visualizados en el grafico
      */
-    public ChartPane(String chartTitle, ResourceMap resourceMap,Set<IPowerMeter> powerMetersForCurrentUser) {
+    public ChartPane(String chartTitle, ResourceMap resourceMap,Set<IPowerMeter> powerMetersForCurrentUser, Processor processor) {
         initComponents();
         this.chartTitle = chartTitle;
+        this.processor = processor;
         this.resourceMap = resourceMap;
         this.powerMetersForCurrentUser = powerMetersForCurrentUser;
         LoadAvailablePowerMeters();
@@ -209,7 +206,7 @@ public class ChartPane extends javax.swing.JPanel {
      * Agrega el manejador de datos del grafico como observador de eventos de las lecturas de los medidores
      */
     private void AttachChartToDataProcessor() {
-        Processor.AddObserver(getChartHandler().getChartObserver());
+        this.processor.AddObserver(getChartHandler().getChartObserver());
     }
 
     /**

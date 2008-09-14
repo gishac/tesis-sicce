@@ -19,7 +19,7 @@ import sicce.api.processor.viewer.handlers.MeasureViewHandler;
  * Panel para mostrar datos generales de los medidores
  * @author  gish@c
  */
-public class MeasuresPane extends javax.swing.JPanel {
+public class MeasuresPane extends DataDisplayer{
 
     /**
      * Manejador de datos del panel
@@ -53,9 +53,11 @@ public class MeasuresPane extends javax.swing.JPanel {
     /**
      * Constructor
      * @param powerMetersForCurrentUser Medidores a ser visualizados en el panel
+     * @param processor Objeto para procesar las lecturas de los medidores
      */
-    public MeasuresPane(Set<IPowerMeter> powerMetersForCurrentUser) {
+    public MeasuresPane(Set<IPowerMeter> powerMetersForCurrentUser, Processor processor) {
         initComponents();
+        this.processor = processor;
         this.powerMetersForCurrentUser = powerMetersForCurrentUser;
         measureViewHandler = new MeasureViewHandler(measuresTable, txtPhaseToPhaseVoltage1To2, txtPhaseToPhaseVoltage2To3, txtPhaseToPhaseVoltage3To1,
                 txtTotalActivePower, txtTotalApparentPower, txtTotalReactivePower);
@@ -315,7 +317,7 @@ public class MeasuresPane extends javax.swing.JPanel {
      * Agrega el manejador de datos como observador de eventos 
      */
     private void AttachMeasureToDataProcessor() {
-        Processor.AddObserver(getMeasureViewHandler().getMeasureObserver());
+        processor.AddObserver(getMeasureViewHandler().getMeasureObserver());
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cmbCurrentPowerMeter;

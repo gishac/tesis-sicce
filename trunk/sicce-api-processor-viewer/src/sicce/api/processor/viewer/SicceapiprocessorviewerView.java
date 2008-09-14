@@ -21,6 +21,7 @@ import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IUserPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.processor.Processor;
+import sicce.api.processor.client.ProcessorClient;
 import sicce.api.processor.viewer.controls.ChartPane;
 import sicce.api.processor.viewer.controls.ErrorsPane;
 import sicce.api.processor.viewer.controls.LogPane;
@@ -36,6 +37,11 @@ public class SicceapiprocessorviewerView extends FrameView {
      * Usuario actual de la aplicacion
      */
     private IUserSicce currentUser;
+    
+    /**
+     * Objeto que realiza el proceso de lecturas de los medidores
+     */
+    private ProcessorClient processor;
 
     /**
      * Establece el usuario actual de la aplicacion
@@ -80,6 +86,7 @@ public class SicceapiprocessorviewerView extends FrameView {
      * Inicializa todos los componentes del formulario
      */
     public void Init() {
+        processor = new ProcessorClient(currentUser);
         initComponents();
         OrganizeUIElements();
         SetTrayIcon();
@@ -161,10 +168,10 @@ public class SicceapiprocessorviewerView extends FrameView {
      * Crea los paneles que van a ser mostrados en el visor
      */
     private void BuildPanes() {
-        chartPane = new ChartPane(getResourceMap().getString("ChartTitle"), getResourceMap(), getPowerMetersForCurrentUser());
-        logPane = new LogPane(getResourceMap(), getPowerMetersForCurrentUser());
-        measuresPane = new MeasuresPane(getPowerMetersForCurrentUser());
-        errorsPane = new ErrorsPane(trayIcon);
+        chartPane = new ChartPane(getResourceMap().getString("ChartTitle"), getResourceMap(), getPowerMetersForCurrentUser(),processor);
+        logPane = new LogPane(getResourceMap(), getPowerMetersForCurrentUser(),processor);
+        measuresPane = new MeasuresPane(getPowerMetersForCurrentUser(),processor);
+        errorsPane = new ErrorsPane(trayIcon,processor);
         getTabManager().addTab("Gráficos del Consumo Eléctrico", chartPane);
         getTabManager().addTab("Log de Lecturas del Consumo Eléctrico", logPane);
         getTabManager().addTab("Detalle de Registros Por Medidor", measuresPane);
@@ -175,14 +182,15 @@ public class SicceapiprocessorviewerView extends FrameView {
      * Inicia el proceso de lecturas de los medidores
      */
     private void RunProcessor() {
+        
         AlarmBizObject alarmBizObject = new AlarmBizObject();
         for (IPowerMeter powerMeter : getPowerMetersForCurrentUser()) {
             for (IAlarm alarm : powerMeter.getAlarms()) {
                 alarm.RegisterAlarmListener(alarmBizObject);
-                Processor.AddObserver((Observer) alarm);
+                processor.AddObserver((Observer) alarm);
             }
         }
-        Processor.DoProcess(getPowerMetersForCurrentUser());
+        processor.Run(powerMetersForCurrentUser);
     }
 
     /**

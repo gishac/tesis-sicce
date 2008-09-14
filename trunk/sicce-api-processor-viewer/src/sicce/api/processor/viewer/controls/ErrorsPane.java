@@ -14,7 +14,7 @@ import sicce.api.processor.viewer.handlers.ExceptionHandler;
  * Panel para mostrar los errores ocurridos durante el monitoreo
  * @author  gish@c
  */
-public class ErrorsPane extends javax.swing.JPanel {
+public class ErrorsPane extends DataDisplayer {
 
     /**
      * Manejador del Tray del sistema
@@ -43,17 +43,20 @@ public class ErrorsPane extends javax.swing.JPanel {
 
     /**
      * Constructor
+     * @param processor Objeto para procesar las lecturas de los medidores
      */
-    public ErrorsPane() {
+    public ErrorsPane(Processor processor) {
         initComponents();
+        this.processor = processor;
     }
 
     /**
      * Constructor 
      * @param trayIcon Manejador del Tray del sistema
+     * @param processor Objeto para procesar las lecturas de los medidores
      */
-    public ErrorsPane(TrayIcon trayIcon) {
-        this();
+    public ErrorsPane(TrayIcon trayIcon, Processor processor) {
+        this(processor);
         this.trayIcon = trayIcon;
         this.errorList.setModel(getListModel());
         this.exceptionHandler = new ExceptionHandler(trayIcon, getListModel());
@@ -102,6 +105,6 @@ public class ErrorsPane extends javax.swing.JPanel {
      * Agrega el manejador de excepciones como observador de eventos 
      */
     private void AttachExceptionHandlerToDataProcessor() {
-        Processor.AddObserver(exceptionHandler.getExceptionObserver());
+        processor.AddObserver(exceptionHandler.getExceptionObserver());
     }
 }
