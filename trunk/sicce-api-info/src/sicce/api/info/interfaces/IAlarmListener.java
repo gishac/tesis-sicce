@@ -18,4 +18,12 @@ public interface IAlarmListener {
      */
     void actionPerformed(IAlarm alarm, IPowerMeter powerMeter);
     
+    /**
+     * Verifica si la alarma debe ser ejecutada 
+     * @param measure Medicion realizada
+     * @param alarm Alarma a verificar
+     * @param powerMeter Medidor sobre el que se realizo la medicion
+     */
+    void ValidateAlarm(IMeasure measure, IAlarm alarm, IPowerMeter powerMeter);
+    
 }
