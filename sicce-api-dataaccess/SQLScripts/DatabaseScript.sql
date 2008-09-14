@@ -307,6 +307,8 @@ insert into PARAMETER values(0,'KWH_VALUE_2','Valor Kw/h 22/7','0.06',1);
 insert into PARAMETER values(0,'FEE_STREET_LIGHTNING','Tasa Alumbrado Público','0',1);
 insert into PARAMETER values(0,'FEE_GARBAGE_COLLECT','Tasa Recolección Basura','0',1);
 insert into PARAMETER values(0,'FEE_FIRE_DEPARTMENT','Tasa Cuerpo de Bomberos','0',1);
+insert into PARAMETER values(0,'SERVER_IP','Dirección IP del servidor de monitoreo','192.168.8.198',1);
+insert into PARAMETER values(0,'SERVER_PORT','Puerto utilizado por el servidor de monitoreo','5500',1);
 
 DELIMITER $$
 
