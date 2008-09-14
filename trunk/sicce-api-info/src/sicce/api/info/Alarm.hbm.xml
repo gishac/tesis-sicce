@@ -6,6 +6,7 @@
 -->
 <hibernate-mapping>
     <class name="sicce.api.info.Alarm" table="alarm" catalog="sicce">
+        
         <id name="idAlarm" type="java.lang.Integer">
             <column name="ID_ALARM" />
             <generator class="identity" />
@@ -18,6 +19,12 @@
         </property>
         <property name="maxValueAllowed" type="java.lang.Integer">
             <column name="MAX_VALUE_ALLOWED" />
+        </property>
+        <property name="minValueAllowed" type="java.lang.Integer">
+            <column name="MIN_VALUE_ALLOWED" />
+        </property>
+        <property name="measure" type="java.lang.String">
+            <column name="MEASURE" />
         </property>
         
         <set name="scheduledDays" inverse="true" lazy="false">

@@ -94,17 +94,42 @@ public interface IAlarm {
     void setAlarmUsers(Set<IUserSicce> alarmUsers);
     
     /**
-     * Devuelve el valor de maximo de kw/hora con el que se activa
+     * Devuelve el valor de maximo del parametro configurado en la alarma
      * la alarma
-     * @return Valor maximo de kw/hora permitido
+     * @return Valor de maximo del parametro configurado en la alarma
      */
     Integer getMaxValueAllowed();
     
     /**
-     * Establece el valor maximo permitido de kw/hora para activar la alarma
-     * @param maxValueAllowed Valor maixmo de kw/hora permitido
+     * Establece el valor maximo permitido del parametro configurado en la alarma
+     * @param maxValueAllowed Valor maximo permitido del parametro configurado en la alarma
      */
     void setMaxValueAllowed(Integer maxValueAllowed);
+    
+    /**
+     * Devuelve el valor de maximo del parametro configurado en la alarma
+     * la alarma
+     * @return Valor de maximo del parametro configurado en la alarma
+     */
+    Integer getMinValueAllowed();
+    
+    /**
+     * Establece el valor minimo permitido del parametro configurado en la alarma
+     * @param minValueAllowed Valor minimo permitido del parametro configurado en la alarma
+     */
+    void setMinValueAllowed(Integer minValueAllowed);
+    
+    /**
+     * Devuelve el registro que va a ser monitoreado por la alarma
+     * @return Registro que va a ser monitoreado por la alarma
+     */
+    String getMeasure();
+    
+    /**
+     * Establece el registro que va a ser monitoreado por la alarma
+     * @param measure Registro que va a ser monitoreado por la alarma
+     */
+    void setMeasure(String measure);
     
     /**
      * Indica si la alarma se encuentra activa

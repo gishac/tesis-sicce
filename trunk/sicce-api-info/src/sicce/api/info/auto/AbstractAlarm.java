@@ -59,9 +59,19 @@ public abstract class AbstractAlarm implements IAlarm {
     protected IAlarmListener alarmListener;
     
     /**
-     * Valor maximo de kw/h permitido 
+     * Valor maximo permitido 
      */
     protected Integer maxValueAllowed;
+    
+    /**
+     * Valor minimo permitido
+     */
+    private Integer minValueAllowed;
+    
+    /**
+     * Parametro a monitorear
+     */
+    private String measure;
     
 
     // Constructors
@@ -192,6 +202,22 @@ public abstract class AbstractAlarm implements IAlarm {
 
     public void removeAlarmUser(IUserSicce user) {
         this.alarmUsers.remove(user);
+    }
+
+    public Integer getMinValueAllowed() {
+        return minValueAllowed;
+    }
+
+    public void setMinValueAllowed(Integer minValueAllowed) {
+        this.minValueAllowed = minValueAllowed;
+    }
+
+    public String getMeasure() {
+        return measure;
+    }
+
+    public void setMeasure(String measure) {
+        this.measure = measure;
     }
 
 }
