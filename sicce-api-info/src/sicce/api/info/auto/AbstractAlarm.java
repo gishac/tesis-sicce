@@ -71,7 +71,7 @@ public abstract class AbstractAlarm implements IAlarm {
     /**
      * Parametro a monitorear
      */
-    private String measure;
+    private Integer measure;
     
 
     // Constructors
@@ -212,11 +212,11 @@ public abstract class AbstractAlarm implements IAlarm {
         this.minValueAllowed = minValueAllowed;
     }
 
-    public String getMeasure() {
+    public Integer getMeasure() {
         return measure;
     }
 
-    public void setMeasure(String measure) {
+    public void setMeasure(Integer measure) {
         this.measure = measure;
     }
 

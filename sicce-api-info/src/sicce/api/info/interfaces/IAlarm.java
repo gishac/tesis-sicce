@@ -123,13 +123,13 @@ public interface IAlarm {
      * Devuelve el registro que va a ser monitoreado por la alarma
      * @return Registro que va a ser monitoreado por la alarma
      */
-    String getMeasure();
+    Integer getMeasure();
     
     /**
      * Establece el registro que va a ser monitoreado por la alarma
      * @param measure Registro que va a ser monitoreado por la alarma
      */
-    void setMeasure(String measure);
+    void setMeasure(Integer measure);
     
     /**
      * Indica si la alarma se encuentra activa

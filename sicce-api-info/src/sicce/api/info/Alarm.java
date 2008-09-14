@@ -25,12 +25,13 @@ public class Alarm extends AbstractAlarm implements Observer {
      * @see Observer
      */
     public void update(Observable observable, Object arg) {
-        if ((arg instanceof Exception))
+        if ((arg instanceof Exception)) {
             return;
+        }
         IPowerMeterWatcher watcher = (IPowerMeterWatcher) observable;
         IMeasure measure = (IMeasure) arg;
         double read = measure.getTotalActivePower();
-        if (this.IsActive() && read > this.getMaxValueAllowed() && true) {
+        if (this.IsActive() && (read > this.getMaxValueAllowed() || read < this.getMinValueAllowed())) {
             for (IPowerMeter powerMeter : this.getAlarmPowerMeters()) {
                 if (powerMeter.getSerial().equals(watcher.getPowerMeter().getSerial()) && alarmListener != null) {
                     alarmListener.actionPerformed(this, powerMeter);
@@ -39,4 +40,6 @@ public class Alarm extends AbstractAlarm implements Observer {
             }
         }
     }
+    
+    
 }
