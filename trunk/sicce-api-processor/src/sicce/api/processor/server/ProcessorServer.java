@@ -11,12 +11,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Observer;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sicce.api.businesslogic.AlarmBizObject;
 import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.dataaccess.ParameterDB;
 import sicce.api.info.ConstantsProvider;
+import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IParameter;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IPowerMeterWatcher;
@@ -104,6 +107,13 @@ public class ProcessorServer extends Processor {
                 validPowerMeters.add(powerMeter);
             }
         }
+        AlarmBizObject alarmBizObject = new AlarmBizObject();
+        for (IPowerMeter powerMeter : validPowerMeters) {
+            for (IAlarm alarm : powerMeter.getAlarms()) {
+                alarm.RegisterAlarmListener(alarmBizObject);
+                AddObserver((Observer) alarm);
+            }
+        }
         setPowerMeters(validPowerMeters);
     }
 
@@ -130,7 +140,6 @@ public class ProcessorServer extends Processor {
     @Override
     public boolean Run() {
         try {
-            
             LoadAvailablePowerMetersForServer();
             if(getPowerMeters().size() <= 0)
                 return false;
