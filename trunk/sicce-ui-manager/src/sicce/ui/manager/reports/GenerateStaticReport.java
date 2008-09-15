@@ -40,11 +40,12 @@ public class GenerateStaticReport {
     private static URL urlLogoUCSG = resource.getResourceDir("/small_ucsg.jpg");
     private static URL urlLogoSICCE = resource.getResourceDir("/small_sice.jpg");
     private static URL zoneReport = resource.getResourceDir("/Zonas.jasper");
-    private static URL ConsumptionbyZoneReport = resource.getResourceDir("/ConsumptionByZone.jasper");
-    private static URL ConsumptionbyLocationReport = resource.getResourceDir("/ConsumptionByLocations.jasper");
+    private static URL ConsumptionbyZoneReport = resource.getResourceDir("/ConsumptionByZoneperDay1.jasper");
+    private static URL ConsumptionbyLocationReport = resource.getResourceDir("/ConsumptionByLocationperDay1.jasper");
     private static URL UserPowerMeter = resource.getResourceDir("UserPowerMeter.jasper");
     private static URL UserPowerMeterException = resource.getResourceDir("UserPowerMeterException.jasper");
     private static URL UserPowerMeterAlarm = resource.getResourceDir("UserPowerMeterAlarm.jasper");
+   private static URL ConsumptionbyUserReport = resource.getResourceDir("/CostPowerMeter.jasper");
     
     private static ResourceMap resourceMap;
 
@@ -145,7 +146,7 @@ public class GenerateStaticReport {
             pCriterios.putAll(parameters);
             
             JasperPrint jasperPrint = null;
-            jasperPrint = JasperFillManager.fillReport(ConsumptionbyLocationReport.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
+            jasperPrint = JasperFillManager.fillReport(ConsumptionbyUserReport.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
              validateReport(jasperPrint);
  } catch (JRException ex) {
             Logger.getLogger(GenerateStaticReport.class.getName()).log(Level.SEVERE, null, ex);

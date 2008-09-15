@@ -32,24 +32,25 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
     Double feeStreetLightning;
     Double feeGarbageCollect;
     Double feeFireDepartment;
-    Map parameters;
+   
     GenerateStaticReport staticReport;
     private static ResourceMap resourceMap;
     private static IUserSicce currentUser;
+    private static  Map parameters;
 
     public ReportConsumptionFrm(ResourceMap resourceMap, IUserSicce currentUser) {
         try {
             initComponents();
             this.resourceMap = resourceMap;
             this.currentUser = currentUser;
-            Map Parameters = new HashMap();
+           
             IParameter paramKwhPeriod1 = ParameterDB.GetParameterByKey(ConstantsProvider.KWH_VALUE_1);
             IParameter paramKwhPeriod2 = ParameterDB.GetParameterByKey(ConstantsProvider.KWH_VALUE_2);
             IParameter paramfeeStreetLightning = ParameterDB.GetParameterByKey(ConstantsProvider.FEE_STREET_LIGHTNING);
             IParameter paramfeeGarbageCollect = ParameterDB.GetParameterByKey(ConstantsProvider.FEE_GARBAGE_COLLECT);
             IParameter paramfeeFireDepartment = ParameterDB.GetParameterByKey(ConstantsProvider.FEE_FIRE_DEPARTMENT);
             
-            txtfeeStreetLightning.setText(paramKwhPeriod1.getValue());
+            txtKwhPeriod1.setText(paramKwhPeriod1.getValue());
             txtKwhPeriod2.setText(paramKwhPeriod2.getValue());
             txtfeeStreetLightning.setText(paramfeeStreetLightning.getValue());
             txtfeeGarbageCollect.setText(paramfeeGarbageCollect.getValue());
@@ -84,7 +85,7 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtKwhPeriod2 = new javax.swing.JTextField();
-        txtKwhPeriod3 = new javax.swing.JTextField();
+        txtKwhPeriod1 = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -149,10 +150,10 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
         jPanel2.add(txtKwhPeriod2);
         txtKwhPeriod2.setBounds(90, 50, 70, 20);
 
-        txtKwhPeriod3.setEnabled(false);
-        txtKwhPeriod3.setName("txtKwhPeriod3"); // NOI18N
-        jPanel2.add(txtKwhPeriod3);
-        txtKwhPeriod3.setBounds(90, 20, 70, 20);
+        txtKwhPeriod1.setEnabled(false);
+        txtKwhPeriod1.setName("txtKwhPeriod1"); // NOI18N
+        jPanel2.add(txtKwhPeriod1);
+        txtKwhPeriod1.setBounds(90, 20, 70, 20);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel5.border.title"))); // NOI18N
         jPanel5.setName("jPanel5"); // NOI18N
@@ -335,8 +336,9 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
 
     private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
         // TODO add your handling code here:
-        if (rbLocation.isSelected() || rbZone.isSelected()) {
+        if (rbLocation.isSelected() || rbZone.isSelected() || rbUser.isSelected()) {
             ReportDAO report = new ReportDAO();
+            Map parameters = new HashMap();
             staticReport = new GenerateStaticReport(resourceMap);
             
             parameters.put("iduser", currentUser.getIdUserSicce());
@@ -394,8 +396,8 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
     private javax.swing.JRadioButton rbLocation;
     private javax.swing.JRadioButton rbUser;
     private javax.swing.JRadioButton rbZone;
+    private javax.swing.JTextField txtKwhPeriod1;
     private javax.swing.JTextField txtKwhPeriod2;
-    private javax.swing.JTextField txtKwhPeriod3;
     private javax.swing.JTextField txtfeeFireDepartment;
     private javax.swing.JTextField txtfeeGarbageCollect;
     private javax.swing.JTextField txtfeeStreetLightning;

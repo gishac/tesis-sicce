@@ -185,6 +185,7 @@ public class LoginForm extends javax.swing.JDialog {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         IUserSicce user = UserDB.FindUserByLogin(txtUser.getText());
         String password = new String(txtPassword.getPassword());
+        
         if (user != null && EncryptionProvider.Decrypt(user.getPasswordSicce()).equals(password)) {
             this.currentUser = user;
             dialogResult = DialogResult.Ok;
