@@ -21,7 +21,7 @@ public class ReportDAO {
     public void callSpConsumption(Date startDate, Date endDate){
         try {
             Connection con = DataAccessManager.getInstance().getConnectionDB().getConnection();
-            String ConsumptionProc = "{ call sp_getConsumption(?,?) }";            
+            String ConsumptionProc = "{ call getConsumptionPerday(?,?) }";            
             CallableStatement cs = con.prepareCall(ConsumptionProc);
             cs.setDate("startDate",new java.sql.Date(startDate.getTime()));
             cs.setDate("endDate",new java.sql.Date(endDate.getTime()));
