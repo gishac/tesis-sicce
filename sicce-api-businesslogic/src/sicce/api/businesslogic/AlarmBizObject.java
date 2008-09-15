@@ -4,27 +4,16 @@
  */
 package sicce.api.businesslogic;
 
-import com.sun.mail.smtp.SMTPTransport;
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.activation.DataHandler;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.mail.util.ByteArrayDataSource;
 import sicce.api.dataaccess.AlarmDB;
 import sicce.api.info.ConstantsProvider;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IAlarmListener;
 import sicce.api.info.interfaces.ILocation;
+import sicce.api.info.interfaces.IMeasure;
 import sicce.api.info.interfaces.IParameter;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
@@ -99,8 +88,19 @@ public class AlarmBizObject implements IAlarmListener {
      * @param alarm
      */
     public void actionPerformed(IAlarm alarm, IPowerMeter powerMeter) {
-        if (alarm.getAlarmTypeEnum() == ConstantsProvider.AlarmType.Mail) {
-            SendMail(alarm, powerMeter);
+        SendMail(alarm, powerMeter);
+    }
+
+    public void ValidateAlarm(IMeasure measure, IAlarm alarm, IPowerMeter powerMeter) {
+        MeasureBizObject measureBizObject = new MeasureBizObject();
+        double read = measureBizObject.GetMeasure(measure, alarm.getMeasure());
+        if (alarm.IsActive() && (read > alarm.getMaxValueAllowed() || read < alarm.getMinValueAllowed())) {
+            for (IPowerMeter powerMeterInAlarm : alarm.getAlarmPowerMeters()) {
+                if (powerMeterInAlarm.getSerial().equals(powerMeter.getSerial())) {
+                    actionPerformed(alarm, powerMeterInAlarm);
+                    break;
+                }
+            }
         }
     }
 

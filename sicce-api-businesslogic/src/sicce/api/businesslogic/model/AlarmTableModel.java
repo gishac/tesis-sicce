@@ -16,7 +16,7 @@ public class AlarmTableModel extends SicceTableModel<IAlarm> {
 
     public AlarmTableModel(List<IAlarm> dataSource){
         this.dataSource = dataSource;
-        columns = new String[]{"No.", "Descripción", "Tipo"};
+        columns = new String[]{"No.", "Descripción", "Registro"};
     }
     
     @Override
@@ -29,7 +29,7 @@ public class AlarmTableModel extends SicceTableModel<IAlarm> {
             case 1:
                 return alarm.getDescription();
             case 2: 
-                return alarm.getAlarmTypeEnum().toString();
+                return alarm.getMeasureDescription();
             default: 
                 return null;
         }

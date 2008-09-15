@@ -26,7 +26,6 @@ import sicce.api.info.interfaces.IModbusRequest;
 import sicce.api.info.interfaces.IModbusResponse;
 import sicce.api.info.interfaces.IParameter;
 import sicce.api.info.interfaces.IPowerMeter;
-import java.text.NumberFormat;
 import sicce.api.util.UtilMath;
 
 /**
