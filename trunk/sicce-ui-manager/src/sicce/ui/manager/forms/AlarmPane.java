@@ -5,7 +5,12 @@
  */
 package sicce.ui.manager.forms;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -15,12 +20,18 @@ import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.businesslogic.model.PowerMeterTableModelForAlarms;
 import sicce.api.businesslogic.UserBizObject;
+import sicce.api.businesslogic.comparator.ComboBoxItemComparator;
 import sicce.api.businesslogic.model.AlarmTableModel;
+import sicce.api.businesslogic.model.SicceComboBoxModel;
 import sicce.api.businesslogic.model.SicceTableModel;
 import sicce.api.businesslogic.model.UserTableModelForAlarms;
+import sicce.api.businesslogic.renderer.SicceComboBoxRenderer;
 import sicce.api.dataaccess.AlarmDB;
 import sicce.api.dataaccess.ScheduledDayDB;
+import sicce.api.info.ComboBoxItem;
 import sicce.api.info.ConstantsProvider.DialogResult;
+import sicce.api.info.ConstantsProvider.DisplayMemberRenderType;
+import sicce.api.info.ConstantsProvider.ModbusRegister;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IScheduleDay;
 import sicce.api.util.ComponentUtil;
@@ -61,6 +72,21 @@ public class AlarmPane extends JTabExtended<IAlarm> {
      * Objeto para manejar logica de las alarmas
      */
     private AlarmBizObject alarmBizObject;
+    /**
+     * Registros disponibles a seleccionar para monitorear
+     */
+    private HashMap<ModbusRegister, String> registersInViews;
+
+    /**
+     * Devuelve los registros disponibles a seleccionar para monitorear
+     * @return
+     */
+    public HashMap<ModbusRegister, String> getRegistersInViews() {
+        if (registersInViews == null) {
+            registersInViews = new HashMap<ModbusRegister, String>();
+        }
+        return registersInViews;
+    }
 
     /**
      * Constructor
@@ -69,10 +95,10 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         initComponents();
         txtDescription.setDocument(new JTextFieldLimit(254));
         getControlsToClear().add(txtDescription);
-        getControlsToClear().add(txtKwMax);
+        getControlsToClear().add(txtMinValue);
+        getControlsToClear().add(txtMaxValue);
         getControlsToClear().add(cmbStartTime);
         getControlsToClear().add(cmbEndTime);
-        getControlsToClear().add(cmbAlarmType);
         getControlsToClear().add(chkMonday);
         getControlsToClear().add(chkTuesday);
         getControlsToClear().add(chkWednesday);
@@ -80,11 +106,12 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         getControlsToClear().add(chkFriday);
         getControlsToClear().add(chkSaturday);
         getControlsToClear().add(chkSunday);
+        getControlsToClear().add(cmbRegister);
         getControlsToEnable().add(txtDescription);
-        getControlsToEnable().add(txtKwMax);
+        getControlsToEnable().add(txtMaxValue);
+        getControlsToEnable().add(txtMinValue);
         getControlsToEnable().add(cmbStartTime);
         getControlsToEnable().add(cmbEndTime);
-        getControlsToEnable().add(cmbAlarmType);
         getControlsToEnable().add(gridPowerMeters);
         getControlsToEnable().add(gridUsers);
         getControlsToEnable().add(chkMonday);
@@ -94,13 +121,38 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         getControlsToEnable().add(chkFriday);
         getControlsToEnable().add(chkSaturday);
         getControlsToEnable().add(chkSunday);
+        getControlsToEnable().add(cmbRegister);
         alarmBizObject = new AlarmBizObject();
-        txtKwMax.setDocument(new JTextFieldInteger());
+        txtMaxValue.setDocument(new JTextFieldInteger(4));
+        txtMinValue.setDocument(new JTextFieldInteger(4));
         powerMeterBizObject = new PowerMeterBizObject();
         userBizObject = new UserBizObject();
         FillPowerMetersGrid();
         FillUsersGrid();
         ComponentUtil.SetState(false, getControlsToEnable());
+        getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase1, "Intensidad Instantánea, Fase 1");
+        getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase2, "Intensidad Instantánea, Fase 2");
+        getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase3, "Intensidad Instantánea, Fase 3");
+        getRegistersInViews().put(ModbusRegister.NeutralCurrent, "Intensidad del Neutro");
+        getRegistersInViews().put(ModbusRegister.PhaseToPhaseVoltagePhase1To2, "Tensión Fase a Fase, Fase 1 a 2");
+        getRegistersInViews().put(ModbusRegister.PhaseToPhaseVoltagePhase2To3, "Tensión Fase a Fase, Fase 2 a 3");
+        getRegistersInViews().put(ModbusRegister.PhaseToPhaseVoltagePhase3To1, "Tensión Fase a Fase, Fase 3 a 1");
+        getRegistersInViews().put(ModbusRegister.PhaseToNeutralVoltagePhase1, "Tensión Fase a Neutro, Fase 1");
+        getRegistersInViews().put(ModbusRegister.PhaseToNeutralVoltagePhase2, "Tensión Fase a Neutro, Fase 2");
+        getRegistersInViews().put(ModbusRegister.PhaseToNeutralVoltagePhase3, "Tensión Fase a Neutro, Fase 3");
+        getRegistersInViews().put(ModbusRegister.Frequency, "Frecuencia");
+        getRegistersInViews().put(ModbusRegister.TotalActivePower, "Potencia Activa Total");
+        getRegistersInViews().put(ModbusRegister.TotalReactivePower, "Potencia Reactiva Total");
+        getRegistersInViews().put(ModbusRegister.TotalApparentPower, "Potencia Aparente Total");
+        getRegistersInViews().put(ModbusRegister.ActivePowerPhase1, "Potencia Activa, Fase 1");
+        getRegistersInViews().put(ModbusRegister.ActivePowerPhase2, "Potencia Activa, Fase 2");
+        getRegistersInViews().put(ModbusRegister.ActivePowerPhase3, "Potencia Activa, Fase 3");
+        getRegistersInViews().put(ModbusRegister.ReactivePowerPhase1, "Potencia Reactiva, Fase 1");
+        getRegistersInViews().put(ModbusRegister.ReactivePowerPhase2, "Potencia Reactiva, Fase 2");
+        getRegistersInViews().put(ModbusRegister.ReactivePowerPhase3, "Potencia Reactiva, Fase 3");
+        getRegistersInViews().put(ModbusRegister.ApparentPowerPhase1, "Potencia Aparente, Fase 1");
+        getRegistersInViews().put(ModbusRegister.ApparentPowerPhase2, "Potencia Aparente, Fase 2");
+        FillMeasures();
     }
 
     /** This method is called from within the constructor to
@@ -111,17 +163,22 @@ public class AlarmPane extends JTabExtended<IAlarm> {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jSplitPane2 = new javax.swing.JSplitPane();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        gridAlarms = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
         lblDescription = new javax.swing.JLabel();
-        txtDescription = new javax.swing.JTextField();
-        lblAlarmType = new javax.swing.JLabel();
-        cmbAlarmType = new javax.swing.JComboBox();
-        lblKwMax = new javax.swing.JLabel();
-        txtKwMax = new javax.swing.JTextField();
+        lblRegister = new javax.swing.JLabel();
+        cmbRegister = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
+        txtMaxValue = new javax.swing.JTextField();
+        lblMinValue = new javax.swing.JLabel();
+        txtMinValue = new javax.swing.JTextField();
         lblStartTime = new javax.swing.JLabel();
         cmbStartTime = new javax.swing.JComboBox();
-        lblEndTime = new javax.swing.JLabel();
         cmbEndTime = new javax.swing.JComboBox();
+        lblEndTime = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         chkMonday = new javax.swing.JCheckBox();
         chkThursday = new javax.swing.JCheckBox();
@@ -134,8 +191,7 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         gridPowerMeters = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         gridUsers = new javax.swing.JTable();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        gridAlarms = new javax.swing.JTable();
+        txtDescription = new javax.swing.JTextField();
 
         setName("Form"); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -144,39 +200,91 @@ public class AlarmPane extends JTabExtended<IAlarm> {
             }
         });
 
+        jSplitPane2.setBorder(null);
+        jSplitPane2.setDividerLocation(665);
+        jSplitPane2.setName("jSplitPane2"); // NOI18N
+
+        jPanel6.setName("jPanel6"); // NOI18N
+
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        gridAlarms.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        gridAlarms.setName("gridAlarms"); // NOI18N
+        jScrollPane1.setViewportView(gridAlarms);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jSplitPane2.setRightComponent(jPanel6);
+
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(AlarmPane.class);
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel1.border.title"))); // NOI18N
-        jPanel1.setName("jPanel1"); // NOI18N
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel5.border.title"))); // NOI18N
+        jPanel5.setName("jPanel5"); // NOI18N
 
         lblDescription.setText(resourceMap.getString("lblDescription.text")); // NOI18N
         lblDescription.setName("lblDescription"); // NOI18N
 
-        txtDescription.setText(resourceMap.getString("txtDescription.text")); // NOI18N
-        txtDescription.setName("txtDescription"); // NOI18N
+        lblRegister.setText(resourceMap.getString("lblRegister.text")); // NOI18N
+        lblRegister.setName("lblRegister"); // NOI18N
 
-        lblAlarmType.setText(resourceMap.getString("lblAlarmType.text")); // NOI18N
-        lblAlarmType.setName("lblAlarmType"); // NOI18N
+        cmbRegister.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbRegister.setMaximumSize(new java.awt.Dimension(250, 20));
+        cmbRegister.setMinimumSize(new java.awt.Dimension(250, 20));
+        cmbRegister.setName("cmbRegister"); // NOI18N
+        cmbRegister.setPreferredSize(new java.awt.Dimension(250, 20));
 
-        cmbAlarmType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Sms", "Mail" }));
-        cmbAlarmType.setName("cmbType"); // NOI18N
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
 
-        lblKwMax.setText(resourceMap.getString("lblKwMax.text")); // NOI18N
-        lblKwMax.setName("lblKwMax"); // NOI18N
+        txtMaxValue.setText(resourceMap.getString("txtMaxValue.text")); // NOI18N
+        txtMaxValue.setMaximumSize(new java.awt.Dimension(20, 250));
+        txtMaxValue.setMinimumSize(new java.awt.Dimension(20, 250));
+        txtMaxValue.setName("txtMaxValue"); // NOI18N
 
-        txtKwMax.setText(resourceMap.getString("txtKwMax.text")); // NOI18N
-        txtKwMax.setName("txtKwMax"); // NOI18N
+        lblMinValue.setText(resourceMap.getString("lblMinValue.text")); // NOI18N
+        lblMinValue.setName("lblMinValue"); // NOI18N
+
+        txtMinValue.setText(resourceMap.getString("txtMinValue.text")); // NOI18N
+        txtMinValue.setMaximumSize(new java.awt.Dimension(250, 20));
+        txtMinValue.setMinimumSize(new java.awt.Dimension(250, 20));
+        txtMinValue.setName("txtMinValue"); // NOI18N
+        txtMinValue.setPreferredSize(new java.awt.Dimension(250, 20));
 
         lblStartTime.setText(resourceMap.getString("lblStartTime.text")); // NOI18N
         lblStartTime.setName("lblStartTime"); // NOI18N
 
         cmbStartTime.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        cmbStartTime.setMaximumSize(new java.awt.Dimension(250, 20));
+        cmbStartTime.setMinimumSize(new java.awt.Dimension(250, 20));
         cmbStartTime.setName("cmbStartTime"); // NOI18N
+
+        cmbEndTime.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "19", "20", "21", "22", "23" }));
+        cmbEndTime.setMaximumSize(new java.awt.Dimension(250, 20));
+        cmbEndTime.setMinimumSize(new java.awt.Dimension(250, 20));
+        cmbEndTime.setName("cmbEndTime"); // NOI18N
 
         lblEndTime.setText(resourceMap.getString("lblEndTime.text")); // NOI18N
         lblEndTime.setName("lblEndTime"); // NOI18N
-
-        cmbEndTime.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "19", "20", "21", "22", "23" }));
-        cmbEndTime.setName("cmbEndTime"); // NOI18N
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel2.border.title"))); // NOI18N
         jPanel2.setName("jPanel2"); // NOI18N
@@ -276,100 +384,101 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         gridUsers.setName("gridUsers"); // NOI18N
         jScrollPane3.setViewportView(gridUsers);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        txtDescription.setText(resourceMap.getString("txtDescription.text")); // NOI18N
+        txtDescription.setName("txtDescription"); // NOI18N
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblKwMax)
-                                    .addComponent(lblStartTime)
-                                    .addComponent(lblDescription)
-                                    .addComponent(lblAlarmType)
-                                    .addComponent(lblEndTime))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(cmbEndTime, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtDescription, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbAlarmType, javax.swing.GroupLayout.Alignment.LEADING, 0, 255, Short.MAX_VALUE)
-                                    .addComponent(txtKwMax, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbStartTime, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addContainerGap(370, Short.MAX_VALUE))))
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
+                                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(lblMinValue, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(lblEndTime))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtMinValue, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                                            .addComponent(cmbStartTime, 0, 251, Short.MAX_VALUE)
+                                            .addComponent(txtMaxValue, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                                            .addComponent(cmbEndTime, 0, 251, Short.MAX_VALUE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
+                                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblRegister)
+                                            .addComponent(lblDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(4, 4, 4)
+                                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtDescription)
+                                            .addComponent(cmbRegister, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(360, 360, 360)))
+                        .addContainerGap())
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(lblStartTime, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                        .addGap(603, 603, 603))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(310, Short.MAX_VALUE))))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDescription)
-                    .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblAlarmType)
-                    .addComponent(cmbAlarmType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblRegister)
+                    .addComponent(cmbRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblKwMax)
-                    .addComponent(txtKwMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblMinValue)
+                    .addComponent(txtMinValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblStartTime)
                     .addComponent(cmbStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEndTime))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEndTime)
+                    .addComponent(cmbEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        gridAlarms.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        gridAlarms.setName("gridAlarms"); // NOI18N
-        jScrollPane1.setViewportView(gridAlarms);
+        jSplitPane2.setLeftComponent(jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1137, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -389,24 +498,28 @@ public class AlarmPane extends JTabExtended<IAlarm> {
     private javax.swing.JCheckBox chkThursday;
     private javax.swing.JCheckBox chkTuesday;
     private javax.swing.JCheckBox chkWednesday;
-    private javax.swing.JComboBox cmbAlarmType;
     private javax.swing.JComboBox cmbEndTime;
+    private javax.swing.JComboBox cmbRegister;
     private javax.swing.JComboBox cmbStartTime;
     private javax.swing.JTable gridAlarms;
     private javax.swing.JTable gridPowerMeters;
     private javax.swing.JTable gridUsers;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JLabel lblAlarmType;
+    private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JLabel lblDescription;
     private javax.swing.JLabel lblEndTime;
-    private javax.swing.JLabel lblKwMax;
+    private javax.swing.JLabel lblMinValue;
+    private javax.swing.JLabel lblRegister;
     private javax.swing.JLabel lblStartTime;
     private javax.swing.JTextField txtDescription;
-    private javax.swing.JTextField txtKwMax;
+    private javax.swing.JTextField txtMaxValue;
+    private javax.swing.JTextField txtMinValue;
     // End of variables declaration//GEN-END:variables
     @Override
     public void New() {
@@ -443,7 +556,10 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción de la alarma", 5)) {
             return false;
         }
-        if (!Validator.ValidateField(null, null, 0, txtKwMax, true, "el maximo de kw/h permitidos", 1)) {
+        if (!Validator.ValidateField(null, null, 0, txtMaxValue, true, "el maximo valor permitido", 1)) {
+            return false;
+        }
+        if (!Validator.ValidateField(null, null, 0, txtMinValue, true, "el minimo valor permitido", 1)) {
             return false;
         }
         return true;
@@ -458,8 +574,11 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         }
         try {
             currentObject.setDescription(txtDescription.getText().trim());
-            currentObject.setAlarmType(cmbAlarmType.getSelectedIndex());
-            currentObject.setMaxValueAllowed(Integer.parseInt(txtKwMax.getText().trim()));
+            currentObject.setMaxValueAllowed(Integer.parseInt(txtMaxValue.getText().trim()));
+            currentObject.setMinValueAllowed(Integer.parseInt(txtMinValue.getText().trim()));
+            ComboBoxItem<ModbusRegister> selectedRegister = (ComboBoxItem<ModbusRegister>) cmbRegister.getSelectedItem();
+            currentObject.setMeasure(selectedRegister.getValue().ordinal());
+            currentObject.setMeasureDescription(selectedRegister.getId());
             SetScheduledDays(currentObject);
             if (IsObjectLoaded()) {
                 return Update();
@@ -540,19 +659,18 @@ public class AlarmPane extends JTabExtended<IAlarm> {
         }
         cmbStartTime.setSelectedIndex(0);
         cmbEndTime.setSelectedIndex(0);
-        txtDescription.setText(currentObject.getDescription());
-        txtKwMax.setText((currentObject.getMaxValueAllowed() != null)? String.valueOf(currentObject.getMaxValueAllowed()) : null);
-        if (currentObject.getAlarmType() != null) {
-            switch (currentObject.getAlarmTypeEnum()) {
-                case Mail:
-                    cmbAlarmType.setSelectedIndex(1);
+        if (currentObject.getMeasure() != null) {
+            for (int itemIndex = 0; itemIndex <= cmbRegister.getItemCount(); itemIndex++) {
+                ComboBoxItem<ModbusRegister> item = (ComboBoxItem<ModbusRegister>) cmbRegister.getItemAt(itemIndex);
+                if (item.getValue().ordinal() == currentObject.getMeasure().intValue()) {
+                    cmbRegister.setSelectedIndex(itemIndex);
                     break;
-                case SMS:
-                    cmbAlarmType.setSelectedIndex(0);
-                    break;
+                }
             }
         }
-
+        txtDescription.setText(currentObject.getDescription());
+        txtMaxValue.setText((currentObject.getMaxValueAllowed() != null) ? String.valueOf(currentObject.getMaxValueAllowed()) : null);
+        txtMinValue.setText((currentObject.getMinValueAllowed() != null) ? String.valueOf(currentObject.getMinValueAllowed()) : null);
         chkMonday.setSelected(false);
         chkTuesday.setSelected(false);
         chkWednesday.setSelected(false);
@@ -643,5 +761,23 @@ public class AlarmPane extends JTabExtended<IAlarm> {
             SetUIElements();
         }
         return result;
+    }
+
+    /**
+     * Carga los registros que pueden ser utilizados por la alarma
+     */
+    private void FillMeasures() {
+        List<ComboBoxItem<ModbusRegister>> registers = new ArrayList<ComboBoxItem<ModbusRegister>>();
+        for (Entry<ModbusRegister, String> entry : getRegistersInViews().entrySet()) {
+            ComboBoxItem<ModbusRegister> item = new ComboBoxItem<ModbusRegister>();
+            item.setId(entry.getValue());
+            item.setValue(entry.getKey());
+            registers.add(item);
+        }
+        Collections.sort(registers, new ComboBoxItemComparator());
+        SicceComboBoxRenderer comboRenderer = new SicceComboBoxRenderer("getId", DisplayMemberRenderType.Method, "getValue", DisplayMemberRenderType.Method);
+        cmbRegister.setRenderer(comboRenderer);
+        cmbRegister.setModel(new SicceComboBoxModel(registers));
+        cmbRegister.setSelectedIndex(1);
     }
 }

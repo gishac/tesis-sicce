@@ -230,7 +230,7 @@ public class ParameterPane extends JTabExtended {
 
     @Override
     public void FillGrid() {
-        parameters = parameterBizObject.GetAllParameters();
+        parameters = parameterBizObject.GetAllConfiguragleParameters();
         for(IParameter parameter : parameters){
             if(parameterBizObject.getParameterCodesForMail().contains(parameter.getParameterKey()))
                 parametersForMail.put(parameter.getParameterKey(), parameter);
