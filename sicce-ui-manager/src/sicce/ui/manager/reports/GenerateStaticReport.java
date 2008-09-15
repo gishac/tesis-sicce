@@ -85,7 +85,7 @@ public class GenerateStaticReport {
             jasperPrint = JasperFillManager.fillReport(UserPowerMeterException.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
             break;
             case UserPowerMeterAlarm:
-            jasperPrint = JasperFillManager.fillReport(UserPowerMeterException.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
+            jasperPrint = JasperFillManager.fillReport(UserPowerMeterAlarm.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
             break;
              }
             validateReport(jasperPrint);
@@ -100,10 +100,9 @@ public class GenerateStaticReport {
 
     }
 
-     public  boolean GenerateStaticConsumptionReport(Component pComponentePadre,  IUserSicce currentUser, Boolean plocation, Boolean pzone, Date startDate, Date endDate, Double cost) {
+     public  boolean GenerateStaticTotalConsumptionReport(Component pComponentePadre, Boolean plocation, Boolean pzone, Map parameters) {
         try {
-
-            if (!checkResource(pComponentePadre)) {
+           if (!checkResource(pComponentePadre)) {
                 return false;
             }
              Map pCriterios = new HashMap();
@@ -111,10 +110,8 @@ public class GenerateStaticReport {
             //Agrego las imagenes que lleve todo reporte
             pCriterios.put("logoUCSG", urlLogoUCSG);
             pCriterios.put("logoSICCE", urlLogoSICCE);
-            pCriterios.put("iduser", currentUser.getIdUserSicce());
-            pCriterios.put("startDate", startDate);
-            pCriterios.put("endDate", endDate);
-            pCriterios.put("cost", cost);
+            pCriterios.putAll(parameters);
+            
             JasperPrint jasperPrint = null;
 
             if (plocation){
@@ -134,6 +131,34 @@ public class GenerateStaticReport {
 
     }
     
+     
+      public  boolean GenerateStaticIndividualConsumptionReport(Component pComponentePadre, Map parameters) {
+        try {
+           if (!checkResource(pComponentePadre)) {
+                return false;
+            }
+             Map pCriterios = new HashMap();
+
+            //Agrego las imagenes que lleve todo reporte
+            pCriterios.put("logoUCSG", urlLogoUCSG);
+            pCriterios.put("logoSICCE", urlLogoSICCE);
+            pCriterios.putAll(parameters);
+            
+            JasperPrint jasperPrint = null;
+            jasperPrint = JasperFillManager.fillReport(ConsumptionbyLocationReport.openStream(), pCriterios, DataAccessManager.getInstance().getConnectionDB().getConnection());
+             validateReport(jasperPrint);
+ } catch (JRException ex) {
+            Logger.getLogger(GenerateStaticReport.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GenerateStaticReport.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return true;
+
+    } 
+     
+     
+     
    
     public  void validateReport(JasperPrint jasperPrint) {
         if (jasperPrint.getPages().size() < 0) {

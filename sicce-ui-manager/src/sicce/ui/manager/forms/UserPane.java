@@ -27,6 +27,7 @@ import sicce.api.util.ComponentUtil;
 import sicce.api.util.EncryptionProvider;
 import sicce.api.util.JTextFieldLimit;
 import sicce.api.util.Validator;
+import sicce.ui.manager.controls.JOptionPaneExtended;
 import sicce.ui.manager.controls.JTabExtended;
 import sicce.ui.manager.controls.SearchDialog;
 
@@ -486,6 +487,11 @@ public class UserPane extends JTabExtended<IUserSicce> {
     @Override
     public boolean CheckFields() {
         if (!Validator.ValidateField(null, null, 0, txtName, true, "el login del usuario", 3)) {
+            return false;
+        }
+        IUserSicce user = UserDB.FindUserByLogin(txtName.getText());
+        if (user != null ){
+            JOptionPaneExtended.showMessageDialog(null, "El usuario ya está ingresado en el Sistema");
             return false;
         }
         if (!Validator.ValidateField(null, null, 0, txtFirstName, true, "el nombre del usuario", 3)) {
