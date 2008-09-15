@@ -181,10 +181,10 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtKwhPeriod3">
+        <Component class="javax.swing.JTextField" name="txtKwhPeriod1">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
-            <Property name="name" type="java.lang.String" value="txtKwhPeriod3" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="txtKwhPeriod1" noResource="true"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
