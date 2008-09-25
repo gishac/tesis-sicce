@@ -11,9 +11,6 @@
             <column name="ID_ALARM" />
             <generator class="identity" />
         </id>
-        <property name="alarmType" type="java.lang.Integer">
-            <column name="ALARM_TYPE" />
-        </property>
         <property name="description" type="java.lang.String">
             <column name="DESCRIPTION" />
         </property>
@@ -25,6 +22,9 @@
         </property>
         <property name="measure" type="java.lang.Integer">
             <column name="MEASURE" />
+        </property>
+        <property name="measureDescription" type="java.lang.String">
+            <column name="MEASURE_DESCRIPTION" />
         </property>
         
         <set name="scheduledDays" inverse="true" lazy="false">

@@ -190,7 +190,7 @@ public class ConstantsProvider {
      */
     public enum RequestType {
 
-        HoldingRegisters(98),
+        HoldingRegisters(198),
         THD(10);
         private int totalRegisters;
 

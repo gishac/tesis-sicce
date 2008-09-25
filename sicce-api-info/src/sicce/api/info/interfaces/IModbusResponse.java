@@ -15,13 +15,13 @@ public interface IModbusResponse {
      * Devuelve la respuesta para la consulta de HoldingRegisters
      * @return
      */
-    String getHoldingRegistersResponse();
+    String[] getHoldingRegistersResponse();
     
     /**
      * Establece la respuesta para la consulta de HoldingRegisters
      * @param holdingRegistersResponse Respuesta para la consulta de HoldingRegisters
      */
-    void setHoldingRegistersResponse(String holdingRegistersResponse);
+    void setHoldingRegistersResponse(String[] holdingRegistersResponse);
     
     /**
      * Devuelve la respuesta para la consulta de TDHValues

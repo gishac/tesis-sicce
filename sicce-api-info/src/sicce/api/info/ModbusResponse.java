@@ -17,7 +17,7 @@ public class ModbusResponse implements IModbusResponse {
     /**
      * Respuesta para la consulta de HoldingRegisters
      */
-    private String holdingRegistersResponse;
+    private String[] holdingRegistersResponse;
     
     /**
      * Respuesta para la consulta de TDHValues
@@ -29,11 +29,11 @@ public class ModbusResponse implements IModbusResponse {
      */
     private IPowerMeter powerMeter;
 
-    public String getHoldingRegistersResponse() {
+    public String[] getHoldingRegistersResponse() {
         return this.holdingRegistersResponse;
     }
 
-    public void setHoldingRegistersResponse(String holdingRegistersResponse) {
+    public void setHoldingRegistersResponse(String[] holdingRegistersResponse) {
         this.holdingRegistersResponse = holdingRegistersResponse;
     }
 
