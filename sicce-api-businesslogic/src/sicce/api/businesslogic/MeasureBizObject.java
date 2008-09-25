@@ -26,7 +26,7 @@ public class MeasureBizObject {
      */
     public double GetMeasure(IMeasure measure, int registerID){
         double value = 0;
-        if(registerID == ModbusRegister.InstantaneousCurrentPhase1.ordinal()){
+        /*if(registerID == ModbusRegister.InstantaneousCurrentPhase1.ordinal()){
             value = measure.getInstantaneousCurrentPhase1();
         }
         if(registerID == ModbusRegister.InstantaneousCurrentPhase2.ordinal()){
@@ -37,7 +37,7 @@ public class MeasureBizObject {
         }
         if(registerID == ModbusRegister.NeutralCurrent.ordinal()){
             value = measure.getNeutralCurrent();
-        }
+        }*/
         if(registerID == ModbusRegister.PhaseToPhaseVoltagePhase1To2.ordinal()){
             value = measure.getPhaseToPhaseVoltagePhase1To2();
         }
@@ -91,6 +91,9 @@ public class MeasureBizObject {
         }
         if(registerID == ModbusRegister.ApparentPowerPhase2.ordinal()){
             value = measure.getApparentPowerPhase2();
+        }
+        if(registerID == ModbusRegister.ActiveEnergyInPlus.ordinal()){
+            value = measure.getActiveEnergyIn();
         }
         return value;
     }
