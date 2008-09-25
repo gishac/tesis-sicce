@@ -18,7 +18,7 @@
         </property>
         <property name="connection.username">root</property>
         <property name="connection.url">
-            jdbc:mysql://localhost:3306/sicce?characterEncoding=UTF-8
+           jdbc:mysql://localhost/sicce?characterEncoding=UTF-8
         </property>
         <property name="dialect">
             org.hibernate.dialect.MySQLInnoDBDialect
