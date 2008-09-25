@@ -148,12 +148,13 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
         txtKwhPeriod2.setEnabled(false);
         txtKwhPeriod2.setName("txtKwhPeriod2"); // NOI18N
         jPanel2.add(txtKwhPeriod2);
-        txtKwhPeriod2.setBounds(90, 50, 70, 20);
+        txtKwhPeriod2.setBounds(90, 50, 100, 20);
 
+        txtKwhPeriod1.setText(resourceMap.getString("txtKwhPeriod1.text")); // NOI18N
         txtKwhPeriod1.setEnabled(false);
         txtKwhPeriod1.setName("txtKwhPeriod1"); // NOI18N
         jPanel2.add(txtKwhPeriod1);
-        txtKwhPeriod1.setBounds(90, 20, 70, 20);
+        txtKwhPeriod1.setBounds(90, 20, 100, 20);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel5.border.title"))); // NOI18N
         jPanel5.setName("jPanel5"); // NOI18N
@@ -306,8 +307,8 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
                     .addComponent(btnGenerate)
                     .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE))
                 .addGap(21, 21, 21))
