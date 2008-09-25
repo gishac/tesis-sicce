@@ -6,7 +6,6 @@ package sicce.api.info.auto;
 
 import java.util.HashSet;
 import java.util.Set;
-import sicce.api.info.ConstantsProvider.AlarmType;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IAlarmListener;
 import sicce.api.info.interfaces.IPowerMeter;
@@ -23,12 +22,7 @@ public abstract class AbstractAlarm implements IAlarm {
      * Identificador de la alarma
      */
     protected Integer idAlarm;
-    
-    /**
-     * Tipo de alarma
-     */
-    protected Integer alarmType;
-    
+       
     /**
      * Descripcion de la alarma
      */
@@ -69,9 +63,14 @@ public abstract class AbstractAlarm implements IAlarm {
     private Integer minValueAllowed;
     
     /**
-     * Parametro a monitorear
+     * Codigo del parametro a monitorear
      */
     private Integer measure;
+    
+    /**
+     * Descripcion del parametro a monitorear
+     */
+    private String measureDescription;
     
 
     // Constructors
@@ -93,16 +92,14 @@ public abstract class AbstractAlarm implements IAlarm {
     /**
      * Constructor
      * @param idAlarm Identificador de la alarma
-     * @param alarmType Tipo de alarma
      * @param description Descripcion de la alarma
      * @param scheduledDays Dias de agendamiento
      * @param alarmUsers Usuarios suscritos a la alarma
      */
     public AbstractAlarm(Integer idAlarm,
-            int alarmType, String description, Set scheduledDays,
+            String description, Set scheduledDays,
             Set alarmUsers) {
         this.idAlarm = idAlarm;
-        this.alarmType = alarmType;
         this.description = description;
         this.scheduledDays = scheduledDays;
         this.alarmUsers = alarmUsers;
@@ -115,14 +112,6 @@ public abstract class AbstractAlarm implements IAlarm {
 
     public void setIdAlarm(Integer idAlarm) {
         this.idAlarm = idAlarm;
-    }
-
-    public Integer getAlarmType() {
-        return this.alarmType;
-    }
-
-    public void setAlarmType(Integer alarmType) {
-        this.alarmType = alarmType;
     }
 
     public String getDescription() {
@@ -147,16 +136,6 @@ public abstract class AbstractAlarm implements IAlarm {
 
     public void setAlarmUsers(Set<IUserSicce> alarmUsers) {
         this.alarmUsers = alarmUsers;
-    }
-
-    public AlarmType getAlarmTypeEnum() {
-        if(getAlarmType().intValue() == 1)
-            return AlarmType.Mail;
-        return AlarmType.SMS;
-    }
-
-    public void setAlarmTypeEnum(AlarmType alarmType) {
-        setAlarmType(alarmType.getAlarmType());
     }
 
     public boolean IsActive() {
@@ -218,6 +197,14 @@ public abstract class AbstractAlarm implements IAlarm {
 
     public void setMeasure(Integer measure) {
         this.measure = measure;
+    }
+
+    public String getMeasureDescription() {
+        return measureDescription;
+    }
+
+    public void setMeasureDescription(String measureDescription) {
+        this.measureDescription = measureDescription;
     }
 
 }

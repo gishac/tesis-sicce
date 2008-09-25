@@ -8,7 +8,6 @@ import java.util.Observable;
 import java.util.Observer;
 import sicce.api.info.auto.AbstractAlarm;
 import sicce.api.info.interfaces.IMeasure;
-import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IPowerMeterWatcher;
 
 /**

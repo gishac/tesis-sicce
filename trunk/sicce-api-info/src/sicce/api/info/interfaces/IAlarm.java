@@ -27,32 +27,7 @@ public interface IAlarm {
      */
     void setIdAlarm(Integer idAlarm);
     
-   /**
-     * Devuelve el tipo de alarma en formato Integer
-     * @return Tipo de alarma en formato Integer
-     */
-    Integer getAlarmType();
-    
-    /**
-     * Establece el tipo de alarma 
-     * @param alarmType Tipo de alarma en formato Integer para reemplazar a la enumeracion <strong>AlarmType</strong>
-     */
-    void setAlarmType(Integer alarmType);
-    
-    /**
-     * Devuelve el tipo de alarma
-     * @return Tipo de alarma
-     * @see AlarmType
-     */
-    AlarmType getAlarmTypeEnum();
-    
-    /**
-     * Establece el tipo de alarma
-     * @param alarmType Tipo de alarma
-     * @see AlarmType
-     */
-    void setAlarmTypeEnum(AlarmType alarmType);
-    
+        
     /**
      * Devuelve la descripcion de la alarma
      * @return Descripcion de la alarma
@@ -185,4 +160,16 @@ public interface IAlarm {
      * @see IUserSicce
      */
     void removeAlarmUser(IUserSicce user);
+    
+    /**
+     * Devuelve la descripcion del registro que va a ser monitoreado por la alarma
+     * @return Descripcion del registro que va a ser monitoreado por la alarma
+     */
+    String getMeasureDescription();
+    
+    /**
+     * Establece la descripcion del registro que va a ser monitoreado por la alarma
+     * @param measureDescription Descripcion del registro que va a ser monitoreado por la alarma
+     */
+    void setMeasureDescription(String measureDescription);
 }

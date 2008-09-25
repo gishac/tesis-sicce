@@ -32,27 +32,7 @@ public abstract class AbstractMeasure implements java.io.Serializable, IMeasure 
      * Fecha en la que se realiza la lectura
      */
     protected Date dateMeasure;
-    
-    /**
-     * Valor del registro InstantaneousCurrentPhase1
-     */
-    protected Double instantaneousCurrentPhase1;
-    
-    /**
-     *  Valor del registro InstantaneousCurrentPhase2
-     */
-    protected Double instantaneousCurrentPhase2;
-    
-    /**
-     * Valor del registro InstantaneousCurrentPhase3
-     */
-    protected Double instantaneousCurrentPhase3;
-    
-    /**
-     * Valor del registro NeutralCurrent
-     */
-    protected Double neutralCurrent;
-    
+   
     /**
      * Valor del registro PhaseToPhaseVoltagePhase1To2
      */
@@ -149,101 +129,11 @@ public abstract class AbstractMeasure implements java.io.Serializable, IMeasure 
     protected Double apparentPowerPhase3;
     
     /**
-     * Valor del registro DemandCurrentPhase1
-     */
-    protected Double demandCurrentPhase1;
-    
-    /**
-     * Valor del registro DemandCurrentPhase2
-     */
-    protected Double demandCurrentPhase2;
-    
-    /**
-     * Valor del registro DemandCurrentPhase3
-     */
-    protected Double demandCurrentPhase3;
-    
-    /**
-     * Valor del registro PuissanceApparenteMoyenneTotale
-     */
-    protected Double puissanceApparenteMoyenneTotale;
-    
-    /**
-     * Valor del registro MaximumDemandCurrentPhase1
-     */
-    protected Double maximumDemandCurrentPhase1;
-    
-    /**
-     * Valor del registro MaximumDemandCurrentPhase2
-     */
-    protected Double maximumDemandCurrentPhase2;
-    
-    /**
-     * Valor del registro MaximumDemandCurrentPhase3
-     */
-    protected Double maximumDemandCurrentPhase3;
-    
-    /**
-     * Valor del registro MaximumDemandActivePowerPlus
-     */
-    protected Double maximumDemandActivePowerPlus;
-    
-    /**
-     * Valor del registro MaximumDemandActivePowerMinus
-     */
-    protected Double maximumDemandActivePowerMinus;
-    
-    /**
-     * Valor del registro MaximumDemandReactivePowerPlus
-     */
-    protected Double maximumDemandReactivePowerPlus;
-    
-    /**
-     * Valor del registro MaximumDemandReactivePowerMinus
-     */
-    protected Double maximumDemandReactivePowerMinus;
-    
-    /**
-     * Valor del registro MaximumDemandApparentPower
-     */
-    protected Double maximumDemandApparentPower;
-    
-    /**
-     * Valor del registro OperatingTimeCounter
-     */
-    protected Double operatingTimeCounter;
-    
-    /**
      * Valor del registro ActiveEnergyInPlus
      */
-    protected Double activeEnergyInPlus;
+    private Double activeEnergyIn;
     
-    /**
-     * Valor del registro ReactiveEnergyInPlus
-     */
-    protected Double reactiveEnergyInPlus;
-    
-    /**
-     * Valor del registro ApparentEnergy
-     */
-    protected Double apparentEnergy;
-    
-    /**
-     * Valor del registro ActiveEnergyOutMinus
-     */
-    protected Double activeEnergyOutMinus;
-    
-    /**
-     * Valor del registro ReactiveEnergyOutMinus
-     */
-    protected Double reactiveEnergyOutMinus;
-    
-    /**
-     * Valor del registro Input1PulseCounter
-     */
-    protected Double input1PulseCounter;
-
-    /**
+     /**
      * Constructor
      */
     public AbstractMeasure() {
@@ -280,38 +170,6 @@ public abstract class AbstractMeasure implements java.io.Serializable, IMeasure 
 
     public void setDateMeasure(Date dateMeasure) {
         this.dateMeasure = dateMeasure;
-    }
-
-    public Double getInstantaneousCurrentPhase1() {
-        return this.instantaneousCurrentPhase1;
-    }
-
-    public void setInstantaneousCurrentPhase1(Double instantaneousCurrentPhase1) {
-        this.instantaneousCurrentPhase1 = instantaneousCurrentPhase1;
-    }
-
-    public Double getInstantaneousCurrentPhase2() {
-        return this.instantaneousCurrentPhase2;
-    }
-
-    public void setInstantaneousCurrentPhase2(Double instantaneousCurrentPhase2) {
-        this.instantaneousCurrentPhase2 = instantaneousCurrentPhase2;
-    }
-
-    public Double getInstantaneousCurrentPhase3() {
-        return this.instantaneousCurrentPhase3;
-    }
-
-    public void setInstantaneousCurrentPhase3(Double instantaneousCurrentPhase3) {
-        this.instantaneousCurrentPhase3 = instantaneousCurrentPhase3;
-    }
-
-    public Double getNeutralCurrent() {
-        return this.neutralCurrent;
-    }
-
-    public void setNeutralCurrent(Double neutralCurrent) {
-        this.neutralCurrent = neutralCurrent;
     }
 
     public Double getPhaseToPhaseVoltagePhase1To2() {
@@ -472,160 +330,11 @@ public abstract class AbstractMeasure implements java.io.Serializable, IMeasure 
         this.apparentPowerPhase3 = apparentPowerPhase3;
     }
 
-    public Double getDemandCurrentPhase1() {
-        return this.demandCurrentPhase1;
+    public Double getActiveEnergyIn() {
+        return activeEnergyIn;
     }
 
-    public void setDemandCurrentPhase1(Double demandCurrentPhase1) {
-        this.demandCurrentPhase1 = demandCurrentPhase1;
-    }
-
-    public Double getDemandCurrentPhase2() {
-        return this.demandCurrentPhase2;
-    }
-
-    public void setDemandCurrentPhase2(Double demandCurrentPhase2) {
-        this.demandCurrentPhase2 = demandCurrentPhase2;
-    }
-
-    public Double getDemandCurrentPhase3() {
-        return this.demandCurrentPhase3;
-    }
-
-    public void setDemandCurrentPhase3(Double demandCurrentPhase3) {
-        this.demandCurrentPhase3 = demandCurrentPhase3;
-    }
-
-    public Double getPuissanceApparenteMoyenneTotale() {
-        return this.puissanceApparenteMoyenneTotale;
-    }
-
-    public void setPuissanceApparenteMoyenneTotale(
-            Double puissanceApparenteMoyenneTotale) {
-        this.puissanceApparenteMoyenneTotale = puissanceApparenteMoyenneTotale;
-    }
-
-    public Double getMaximumDemandCurrentPhase1() {
-        return this.maximumDemandCurrentPhase1;
-    }
-
-    public void setMaximumDemandCurrentPhase1(Double maximumDemandCurrentPhase1) {
-        this.maximumDemandCurrentPhase1 = maximumDemandCurrentPhase1;
-    }
-
-    public Double getMaximumDemandCurrentPhase2() {
-        return this.maximumDemandCurrentPhase2;
-    }
-
-    public void setMaximumDemandCurrentPhase2(Double maximumDemandCurrentPhase2) {
-        this.maximumDemandCurrentPhase2 = maximumDemandCurrentPhase2;
-    }
-
-    public Double getMaximumDemandCurrentPhase3() {
-        return this.maximumDemandCurrentPhase3;
-    }
-
-    public void setMaximumDemandCurrentPhase3(Double maximumDemandCurrentPhase3) {
-        this.maximumDemandCurrentPhase3 = maximumDemandCurrentPhase3;
-    }
-
-    public Double getMaximumDemandActivePowerPlus() {
-        return this.maximumDemandActivePowerPlus;
-    }
-
-    public void setMaximumDemandActivePowerPlus(
-            Double maximumDemandActivePowerPlus) {
-        this.maximumDemandActivePowerPlus = maximumDemandActivePowerPlus;
-    }
-
-    public Double getMaximumDemandActivePowerMinus() {
-        return this.maximumDemandActivePowerMinus;
-    }
-
-    public void setMaximumDemandActivePowerMinus(
-            Double maximumDemandActivePowerMinus) {
-        this.maximumDemandActivePowerMinus = maximumDemandActivePowerMinus;
-    }
-
-    public Double getMaximumDemandReactivePowerPlus() {
-        return this.maximumDemandReactivePowerPlus;
-    }
-
-    public void setMaximumDemandReactivePowerPlus(
-            Double maximumDemandReactivePowerPlus) {
-        this.maximumDemandReactivePowerPlus = maximumDemandReactivePowerPlus;
-    }
-
-    public Double getMaximumDemandReactivePowerMinus() {
-        return this.maximumDemandReactivePowerMinus;
-    }
-
-    public void setMaximumDemandReactivePowerMinus(
-            Double maximumDemandReactivePowerMinus) {
-        this.maximumDemandReactivePowerMinus = maximumDemandReactivePowerMinus;
-    }
-
-    public Double getMaximumDemandApparentPower() {
-        return this.maximumDemandApparentPower;
-    }
-
-    public void setMaximumDemandApparentPower(Double maximumDemandApparentPower) {
-        this.maximumDemandApparentPower = maximumDemandApparentPower;
-    }
-
-    public Double getOperatingTimeCounter() {
-        return this.operatingTimeCounter;
-    }
-
-    public void setOperatingTimeCounter(Double operatingTimeCounter) {
-        this.operatingTimeCounter = operatingTimeCounter;
-    }
-
-    public Double getActiveEnergyInPlus() {
-        return this.activeEnergyInPlus;
-    }
-
-    public void setActiveEnergyInPlus(Double activeEnergyInPlus) {
-        this.activeEnergyInPlus = activeEnergyInPlus;
-    }
-
-    public Double getReactiveEnergyInPlus() {
-        return this.reactiveEnergyInPlus;
-    }
-
-    public void setReactiveEnergyInPlus(Double reactiveEnergyInPlus) {
-        this.reactiveEnergyInPlus = reactiveEnergyInPlus;
-    }
-
-    public Double getApparentEnergy() {
-        return this.apparentEnergy;
-    }
-
-    public void setApparentEnergy(Double apparentEnergy) {
-        this.apparentEnergy = apparentEnergy;
-    }
-
-    public Double getActiveEnergyOutMinus() {
-        return this.activeEnergyOutMinus;
-    }
-
-    public void setActiveEnergyOutMinus(Double activeEnergyOutMinus) {
-        this.activeEnergyOutMinus = activeEnergyOutMinus;
-    }
-
-    public Double getReactiveEnergyOutMinus() {
-        return this.reactiveEnergyOutMinus;
-    }
-
-    public void setReactiveEnergyOutMinus(Double reactiveEnergyOutMinus) {
-        this.reactiveEnergyOutMinus = reactiveEnergyOutMinus;
-    }
-
-    public Double getInput1PulseCounter() {
-        return this.input1PulseCounter;
-    }
-
-    public void setInput1PulseCounter(Double input1PulseCounter) {
-        this.input1PulseCounter = input1PulseCounter;
+    public void setActiveEnergyIn(Double activeEnergyIn) {
+        this.activeEnergyIn = activeEnergyIn;
     }
 }

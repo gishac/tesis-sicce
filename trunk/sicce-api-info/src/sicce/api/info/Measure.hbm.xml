@@ -20,18 +20,6 @@
             <column name="DATE_MEASURE" length="19" />
         </property>
         
-        <property name="instantaneousCurrentPhase1" type="java.lang.Double">
-            <column name="INSTANTANEOUS_CURRENT_PHASE_1" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="instantaneousCurrentPhase2" type="java.lang.Double">
-            <column name="INSTANTANEOUS_CURRENT_PHASE_2" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="instantaneousCurrentPhase3" type="java.lang.Double">
-            <column name="INSTANTANEOUS_CURRENT_PHASE_3" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="neutralCurrent" type="java.lang.Double">
-            <column name="NEUTRAL_CURRENT" precision="0" scale="0" not-null="true" />
-        </property>
         <property name="phaseToPhaseVoltagePhase1To2" type="java.lang.Double">
             <column name="PHASE_TO_PHASE_VOLTAGE_PHASE_1_TO_2" precision="0" scale="0" not-null="true" />
         </property>
@@ -89,63 +77,8 @@
         <property name="apparentPowerPhase3" type="java.lang.Double">
             <column name="APPARENT_POWER_PHASE_3" precision="0" scale="0" not-null="true" />
         </property>
-        <property name="demandCurrentPhase1" type="java.lang.Double">
-            <column name="DEMAND_CURRENT_PHASE_1" precision="0" scale="0" not-null="true" />
+        <property name="activeEnergyIn" type="java.lang.Double">
+            <column name="ACTIVE_ENERGY_IN" precision="0" scale="0" not-null="true" />
         </property>
-        <property name="demandCurrentPhase2" type="java.lang.Double">
-            <column name="DEMAND_CURRENT_PHASE_2" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="demandCurrentPhase3" type="java.lang.Double">
-            <column name="DEMAND_CURRENT_PHASE_3" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="puissanceApparenteMoyenneTotale" type="java.lang.Double">
-            <column name="PUISSANCE_APPARENTE_MOYENNE_TOTALE" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="maximumDemandCurrentPhase1" type="java.lang.Double">
-            <column name="MAXIMUM_DEMAND_CURRENT_PHASE_1" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="maximumDemandCurrentPhase2" type="java.lang.Double">
-            <column name="MAXIMUM_DEMAND_CURRENT_PHASE_2" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="maximumDemandCurrentPhase3" type="java.lang.Double">
-            <column name="MAXIMUM_DEMAND_CURRENT_PHASE_3" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="maximumDemandActivePowerPlus" type="java.lang.Double">
-            <column name="MAXIMUM_DEMAND_ACTIVE_POWER_PLUS" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="maximumDemandActivePowerMinus" type="java.lang.Double">
-            <column name="MAXIMUM_DEMAND_ACTIVE_POWER_MINUS" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="maximumDemandReactivePowerPlus" type="java.lang.Double">
-            <column name="MAXIMUM_DEMAND_REACTIVE_POWER_PLUS" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="maximumDemandReactivePowerMinus" type="java.lang.Double">
-            <column name="MAXIMUM_DEMAND_REACTIVE_POWER_MINUS" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="maximumDemandApparentPower" type="java.lang.Double">
-            <column name="MAXIMUM_DEMAND_APPARENT_POWER" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="operatingTimeCounter" type="java.lang.Double">
-            <column name="OPERATING_TIME_COUNTER" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="activeEnergyInPlus" type="java.lang.Double">
-            <column name="ACTIVE_ENERGY_IN_PLUS" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="reactiveEnergyInPlus" type="java.lang.Double">
-            <column name="REACTIVE_ENERGY_IN_PLUS" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="apparentEnergy" type="java.lang.Double">
-            <column name="APPARENT_ENERGY" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="activeEnergyOutMinus" type="java.lang.Double">
-            <column name="ACTIVE_ENERGY_OUT_MINUS" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="reactiveEnergyOutMinus" type="java.lang.Double">
-            <column name="REACTIVE_ENERGY_OUT_MINUS" precision="0" scale="0" not-null="true" />
-        </property>
-        <property name="input1PulseCounter" type="java.lang.Double">
-            <column name="INPUT_1_PULSE_COUNTER" precision="0" scale="0" not-null="true" />
-        </property>
-        
-    </class>
+     </class>
 </hibernate-mapping>
