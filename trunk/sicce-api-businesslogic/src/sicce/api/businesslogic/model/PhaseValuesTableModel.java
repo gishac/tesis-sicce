@@ -45,7 +45,7 @@ public class PhaseValuesTableModel extends SicceTableModel<IMeasure> {
         }
         if (this.measure != null) {
             if (rowIndex == 0) {
-                if (columnIndex == 1) {
+                /*if (columnIndex == 1) {
                     value = measure.getInstantaneousCurrentPhase1();
                 }
                 if (columnIndex == 2) {
@@ -53,7 +53,7 @@ public class PhaseValuesTableModel extends SicceTableModel<IMeasure> {
                 }
                 if (columnIndex == 3) {
                     value = measure.getInstantaneousCurrentPhase2();
-                }
+                }*/
             }
             if (rowIndex == 1) {
                 if (columnIndex == 1) {
