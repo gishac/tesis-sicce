@@ -40,7 +40,6 @@
      user_sicce.`NAME` AS user_sicce_NAME,
      user_sicce.`LASTNAME` AS user_sicce_LASTNAME,
      power_meter.`ID_POWER_METER` AS power_meter_ID_POWER_METER,
-     alarm.`ALARM_TYPE` AS alarm_ALARM_TYPE,
      alarm.`DESCRIPTION` AS alarm_DESCRIPTION,
      alarm.`MAX_VALUE_ALLOWED` AS alarm_MAX_VALUE_ALLOWED,
      alarm.`MEASURE_DESCRIPTION` AS alarm_MEASURE_DESCRIPTION,
@@ -72,7 +71,6 @@ WHERE
 	<field name="user_sicce_NAME" class="java.lang.String"/>
 	<field name="user_sicce_LASTNAME" class="java.lang.String"/>
 	<field name="power_meter_ID_POWER_METER" class="java.lang.Long"/>
-	<field name="alarm_ALARM_TYPE" class="java.lang.Integer"/>
 	<field name="alarm_DESCRIPTION" class="java.lang.String"/>
 	<field name="alarm_MAX_VALUE_ALLOWED" class="java.lang.Integer"/>
 	<field name="alarm_MEASURE_DESCRIPTION" class="java.lang.String"/>
