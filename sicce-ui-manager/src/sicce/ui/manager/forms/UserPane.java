@@ -490,7 +490,7 @@ public class UserPane extends JTabExtended<IUserSicce> {
             return false;
         }
         IUserSicce user = UserDB.FindUserByLogin(txtName.getText());
-        if (user != null ){
+        if ( !IsObjectLoaded() && user != null ){
             JOptionPaneExtended.showMessageDialog(null, "El usuario ya está ingresado en el Sistema");
             return false;
         }
