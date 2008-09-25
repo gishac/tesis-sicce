@@ -44,7 +44,7 @@ public class ReportTemplate extends GenerateDynamicReport {
         String title = (String) wizardData.get(KEY_NAME);
         Boolean pvertical = (Boolean) wizardData.get(KEY_ORT_VERTICAL);
         Boolean phorizontal = (Boolean) wizardData.get(KEY_ORT_HORIZONTAL);
-        
+
         /*Instanciamos los estilos para cada sección*/
         Style detStyle = new Style();
         Style headerStyle = new Style();
@@ -59,14 +59,14 @@ public class ReportTemplate extends GenerateDynamicReport {
         headerStyle.setBackgroundColor(Color.LIGHT_GRAY);
         headerStyle.setTextColor(Color.BLACK);
         headerStyle.setTransparency(Transparency.OPAQUE);
-       // headerStyle.getStreching();
+        // headerStyle.getStreching();
 
         /* Definir el formato para la cabecera del reporte - headerStyle -*/
         footerVariables.setFont(Font.VERDANA_SMALL);
         footerVariables.setBorder(Border.NO_BORDER);
         footerVariables.setTextColor(Color.BLUE);
         footerVariables.setHorizontalAlign(HorizontalAlign.RIGHT);
-       // footerVariables.getStreching();
+        // footerVariables.getStreching();
 
 
         /* Definir el formato para el título del reporte - titleStyle -*/
@@ -76,23 +76,21 @@ public class ReportTemplate extends GenerateDynamicReport {
         detStyle.setBlankWhenNull(true);
         detStyle.setBorder(Border.NO_BORDER);
         detStyle.setFont(Font.VERDANA_SMALL);
-        
+
         oddRowStyle.setBorder(Border.NO_BORDER);
-	oddRowStyle.setBackgroundColor(Color.lightGray);
-	oddRowStyle.setTransparency(Transparency.TRANSPARENT);
-      
+        oddRowStyle.setBackgroundColor(Color.lightGray);
+        oddRowStyle.setTransparency(Transparency.TRANSPARENT);
+
         DynamicReportBuilder drb = new DynamicReportBuilder();
         drb.setTitle(title).setMargins(30, 20, 30, 15)
                 .setDefaultStyles(headerStyle, titleStyle, detStyle, footerVariables)
                 .setTitleStyle(titleStyle)
                 .setGrandTotalLegend("Totales :")
-                .setPrintBackgroundOnOddRows(true)
-                .setOddRowBackgroundStyle(oddRowStyle)
                 .setWhenResourceMissing(DJConstants.WHEN_RESOURCE_MISSING_TYPE_EMPTY)
                 .setWhenNoDataNoPages();
 
         //.setOddRowBackgroundStyle(oddRowStyle)
-                
+
         //String imagePath = resourceMap.getResourcesDir() + "/" + resourceMap.getString("small_ucsg");
         //drb.addImageBanner(imagePath, new Integer(197), new Integer(60), ImageBanner.ALIGN_RIGHT);
         List<AbstractColumn> columns = report.CreateColumns(listSelected, drb, detStyle, headerStyle);
@@ -106,15 +104,16 @@ public class ReportTemplate extends GenerateDynamicReport {
         }
         String stFieldSelected = pQuery.createQueryFields(listSelected);
         String stFiltertmp = pQuery.createWhereClause(wizardData, drb);
-        String stFilterWhere = (stFiltertmp != null ? " WHERE user_power_meter.ID_USER_SICCE = " + userSicce.getIdUserSicce() + " AND "+ stFiltertmp : "");
+        String stFilterWhere = (stFiltertmp != null ? " WHERE user_power_meter.ID_USER_SICCE = " + userSicce.getIdUserSicce() + " AND " + stFiltertmp : "");
         String stFieldGroup = null;
 
         if (listGroup != null && !listGroup.isEmpty()) {
+            drb.setPrintBackgroundOnOddRows(true);
+            drb.setOddRowBackgroundStyle(oddRowStyle);
             drb.setPrintColumnNames(false);
-            stFieldGroup = pQuery.createQueryGroupby(listGroup); 
-            report.createGroup(columns,wizardData, drb);
-        }
-        else{
+            stFieldGroup = pQuery.createQueryGroupby(listGroup);
+            report.createGroup(columns, wizardData, drb);
+        } else {
             report.addGlobalVariables(columns, drb, footerVariables, detStyle, headerStyle);
         }
 
@@ -134,7 +133,7 @@ public class ReportTemplate extends GenerateDynamicReport {
         System.out.println("QUERY :" + query);
         drb.setQuery(query, DJConstants.QUERY_LANGUAGE_SQL);
         drb.addAutoText(AutoText.AUTOTEXT_CREATED_ON, AutoText.POSITION_FOOTER, AutoText.ALIGMENT_LEFT, AutoText.PATTERN_DATE_DATE_TIME);
-        drb.setReportLocale(new Locale("es","AR"));
+        drb.setReportLocale(new Locale("es", "AR"));
 
 
         DynamicReport dr = drb.build();

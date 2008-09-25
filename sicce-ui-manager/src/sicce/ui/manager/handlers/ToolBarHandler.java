@@ -148,7 +148,7 @@ public class ToolBarHandler implements ListSelectionListener {
                 SetDefaultState();
                 break;
             case New:
-                SetToolBarItemsState(true, true, false, false, false);
+                SetToolBarItemsState(true, true, true, true, true);
                 break;
             case Save:
                 if (!eventArgument.getCancelEvent()) {
