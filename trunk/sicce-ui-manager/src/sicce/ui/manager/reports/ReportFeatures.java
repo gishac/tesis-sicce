@@ -71,7 +71,7 @@ public class ReportFeatures {
      * @param listGroup
      * @param drb
      */
-    public void createGroup(List<AbstractColumn> listColumn, Map wizardData, DynamicReportBuilder drb) {
+    public void createGroup(List<AbstractColumn> listColumn, Map wizardData, DynamicReportBuilder drb, Style footerVariables) {
 
         Boolean chart = (Boolean) wizardData.get(KEY_BL_CHART);
         Field chartSelected = (Field) wizardData.get(KEY_FIELD_CHART);
@@ -85,10 +85,12 @@ public class ReportFeatures {
         List<AbstractColumn> columnGroup = getColumnsGroup(listColumn, listGroup);
         String columnGraph = null;
         for (AbstractColumn column : (List<AbstractColumn>) columnGroup) {
-            GroupBuilder groupBuilder = addFooterVariables(columnMeasure);
+            GroupBuilder groupBuilder = addFooterVariables(columnMeasure, footerVariables);
             columnsGroup = groupBuilder.setCriteriaColumn((PropertyColumn) column)
-                    .setStartInNewPage(chart)
-                    .setGroupLayout(GroupLayout.DEFAULT_WITH_HEADER).build();
+                    .setGroupLayout(GroupLayout.DEFAULT).build();
+                    //.setStartInNewPage(chart)
+            if (columnGroup.indexOf(column) == 0)
+                    groupBuilder.setGroupLayout(GroupLayout.DEFAULT_WITH_HEADER).build();
             
             drb.addGroup(columnsGroup);
             columnGraph = column.getTitle();
@@ -113,7 +115,7 @@ public class ReportFeatures {
 
     }
 
-    public GroupBuilder addFooterVariables(List<AbstractColumn> listMeasure) {
+    public GroupBuilder addFooterVariables(List<AbstractColumn> listMeasure, Style footerVariables) {
 
         if (listMeasure.size() < 0) {
             return null;
@@ -121,7 +123,7 @@ public class ReportFeatures {
 
         GroupBuilder groupBuilder = new GroupBuilder();
         for (AbstractColumn columnMeasure : (List<AbstractColumn>) listMeasure) {
-            groupBuilder.addFooterVariable(columnMeasure, ColumnsGroupVariableOperation.SUM);
+            groupBuilder.addFooterVariable(columnMeasure, ColumnsGroupVariableOperation.SUM,footerVariables );
             lstColumns.add(columnMeasure);
 
         }
@@ -136,7 +138,7 @@ public class ReportFeatures {
             DJChartBuilder builder2 = cb.addType(DJChart.BAR_CHART)
                     .addOperation(DJChart.CALCULATION_SUM)
                     .addColumnsGroup(groupChart)
-                    .setPosition(DJChartOptions.POSITION_HEADER)
+                    .setPosition(DJChartOptions.POSITION_FOOTER)
                     .setCentered(true)
                     .setHeight(chartHeight)
                     .setShowLabels(true).setShowLegend(true);
@@ -147,7 +149,7 @@ public class ReportFeatures {
             DJChart chart = builder2.build();
             drb.addChart(chart);
         } catch (ChartBuilderException ex) {
-            Logger.getLogger(ReportTemplate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(ReportTemplate.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

@@ -30,6 +30,7 @@ public class ReportTemplate extends GenerateDynamicReport {
     public static final String KEY_FINISH_DATE = "finishDate";
     public static final String KEY_ORT_VERTICAL = "ortVertical";
     public static final String KEY_ORT_HORIZONTAL = "ortHorizontal";
+    public static final String KEY_BL_CHART = "blChart";
     public List<AbstractColumn> lstColumns = new ArrayList();
 
     public DynamicReport buildReport(Map wizardData, IUserSicce userSicce) throws Exception {
@@ -44,7 +45,7 @@ public class ReportTemplate extends GenerateDynamicReport {
         String title = (String) wizardData.get(KEY_NAME);
         Boolean pvertical = (Boolean) wizardData.get(KEY_ORT_VERTICAL);
         Boolean phorizontal = (Boolean) wizardData.get(KEY_ORT_HORIZONTAL);
-
+        Boolean chart = (Boolean) wizardData.get(KEY_BL_CHART);
         /*Instanciamos los estilos para cada sección*/
         Style detStyle = new Style();
         Style headerStyle = new Style();
@@ -62,10 +63,10 @@ public class ReportTemplate extends GenerateDynamicReport {
         // headerStyle.getStreching();
 
         /* Definir el formato para la cabecera del reporte - headerStyle -*/
-        footerVariables.setFont(Font.VERDANA_SMALL);
+        footerVariables.setFont(Font.VERDANA_SMALL_BOLD);
         footerVariables.setBorder(Border.NO_BORDER);
-        footerVariables.setTextColor(Color.BLUE);
-        footerVariables.setHorizontalAlign(HorizontalAlign.RIGHT);
+        footerVariables.setHorizontalAlign(HorizontalAlign.LEFT);
+        footerVariables.setPattern("0.00");
         // footerVariables.getStreching();
 
 
@@ -85,9 +86,10 @@ public class ReportTemplate extends GenerateDynamicReport {
         drb.setTitle(title).setMargins(30, 20, 30, 15)
                 .setDefaultStyles(headerStyle, titleStyle, detStyle, footerVariables)
                 .setTitleStyle(titleStyle)
-                .setGrandTotalLegend("Totales :")
-                .setWhenResourceMissing(DJConstants.WHEN_RESOURCE_MISSING_TYPE_EMPTY)
-                .setWhenNoDataNoPages();
+                .setPrintBackgroundOnOddRows(true)
+                .setGrandTotalLegend("Totales:")
+                .setGrandTotalLegendStyle(footerVariables)
+                .setOddRowBackgroundStyle(oddRowStyle).setWhenResourceMissing(DJConstants.WHEN_RESOURCE_MISSING_TYPE_EMPTY).setWhenNoDataNoPages();
 
         //.setOddRowBackgroundStyle(oddRowStyle)
 
@@ -107,12 +109,12 @@ public class ReportTemplate extends GenerateDynamicReport {
         String stFilterWhere = (stFiltertmp != null ? " WHERE user_power_meter.ID_USER_SICCE = " + userSicce.getIdUserSicce() + " AND " + stFiltertmp : "");
         String stFieldGroup = null;
 
-        if (listGroup != null && !listGroup.isEmpty()) {
-            drb.setPrintBackgroundOnOddRows(true);
-            drb.setOddRowBackgroundStyle(oddRowStyle);
+        if (listGroup != null && !listGroup.isEmpty() && !chart) {
+            drb.setPrintBackgroundOnOddRows(false);
+            drb.setPrintColumnNames(false);
             drb.setPrintColumnNames(false);
             stFieldGroup = pQuery.createQueryGroupby(listGroup);
-            report.createGroup(columns, wizardData, drb);
+            report.createGroup(columns, wizardData, drb, footerVariables);
         } else {
             report.addGlobalVariables(columns, drb, footerVariables, detStyle, headerStyle);
         }
@@ -125,7 +127,7 @@ public class ReportTemplate extends GenerateDynamicReport {
         } else {
             query = "SELECT" + " " + stFieldSelected + " " + joins;
         }
-        if (!listGroup.isEmpty()) {
+        if (!listGroup.isEmpty() && stFieldGroup!=null) {
             query = query + " GROUP BY " + stFieldGroup;
         }
 
