@@ -34,7 +34,6 @@ import sicce.api.util.UtilMath;
  */
 public class ModbusBizObject {
 
-   
     /**
      * 
      */
@@ -77,7 +76,7 @@ public class ModbusBizObject {
         String octets[] = powerMeter.getIpAddress().split("\\.");
         for (int index = 0; index <= 3; index++) {
             int value = Integer.parseInt(octets[index]);
-            byteIpAddress[index] = (byte)value;
+            byteIpAddress[index] = (byte) value;
         }
         return byteIpAddress;
     }
@@ -111,40 +110,42 @@ public class ModbusBizObject {
      */
     public IModbusResponse SendModbusRequest(IModbusRequest request, RequestType requestType, IPowerMeter powerMeter) throws IOException {
         IModbusResponse response = ClassFactory.getModbusResponse();
-        response.setPowerMeter(powerMeter);     
+        response.setPowerMeter(powerMeter);
         switch (requestType) {
             case HoldingRegisters:
-                response.setHoldingRegistersResponse(GetResponseBuffer(request, requestType.getTotalRegisters(),powerMeter));
+                response.setHoldingRegistersResponse(GetResponseBuffer(request, requestType.getTotalRegisters(), powerMeter));
                 break;
-            case THD:
-                response.setTHDValuesResponse(GetResponse(request, requestType.getTotalRegisters(),powerMeter));
-                break;
+//            case THD:
+//                response.setTHDValuesResponse(GetResponse(request, requestType.getTotalRegisters(), powerMeter));
+//                break;
         }
         return response;
     }
-    
+
     /**
      * 
      * @param response
      * @param measure
      */
-    public void ProcessModbusResponse(IModbusResponse response, IMeasure measure) throws InvalidModbusResponseException{        
-        if(!ValidateHoldingRegistersResponse(response)){
+    public void ProcessModbusResponse(IModbusResponse response, IMeasure measure) throws InvalidModbusResponseException {
+        if (!ValidateHoldingRegistersResponse(response)) {
             throw new InvalidModbusResponseException();
         }
-        String[] holdingRegistersFrame = response.getHoldingRegistersResponse();                
+        String[] holdingRegistersFrame = response.getHoldingRegistersResponse();
         //String holdingRegistersFrame = "";
         measure.setDateMeasure(Calendar.getInstance().getTime());
-        measure.setLocation((ILocation)response.getPowerMeter().getLocations().toArray()[0]);
+        measure.setLocation((ILocation) response.getPowerMeter().getLocations().toArray()[0]);
         measure.setPowerMeter(response.getPowerMeter());
-        
-        measure.setPhaseToNeutralVoltagePhase1(GetRegisterValue(ModbusRegister.PhaseToNeutralVoltagePhase1, holdingRegistersFrame));        
+
+        measure.setPhaseToNeutralVoltagePhase1(GetRegisterValue(ModbusRegister.PhaseToNeutralVoltagePhase1, holdingRegistersFrame));
         measure.setPhaseToNeutralVoltagePhase2(GetRegisterValue(ModbusRegister.PhaseToNeutralVoltagePhase2, holdingRegistersFrame));
-        measure.setPhaseToNeutralVoltagePhase3(GetRegisterValue(ModbusRegister.PhaseToNeutralVoltagePhase3, holdingRegistersFrame));                
+        measure.setPhaseToNeutralVoltagePhase3(GetRegisterValue(ModbusRegister.PhaseToNeutralVoltagePhase3, holdingRegistersFrame));
         measure.setPhaseToPhaseVoltagePhase1To2(GetRegisterValue(ModbusRegister.PhaseToPhaseVoltagePhase1To2, holdingRegistersFrame));
         measure.setPhaseToPhaseVoltagePhase2To3(GetRegisterValue(ModbusRegister.PhaseToPhaseVoltagePhase2To3, holdingRegistersFrame));
-        measure.setPhaseToPhaseVoltagePhase3To1(GetRegisterValue(ModbusRegister.PhaseToPhaseVoltagePhase3To1, holdingRegistersFrame));measure.setReactivePowerPhase1(GetRegisterValue(ModbusRegister.ReactivePowerPhase1, holdingRegistersFrame));
-        measure.setFrequency(GetRegisterValue(ModbusRegister.Frequency, holdingRegistersFrame));measure.setPhaseToNeutralVoltagePhase1(GetRegisterValue(ModbusRegister.PhaseToNeutralVoltagePhase1, holdingRegistersFrame));
+        measure.setPhaseToPhaseVoltagePhase3To1(GetRegisterValue(ModbusRegister.PhaseToPhaseVoltagePhase3To1, holdingRegistersFrame));
+        measure.setReactivePowerPhase1(GetRegisterValue(ModbusRegister.ReactivePowerPhase1, holdingRegistersFrame));
+        measure.setFrequency(GetRegisterValue(ModbusRegister.Frequency, holdingRegistersFrame));
+        measure.setPhaseToNeutralVoltagePhase1(GetRegisterValue(ModbusRegister.PhaseToNeutralVoltagePhase1, holdingRegistersFrame));
         measure.setTotalActivePower(GetRegisterValue(ModbusRegister.TotalActivePower, holdingRegistersFrame));
         measure.setTotalApparentPower(GetRegisterValue(ModbusRegister.TotalApparentPower, holdingRegistersFrame));
         measure.setTotalReactivePower(GetRegisterValue(ModbusRegister.TotalReactivePower, holdingRegistersFrame));
@@ -157,128 +158,98 @@ public class ModbusBizObject {
         measure.setApparentPowerPhase1(GetRegisterValue(ModbusRegister.ApparentPowerPhase1, holdingRegistersFrame));
         measure.setApparentPowerPhase2(GetRegisterValue(ModbusRegister.ApparentPowerPhase2, holdingRegistersFrame));
         measure.setApparentPowerPhase3(GetRegisterValue(ModbusRegister.ApparentPowerPhase3, holdingRegistersFrame));
-        measure.setActiveEnergyIn(GetRegisterValue(ModbusRegister.ActiveEnergyInPlus, holdingRegistersFrame));
+        measure.setActiveEnergyIn(GetRegisterValue(ModbusRegister.ActiveEnergyIn, holdingRegistersFrame));
     }
-    
+
     /**
      * 
      * @param register
      * @param frame
      * @return
      */
-    private Double GetRegisterValue(ModbusRegister register, String[] frame){
+    private Double GetRegisterValue(ModbusRegister register, String[] frame) {
         Double value = null;
         String registerHexValue = frame[register.getFrameStartIndex()] + frame[register.getFrameEndIndex()];
-        String registerStringValue = String.valueOf(Integer.parseInt(registerHexValue, 16)); 
-        value = Double.parseDouble(ApplyFormatToRegisterValue(registerStringValue,register));
+        String registerStringValue = String.valueOf(Integer.parseInt(registerHexValue, 16));
+        value = Double.parseDouble(ApplyFormatToRegisterValue(registerStringValue, register));
         return value;
     }
-    
-    
+
     /**
      * 
      * @param registerValue
      * @param register
      * @return
      */
-    private String ApplyFormatToRegisterValue(String registerValue, ModbusRegister register){
-        registerValue = UtilMath.Parse(registerValue, 2);/*
-        switch(register)
-        {
-            case PhaseToPhaseVoltagePhase1To2:
-                registerValue = UtilMath.Parse(registerValue, 2);
-                break;
-            case PhaseToPhaseVoltagePhase2To3:
-                registerValue = UtilMath.Parse(registerValue, 2);
-                break;
-            case PhaseToPhaseVoltagePhase3To1:
-                registerValue = UtilMath.Parse(registerValue, 2);
-                break;
-            case PhaseToNeutralVoltagePhase1:
-                registerValue = UtilMath.Parse(registerValue, 2);
-                break;
-            case PhaseToNeutralVoltagePhase2:
-                registerValue = UtilMath.Parse(registerValue, 2);
-                break;
-            case PhaseToNeutralVoltagePhase3:
-                registerValue = UtilMath.Parse(registerValue, 2);
-                break;
-        }*/
+    private String ApplyFormatToRegisterValue(String registerValue, ModbusRegister register) {
+        if (register == ModbusRegister.ActiveEnergyIn) {
+            return registerValue;
+        }
+        registerValue = UtilMath.Parse(registerValue, 2);
         return registerValue;
     }
-    
+
     /**
      * 
      * @param response
      * @return
      */
-    private boolean ValidateHoldingRegistersResponse(IModbusResponse response){
+    private boolean ValidateHoldingRegistersResponse(IModbusResponse response) {
         boolean valid = true;
         String[] frame = response.getHoldingRegistersResponse();
-        if(frame.length <= 4)
+        if (frame.length <= 4) {
             return false;
-        if(!ValidateDeviceID(response.getPowerMeter(), frame[0]))
+        }
+        if (!ValidateDeviceID(response.getPowerMeter(), frame[0])) {
             return false;
-        if(!ValidateHoldingRegistersID(frame[1]))
+        }
+        if (!ValidateHoldingRegistersID(frame[1])) {
             return false;
-        if(!ValidateResponseLength(frame))
+        }
+        if (!ValidateResponseLength(frame)) {
             return false;
+        }
         return valid;
     }
-    
+
     /**
      * 
      * @param powerMeter
      * @param frame
      * @return
      */
-    private boolean ValidateDeviceID(IPowerMeter powerMeter, String deviceID){
-        if(Integer.parseInt(deviceID) != Integer.parseInt(powerMeter.getDescription()))
+    private boolean ValidateDeviceID(IPowerMeter powerMeter, String deviceID) {
+        if (Integer.parseInt(deviceID) != Integer.parseInt(powerMeter.getDeviceID())) {
             return false;
+        }
         return true;
     }
-    
+
     /**
      * 
      * @param frame
      * @return
      */
-    private boolean ValidateHoldingRegistersID(String requestID){
-        return requestID.equals(ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_COMMAND).getValue());
+    private boolean ValidateHoldingRegistersID(String requestID) {
+        return Integer.parseInt(requestID) == Integer.parseInt(ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_COMMAND).getValue());
     }
-    
+
     /**
      * 
      * @param frame
      * @return
      */
-    private boolean ValidateResponseLength(String[] frame){
+    private boolean ValidateResponseLength(String[] frame) {
         String responseLengthHex = frame[2];
         int frameLength = GetIntValueFromHex(responseLengthHex);
-        if(frame.length != frameLength)
+        String requestedRegisters = ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_REGISTERS_TO_READ_HI_BYTES).getValue() + ModbusBizObject.getRequestFields().get(ConstantsProvider.READ_HOLDING_REGISTERS_REGISTERS_TO_READ_LO_BYTES).getValue();
+        int requestLength = Integer.parseInt(requestedRegisters, 16) * 2;
+        if (requestLength != frameLength) {
             return false;
+        }
         return true;
     }
-    
-    /**
-     * 
-     * @param request
-     * @param charsToRead
-     * @return
-     * @throws java.io.IOException
-     */
-    private String GetResponse(IModbusRequest request, int charsToRead, IPowerMeter powerMeter) throws IOException {
-       
-        Socket socket = new Socket(request.getIpAddress(), Integer.parseInt(ModbusBizObject.getRequestFields().get(ConstantsProvider.PORT).getValue()));
-        socket.setReuseAddress(true);
-        WriteRequest(socket.getOutputStream(), request);
-        String response = ReadResult(socket.getInputStream(), charsToRead);
-        socket.shutdownOutput();
-        socket.shutdownInput();
-        socket.close();
-        return response;
-    }
-    
+
     /**
      * 
      * @param request
@@ -287,7 +258,7 @@ public class ModbusBizObject {
      * @throws java.io.IOException
      */
     private String[] GetResponseBuffer(IModbusRequest request, int charsToRead, IPowerMeter powerMeter) throws IOException {
-       
+
         Socket socket = new Socket(request.getIpAddress(), Integer.parseInt(ModbusBizObject.getRequestFields().get(ConstantsProvider.PORT).getValue()));
         socket.setReuseAddress(true);
         WriteRequest(socket.getOutputStream(), request);
@@ -309,32 +280,11 @@ public class ModbusBizObject {
         String fullFrame = "";
         for (int index = 0; index < frame.length; index++) {
             int value = GetIntValueFromHex(frame[index]);
-            fullFrame += String.valueOf((byte)value);
+            fullFrame += String.valueOf((byte) value);
             outputStream.write(value);
         }
         outputStream.flush();
-        //
-    }
-    
-    /**
-     * 
-     * @param inputStream
-     * @param charsToRead
-     * @return
-     * @throws java.io.IOException
-     */
-    private String ReadResult(InputStream inputStream, int charsToRead) throws IOException {
-        
-        StringBuffer buffer = new StringBuffer();
-        for (int index = 0; index < charsToRead; index++) {
-            String valueHex = Integer.toHexString(inputStream.read()).toUpperCase();
-            //String valueHex2 = (valueHex.length() == 1 ? "0" + valueHex : valueHex);
-            //System.out.println(valueHex);
-            buffer.append(valueHex);
-        }
-        //System.out.println("buffer2 " + buffer2.toString());
-        //return buffer.toString();
-        return buffer.toString();
+    //
     }
 
     /**
@@ -348,7 +298,8 @@ public class ModbusBizObject {
         String[] buffer = new String[charsToRead];
         for (int index = 0; index < charsToRead; index++) {
             String valueHex = Integer.toHexString(inputStream.read()).toUpperCase();
-            buffer[index] = valueHex.equals("0")? "0" + valueHex : valueHex;
+            System.out.println(valueHex);
+            buffer[index] = valueHex.length() <= 1 ? "0" + valueHex : valueHex;
         }
         return buffer;
     }
@@ -361,6 +312,7 @@ public class ModbusBizObject {
     private int GetIntValueFromHex(String value) {
         return Integer.parseInt(value, 16);
     }
+
     /**
      * 
      * @return
