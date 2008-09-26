@@ -58,10 +58,11 @@ public class MeasureVisibilityHandler {
      * Constructor
      */
     private MeasureVisibilityHandler() {
-        getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase1, "Intensidad Instantánea, Fase 1");
-        getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase2, "Intensidad Instantánea, Fase 2");
-        getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase3, "Intensidad Instantánea, Fase 3");
-        getRegistersInViews().put(ModbusRegister.NeutralCurrent, "Intensidad del Neutro");
+        //getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase1, "Intensidad Instantánea, Fase 1");
+        //getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase2, "Intensidad Instantánea, Fase 2");
+        //getRegistersInViews().put(ModbusRegister.InstantaneousCurrentPhase3, "Intensidad Instantánea, Fase 3");
+        //getRegistersInViews().put(ModbusRegister.NeutralCurrent, "Intensidad del Neutro");
+        getRegistersInViews().put(ModbusRegister.ActiveEnergyIn, "Total Energía Consumida");
         getRegistersInViews().put(ModbusRegister.PhaseToPhaseVoltagePhase1To2, "Tensión Fase a Fase, Fase 1 a 2");
         getRegistersInViews().put(ModbusRegister.PhaseToPhaseVoltagePhase2To3, "Tensión Fase a Fase, Fase 2 a 3");
         getRegistersInViews().put(ModbusRegister.PhaseToPhaseVoltagePhase3To1, "Tensión Fase a Fase, Fase 3 a 1");
