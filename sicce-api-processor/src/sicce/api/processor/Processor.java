@@ -137,7 +137,7 @@ public class Processor {
      * Inicia el proceso de lecturas
      * @return <strong>True</strong>, si se inicia el proceso de lecturas; <strong>False</strong>, si no inicia el proceso de lecturas
      */
-    public boolean Run(){
+    public boolean RunProcessor(){
         return false;
     }
         

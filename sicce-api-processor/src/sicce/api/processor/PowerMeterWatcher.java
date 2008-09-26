@@ -95,8 +95,10 @@ public class PowerMeterWatcher extends Observable implements IPowerMeterWatcher 
                 System.out.println("Medidor: " + this.getPowerMeter().getDescription() + " Bloqueado");
                 return;
             }
+            
+            System.out.println("Lectura en: " + this.getPowerMeter().getDescription());
             HashMap<RequestType, IModbusResponse> powerMeterData = powerMeterBizObject.ReadPowerMeterData(this.powerMeter);
-            IMeasure measure = powerMeterBizObject.ProcessPowerMeterData(powerMeterData);
+            IMeasure measure = powerMeterBizObject.ProcessPowerMeterData(powerMeterData);            
             MeasureDB.Save(measure);
             setChanged();
             notifyObservers(measure);
