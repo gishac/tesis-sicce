@@ -58,6 +58,11 @@ public class MeasureViewHandler {
     private JTextField txtTotalApparentPower;
     
     /**
+     * Caja de texto para mostrar el parametro Energia Activa Consumida
+     */
+    private JTextField txtTotalActiveEnergyIn;
+    
+    /**
      * Modelo de tabla para mostrar los valores de los registros
      */
     private PhaseValuesTableModel measurestableModel;
@@ -103,10 +108,11 @@ public class MeasureViewHandler {
      * @param txtTotalActivePower Caja de texto para mostrar el parametro Potencia Total Activa
      * @param txtTotalReactivePower Caja de texto para mostrar el parametro Potencia Total Reactiva
      * @param txtTotalApparentPower Caja de texto para mostrar el parametro Potencia Total Aparente
+     * @param txtTotalActiveEnergyIn Caja de texto para mostrar el parametro Energia Activa Consumida
      */
     public MeasureViewHandler(JTable measuresTable, JTextField txtPhaseToPhaseVoltage1To2,
             JTextField txtPhaseToPhaseVoltage2To3, JTextField txtPhaseToPhaseVoltage3To1, JTextField txtTotalActivePower,
-            JTextField txtTotalReactivePower, JTextField txtTotalApparentPower) {
+            JTextField txtTotalReactivePower, JTextField txtTotalApparentPower, JTextField txtTotalActiveEnergyIn) {
         this.measuresTable = measuresTable;
         measurestableModel = new PhaseValuesTableModel(null);
         this.measuresTable.setModel(measurestableModel);
@@ -116,6 +122,7 @@ public class MeasureViewHandler {
         this.txtTotalActivePower = txtTotalActivePower;
         this.txtTotalReactivePower = txtTotalReactivePower;
         this.txtTotalApparentPower = txtTotalApparentPower;
+        this.txtTotalActiveEnergyIn = txtTotalActiveEnergyIn;
     }
 
     /**
@@ -135,6 +142,7 @@ public class MeasureViewHandler {
             this.txtTotalActivePower.setText(measure.getTotalActivePower().toString());
             this.txtTotalApparentPower.setText(measure.getTotalApparentPower().toString());
             this.txtTotalReactivePower.setText(measure.getTotalReactivePower().toString());
+            this.txtTotalActiveEnergyIn.setText(measure.getActiveEnergyIn().toString());
         }
     }
 
