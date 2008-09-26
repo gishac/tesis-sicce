@@ -60,7 +60,7 @@ public class MeasuresPane extends DataDisplayer{
         this.processor = processor;
         this.powerMetersForCurrentUser = powerMetersForCurrentUser;
         measureViewHandler = new MeasureViewHandler(measuresTable, txtPhaseToPhaseVoltage1To2, txtPhaseToPhaseVoltage2To3, txtPhaseToPhaseVoltage3To1,
-                txtTotalActivePower, txtTotalApparentPower, txtTotalReactivePower);
+                txtTotalActivePower, txtTotalReactivePower,txtTotalApparentPower,txtTotalActiveEnergyIn);
         List<IPowerMeter> powerMeters = new ArrayList();
         for (IPowerMeter powerMeter : powerMetersForCurrentUser) {
             powerMeters.add(powerMeter);
@@ -101,6 +101,8 @@ public class MeasuresPane extends DataDisplayer{
         txtTotalReactivePower = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtTotalApparentPower = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtTotalActiveEnergyIn = new javax.swing.JTextField();
 
         setName("Form"); // NOI18N
 
@@ -239,13 +241,24 @@ public class MeasuresPane extends DataDisplayer{
         txtTotalApparentPower.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         txtTotalApparentPower.setName("txtTotalApparentPower"); // NOI18N
 
+        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
+        jLabel7.setName("jLabel7"); // NOI18N
+
+        txtTotalActiveEnergyIn.setBackground(resourceMap.getColor("txtTotalActiveEnergyIn.background")); // NOI18N
+        txtTotalActiveEnergyIn.setEditable(false);
+        txtTotalActiveEnergyIn.setFont(resourceMap.getFont("txtTotalActiveEnergyIn.font")); // NOI18N
+        txtTotalActiveEnergyIn.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTotalActiveEnergyIn.setText(resourceMap.getString("txtTotalActiveEnergyIn.text")); // NOI18N
+        txtTotalActiveEnergyIn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txtTotalActiveEnergyIn.setName("txtTotalActiveEnergyIn"); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -255,10 +268,14 @@ public class MeasuresPane extends DataDisplayer{
                             .addComponent(txtTotalReactivePower, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTotalActivePower, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTotalApparentPower, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtTotalActiveEnergyIn)
+                            .addComponent(txtTotalApparentPower, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,7 +290,12 @@ public class MeasuresPane extends DataDisplayer{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txtTotalApparentPower, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtTotalApparentPower, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtTotalActiveEnergyIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -283,13 +305,15 @@ public class MeasuresPane extends DataDisplayer{
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 916, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(lblCurrentPowerMeter)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbCurrentPowerMeter, 0, 371, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cmbCurrentPowerMeter, 0, 837, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -302,10 +326,10 @@ public class MeasuresPane extends DataDisplayer{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     private void cmbCurrentPowerMeterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCurrentPowerMeterActionPerformed
@@ -327,6 +351,7 @@ public class MeasuresPane extends DataDisplayer{
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -335,6 +360,7 @@ public class MeasuresPane extends DataDisplayer{
     private javax.swing.JTextField txtPhaseToPhaseVoltage1To2;
     private javax.swing.JTextField txtPhaseToPhaseVoltage2To3;
     private javax.swing.JTextField txtPhaseToPhaseVoltage3To1;
+    private javax.swing.JTextField txtTotalActiveEnergyIn;
     private javax.swing.JTextField txtTotalActivePower;
     private javax.swing.JTextField txtTotalApparentPower;
     private javax.swing.JTextField txtTotalReactivePower;
