@@ -32,41 +32,17 @@ public class PhaseValuesTableModel extends SicceTableModel<IMeasure> {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Object value = null;
         if (rowIndex == 0 && columnIndex == 0) {
-            value = "Intensidad Instantánea";
-        }
-        if (rowIndex == 1 && columnIndex == 0) {
-            value = "Tension Fase a Neutro";
-        }
-        if (rowIndex == 2 && columnIndex == 0) {
             value = "Potencia Activa";
         }
-        if (rowIndex == 3 && columnIndex == 0) {
+        if (rowIndex == 1 && columnIndex == 0) {
             value = "Potencia Reactiva";
         }
+        if (rowIndex == 2 && columnIndex == 0) {
+            value = "Potencia Aparente";
+        }
         if (this.measure != null) {
+            
             if (rowIndex == 0) {
-                /*if (columnIndex == 1) {
-                    value = measure.getInstantaneousCurrentPhase1();
-                }
-                if (columnIndex == 2) {
-                    value = measure.getInstantaneousCurrentPhase2();
-                }
-                if (columnIndex == 3) {
-                    value = measure.getInstantaneousCurrentPhase2();
-                }*/
-            }
-            if (rowIndex == 1) {
-                if (columnIndex == 1) {
-                    value = measure.getPhaseToNeutralVoltagePhase1();
-                }
-                if (columnIndex == 2) {
-                    value = measure.getPhaseToNeutralVoltagePhase2();
-                }
-                if (columnIndex == 3) {
-                    value = measure.getPhaseToNeutralVoltagePhase3();
-                }
-            }
-            if (rowIndex == 2) {
                 if (columnIndex == 1) {
                     value = measure.getActivePowerPhase1();
                 }
@@ -77,7 +53,7 @@ public class PhaseValuesTableModel extends SicceTableModel<IMeasure> {
                     value = measure.getActivePowerPhase3();
                 }
             }
-            if (rowIndex == 3) {
+            if (rowIndex == 1) {
                 if (columnIndex == 1) {
                     value = measure.getReactivePowerPhase1();
                 }
@@ -88,12 +64,23 @@ public class PhaseValuesTableModel extends SicceTableModel<IMeasure> {
                     value = measure.getReactivePowerPhase3();
                 }
             }
+            if (rowIndex == 2) {
+                if (columnIndex == 1) {
+                    value = measure.getApparentPowerPhase1();
+                }
+                if (columnIndex == 2) {
+                    value = measure.getApparentPowerPhase2();
+                }
+                if (columnIndex == 3) {
+                    value = measure.getApparentPowerPhase3();
+                }
+            }
         }
         return value;
     }
 
     @Override
     public int getRowCount() {
-        return 4;
+        return 3;
     }
 }

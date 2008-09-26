@@ -92,7 +92,7 @@ public class MeasureBizObject {
         if(registerID == ModbusRegister.ApparentPowerPhase2.ordinal()){
             value = measure.getApparentPowerPhase2();
         }
-        if(registerID == ModbusRegister.ActiveEnergyInPlus.ordinal()){
+        if(registerID == ModbusRegister.ActiveEnergyIn.ordinal()){
             value = measure.getActiveEnergyIn();
         }
         return value;
