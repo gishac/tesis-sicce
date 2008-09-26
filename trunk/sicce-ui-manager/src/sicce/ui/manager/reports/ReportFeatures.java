@@ -53,10 +53,7 @@ public class ReportFeatures {
         for (Field fieldSelected : (List<Field>) listSelected) {
             try {
 
-                AbstractColumn column = ColumnBuilder.getInstance()
-                        .setColumnProperty(fieldSelected.getAliasField(), fieldSelected.getDataType())
-                        .setTitle(fieldSelected.getTitle()).setWidth(fieldSelected.getSize()).setStyle(detailStyle)
-                        .setHeaderStyle(headerStyle).build();
+                AbstractColumn column = ColumnBuilder.getInstance().setColumnProperty(fieldSelected.getAliasField(), fieldSelected.getDataType()).setTitle(fieldSelected.getTitle()).setWidth(fieldSelected.getSize()).setStyle(detailStyle).setHeaderStyle(headerStyle).build();
                 listColumn.add(column);
                 drb.addColumn(column);
             } catch (ColumnBuilderException ex) {
@@ -86,26 +83,30 @@ public class ReportFeatures {
         String columnGraph = null;
         for (AbstractColumn column : (List<AbstractColumn>) columnGroup) {
             GroupBuilder groupBuilder = addFooterVariables(columnMeasure, footerVariables);
-            columnsGroup = groupBuilder.setCriteriaColumn((PropertyColumn) column)
-                    .setGroupLayout(GroupLayout.DEFAULT).build();
-                    //.setStartInNewPage(chart)
-            if (columnGroup.indexOf(column) == 0)
-                    groupBuilder.setGroupLayout(GroupLayout.DEFAULT_WITH_HEADER).build();
-            
+            columnsGroup = groupBuilder.setCriteriaColumn((PropertyColumn) column).setGroupLayout(GroupLayout.DEFAULT).build();
+            //.setStartInNewPage(chart)
+            if (columnGroup.indexOf(column) == 0) {
+                groupBuilder.setGroupLayout(GroupLayout.DEFAULT_WITH_HEADER).build();
+            }
+
             drb.addGroup(columnsGroup);
-            columnGraph = column.getTitle();
+        //columnGraph = column.getTitle();
         }
-         if (chart && chartSelected!=null) {
+
+        for (AbstractColumn column : (List<AbstractColumn>) columnGroup) {
+            columnGraph = column.getTitle();
+            if (chart && chartSelected != null) {
                 if (chartSelected.getTitle().equals(columnGraph)) {
                     addChart(columnsGroup, drb);
                 }
             }
+        }
     }
 
     public void addGlobalVariables(List<AbstractColumn> listColumns, DynamicReportBuilder drb, Style footerVariables, Style importeStyle, Style headerStyle) {
 
         List<AbstractColumn> listMeasure = getMeasuresColumns(listColumns);
-        
+
         if (listMeasure.size() < 0) {
             return;
         }
@@ -123,7 +124,7 @@ public class ReportFeatures {
 
         GroupBuilder groupBuilder = new GroupBuilder();
         for (AbstractColumn columnMeasure : (List<AbstractColumn>) listMeasure) {
-            groupBuilder.addFooterVariable(columnMeasure, ColumnsGroupVariableOperation.SUM,footerVariables );
+            groupBuilder.addFooterVariable(columnMeasure, ColumnsGroupVariableOperation.SUM, footerVariables);
             lstColumns.add(columnMeasure);
 
         }
@@ -135,13 +136,7 @@ public class ReportFeatures {
         try {
             DJChartBuilder cb = new DJChartBuilder();
             int chartHeight = 150;
-            DJChartBuilder builder2 = cb.addType(DJChart.BAR_CHART)
-                    .addOperation(DJChart.CALCULATION_SUM)
-                    .addColumnsGroup(groupChart)
-                    .setPosition(DJChartOptions.POSITION_FOOTER)
-                    .setCentered(true)
-                    .setHeight(chartHeight)
-                    .setShowLabels(true).setShowLegend(true);
+            DJChartBuilder builder2 = cb.addType(DJChart.BAR_CHART).addOperation(DJChart.CALCULATION_SUM).addColumnsGroup(groupChart).setPosition(DJChartOptions.POSITION_FOOTER).setCentered(true).setHeight(chartHeight).setShowLabels(true).setShowLegend(true);
 
             for (AbstractColumn column : (List<AbstractColumn>) lstColumns) {
                 builder2 = builder2.addColumn(column);
@@ -149,7 +144,7 @@ public class ReportFeatures {
             DJChart chart = builder2.build();
             drb.addChart(chart);
         } catch (ChartBuilderException ex) {
-            //Logger.getLogger(ReportTemplate.class.getName()).log(Level.SEVERE, null, ex);
+        //Logger.getLogger(ReportTemplate.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

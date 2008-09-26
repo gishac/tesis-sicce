@@ -48,7 +48,8 @@ FROM
      LEFT JOIN zone ON location_zone.`ID_ZONE` = zone.`ID_ZONE`
      INNER JOIN `user_sicce` user_sicce ON user_power_meter.`ID_USER_SICCE` = user_sicce.`ID_USER_SICCE`
 WHERE
-     user_sicce.`ID_USER_SICCE` = $P{iduser}]]></queryString>
+     user_sicce.`ID_USER_SICCE` = $P{iduser}
+order by location.`ID_LOCATION`]]></queryString>
 
 	<field name="zone_DESCRIPTION" class="java.lang.String"/>
 	<field name="location_DESCRIPTION" class="java.lang.String"/>
@@ -348,7 +349,7 @@ WHERE
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Reporte de Medidores Registrados]]></text>
+				<text><![CDATA[Reporte de Alarmas asignadas ]]></text>
 				</staticText>
 			</band>
 		</pageHeader>

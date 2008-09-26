@@ -56,7 +56,8 @@ FROM
      LEFT JOIN  location_zone ON location.`ID_LOCATION` = location_zone.`ID_LOCATION`
      LEFT JOIN  zone ON location_zone.`ID_ZONE` = zone.`ID_ZONE`
 WHERE
-     alarm_user.`ID_USER` = $P{iduser}]]></queryString>
+     alarm_user.`ID_USER` = $P{iduser}
+order by location.`ID_LOCATION`]]></queryString>
 
 	<field name="zone_DESCRIPTION" class="java.lang.String"/>
 	<field name="location_DESCRIPTION" class="java.lang.String"/>
@@ -183,10 +184,27 @@ WHERE
 			<band height="38"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
+						mode="Opaque"
+						x="217"
+						y="19"
+						width="150"
+						height="19"
+						backcolor="#FFFFFF"
+						key="staticText-15"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Registro]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
 						x="4"
 						y="19"
 						width="22"
 						height="19"
+						backcolor="#FFFFFF"
 						key="staticText-4"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -196,10 +214,12 @@ WHERE
 				</staticText>
 				<staticText>
 					<reportElement
+						mode="Opaque"
 						x="26"
 						y="19"
 						width="189"
 						height="19"
+						backcolor="#FFFFFF"
 						key="staticText-6"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -324,29 +344,18 @@ WHERE
 				</line>
 				<staticText>
 					<reportElement
+						mode="Opaque"
 						x="447"
 						y="21"
 						width="81"
 						height="16"
+						backcolor="#FFFFFF"
 						key="staticText-14"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Valor Max.]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="217"
-						y="19"
-						width="158"
-						height="19"
-						key="staticText-15"/>
-					<box></box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Registro]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -359,10 +368,12 @@ WHERE
 				</line>
 				<staticText>
 					<reportElement
-						x="376"
+						mode="Opaque"
+						x="377"
 						y="21"
 						width="67"
 						height="16"
+						backcolor="#FFFFFF"
 						key="staticText-16"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">

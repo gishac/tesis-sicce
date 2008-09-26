@@ -109,9 +109,11 @@ public class ReportTemplate extends GenerateDynamicReport {
         String stFilterWhere = (stFiltertmp != null ? " WHERE user_power_meter.ID_USER_SICCE = " + userSicce.getIdUserSicce() + " AND " + stFiltertmp : "");
         String stFieldGroup = null;
 
-        if (listGroup != null && !listGroup.isEmpty() && !chart) {
-            drb.setPrintBackgroundOnOddRows(false);
-            drb.setPrintColumnNames(false);
+//        drb.setPrintBackgroundOnOddRows(false);
+//            drb.setPrintColumnNames(false);
+//            
+        
+        if (listGroup != null && chart) {
             drb.setPrintColumnNames(false);
             stFieldGroup = pQuery.createQueryGroupby(listGroup);
             report.createGroup(columns, wizardData, drb, footerVariables);
