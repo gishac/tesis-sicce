@@ -23,7 +23,7 @@ public class ReportTableModel extends SicceTableModel<ReportModel> {
     public ReportTableModel(List<ReportModel> dataSource, Icon imgReport) {
         this.dataSource = dataSource;
         this.imgReport = imgReport;
-        columns = new String[]{"Nombre","Descripción", "Archivo"};
+        columns = new String[]{"Nombre","Descripción", "Ver"};
        
     }
 
@@ -39,8 +39,8 @@ public class ReportTableModel extends SicceTableModel<ReportModel> {
             case 2:
                 JButton reportButton = new JButton();
                 reportButton.setIcon(imgReport);
-                reportButton.setPreferredSize(new Dimension(30,20));
-                
+                reportButton.setPreferredSize(new Dimension(24,24));
+                reportButton.setToolTipText("Ejecutar Reporte");
                 return reportButton;
             default: 
                 return null;
