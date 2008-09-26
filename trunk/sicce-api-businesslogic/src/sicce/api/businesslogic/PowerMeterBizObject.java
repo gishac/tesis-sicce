@@ -8,6 +8,8 @@ import sicce.api.businesslogic.factory.ClassFactory;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import sicce.api.dataaccess.PowerMeterDB;
 import sicce.api.info.ConstantsProvider.RequestType;
@@ -61,4 +63,14 @@ public class PowerMeterBizObject {
         return measure;
     }
     
+    public Set<IPowerMeter> GetValidPowerMetersForMonitor(){        
+        List<IPowerMeter> activePowerMeters = GetAllPowerMeter();
+        Set<IPowerMeter> validPowerMeters = new HashSet<IPowerMeter>();
+        for (IPowerMeter powerMeter : activePowerMeters) {
+            if (powerMeter.getLocations() != null && powerMeter.getLocations().size() > 0) {
+                validPowerMeters.add(powerMeter);
+            }
+        }
+        return validPowerMeters;
+    }
 }
