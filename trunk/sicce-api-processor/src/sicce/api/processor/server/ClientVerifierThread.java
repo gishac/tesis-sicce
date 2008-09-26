@@ -48,6 +48,7 @@ public class ClientVerifierThread extends Thread{
             if((ellapsedTime / 1000) >= maxInactivityTime){
                 IUserSicce user = UserDB.FindUserByLogin(entry.getKey());
                 if(user != null){
+                    System.out.println("Desbloquear Medidores " + entry.getValue().toString());
                     processor.SetLockInPowerMetersFromUser(user, false);
                 }
             }

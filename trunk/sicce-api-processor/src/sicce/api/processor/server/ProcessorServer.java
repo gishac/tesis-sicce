@@ -4,6 +4,7 @@
  */
 package sicce.api.processor.server;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +33,7 @@ import sicce.api.util.EncryptionProvider;
  * Clase que administra el proceso de lecturas en modo servidor
  * @author gish@c
  */
-public class ProcessorServer extends Processor {
+public class ProcessorServer extends Processor implements Runnable {
 
     /**
      * Usuarios conectados a la aplicacion
@@ -65,7 +66,7 @@ public class ProcessorServer extends Processor {
 
         EncryptionProvider.RegisterHibernateEncryptor();
         ProcessorServer processor = new ProcessorServer();
-        processor.Run();
+        processor.RunProcessor();
     }
 
     /**
@@ -100,13 +101,7 @@ public class ProcessorServer extends Processor {
      */
     private void LoadAvailablePowerMetersForServer() {
         PowerMeterBizObject powerMeterHandler = new PowerMeterBizObject();
-        List<IPowerMeter> activePowerMeters = powerMeterHandler.GetAllPowerMeter();
-        Set<IPowerMeter> validPowerMeters = new HashSet<IPowerMeter>();
-        for (IPowerMeter powerMeter : activePowerMeters) {
-            if (powerMeter.getLocations() != null && powerMeter.getLocations().size() > 0) {
-                validPowerMeters.add(powerMeter);
-            }
-        }
+        Set<IPowerMeter> validPowerMeters = powerMeterHandler.GetValidPowerMetersForMonitor();
         AlarmBizObject alarmBizObject = new AlarmBizObject();
         for (IPowerMeter powerMeter : validPowerMeters) {
             for (IAlarm alarm : powerMeter.getAlarms()) {
@@ -138,7 +133,7 @@ public class ProcessorServer extends Processor {
     }
 
     @Override
-    public boolean Run() {
+    public boolean RunProcessor() {
         try {
             LoadAvailablePowerMetersForServer();
             if(getPowerMeters().size() <= 0)
@@ -148,14 +143,23 @@ public class ProcessorServer extends Processor {
             IParameter maxInactivityAllowed = ParameterDB.GetParameterByKey(ConstantsProvider.SERVER_MAX_INACTIVITY_ALLOWED);
             TimerTimeoutLauncher timeOutReader = new TimerTimeoutLauncher(this, Integer.parseInt(readTimeoutInterval.getValue()), Long.parseLong(maxInactivityAllowed.getValue()));
             timeOutReader.BeginTasks();
-            serverSocket = new ServerSocket(Integer.parseInt(serverPort.getValue()));
-            while (true) {
-                new ClientListener(serverSocket.accept(), this).start();
-            }
+            Thread thread = new Thread(this);
+            thread.start();
 
         } catch (Exception ex) {
             Logger.getLogger(Processor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return true;
+    }
+
+    public void run() {
+        try {
+            serverSocket = new ServerSocket(Integer.parseInt(serverPort.getValue()));
+            while (true) {
+                new ClientListener(serverSocket.accept(), this).start();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ProcessorServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

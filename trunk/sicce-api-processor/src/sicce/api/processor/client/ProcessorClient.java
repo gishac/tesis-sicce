@@ -83,14 +83,14 @@ public class ProcessorClient extends Processor {
     public void Run(Set<IPowerMeter> powerMetersParam) {
         try {
             setPowerMeters(powerMetersParam);
-            Run();
+            RunProcessor();
         } catch (Exception ex) {
             Logger.getLogger(Processor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-    public boolean Run() {
+    public boolean RunProcessor() {
         boolean authenticated = true;
         try {
             clientSocket = new Socket(serverAddress.getValue(), Integer.parseInt(serverPort.getValue()));
