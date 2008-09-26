@@ -109,7 +109,7 @@ public class FieldHandler implements Serializable {
         List<Field> lstfilterFields = new ArrayList<Field>();
 
         lstfilterFields.add(new Field(1, 11, 3, "power_meter", "description", "descriptionPowerMeter", "Descripción/Medidor", String.class.getName(), 70));
-        lstfilterFields.add(new Field(2, 12, 3, "power_meter", "ip_Address", "ipAddress", "Dirección IP", String.class.getName(), 30));
+        lstfilterFields.add(new Field(2, 12, 3, "power_meter", "ip_Address", "ipAddress", "Dirección IP", String.class.getName(), 40));
         lstfilterFields.add(new Field(3, 13, 3, "power_meter", "serial", "serial", "No. Serial", String.class.getName(), 50));
         lstfilterFields.add(new Field(4, 14, 2, "location", "description", "descriptionLocation", "Descripción/Ubicación", String.class.getName(), 70));
         lstfilterFields.add(new Field(5, 15, 2, "location_type", "description", "descriptionLocationType", "Descripción/Tipo Ubicación", String.class.getName(), 60));
@@ -124,25 +124,25 @@ public class FieldHandler implements Serializable {
 
         List<Field> lstMeasureFields = new ArrayList<Field>();
 
-        lstMeasureFields.add(new Field(1, 17, 4, "measure", "phase_to_phase_voltage_phase_1_to_2", "ptp_phase_1to2", "Tensión fase a fase/fase 1 a 2", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(2, 18, 4, "measure", "phase_to_phase_voltage_phase_2_to_3", "ptp_phase_2to3", "Tensión fase a fase/fase 2 a 3", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(3, 19, 4, "measure", "phase_to_phase_voltage_phase_3_to_1", "ptp_phase_3to1", "Tensión fase a fase/fase 3 a 1", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(4, 20, 4, "measure", "phase_to_neutral_voltage_phase_1", "ptn_phase_1", "Tensión fase a neutro, fase 1", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(5, 21, 4, "measure", "phase_to_neutral_voltage_phase_2", "ptn_phase_2", "Tensión fase a neutro, fase 2", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(6, 22, 4, "measure", "phase_to_neutral_voltage_phase_3", "ptn_phase_3", "Tensión fase a neutro, fase 3", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(1, 17, 4, "measure", "phase_to_phase_voltage_phase_1_to_2", "ptp_phase_1to2", "Tensión FAF/fase 1 a 2", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(2, 18, 4, "measure", "phase_to_phase_voltage_phase_2_to_3", "ptp_phase_2to3", "Tensión FAF/fase 2 a 3", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(3, 19, 4, "measure", "phase_to_phase_voltage_phase_3_to_1", "ptp_phase_3to1", "Tensión FAF/fase 3 a 1", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(4, 20, 4, "measure", "phase_to_neutral_voltage_phase_1", "ptn_phase_1", "Tensión FAN, fase 1", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(5, 21, 4, "measure", "phase_to_neutral_voltage_phase_2", "ptn_phase_2", "Tensión FAN, fase 2", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(6, 22, 4, "measure", "phase_to_neutral_voltage_phase_3", "ptn_phase_3", "Tensión FAN, fase 3", Double.class.getName(), 30));
         lstMeasureFields.add(new Field(7, 23, 4, "measure", "frequency", "frequency", "Frecuencia", Double.class.getName(), 30));
         lstMeasureFields.add(new Field(8, 24, 4, "measure", "total_active_power", "total_active_power", "Potencia Activa Total", Double.class.getName(), 30));
         lstMeasureFields.add(new Field(9, 25, 4, "measure", "total_reactive_power", "total_reactive_power", "Potencia Reactiva Total", Double.class.getName(), 30));
         lstMeasureFields.add(new Field(10, 26, 4, "measure", "total_apparent_power", "total_apparent_power", "Potencia Aparente Total", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(11, 27, 4, "measure", "active_power_phase_1", "active_power_phase_1", "Potencia activa/fase 1", Double.class.getName(),30 ));
-        lstMeasureFields.add(new Field(12, 28, 4, "measure", "active_power_phase_2", "active_power_phase_2", "Potencia activa/fase 2", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(13, 29, 4, "measure", "active_power_phase_3", "active_power_phase_3", "Potencia activa/fase 3", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(14, 30, 4, "measure", "reactive_power_phase_1", "reactive_power_phase_1", "Potencia Reactiva/fase 1", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(15, 31, 4, "measure", "reactive_power_phase_2", "reactive_power_phase_2", "Potencia Reactiva/fase 2", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(16, 32, 4, "measure", "reactive_power_phase_3", "reactive_power_phase_3", "Potencia Reactiva/fase 3", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(17, 33, 4, "measure", "apparent_power_phase_1", "apparent_power_phase_1", "Potencia aparente/fase 1", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(18, 34, 4, "measure", "apparent_power_phase_2", "apparent_power_phase_2", "Potencia aparente/fase 2", Double.class.getName(), 30));
-        lstMeasureFields.add(new Field(19, 35, 4, "measure", "apparent_power_phase_3", "apparent_power_phase_3", "Potencia aparente/fase 3", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(11, 27, 4, "measure", "active_power_phase_1", "active_power_phase_1", "Potencia ACT/fase 1", Double.class.getName(),30 ));
+        lstMeasureFields.add(new Field(12, 28, 4, "measure", "active_power_phase_2", "active_power_phase_2", "Potencia ACT/fase 2", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(13, 29, 4, "measure", "active_power_phase_3", "active_power_phase_3", "Potencia ACT/fase 3", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(14, 30, 4, "measure", "reactive_power_phase_1", "reactive_power_phase_1", "Potencia RACT/fase 1", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(15, 31, 4, "measure", "reactive_power_phase_2", "reactive_power_phase_2", "Potencia RACT/fase 2", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(16, 32, 4, "measure", "reactive_power_phase_3", "reactive_power_phase_3", "Potencia RACT/fase 3", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(17, 33, 4, "measure", "apparent_power_phase_1", "apparent_power_phase_1", "Potencia APR/fase 1", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(18, 34, 4, "measure", "apparent_power_phase_2", "apparent_power_phase_2", "Potencia APR/fase 2", Double.class.getName(), 30));
+        lstMeasureFields.add(new Field(19, 35, 4, "measure", "apparent_power_phase_3", "apparent_power_phase_3", "Potencia APR/fase 3", Double.class.getName(), 30));
         lstMeasureFields.add(new Field(20, 36, 4, "measure", "active_energy_in", "active_energy_in", "Energía Consumida", Double.class.getName(), 30));
         
         return lstMeasureFields;

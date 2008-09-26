@@ -45,11 +45,13 @@ public abstract class GenerateDynamicReport {
     public void runReport(Map wizardData, IUserSicce userSicce) throws Exception {
         wizardData.put(KEY_BL_IS_LOADED, new Boolean(true));
         dreport = buildReport(wizardData, userSicce);
-        jprint = DynamicJasperHelper.generateJasperPrint(dreport, new ClassicLayoutManager(), DataAccessManager.getInstance().getConnectionDB().getConnection(), params);	//Creates the JasperPrint object, we pass as a Parameter
-        JasperViewer.viewReport(jprint, false);
-        jreport = DynamicJasperHelper.generateJasperReport(dreport, new ClassicLayoutManager());
         String xml = DynamicJasperHelper.generateJRXML(dreport, new ClassicLayoutManager(), params, "UTF-8");
         saveReport(wizardData, xml);
+        jprint = DynamicJasperHelper.generateJasperPrint(dreport, new ClassicLayoutManager(), DataAccessManager.getInstance().getConnectionDB().getConnection(), params);	//Creates the JasperPrint object, we pass as a Parameter
+        JasperViewer.viewReport(jprint, false);
+       
+        
+        
 
     }
 
