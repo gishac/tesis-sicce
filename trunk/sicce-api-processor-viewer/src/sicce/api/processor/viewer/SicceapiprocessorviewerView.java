@@ -16,12 +16,14 @@ import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import javax.swing.JTabbedPane;
 import sicce.api.businesslogic.AlarmBizObject;
+import sicce.api.businesslogic.PowerMeterBizObject;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IUserPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.processor.Processor;
 import sicce.api.processor.client.ProcessorClient;
+import sicce.api.processor.server.ProcessorServer;
 import sicce.api.processor.viewer.controls.ChartPane;
 import sicce.api.processor.viewer.controls.ErrorsPane;
 import sicce.api.processor.viewer.controls.LogPane;
@@ -41,7 +43,8 @@ public class SicceapiprocessorviewerView extends FrameView {
     /**
      * Objeto que realiza el proceso de lecturas de los medidores
      */
-    private ProcessorClient processor;
+    private Processor processor;
+    
 
     /**
      * Establece el usuario actual de la aplicacion
@@ -86,7 +89,17 @@ public class SicceapiprocessorviewerView extends FrameView {
      * Inicializa todos los componentes del formulario
      */
     public void Init() {
-        processor = new ProcessorClient(currentUser);
+        
+        if(currentUser.getUsernameSicce().toLowerCase().equals("adminsicce")){
+            processor = new ProcessorServer();
+            PowerMeterBizObject powerMeterHandler = new PowerMeterBizObject();
+            getPowerMetersForCurrentUser().clear();
+            Set<IPowerMeter> validPowerMeters = powerMeterHandler.GetValidPowerMetersForMonitor();
+            getPowerMetersForCurrentUser().addAll(validPowerMeters);
+        }
+        else
+            processor = new ProcessorClient(currentUser);
+            
         initComponents();
         OrganizeUIElements();
         SetTrayIcon();
@@ -190,7 +203,11 @@ public class SicceapiprocessorviewerView extends FrameView {
                 processor.AddObserver((Observer) alarm);
             }
         }
-        processor.Run(powerMetersForCurrentUser);
+        if(processor instanceof ProcessorClient)
+            ((ProcessorClient) processor).Run(powerMetersForCurrentUser);
+        else
+            processor.RunProcessor();
+        
     }
 
     /**
