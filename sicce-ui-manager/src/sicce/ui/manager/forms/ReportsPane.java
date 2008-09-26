@@ -44,7 +44,7 @@ public class ReportsPane extends JTabExtended {
         defaultRenderer = grdSavedReport.getDefaultRenderer(JButton.class);
         grdSavedReport.setDefaultRenderer(JButton.class,
                 new JTableButtonRenderer(defaultRenderer));
-        grdSavedReport.setPreferredScrollableViewportSize(new Dimension(150, 200));
+        //grdSavedReport.setPreferredScrollableViewportSize(new Dimension(150, 200));
         grdSavedReport.addMouseListener(new JTbButtonReportMouseListener(grdSavedReport, resourceMap, this, userSicce));
         
         this.setHandleToolBarStates(false);
@@ -70,12 +70,10 @@ public class ReportsPane extends JTabExtended {
                 formComponentShown(evt);
             }
         });
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(ReportsPane.class);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("jPanel1.border.title"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("jPanel1.border.titleColor"))); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -93,9 +91,32 @@ public class ReportsPane extends JTabExtended {
         grdSavedReport.setName("grdSavedReport"); // NOI18N
         jScrollPane1.setViewportView(grdSavedReport);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 520, 150));
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
+        );
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 590, 250));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
     }// </editor-fold>//GEN-END:initComponents
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
@@ -131,10 +152,16 @@ public class ReportsPane extends JTabExtended {
 
             }
         }
-        TableColumn reportColumn = grdSavedReport.getColumnModel().getColumn(2);
-        reportColumn.setPreferredWidth(10); 
+        
         reportModel = new ReportTableModel(reports, imgReport);
         grdSavedReport.setModel(reportModel);
+        TableColumn reportColumn = grdSavedReport.getColumnModel().getColumn(2);
+        reportColumn.setPreferredWidth(24); 
+        reportColumn.setMaxWidth(24); 
+        //reportColumn.setIdentifier("2");
+        
+        
+        //grdSavedReport.getColumn(reportColumn.getIdentifier()).setMaxWidth(10);
        
     }
 }
