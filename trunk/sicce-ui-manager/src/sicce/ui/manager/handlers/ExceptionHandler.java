@@ -28,4 +28,8 @@ public class ExceptionHandler {
     public static void DisplayException(Exception ex){
         JOptionPaneExtended.showMessageDialog(null, errorMessage + ex.getMessage(),productName,JOptionPane.ERROR_MESSAGE);
     }
+    
+    public static void DisplayWarning(String message){
+        JOptionPaneExtended.showMessageDialog(null, message,productName,JOptionPane.WARNING_MESSAGE);
+    }
 }

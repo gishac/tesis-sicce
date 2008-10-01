@@ -330,6 +330,7 @@ public class SicceuimanagerView extends FrameView {
     private ParameterPane parameterPane;
     private AlarmPane alarmPane;
     private ReportsPane reportPane;
+    private TaxPane taxPane;
     private JLabel statusLabel;
     private String[] optionsText;
   
@@ -432,9 +433,9 @@ public class SicceuimanagerView extends FrameView {
      * Aplica el estilo visual a todos los controles de UI
      */
     private void ApplyLookAndFeel() {
-        try {
+        /*try {
 
-        /*UIManager.put("TaskPane.useGradient", Boolean.TRUE);
+        UIManager.put("TaskPane.useGradient", Boolean.TRUE);
         UIManager.put("TaskPaneGroup.useGradient", Boolean.TRUE);
         UIManager.put("TaskPane.backgroundGradientStart", Color.LIGHT_GRAY);
         UIManager.put("TaskPane.backgroundGradientEnd", Color.WHITE);
@@ -449,11 +450,11 @@ public class SicceuimanagerView extends FrameView {
         LookAndFeelAddons.setAddon(AquaLookAndFeelAddons.class);
         //getTaskPaneManager().revalidate();
         //getTaskPaneManager().repaint();
-         */
+         
 
         } catch (Exception ex) {
             Logger.getLogger(SicceuimanagerView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }
 
     /**
@@ -534,7 +535,7 @@ public class SicceuimanagerView extends FrameView {
         parameterPane = new ParameterPane();
         alarmPane = new AlarmPane();
         reportPane = new ReportsPane(getResourceMap(), currentUser);
-
+        taxPane = new TaxPane();
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
         toolBarHandler.AddToolBarStateListener(pmeterPane);
@@ -544,6 +545,7 @@ public class SicceuimanagerView extends FrameView {
         toolBarHandler.AddToolBarStateListener(parameterPane);
         toolBarHandler.AddToolBarStateListener(alarmPane);
         toolBarHandler.AddToolBarStateListener(reportPane);
+        toolBarHandler.AddToolBarStateListener(taxPane);
 
     }
 
@@ -579,6 +581,9 @@ public class SicceuimanagerView extends FrameView {
                 break;
             case SavedReport:
                 result = reportPane;
+                break;
+            case Taxes:
+                result = taxPane;
                 break;
         }
         return result;
