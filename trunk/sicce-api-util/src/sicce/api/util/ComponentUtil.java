@@ -5,9 +5,11 @@
 
 package sicce.api.util;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Calendar;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
@@ -57,6 +59,9 @@ public class ComponentUtil {
             else if(IsCheckBox(component)){
                 ((JCheckBox) component).setSelected(false);
             }
+            else if(IsDateChooser(component)){
+                ((JDateChooser) component).setDate(Calendar.getInstance().getTime());
+            }
         }
     }
     
@@ -83,7 +88,7 @@ public class ComponentUtil {
     {
         for(Component component : components)
         {
-            if(IsTextField(component) || IsComboBox(component) || IsButton(component) || IsCheckBox(component)){
+            if(IsTextField(component) || IsComboBox(component) || IsButton(component) || IsCheckBox(component) || IsDateChooser(component)){
                 component.setEnabled(enabled);
             }
             else if(IsTable(component))
@@ -169,6 +174,15 @@ public class ComponentUtil {
      */
     public static boolean IsCheckBox(Component component){
         return component instanceof JCheckBox;
+    }
+    
+    /**
+     * Indica si el componente es una instancia de JDateChooser
+     * @param component
+     * @return
+     */
+    public static boolean IsDateChooser(Component component){
+        return component instanceof JDateChooser;
     }
     
     /**
