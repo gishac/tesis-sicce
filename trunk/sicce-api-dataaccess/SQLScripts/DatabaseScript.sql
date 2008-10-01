@@ -227,6 +227,15 @@ CREATE TABLE EXCEPTION(
   PRIMARY KEY(ID_EXCEPTION)
 );
 
+CREATE TABLE TAX(
+  ID_TAX INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  DESCRIPTION VARCHAR(255) NOT NULL,
+  START_DATE DATETIME NOT NULL,
+  END_DATE DATETIME NOT NULL,
+  TAX_VALUE DOUBLE NOT NULL,
+  PRIMARY KEY(ID_TAX)
+);
+
 insert into groups (ID_GROUP, DESCRIPTION) values (0, 'Opciones');
 insert into groups (ID_GROUP, DESCRIPTION) values (0, 'Alarmas');
 insert into groups (ID_GROUP, DESCRIPTION) values (0, 'Reportes');
@@ -238,6 +247,7 @@ insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GRO
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Zonas',null,'Zone',1);
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Parámetros',null,'Parameter',1);
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Dependencias',null,'Location',1);
+insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Rubros',null,'Taxes',1);
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Alarmas',null,'Alarm',2);
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Reportes Dinámicos',null,'Wizard',3);
 insert into option_sicce (ID_OPTION_SICCE,DESCRIPTION,ICON,ACTION_COMMAND,ID_GROUP) values(0,'Reporte de Medidores',null,'UserPowerMeterReport',3);
@@ -262,6 +272,7 @@ insert into option_role values(1,11);
 insert into option_role values(1,12);
 insert into option_role values(1,13);
 insert into option_role values(1,14);
+insert into option_role values(1,15);
 
 insert into location_type values(0,'Edificio');
 insert into location_type values(0,'Facultad');

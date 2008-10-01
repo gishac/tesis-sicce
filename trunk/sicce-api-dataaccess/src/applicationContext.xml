@@ -7,7 +7,7 @@
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="configLocation"
-                  value="classpath:hibernate.cfg.xml">
+                  value="hibernate.cfg.xml">
         </property>
     </bean>
     
@@ -95,6 +95,12 @@
         </property>
     </bean>
     
+    <bean id="TaxDAO" class="sicce.api.dataaccess.TaxDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
     <bean id="DataAccessManager" class="sicce.api.dataaccess.DataAccessManager" abstract="false" lazy-init="default"
           autowire="default" dependency-check="default">
         <property name="roleDB">
@@ -143,6 +149,9 @@
         </property>
         <property name="exceptionDB">
             <ref bean="ExceptionSicceDAO" />
+        </property>
+        <property name="taxDB">
+            <ref bean="TaxDAO" />
         </property>
         
     </bean>

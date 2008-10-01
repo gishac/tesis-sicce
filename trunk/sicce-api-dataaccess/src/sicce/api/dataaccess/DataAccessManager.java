@@ -5,6 +5,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 
 public class DataAccessManager {
 
@@ -24,6 +25,7 @@ public class DataAccessManager {
     private ConnectDAO connectionDB;
     private UserPowerMeterDAO userPowerMeterDB;
     private ExceptionSicceDAO exceptionDB;
+    private TaxDAO taxDB;
 
     
     public static void setInstance(DataAccessManager instance) {
@@ -148,6 +150,14 @@ public class DataAccessManager {
 
     public void setExceptionDB(ExceptionSicceDAO exceptionDB) {
         this.exceptionDB = exceptionDB;
+    }
+    
+    public TaxDAO getTaxDB() {
+        return taxDB;
+    }
+
+    public void setTaxDB(TaxDAO taxDB) {
+        this.taxDB = taxDB;
     }
     
     public static DataAccessManager getInstance() {
