@@ -17,6 +17,7 @@ import sicce.api.info.PowerMeter;
 import sicce.api.info.Role;
 import sicce.api.info.ScheduleDay;
 import sicce.api.info.Message;
+import sicce.api.info.Tax;
 import sicce.api.info.UserPowerMeter;
 import sicce.api.info.UserSicce;
 import sicce.api.info.Zone;
@@ -33,12 +34,13 @@ import sicce.api.info.interfaces.IPowerMeter;
 import sicce.api.info.interfaces.IRole;
 import sicce.api.info.interfaces.IScheduleDay;
 import sicce.api.info.interfaces.IMessage;
+import sicce.api.info.interfaces.ITax;
 import sicce.api.info.interfaces.IUserPowerMeter;
 import sicce.api.info.interfaces.IUserSicce;
 import sicce.api.info.interfaces.IZone;
 
 /**
- *
+ * Crea las instancias de los objetos de negocio
  * @author gish@c
  */
 public class ClassFactory {
@@ -105,5 +107,9 @@ public class ClassFactory {
         
     public static IMessage getMessage(){
         return new Message();
+    }
+    
+    public static ITax getTaxInstance(){
+        return new Tax();
     }
 }

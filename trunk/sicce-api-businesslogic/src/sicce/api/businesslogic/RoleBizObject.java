@@ -16,17 +16,28 @@ import sicce.api.info.interfaces.IRole;
 public class RoleBizObject {
 
     /**
-     * 
+     * Devuelve todos los roles
      * @return Devuelve todos los roles
      */
     public List<IRole> GetAllRoles() {
         return RoleDB.GetAllRoles();
     }
 
+    /**
+     * Devuelve un rol basado en el identificador
+     * @param roleID
+     * @return
+     */
     public IRole GetRoleByID(int roleID) {
         return RoleDB.FindRoleByID(roleID);
     }
     
+    /**
+     * Indica si el rol tiene asignado un permiso
+     * @param optionID Permiso a buscar
+     * @param role Rol sobre el que se buscara el permiso
+     * @return
+     */
     public boolean PermissionExists(int optionID, IRole role){
         for(IOptionSicce permission : role.getPermissions())
         {
