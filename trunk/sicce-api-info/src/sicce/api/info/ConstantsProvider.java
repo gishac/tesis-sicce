@@ -115,14 +115,15 @@ public class ConstantsProvider {
         Location(5),
         Zone(6),
         Parameter(7),
-        Alarm(8),
-        Wizard(9),
-        UserPowerMeterReport(10),
-        UserPowerMeterException(11),
-        UserPowerMeterAlarm(12),
-        ZoneReport(13),
-        SavedReport(14),
-        ConsumptionReport(15);
+        Taxes(8),
+        Alarm(9),
+        Wizard(10),
+        UserPowerMeterReport(11),
+        UserPowerMeterException(12),
+        UserPowerMeterAlarm(13),
+        ZoneReport(14),
+        SavedReport(15),
+        ConsumptionReport(16);
         private int taskID;
 
         OptionsProvider(int taskID) {
