@@ -47,6 +47,7 @@
         <mapping resource="sicce/api/info/Group.hbm.xml" />
         <mapping resource="sicce/api/info/UserPowerMeter.hbm.xml" />
         <mapping resource="sicce/api/info/ExceptionSicce.hbm.xml" />
+        <mapping resource="sicce/api/info/Tax.hbm.xml" />
         
         
     </session-factory>
