@@ -259,7 +259,8 @@ public class ModbusBizObject {
      */
     private String[] GetResponseBuffer(IModbusRequest request, int charsToRead, IPowerMeter powerMeter) throws IOException {
 
-        Socket socket = new Socket(request.getIpAddress(), Integer.parseInt(ModbusBizObject.getRequestFields().get(ConstantsProvider.PORT).getValue()));
+        int port = Integer.parseInt(ModbusBizObject.getRequestFields().get(ConstantsProvider.PORT).getValue());
+        Socket socket = new Socket(request.getIpAddress(), port);
         socket.setReuseAddress(true);
         WriteRequest(socket.getOutputStream(), request);
         String[] response = ReadResultBuffer(socket.getInputStream(), charsToRead);
