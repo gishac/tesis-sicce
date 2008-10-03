@@ -12,7 +12,7 @@ import sicce.api.info.interfaces.ITax;
  * Representacion de los rubros en el sistema
  * @author gish@c
  */
-public class AbstractTax implements Serializable, ITax{
+public abstract class AbstractTax implements Serializable, ITax{
 
     /**
      * Identificador del rubro
