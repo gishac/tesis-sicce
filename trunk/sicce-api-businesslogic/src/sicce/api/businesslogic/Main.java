@@ -5,10 +5,12 @@
 
 package sicce.api.businesslogic;
 
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sicce.api.businesslogic.factory.ClassFactory;
 import sicce.api.info.exceptions.InvalidModbusResponseException;
+import sicce.api.info.interfaces.IKwValue;
 import sicce.api.info.interfaces.IMeasure;
 import sicce.api.info.interfaces.IModbusResponse;
 import sicce.api.info.interfaces.IPowerMeter;
@@ -238,8 +240,17 @@ public class Main {
             response.setHoldingRegistersResponse(buffer);
 
             ModbusBizObject mox = new ModbusBizObject();
-            mox.ProcessModbusResponse(response, measure);
-        } catch (InvalidModbusResponseException ex) {
+            //mox.ProcessModbusResponse(response, measure);
+            
+            
+            KwValueBizObject kwx = new KwValueBizObject();
+            Date std = new Date(2008 - 1900, 9, 21);
+            Date end = new Date(2008 - 1900, 9, 23);
+            
+            IKwValue kwval = kwx.GetKWValueForDates(std, end);
+            System.out.println(kwval.getIdKwValue());
+            
+        } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
         
