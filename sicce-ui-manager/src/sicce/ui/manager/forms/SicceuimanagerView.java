@@ -331,6 +331,7 @@ public class SicceuimanagerView extends FrameView {
     private AlarmPane alarmPane;
     private ReportsPane reportPane;
     private TaxPane taxPane;
+    private KwValuePane kwValuePane;
     private JLabel statusLabel;
     private String[] optionsText;
   
@@ -536,6 +537,7 @@ public class SicceuimanagerView extends FrameView {
         alarmPane = new AlarmPane();
         reportPane = new ReportsPane(getResourceMap(), currentUser);
         taxPane = new TaxPane();
+        kwValuePane= new KwValuePane();
         toolBarHandler.AddToolBarStateListener(rolePane);
         toolBarHandler.AddToolBarStateListener(userPane);
         toolBarHandler.AddToolBarStateListener(pmeterPane);
@@ -546,6 +548,7 @@ public class SicceuimanagerView extends FrameView {
         toolBarHandler.AddToolBarStateListener(alarmPane);
         toolBarHandler.AddToolBarStateListener(reportPane);
         toolBarHandler.AddToolBarStateListener(taxPane);
+        toolBarHandler.AddToolBarStateListener(kwValuePane);
 
     }
 
@@ -584,6 +587,9 @@ public class SicceuimanagerView extends FrameView {
                 break;
             case Taxes:
                 result = taxPane;
+                break;
+            case KwValue:
+                result = kwValuePane;
                 break;
         }
         return result;

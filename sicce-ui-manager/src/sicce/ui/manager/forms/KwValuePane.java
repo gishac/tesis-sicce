@@ -1,19 +1,22 @@
 /*
- * TaxPane.java
+ * KwValuePane.java
  *
- * Created on October 1, 2008, 12:37 AM
+ * Created on October 4, 2008, 5:54 PM
  */
+
 package sicce.ui.manager.forms;
 
+
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
-import sicce.api.businesslogic.TaxBizObject;
+import sicce.api.businesslogic.KwValueBizObject;
 import sicce.api.businesslogic.factory.ClassFactory;
+import sicce.api.businesslogic.model.KwValueTableModel;
 import sicce.api.businesslogic.model.SicceTableModel;
-import sicce.api.businesslogic.model.TaxTableModel;
-import sicce.api.dataaccess.TaxDB;
+import sicce.api.dataaccess.KwValueDB;
 import sicce.api.info.ConstantsProvider.DialogResult;
-import sicce.api.info.interfaces.ITax;
+import sicce.api.info.interfaces.IKwValue;
 import sicce.api.util.ComponentUtil;
 import sicce.api.util.JTextFieldInteger;
 import sicce.api.util.JTextFieldLimit;
@@ -23,40 +26,40 @@ import sicce.ui.manager.controls.SearchDialog;
 import sicce.ui.manager.handlers.ExceptionHandler;
 
 /**
- * Panel para la administracion de Rubros
+ *
  * @author  gish@c
  */
-public class TaxPane extends JTabExtended<ITax> {
-
-    /**
-     * Modelo de tabla para mostrar los rubros existentes
-     */
-    private TaxTableModel taxTableModel;
+public class KwValuePane extends JTabExtended<IKwValue> {
+    
     /**
      * Objeto para manejar la logica de los rubros
      */
-    private TaxBizObject taxBizObject;
-
+    private KwValueBizObject kwBizObject;
+    
+    /**
+     * Modelo de tabla para mostrar los valores kw/h existentes
+     */
+    private KwValueTableModel kwTableModel;
+    
     /**
      * Constructor
      */
-    public TaxPane() {
+    public KwValuePane(){
         initComponents();
-        txtDescription.setDocument(new JTextFieldLimit(150));
-        txtValue.setDocument(new JTextFieldInteger(0,100));
-        getControlsToClear().add(txtDescription);
-        getControlsToClear().add(txtValue);
+        txtValue1.setDocument(new JTextFieldInteger(0,100));
+        getControlsToClear().add(txtValue1);
+        getControlsToClear().add(txtValue2);
         getControlsToClear().add(dpStartDate);
         getControlsToClear().add(dpEndDate);
         getControlsToEnable().add(dpStartDate);
         getControlsToEnable().add(dpEndDate);
-        getControlsToEnable().add(txtDescription);
-        getControlsToEnable().add(txtValue);
-        taxBizObject = new TaxBizObject();
+        getControlsToEnable().add(txtValue1);
+        getControlsToEnable().add(txtValue2);
+        kwBizObject = new KwValueBizObject();
         FillGrid();
         ComponentUtil.SetState(false, getControlsToEnable());
     }
-
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -71,15 +74,15 @@ public class TaxPane extends JTabExtended<ITax> {
         lblEndDate = new javax.swing.JLabel();
         dpEndDate = new com.toedter.calendar.JDateChooser();
         lblValue = new javax.swing.JLabel();
-        txtValue = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        txtDescription = new javax.swing.JTextField();
+        txtValue1 = new javax.swing.JTextField();
+        lblValue1 = new javax.swing.JLabel();
+        txtValue2 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        gridTaxes = new javax.swing.JTable();
+        gridKwValues = new javax.swing.JTable();
 
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(TaxPane.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(sicce.ui.manager.forms.SicceuimanagerApp.class).getContext().getResourceMap(KwValuePane.class);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel1.border.title"))); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
 
@@ -98,65 +101,58 @@ public class TaxPane extends JTabExtended<ITax> {
         lblValue.setText(resourceMap.getString("lblValue.text")); // NOI18N
         lblValue.setName("lblValue"); // NOI18N
 
-        txtValue.setText(resourceMap.getString("txtValue.text")); // NOI18N
-        txtValue.setEnabled(false);
-        txtValue.setName("txtValue"); // NOI18N
+        txtValue1.setEnabled(false);
+        txtValue1.setName("txtValue1"); // NOI18N
 
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
+        lblValue1.setText(resourceMap.getString("lblValue1.text")); // NOI18N
+        lblValue1.setName("lblValue1"); // NOI18N
 
-        txtDescription.setEnabled(false);
-        txtDescription.setName("txtDescription"); // NOI18N
+        txtValue2.setEnabled(false);
+        txtValue2.setName("txtValue2"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblStartDate))
-                            .addComponent(lblEndDate)
-                            .addComponent(lblValue))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtValue)
-                            .addComponent(dpEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(dpStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(22, 22, 22)
-                        .addComponent(txtDescription, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)))
-                .addContainerGap(129, Short.MAX_VALUE))
+                    .addComponent(lblValue)
+                    .addComponent(lblValue1)
+                    .addComponent(lblStartDate)
+                    .addComponent(lblEndDate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dpEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                    .addComponent(dpStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                    .addComponent(txtValue2, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                    .addComponent(txtValue1, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
+                .addContainerGap(114, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblStartDate)
                     .addComponent(dpStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblEndDate)
-                    .addComponent(dpEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dpEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEndDate))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblValue)
-                    .addComponent(txtValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtValue1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtValue2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblValue1))
                 .addContainerGap(316, Short.MAX_VALUE))
         );
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        gridTaxes.setModel(new javax.swing.table.DefaultTableModel(
+        gridKwValues.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -167,8 +163,8 @@ public class TaxPane extends JTabExtended<ITax> {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        gridTaxes.setName("gridTaxes"); // NOI18N
-        jScrollPane1.setViewportView(gridTaxes);
+        gridKwValues.setName("gridKwValues"); // NOI18N
+        jScrollPane1.setViewportView(gridKwValues);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -177,34 +173,35 @@ public class TaxPane extends JTabExtended<ITax> {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser dpEndDate;
     private com.toedter.calendar.JDateChooser dpStartDate;
-    private javax.swing.JTable gridTaxes;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTable gridKwValues;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblEndDate;
     private javax.swing.JLabel lblStartDate;
     private javax.swing.JLabel lblValue;
-    private javax.swing.JTextField txtDescription;
-    private javax.swing.JTextField txtValue;
+    private javax.swing.JLabel lblValue1;
+    private javax.swing.JTextField txtValue1;
+    private javax.swing.JTextField txtValue2;
     // End of variables declaration//GEN-END:variables
+    
     @Override
     public boolean Delete() throws Exception {
         cancelAction = false;
         try {
-            TaxDB.Delete(currentObject);
+            KwValueDB.Delete(currentObject);
             super.Delete();
             FillGrid();
 
@@ -218,8 +215,8 @@ public class TaxPane extends JTabExtended<ITax> {
     @Override
     public void New() {
         super.New();
-        currentObject = ClassFactory.getTaxInstance();
-        txtDescription.requestFocusInWindow();
+        currentObject = ClassFactory.getkwValueInstance();
+        dpStartDate.requestFocusInWindow();
     }
 
     @Override
@@ -230,14 +227,22 @@ public class TaxPane extends JTabExtended<ITax> {
             return true;
         }
         try {
-            currentObject.setDescription(txtDescription.getText().trim());
-            currentObject.setTaxValue(Double.parseDouble(txtValue.getText()));
-            currentObject.setStartDate(dpStartDate.getDate());
-            currentObject.setEndDate(dpEndDate.getDate());
+            currentObject.setKwValue1(Double.parseDouble(txtValue1.getText()));
+            currentObject.setKwValue2(Double.parseDouble(txtValue2.getText()));
+            Date date = dpStartDate.getDate();
+            date.setHours(0);
+            date.setMinutes(0);
+            date.setSeconds(0);
+            currentObject.setStartDate(date);
+            date = dpEndDate.getDate();
+            date.setHours(0);
+            date.setMinutes(0);
+            date.setSeconds(0);
+            currentObject.setEndDate(date);
             if (IsObjectLoaded()) {
                 return Update();
             }
-            TaxDB.Save(currentObject);
+            KwValueDB.Save(currentObject);
             FillGrid();
         } catch (Exception ex) {
             ExceptionHandler.DisplayException(ex);
@@ -248,7 +253,7 @@ public class TaxPane extends JTabExtended<ITax> {
 
     @Override
     public DialogResult Search() {
-        SearchDialog<ITax> searchRolesDialog = new SearchDialog<ITax>(new JFrame(), true, new TaxTableModel(taxBizObject.GetAllTaxes()));
+        SearchDialog<IKwValue> searchRolesDialog = new SearchDialog<IKwValue>(new JFrame(), true, new KwValueTableModel(kwBizObject.GetAllKwValues()));
         searchRolesDialog.setVisible(true);
         DialogResult result = searchRolesDialog.getDialogResult();
         if (result == DialogResult.Ok) {
@@ -262,7 +267,7 @@ public class TaxPane extends JTabExtended<ITax> {
     public boolean Update() throws Exception {
         cancelAction = false;
         try {
-            TaxDB.Update(currentObject);
+            KwValueDB.Update(currentObject);
             FillGrid();
         } catch (Exception ex) {
             cancelAction = true;
@@ -273,15 +278,15 @@ public class TaxPane extends JTabExtended<ITax> {
     @Override
     public void ItemSelected(int selectedIndex) {
         super.ItemSelected(selectedIndex);
-        SicceTableModel<ITax> tableModel = (SicceTableModel<ITax>) gridTaxes.getModel();
+        SicceTableModel<IKwValue> tableModel = (SicceTableModel<IKwValue>) gridKwValues.getModel();
         currentObject = tableModel.getRow(selectedIndex);
         SetUIElements();
     }
 
     @Override
     public void RegisterSelectionListener() {
-        gridTaxes.getSelectionModel().addListSelectionListener(selectionListener);
-        gridTaxes.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        gridKwValues.getSelectionModel().addListSelectionListener(selectionListener);
+        gridKwValues.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     @Override
@@ -289,8 +294,8 @@ public class TaxPane extends JTabExtended<ITax> {
         if (currentObject == null) {
             return;
         }
-        txtDescription.setText(currentObject.getDescription());
-        txtValue.setText(currentObject.getTaxValue() != null ? currentObject.getTaxValue().toString() : "");
+        txtValue1.setText(currentObject.getKwValue1() != null? currentObject.getKwValue1().toString() : "");
+        txtValue2.setText(currentObject.getKwValue2() != null? currentObject.getKwValue2().toString() : "");
         dpStartDate.setDate(currentObject.getStartDate());
         dpEndDate.setDate(currentObject.getEndDate());
     }
@@ -298,23 +303,20 @@ public class TaxPane extends JTabExtended<ITax> {
     @Override
     public void CancelSave() {
         if (currentObject != null) {
-            if (currentObject.getIdTax() == null) {
-                this.currentObject = ClassFactory.getTaxInstance();
+            if (currentObject.getIdKwValue() == null) {
+                this.currentObject = ClassFactory.getkwValueInstance();
             }
         }
     }
 
     @Override
     public void FillGrid() {
-        taxTableModel = new TaxTableModel(taxBizObject.GetAllTaxes());
-        gridTaxes.setModel(taxTableModel);
+        kwTableModel = new KwValueTableModel(kwBizObject.GetAllKwValues());
+        gridKwValues.setModel(kwTableModel);
     }
 
     @Override
-    public boolean CheckFields() {
-        if (!Validator.ValidateField(null, null, 0, txtDescription, true, "la descripción del rubro", 3)) {
-            return false;
-        }
+    public boolean CheckFields() {        
         if (dpEndDate.getDate().compareTo(dpStartDate.getDate()) <= 0) {
             ExceptionHandler.DisplayWarning("La fecha final del rubro debe ser mayor a la fecha inicial");
             return false;
