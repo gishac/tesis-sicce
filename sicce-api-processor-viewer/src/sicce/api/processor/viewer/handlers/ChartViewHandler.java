@@ -118,6 +118,7 @@ public class ChartViewHandler {
        
         for (IPowerMeter powerMeter : powerMetersForCurrentUser) {
             TimeSeries timeSeries = new TimeSeries(powerMeter.getDescription(), Millisecond.class);
+            timeSeries.setMaximumItemCount(20);
             getSeries().addSeries(timeSeries);
             getSeriesMap().put(powerMeter.getSerial(), timeSeries);
 //            getSeries().addSeries(virtual1);
@@ -135,7 +136,7 @@ public class ChartViewHandler {
      */
     private DateAxis ConfigureXAxis() {
         DateAxis xAxis = new DateAxis("Hora de Lectura");
-        xAxis.setTickLabelFont(new Font("Tahoma", Font.PLAIN, 7));
+        xAxis.setTickLabelFont(new Font("Tahoma", Font.PLAIN, 8));
         xAxis.setLabelFont(new Font("Tahoma", Font.BOLD, 9));
         xAxis.setAutoRange(true);
         xAxis.setLowerMargin(0.0);
@@ -150,7 +151,7 @@ public class ChartViewHandler {
      */
     private NumberAxis ConfigureYAxis() {
         NumberAxis yAxis = new NumberAxis("Lecturas");
-        yAxis.setTickLabelFont(new Font("Tahoma", Font.PLAIN, 7));
+        yAxis.setTickLabelFont(new Font("Tahoma", Font.PLAIN, 8));
         yAxis.setLabelFont(new Font("Tahoma", Font.BOLD, 9));
         return yAxis;
     }
