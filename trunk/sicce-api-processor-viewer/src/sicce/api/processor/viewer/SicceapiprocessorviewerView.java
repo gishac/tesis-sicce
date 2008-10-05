@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Observer;
 import java.util.Set;
 import java.util.logging.Level;
@@ -39,12 +40,10 @@ public class SicceapiprocessorviewerView extends FrameView {
      * Usuario actual de la aplicacion
      */
     private IUserSicce currentUser;
-    
     /**
      * Objeto que realiza el proceso de lecturas de los medidores
      */
     private Processor processor;
-    
 
     /**
      * Establece el usuario actual de la aplicacion
@@ -53,7 +52,6 @@ public class SicceapiprocessorviewerView extends FrameView {
     public void setCurrentUser(IUserSicce currentUser) {
         this.currentUser = currentUser;
     }
-    
     /**
      * Medidores asignados al usuario actual de la aplicacion
      */
@@ -89,25 +87,23 @@ public class SicceapiprocessorviewerView extends FrameView {
      * Inicializa todos los componentes del formulario
      */
     public void Init() {
-        
-        if(currentUser.getUsernameSicce().toLowerCase().equals("adminsicce")){
+
+        if (currentUser.getUsernameSicce().toLowerCase().equals("adminsicce")) {
             processor = new ProcessorServer();
             PowerMeterBizObject powerMeterHandler = new PowerMeterBizObject();
             getPowerMetersForCurrentUser().clear();
             Set<IPowerMeter> validPowerMeters = powerMeterHandler.GetValidPowerMetersForMonitor();
             getPowerMetersForCurrentUser().addAll(validPowerMeters);
-        }
-        else
+        } else {
             processor = new ProcessorClient(currentUser);
-            
+        }
+
         initComponents();
         OrganizeUIElements();
         SetTrayIcon();
         BuildPanes();
         RunProcessor();
     }
-    
-    
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -128,32 +124,26 @@ public class SicceapiprocessorviewerView extends FrameView {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel mainPanel;
     // End of variables declaration//GEN-END:variables
-    
     /**
      * Control que administra los tabs
      */
     private JTabbedPane tabManager;
-    
     /**
      * Panel para mostrar el grafico
      */
     private ChartPane chartPane;
-    
     /**
      * Panel para mostrar las lecturas en forma de log
      */
     private LogPane logPane;
-    
     /**
      * Panel para mostrar registros especificos del medidor
      */
     private MeasuresPane measuresPane;
-    
     /**
      * Panel para mostrar los errores ocurridos
      */
     private ErrorsPane errorsPane;
-    
     /**
      * Manejador del Tray del sistema
      */
@@ -181,10 +171,10 @@ public class SicceapiprocessorviewerView extends FrameView {
      * Crea los paneles que van a ser mostrados en el visor
      */
     private void BuildPanes() {
-        chartPane = new ChartPane(getResourceMap().getString("ChartTitle"), getResourceMap(), getPowerMetersForCurrentUser(),processor);
-        logPane = new LogPane(getResourceMap(), getPowerMetersForCurrentUser(),processor);
-        measuresPane = new MeasuresPane(getPowerMetersForCurrentUser(),processor);
-        errorsPane = new ErrorsPane(trayIcon,processor);
+        chartPane = new ChartPane(getResourceMap().getString("ChartTitle"), getResourceMap(), getPowerMetersForCurrentUser(), processor);
+        logPane = new LogPane(getResourceMap(), getPowerMetersForCurrentUser(), processor);
+        measuresPane = new MeasuresPane(getPowerMetersForCurrentUser(), processor);
+        errorsPane = new ErrorsPane(trayIcon, processor);
         getTabManager().addTab("Gráficos del Consumo Eléctrico", chartPane);
         getTabManager().addTab("Log de Lecturas del Consumo Eléctrico", logPane);
         getTabManager().addTab("Detalle de Registros Por Medidor", measuresPane);
@@ -195,7 +185,7 @@ public class SicceapiprocessorviewerView extends FrameView {
      * Inicia el proceso de lecturas de los medidores
      */
     private void RunProcessor() {
-        
+
         AlarmBizObject alarmBizObject = new AlarmBizObject();
         for (IPowerMeter powerMeter : getPowerMetersForCurrentUser()) {
             for (IAlarm alarm : powerMeter.getAlarms()) {
@@ -203,11 +193,17 @@ public class SicceapiprocessorviewerView extends FrameView {
                 processor.AddObserver((Observer) alarm);
             }
         }
-        if(processor instanceof ProcessorClient)
+
+        if (processor instanceof ProcessorClient) {
             ((ProcessorClient) processor).Run(powerMetersForCurrentUser);
-        else
+        } else {
+            /*List<IAlarm> allAlarms = alarmBizObject.GetAllAlarms();
+            for(IAlarm alarm : allAlarms){
+                processor.AddObserver((Observer) alarm);
+            }*/
             processor.RunProcessor();
-        
+        }
+
     }
 
     /**
