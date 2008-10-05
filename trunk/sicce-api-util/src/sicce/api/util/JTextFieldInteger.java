@@ -15,6 +15,8 @@ import javax.swing.text.PlainDocument;
 public class JTextFieldInteger extends PlainDocument {
 
     private int maxLength = 9999;
+    private int maxValue = 99999999;
+    private int minValue = 0;
 
     public JTextFieldInteger() {
 
@@ -24,15 +26,27 @@ public class JTextFieldInteger extends PlainDocument {
         this.maxLength = maxLength;
     }
 
+    public JTextFieldInteger(int minValue, int maxValue) {
+        this.maxValue = maxValue;
+        this.minValue = minValue;
+    }
+
     @Override
     public void insertString(int offset, String str, javax.swing.text.AttributeSet a) throws BadLocationException {
         try {
-            Integer.parseInt(str);
-            if (getLength() + str.length() > maxLength) {
+            String curText = getText(0, getLength());
+            String preOffset = curText.substring(0, offset);
+            String postOffset = curText.substring(offset, curText.length());
+            String newStr = preOffset + str + postOffset;
+
+
+            int value = Integer.parseInt(newStr);
+            if ((getLength() + str.length() > maxLength) || (value > maxValue || value < minValue)) {
                 Toolkit.getDefaultToolkit().beep();
                 return;
             } else {
                 try {
+
                     super.insertString(offset, str, a);
                 } catch (NumberFormatException exp) {
                     Toolkit.getDefaultToolkit().beep();
