@@ -26,7 +26,8 @@ public class DataAccessManager {
     private UserPowerMeterDAO userPowerMeterDB;
     private ExceptionSicceDAO exceptionDB;
     private TaxDAO taxDB;
-
+    private KwValueDAO kwValueDB;
+    
     
     public static void setInstance(DataAccessManager instance) {
         DataAccessManager.instance = instance;
@@ -158,6 +159,14 @@ public class DataAccessManager {
 
     public void setTaxDB(TaxDAO taxDB) {
         this.taxDB = taxDB;
+    }
+    
+    public KwValueDAO getKwValueDB() {
+        return kwValueDB;
+    }
+
+    public void setKwValueDB(KwValueDAO kwValueDB) {
+        this.kwValueDB = kwValueDB;
     }
     
     public static DataAccessManager getInstance() {
