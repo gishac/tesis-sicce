@@ -7,6 +7,7 @@ package sicce.api.businesslogic.factory;
 import sicce.api.info.Alarm;
 import sicce.api.info.ExceptionSicce;
 import sicce.api.info.Filter;
+import sicce.api.info.KwValue;
 import sicce.api.info.Location;
 import sicce.api.info.LocationType;
 import sicce.api.info.Measure;
@@ -24,6 +25,7 @@ import sicce.api.info.Zone;
 import sicce.api.info.interfaces.IAlarm;
 import sicce.api.info.interfaces.IExceptionSicce;
 import sicce.api.info.interfaces.IFilter;
+import sicce.api.info.interfaces.IKwValue;
 import sicce.api.info.interfaces.ILocation;
 import sicce.api.info.interfaces.ILocationType;
 import sicce.api.info.interfaces.IMeasure;
@@ -111,5 +113,9 @@ public class ClassFactory {
     
     public static ITax getTaxInstance(){
         return new Tax();
+    }
+    
+    public static IKwValue getkwValueInstance(){
+        return new KwValue();
     }
 }
