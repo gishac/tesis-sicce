@@ -18,7 +18,7 @@
         </property>
         <property name="connection.username">root</property>
         <property name="connection.url">
-           jdbc:mysql://localhost/sicce?characterEncoding=UTF-8
+           jdbc:mysql://localhost/sicce_test?characterEncoding=UTF-8
         </property>
         <property name="dialect">
             org.hibernate.dialect.MySQLInnoDBDialect
@@ -32,7 +32,7 @@
 
         </property>
         <property name="connection.autocommit">true</property>
-        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.show_sql">true</property>
         <mapping resource="sicce/api/info/Zone.hbm.xml" />
         <mapping resource="sicce/api/info/UserSicce.hbm.xml" />
         <mapping resource="sicce/api/info/Role.hbm.xml" /> 
@@ -48,6 +48,7 @@
         <mapping resource="sicce/api/info/UserPowerMeter.hbm.xml" />
         <mapping resource="sicce/api/info/ExceptionSicce.hbm.xml" />
         <mapping resource="sicce/api/info/Tax.hbm.xml" />
+        <mapping resource="sicce/api/info/KwValue.hbm.xml" />
         
         
     </session-factory>
