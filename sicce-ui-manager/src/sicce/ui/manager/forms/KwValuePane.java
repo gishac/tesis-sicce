@@ -18,6 +18,7 @@ import sicce.api.dataaccess.KwValueDB;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.interfaces.IKwValue;
 import sicce.api.util.ComponentUtil;
+import sicce.api.util.JTextFieldDecimal;
 import sicce.api.util.JTextFieldInteger;
 import sicce.api.util.JTextFieldLimit;
 import sicce.api.util.Validator;
@@ -46,7 +47,8 @@ public class KwValuePane extends JTabExtended<IKwValue> {
      */
     public KwValuePane(){
         initComponents();
-     //   txtValue1.setDocument(new JTextFieldInteger(0,100));
+        txtValue1.setDocument(new JTextFieldDecimal());
+        txtValue2.setDocument(new JTextFieldDecimal());
         getControlsToClear().add(txtValue1);
         getControlsToClear().add(txtValue2);
         getControlsToClear().add(dpStartDate);
@@ -318,7 +320,11 @@ public class KwValuePane extends JTabExtended<IKwValue> {
     @Override
     public boolean CheckFields() {        
         if (dpEndDate.getDate().compareTo(dpStartDate.getDate()) <= 0) {
-            ExceptionHandler.DisplayWarning("La fecha final del rubro debe ser mayor a la fecha inicial");
+            ExceptionHandler.DisplayWarning("La fecha final del valor kw/h debe ser mayor a la fecha inicial");
+            return false;
+        }
+        if(!kwBizObject.ValidateDateRanges(dpStartDate.getDate(), dpEndDate.getDate())){
+             ExceptionHandler.DisplayWarning("Ya existe un valor de kw/h definido para el periodo ingresado");
             return false;
         }
         return true;
