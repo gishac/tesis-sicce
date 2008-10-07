@@ -259,7 +259,7 @@ public class ModbusBizObject {
      */
     private String[] GetResponseBuffer(IModbusRequest request, int charsToRead, IPowerMeter powerMeter) throws IOException {
 
-        /*int port = Integer.parseInt(ModbusBizObject.getRequestFields().get(ConstantsProvider.PORT).getValue());
+        int port = Integer.parseInt(ModbusBizObject.getRequestFields().get(ConstantsProvider.PORT).getValue());
         Socket socket = new Socket(request.getIpAddress(), port);
         socket.setReuseAddress(true);
         WriteRequest(socket.getOutputStream(), request);
@@ -267,9 +267,9 @@ public class ModbusBizObject {
         socket.shutdownOutput();
         socket.shutdownInput();
         socket.close();
-        return response;*/
+        return response;
         
-        String[] buffer = new String[200];
+        /*String[] buffer = new String[200];
 
             buffer[0] = "1";
             buffer[1] = "3";
@@ -470,7 +470,7 @@ public class ModbusBizObject {
             buffer[196] = "0";
             buffer[197] = "0";
             
-            return buffer;
+            return buffer;*/
 
     }
 
