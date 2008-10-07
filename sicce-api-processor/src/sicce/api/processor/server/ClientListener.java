@@ -4,10 +4,18 @@
  */
 package sicce.api.processor.server;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.Socket;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sicce.api.businesslogic.PowerMeterBizObject;
@@ -31,6 +39,12 @@ public class ClientListener extends Thread {
      * Procesador de lecturas
      */
     private ProcessorServer processor;
+    
+    /**
+     * Log de conexiones
+     */
+    private String logFileName = "Log.txt";
+    
     /**
      * Objeto para manejar la logica de los medidores
      */
@@ -46,7 +60,14 @@ public class ClientListener extends Thread {
         ObjectOutputStream outputStream = null;
         try {
             super.run();
-            System.out.println("Cliente conectado desde: " + socket.getInetAddress().getHostAddress());
+            synchronized(this){
+                String log = System.getProperty("user.dir") + File.separator + logFileName;
+                File logFile = new File(log);
+                FileWriter fileWriter = new FileWriter(logFile,true);
+                fileWriter.write("Cliente conectado desde >> " + socket.getInetAddress().getHostAddress() + " " + Calendar.getInstance().getTime().toString() + "\n\r");
+                fileWriter.flush();
+                fileWriter.close();
+            }            
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
             boolean logout = false;
