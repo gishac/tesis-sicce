@@ -24,15 +24,16 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="totalService" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="startDate" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="endDate" isForPrompting="false" class="java.util.Date"/>
 	<queryString><![CDATA[SELECT
-     *
+     tax.`DESCRIPTION` AS DESCRIPTION,
+     tax.`TAX_VALUE` AS TAX_VALUE
 FROM
-     `tax` tax]]></queryString>
+     `tax` tax
+where start_date <= $P{startDate} ]]></queryString>
 
-	<field name="ID_TAX" class="java.lang.Long"/>
 	<field name="DESCRIPTION" class="java.lang.String"/>
-	<field name="START_DATE" class="java.sql.Timestamp"/>
-	<field name="END_DATE" class="java.sql.Timestamp"/>
 	<field name="TAX_VALUE" class="java.lang.Double"/>
 
 	<variable name="totalServicesTax" class="java.lang.Double" resetType="Report" calculation="Sum">
@@ -40,6 +41,9 @@ FROM
 	</variable>
 	<variable name="totalConsumption" class="java.lang.Double" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[new java.lang.Double(  ($P{totalService}.doubleValue()) +($V{totalServicesTax}.doubleValue()))]]></variableExpression>
+	</variable>
+	<variable name="totalByLocation" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$V{totalConsumption}]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -61,9 +65,9 @@ FROM
 			<band height="24"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="160"
+						x="202"
 						y="2"
-						width="221"
+						width="179"
 						height="17"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -76,7 +80,7 @@ FROM
 					<textElement verticalAlignment="Middle">
 						<font fontName="Verdana" size="10"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPTION}.concat("  ".concat( $F{TAX_VALUE}.toString( ).concat("% :" ) ) )]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -100,13 +104,13 @@ FROM
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="38"  isSplitAllowed="true" >
+			<band height="33"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="388"
-						y="-1"
+						y="1"
 						width="78"
-						height="15"
+						height="12"
 						key="textField"/>
 					<box></box>
 					<textElement textAlignment="Right">
@@ -117,35 +121,39 @@ FROM
 				<staticText>
 					<reportElement
 						x="202"
-						y="0"
+						y="1"
 						width="179"
 						height="13"
 						key="staticText-1"/>
 					<box></box>
 					<textElement>
-						<font fontName="Verdana"/>
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Total Otros Rubros:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="200"
+						mode="Opaque"
+						x="201"
 						y="17"
-						width="179"
+						width="187"
 						height="13"
+						backcolor="#CCCCCC"
 						key="staticText-2"/>
 					<box></box>
 					<textElement>
-						<font fontName="Verdana"/>
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Total a Pagar:]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="true" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
+						mode="Opaque"
 						x="388"
-						y="16"
+						y="17"
 						width="78"
 						height="13"
+						backcolor="#CCCCCC"
 						key="textField"/>
 					<box></box>
 					<textElement textAlignment="Right">

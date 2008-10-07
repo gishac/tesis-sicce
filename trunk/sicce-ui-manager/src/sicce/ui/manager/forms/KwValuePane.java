@@ -46,7 +46,7 @@ public class KwValuePane extends JTabExtended<IKwValue> {
      */
     public KwValuePane(){
         initComponents();
-        txtValue1.setDocument(new JTextFieldInteger(0,100));
+     //   txtValue1.setDocument(new JTextFieldInteger(0,100));
         getControlsToClear().add(txtValue1);
         getControlsToClear().add(txtValue2);
         getControlsToClear().add(dpStartDate);

@@ -45,7 +45,9 @@ public class GenerateStaticReport {
     private static URL UserPowerMeter = resource.getResourceDir("UserPowerMeter.jasper");
     private static URL UserPowerMeterException = resource.getResourceDir("UserPowerMeterException.jasper");
     private static URL UserPowerMeterAlarm = resource.getResourceDir("UserPowerMeterAlarm.jasper");
-   private static URL ConsumptionbyUserReport = resource.getResourceDir("/CostPowerMeter.jasper");
+   private static URL ConsumptionbyUserReport = resource.getResourceDir("/CostPowerMeter.jasper");  
+   private static URL ConsumptionbyUserSubReport = resource.getResourceDir("/CostPowerMeter_subreport0.jasper");
+    
     
     private static ResourceMap resourceMap;
 
@@ -56,7 +58,7 @@ public class GenerateStaticReport {
 
     private boolean checkResource(Component pComponentePadre) {
         if (urlLogoUCSG == null || urlLogoSICCE == null || zoneReport == null || ConsumptionbyLocationReport == null 
-                || ConsumptionbyZoneReport == null || UserPowerMeter == null || UserPowerMeterException == null || UserPowerMeterAlarm == null ) {
+                || ConsumptionbyZoneReport == null || UserPowerMeter == null || UserPowerMeterException == null || UserPowerMeterAlarm == null || ConsumptionbyUserSubReport == null ) {
             JOptionPane.showMessageDialog(pComponentePadre, resourceMap.getString("errorReport"), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -143,6 +145,7 @@ public class GenerateStaticReport {
             //Agrego las imagenes que lleve todo reporte
             pCriterios.put("logoUCSG", urlLogoUCSG);
             pCriterios.put("logoSICCE", urlLogoSICCE);
+            pCriterios.put("consumptionTax", ConsumptionbyUserSubReport);
             pCriterios.putAll(parameters);
             
             JasperPrint jasperPrint = null;
