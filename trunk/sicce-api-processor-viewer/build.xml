@@ -66,4 +66,7 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <target name="-post-jar">
+            <echo file="${dist.jar.dir}\sicce-api-processor-viewr.bat">java -jar sicce-api-processor-viewer.jar</echo>
+    </target>
 </project>
