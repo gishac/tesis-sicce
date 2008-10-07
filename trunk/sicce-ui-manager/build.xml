@@ -66,4 +66,8 @@
     nbproject/build-impl.xml file. 
 
     -->
+    
+    <target name="-post-jar">
+            <echo file="${dist.jar.dir}\sicce-ui-manager.bat">java -jar sicce-ui-manager.jar</echo>
+    </target>
 </project>
