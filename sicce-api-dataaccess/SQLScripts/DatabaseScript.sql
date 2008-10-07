@@ -304,11 +304,6 @@ insert into PARAMETER values(0,'SMTP_PORT','Puerto SMTP','587',1);
 insert into PARAMETER values(0,'MAIL_SENDER','Usuario de envio de mail','gishac@gmail.com',1);
 insert into PARAMETER values(0,'MAIL_SENDER_PASSWORD','Clave de usuario de envio de mail','gisbert',1);
 insert into PARAMETER values(0,'MAIL_USE_SSL','Usar SSL','true',1);
-insert into PARAMETER values(0,'KWH_VALUE_1','Valor Kw/h 7/22','0.06',1);
-insert into PARAMETER values(0,'KWH_VALUE_2','Valor Kw/h 22/7','0.06',1);
-insert into PARAMETER values(0,'FEE_STREET_LIGHTNING','Tasa Alumbrado Público','0',1);
-insert into PARAMETER values(0,'FEE_GARBAGE_COLLECT','Tasa Recolección Basura','0',1);
-insert into PARAMETER values(0,'FEE_FIRE_DEPARTMENT','Tasa Cuerpo de Bomberos','0',1);
 insert into PARAMETER values(0,'SERVER_IP','Dirección IP del servidor de monitoreo','192.168.8.198',1);
 insert into PARAMETER values(0,'SERVER_PORT','Puerto utilizado por el servidor de monitoreo','5500',1);
 
@@ -340,10 +335,12 @@ END $$
 DELIMITER ;
 
 
+DROP PROCEDURE IF EXISTS `getConsumptionPerday`;
+
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS `sicce`.`getConsumptionPerday` $$
-CREATE PROCEDURE `getConsumptionPerday`(IN  startDate DATE, IN  endDate DATE)
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
+CREATE DEFINER=`root`@`192.168.8.197` PROCEDURE `getConsumptionPerday`(IN  startDate DATE, IN  endDate DATE)
 BEGIN
 DECLARE done INT DEFAULT 0;
 DECLARE TMP_DATE  DATE;
@@ -386,21 +383,21 @@ REPEAT
 
                 select VAR_ID_POWER_METER,TMP_DATE;
 
-                SELECT total_active_power into LAST_READ_PREVIOUS
+                SELECT active_energy_in into LAST_READ_PREVIOUS
                 FROM measure WHERE date_measure IN (  SELECT max(date_measure)
                 FROM measure
                 WHERE HOUR(date_measure) < 22 AND DATE(date_measure) = DATE(DATE_ADD(TMP_DATE,INTERVAL -1 DAY))
                 AND id_power_meter = VAR_ID_POWER_METER) AND id_power_meter = VAR_ID_POWER_METER;
 
 
-                SELECT total_active_power into START_READ
+                SELECT active_energy_in into START_READ
                 FROM measure WHERE date_measure IN (  SELECT max(date_measure)
                 FROM measure
                 WHERE HOUR(date_measure) < 7 AND DATE(date_measure) = TMP_DATE AND id_power_meter = VAR_ID_POWER_METER)
                 AND id_power_meter = VAR_ID_POWER_METER;
 
 
-                SELECT total_active_power INTO LAST_READ
+                SELECT active_energy_in INTO LAST_READ
                 FROM measure WHERE date_measure IN (  SELECT MAX(date_measure)
                 FROM measure WHERE HOUR(date_measure) < 22  AND DATE(date_measure) = TMP_DATE AND id_power_meter = VAR_ID_POWER_METER)
                 AND id_power_meter = VAR_ID_POWER_METER;
@@ -432,4 +429,5 @@ select * from tmp_consumption;
 
 END $$
 DELIMITER ;
+
 
