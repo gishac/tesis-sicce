@@ -103,6 +103,7 @@ public class SicceapiprocessorviewerView extends FrameView {
         SetTrayIcon();
         BuildPanes();
         RunProcessor();
+        
     }
 
     /** This method is called from within the constructor to
