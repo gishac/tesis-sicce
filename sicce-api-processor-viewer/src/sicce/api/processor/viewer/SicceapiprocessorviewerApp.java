@@ -21,9 +21,11 @@ public class SicceapiprocessorviewerApp extends SingleFrameApplication {
     @Override protected void startup() {
         
         SicceapiprocessorviewerView sicceMonitor = new SicceapiprocessorviewerView(this);
+        
         LoginForm loginForm = new LoginForm(sicceMonitor.getResourceMap());
         loginForm.setVisible(true);
         if(loginForm.getDialogResult() == DialogResult.Ok){
+            sicceMonitor.getFrame().setIconImage(sicceMonitor.getResourceMap().getImageIcon("ApplicationIcon").getImage());
             sicceMonitor.setCurrentUser(loginForm.getCurrentUser());
             sicceMonitor.Init();
             show(sicceMonitor);

@@ -67,6 +67,7 @@ public class LoginForm extends javax.swing.JDialog {
         this();
         this.setTitle(resourceMap.getString("ApplicationName"));
         this.resourceMap = resourceMap;
+        this.setIconImage(null);
     }
     
     /**
