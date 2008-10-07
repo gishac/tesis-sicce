@@ -31,9 +31,7 @@
 	<parameter name="iduser" isForPrompting="false" class="java.lang.Integer"/>
 	<parameter name="costPr1" isForPrompting="false" class="java.lang.Double"/>
 	<parameter name="costPr2" isForPrompting="false" class="java.lang.Double"/>
-	<parameter name="feeStreetLightning" isForPrompting="false" class="java.lang.Double"/>
-	<parameter name="feeGarbageCollect" isForPrompting="false" class="java.lang.Double"/>
-	<parameter name="feeFireDepartment" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="totalTax" isForPrompting="false" class="java.lang.Double"/>
 	<queryString><![CDATA[SELECT
      power_meter.`ID_POWER_METER` AS power_meter_ID_POWER_METER,
      location.`ID_LOCATION` AS location_ID_LOCATION,
@@ -60,13 +58,10 @@ GROUP BY location_power_meter.`ID_LOCATION`, location_power_meter.`ID_POWER_METE
 	<field name="tmp_consumption_CONSUMPTION_PER_DAY_PR2" class="java.lang.Double"/>
 
 	<variable name="totalConsumption" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new java.lang.Double(  ($F{tmp_consumption_CONSUMPTION_PER_DAY_PR1}.doubleValue()) +($F{tmp_consumption_CONSUMPTION_PER_DAY_PR2}.doubleValue()) )]]></variableExpression>
+		<variableExpression><![CDATA[new Double (($P{costPr1}.doubleValue() *$F{tmp_consumption_CONSUMPTION_PER_DAY_PR1}.doubleValue() + $P{costPr2}.doubleValue() * $F{tmp_consumption_CONSUMPTION_PER_DAY_PR2}.doubleValue()))]]></variableExpression>
 	</variable>
-	<variable name="otherFee" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new java.lang.Double( ( ($P{feeStreetLightning}.doubleValue()) +($P{feeGarbageCollect}.doubleValue()) +($P{feeFireDepartment}.doubleValue()))/100)]]></variableExpression>
-	</variable>
-	<variable name="totalOtherFee" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new java.lang.Double(  ($V{otherFee}.doubleValue()) *($V{totalConsumption}.doubleValue()) )]]></variableExpression>
+	<variable name="totalTaxConsumption" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new java.lang.Double(  ($P{totalTax}.doubleValue()/100) *($V{totalConsumption}.doubleValue()) )]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -318,7 +313,7 @@ GROUP BY location_power_meter.`ID_LOCATION`, location_power_meter.`ID_POWER_METE
 					</columnGroup>
 
 					<measure name="consumption_Sum" class="java.lang.Double" calculation="Sum">
-						<measureExpression><![CDATA[new Double (($P{costPr1}.doubleValue() *$F{tmp_consumption_CONSUMPTION_PER_DAY_PR1}.doubleValue() + $P{costPr2}.doubleValue() * $F{tmp_consumption_CONSUMPTION_PER_DAY_PR2}.doubleValue()) + $V{totalOtherFee}.doubleValue())]]></measureExpression>
+						<measureExpression><![CDATA[new Double (($P{costPr1}.doubleValue() *$F{tmp_consumption_CONSUMPTION_PER_DAY_PR1}.doubleValue() + $P{costPr2}.doubleValue() * $F{tmp_consumption_CONSUMPTION_PER_DAY_PR2}.doubleValue()) + $V{totalTaxConsumption}.doubleValue())]]></measureExpression>
 					</measure>
 					<crosstabCell width="65" height="30">
 						<cellContents mode="Transparent">
@@ -441,7 +436,7 @@ GROUP BY location_power_meter.`ID_LOCATION`, location_power_meter.`ID_POWER_METE
 						<categorySeries>
 							<seriesExpression><![CDATA[$F{power_meter_DESCRIPTION}]]></seriesExpression>
 							<categoryExpression><![CDATA[$F{location_DESCRIPTION}]]></categoryExpression>
-							<valueExpression><![CDATA[new Double ($P{costPr1}.doubleValue() *$F{tmp_consumption_CONSUMPTION_PER_DAY_PR1}.doubleValue() + $P{costPr2}.doubleValue() * $F{tmp_consumption_CONSUMPTION_PER_DAY_PR2}.doubleValue() + $V{totalOtherFee}.doubleValue())]]></valueExpression>
+							<valueExpression><![CDATA[new Double ($P{costPr1}.doubleValue() *$F{tmp_consumption_CONSUMPTION_PER_DAY_PR1}.doubleValue() + $P{costPr2}.doubleValue() * $F{tmp_consumption_CONSUMPTION_PER_DAY_PR2}.doubleValue() + $V{totalTaxConsumption}.doubleValue())]]></valueExpression>
 							<labelExpression><![CDATA[$F{power_meter_DESCRIPTION}.concat(" ").concat(new Double ($P{costPr1}.doubleValue() *$F{tmp_consumption_CONSUMPTION_PER_DAY_PR1}.doubleValue() + $P{costPr2}.doubleValue() * $F{tmp_consumption_CONSUMPTION_PER_DAY_PR2}.doubleValue()).toString())]]></labelExpression>
 				<itemHyperlink >
 				</itemHyperlink>

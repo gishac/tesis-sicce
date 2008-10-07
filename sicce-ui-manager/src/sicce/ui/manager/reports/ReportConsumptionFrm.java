@@ -5,62 +5,52 @@
  */
 package sicce.ui.manager.reports;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdesktop.application.ResourceMap;
-import sicce.api.businesslogic.ParameterBizObject;
-import sicce.api.dataaccess.ParameterDAO;
-import sicce.api.dataaccess.ParameterDB;
+import sicce.api.businesslogic.KwValueBizObject;
+import sicce.api.businesslogic.TaxBizObject;
+import sicce.api.dataaccess.KwValueDAO;
+import sicce.api.dataaccess.KwValueDB;
+import sicce.api.dataaccess.TaxDAO;
+import sicce.api.dataaccess.TaxDB;
 import sicce.api.dataaccess.ReportDAO;
 import sicce.api.info.ConstantsProvider;
-import sicce.api.info.interfaces.IParameter;
+import sicce.api.info.interfaces.IKwValue;
+import sicce.api.info.interfaces.ITax;
 import sicce.api.info.interfaces.IUserSicce;
 import sicce.ui.manager.controls.JOptionPaneExtended;
 
 /**
  *
- * @author  gish@c
+ * @author  karu
  */
 public class ReportConsumptionFrm extends javax.swing.JFrame {
 
     /** Creates new form ReportConsumptionFrm */
-    Double costPeriod1;
-    Double costPeriod2;
-    Double feeStreetLightning;
-    Double feeGarbageCollect;
-    Double feeFireDepartment;
-   
+    private static Double costPeriod1;
+    private static Double costPeriod2;
     GenerateStaticReport staticReport;
     private static ResourceMap resourceMap;
     private static IUserSicce currentUser;
-    private static  Map parameters;
+    private static Map parameters;
+    private IKwValue kwvalueRegister;
 
     public ReportConsumptionFrm(ResourceMap resourceMap, IUserSicce currentUser) {
         try {
             initComponents();
             this.resourceMap = resourceMap;
             this.currentUser = currentUser;
-           
-            IParameter paramKwhPeriod1 = ParameterDB.GetParameterByKey(ConstantsProvider.KWH_VALUE_1);
-            IParameter paramKwhPeriod2 = ParameterDB.GetParameterByKey(ConstantsProvider.KWH_VALUE_2);
-            IParameter paramfeeStreetLightning = ParameterDB.GetParameterByKey(ConstantsProvider.FEE_STREET_LIGHTNING);
-            IParameter paramfeeGarbageCollect = ParameterDB.GetParameterByKey(ConstantsProvider.FEE_GARBAGE_COLLECT);
-            IParameter paramfeeFireDepartment = ParameterDB.GetParameterByKey(ConstantsProvider.FEE_FIRE_DEPARTMENT);
-            
-            txtKwhPeriod1.setText(paramKwhPeriod1.getValue());
-            txtKwhPeriod2.setText(paramKwhPeriod2.getValue());
-            txtfeeStreetLightning.setText(paramfeeStreetLightning.getValue());
-            txtfeeGarbageCollect.setText(paramfeeGarbageCollect.getValue());
-            txtfeeFireDepartment.setText(paramfeeFireDepartment.getValue());
-            costPeriod1 = Double.valueOf(paramKwhPeriod1.getValue());
-            costPeriod2 = Double.valueOf(paramKwhPeriod2.getValue());
-            feeStreetLightning = Double.valueOf(paramfeeStreetLightning.getValue());
-            feeGarbageCollect = Double.valueOf(paramfeeGarbageCollect.getValue());
-            feeFireDepartment = Double.valueOf(paramfeeFireDepartment.getValue());
-            
+
+            addJDateListener();
+
+
         } catch (Exception ex) {
             Logger.getLogger(ReportConsumptionFrm.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -86,13 +76,6 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtKwhPeriod2 = new javax.swing.JTextField();
         txtKwhPeriod1 = new javax.swing.JTextField();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        txtfeeStreetLightning = new javax.swing.JTextField();
-        txtfeeGarbageCollect = new javax.swing.JTextField();
-        txtfeeFireDepartment = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         rbLocation = new javax.swing.JRadioButton();
@@ -156,66 +139,6 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
         jPanel2.add(txtKwhPeriod1);
         txtKwhPeriod1.setBounds(90, 20, 100, 20);
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel5.border.title"))); // NOI18N
-        jPanel5.setName("jPanel5"); // NOI18N
-
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
-
-        jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
-        jLabel6.setName("jLabel6"); // NOI18N
-
-        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
-        jLabel7.setName("jLabel7"); // NOI18N
-
-        txtfeeStreetLightning.setText(resourceMap.getString("txtfeeStreetLightning.text")); // NOI18N
-        txtfeeStreetLightning.setEnabled(false);
-        txtfeeStreetLightning.setName("txtfeeStreetLightning"); // NOI18N
-
-        txtfeeGarbageCollect.setEnabled(false);
-        txtfeeGarbageCollect.setName("txtfeeGarbageCollect"); // NOI18N
-
-        txtfeeFireDepartment.setEnabled(false);
-        txtfeeFireDepartment.setName("txtfeeFireDepartment"); // NOI18N
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addComponent(txtfeeStreetLightning, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtfeeFireDepartment)
-                            .addComponent(txtfeeGarbageCollect, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE))))
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtfeeStreetLightning, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtfeeGarbageCollect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtfeeFireDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel6.border.title"))); // NOI18N
         jPanel6.setName("jPanel6"); // NOI18N
 
@@ -266,15 +189,14 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(rbUser)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(143, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(rbUser)
-                .addContainerGap(7, Short.MAX_VALUE))
+            .addComponent(rbUser)
         );
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -283,35 +205,32 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnGenerate)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE))
-                .addGap(21, 21, 21))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,14 +238,12 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnGenerate)
-                .addGap(25, 25, 25))
+                .addGap(36, 36, 36))
         );
 
         pack();
@@ -337,31 +254,34 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
 
     private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
         // TODO add your handling code here:
+        double totalTax = 0;
         if (rbLocation.isSelected() || rbZone.isSelected() || rbUser.isSelected()) {
             ReportDAO report = new ReportDAO();
             Map parameters = new HashMap();
             staticReport = new GenerateStaticReport(resourceMap);
-            
+
             parameters.put("iduser", currentUser.getIdUserSicce());
             parameters.put("startDate", dtpStartDate.getDate());
             parameters.put("endDate", dtpEndDate.getDate());
             parameters.put("costPr1", costPeriod1);
             parameters.put("costPr2", costPeriod2);
-            parameters.put("feeStreetLightning", feeStreetLightning);
-            parameters.put("feeGarbageCollect", feeGarbageCollect);
-            parameters.put("feeFireDepartment", feeFireDepartment);
-            
-            report.callSpConsumption(dtpStartDate.getDate(),dtpEndDate.getDate() );
-            if (rbUser.isSelected()){
+
+
+            report.callSpConsumption(dtpStartDate.getDate(), dtpEndDate.getDate());
+            if (rbUser.isSelected()) {
                 staticReport.GenerateStaticIndividualConsumptionReport(null, parameters);
-            } else{
-               staticReport.GenerateStaticTotalConsumptionReport(null, rbLocation.isSelected(), rbZone.isSelected(), parameters);
+            } else {
+                List<ITax> taxes = new ArrayList<ITax>();
+                taxes = TaxDB.GetTaxValueForDates(dtpStartDate.getDate(), dtpEndDate.getDate());
+                for (ITax tax : taxes) {
+                    totalTax = totalTax + tax.getTaxValue();
+                }
+                parameters.put("totalTax", totalTax);
+                staticReport.GenerateStaticTotalConsumptionReport(null, rbLocation.isSelected(), rbZone.isSelected(), parameters);
             }
-            
-        }
-        else
-        {
-           JOptionPaneExtended.showMessageDialog(null, "Seleccione el tipo de Reporte");
+
+        } else {
+            JOptionPaneExtended.showMessageDialog(null, "Seleccione el tipo de Reporte");
         }
 }//GEN-LAST:event_btnGenerateActionPerformed
 
@@ -376,31 +296,57 @@ public class ReportConsumptionFrm extends javax.swing.JFrame {
             }
         });
     }
+
+    public void addJDateListener() {
+
+        dtpEndDate.addPropertyChangeListener(new PropertyChangeListener() {
+
+            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+                if (!propertyChangeEvent.getPropertyName().equals("date")) {
+                    return;
+                }
+
+                if (dtpStartDate.getDate() != null && dtpEndDate.getDate() != null) {
+                    kwvalueRegister = null;
+                    List<IKwValue> kwvalues = new ArrayList<IKwValue>();
+                    kwvalues = KwValueDB.GetKWValueForDates(dtpStartDate.getDate(), dtpEndDate.getDate());
+                    if (!kwvalues.isEmpty()) {
+                        kwvalueRegister = kwvalues.get(0);
+                    }
+                }
+                if (kwvalueRegister == null) {
+                    JOptionPaneExtended.showMessageDialog(null, "No existen costos para el rango definido");
+                    txtKwhPeriod1.setText("");
+                    txtKwhPeriod2.setText("");
+                    return;
+                } else {
+                    txtKwhPeriod1.setText(kwvalueRegister.getKwValue1().toString());
+                    txtKwhPeriod2.setText(kwvalueRegister.getKwValue2().toString());
+                    costPeriod1 = kwvalueRegister.getKwValue1();
+                    costPeriod2 = kwvalueRegister.getKwValue2();
+
+                }
+            }
+        });
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerate;
     private javax.swing.ButtonGroup buttonGroup1;
     private com.toedter.calendar.JDateChooser dtpEndDate;
     private com.toedter.calendar.JDateChooser dtpStartDate;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JRadioButton rbLocation;
     private javax.swing.JRadioButton rbUser;
     private javax.swing.JRadioButton rbZone;
     private javax.swing.JTextField txtKwhPeriod1;
     private javax.swing.JTextField txtKwhPeriod2;
-    private javax.swing.JTextField txtfeeFireDepartment;
-    private javax.swing.JTextField txtfeeGarbageCollect;
-    private javax.swing.JTextField txtfeeStreetLightning;
     // End of variables declaration//GEN-END:variables
 }
