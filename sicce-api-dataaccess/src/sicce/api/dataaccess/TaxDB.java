@@ -5,6 +5,7 @@
 
 package sicce.api.dataaccess;
 
+import java.util.Date;
 import java.util.List;
 import sicce.api.info.interfaces.ITax;
 
@@ -41,6 +42,10 @@ public class TaxDB {
 
     public static List GetAllTaxes() {
         return DataAccessManager.getInstance().getTaxDB().findAll();
+    }
+    
+    public static List GetTaxValueForDates(Date startDate, Date endDate){
+        return DataAccessManager.getInstance().getTaxDB().findByDates(startDate, endDate);
     }
     
 }
