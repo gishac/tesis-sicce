@@ -15,6 +15,7 @@ import sicce.api.dataaccess.TaxDB;
 import sicce.api.info.ConstantsProvider.DialogResult;
 import sicce.api.info.interfaces.ITax;
 import sicce.api.util.ComponentUtil;
+import sicce.api.util.JTextFieldDecimal;
 import sicce.api.util.JTextFieldInteger;
 import sicce.api.util.JTextFieldLimit;
 import sicce.api.util.Validator;
@@ -43,7 +44,7 @@ public class TaxPane extends JTabExtended<ITax> {
     public TaxPane() {
         initComponents();
         txtDescription.setDocument(new JTextFieldLimit(150));
-        txtValue.setDocument(new JTextFieldInteger(0,100));
+        txtValue.setDocument(new JTextFieldDecimal());
         getControlsToClear().add(txtDescription);
         getControlsToClear().add(txtValue);
         getControlsToClear().add(dpStartDate);
