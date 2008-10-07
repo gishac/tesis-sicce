@@ -48,4 +48,8 @@ public class KwValueDB {
         return DataAccessManager.getInstance().getKwValueDB().findByDates(startDate, endDate);
     }
     
+    public static List FindDatesInRange(Date startDate, Date endDate){
+        return DataAccessManager.getInstance().getKwValueDB().findDatesInRange(startDate, endDate);
+    }
+    
 }

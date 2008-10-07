@@ -122,6 +122,22 @@ public class KwValueDAO extends HibernateDaoSupport {
 			throw re;
 		}
         }
+        
+        public List findDatesInRange(Date startDate, Date endDate){
+            try {
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                        String startDateParam = formatter.format(startDate);
+                        String endDateParam = formatter.format(endDate);
+			String queryString = "from KwValue as model where model.endDate"
+					+ " >= '" + startDateParam + "' and model.startDate <= '" + endDateParam + "'";
+                        
+                        return getHibernateTemplate().find(queryString);
+                        
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+        }
 
 	public List findAll() {
 		log.debug("finding all KwValue instances");
