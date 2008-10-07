@@ -37,4 +37,16 @@ public class KwValueBizObject {
         return null;
     }
     
+    /**
+     * Valida que no exista otro valor de kw/h en el rango de fechas especificadas
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public boolean ValidateDateRanges(Date startDate, Date endDate){        
+        List<IKwValue> result = null;
+        result = KwValueDB.FindDatesInRange(startDate, endDate);
+        return result.size() == 0;
+    }
+    
 }
