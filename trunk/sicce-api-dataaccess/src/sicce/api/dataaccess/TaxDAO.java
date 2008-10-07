@@ -1,5 +1,7 @@
 package sicce.api.dataaccess;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -98,6 +100,23 @@ public class TaxDAO extends HibernateDaoSupport {
 	public List findByTaxValue(Object taxValue) {
 		return findByProperty(TAX_VALUE, taxValue);
 	}
+        
+        public List findByDates(Date startDate, Date endDate){
+            try {
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                        String startDateParam = formatter.format(startDate);
+                        String endDateParam = formatter.format(endDate);
+			String queryString = "from Tax as model where model.startDate"
+					+ " <= '" + startDateParam + "' and model.endDate >= '" + endDateParam + "'";
+                        
+                        return getHibernateTemplate().find(queryString);
+                        
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+        }
+
 
 	public List findAll() {
 		log.debug("finding all Tax instances");

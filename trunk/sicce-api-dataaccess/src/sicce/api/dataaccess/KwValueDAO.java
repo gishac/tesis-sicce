@@ -113,7 +113,7 @@ public class KwValueDAO extends HibernateDaoSupport {
                         String startDateParam = formatter.format(startDate);
                         String endDateParam = formatter.format(endDate);
 			String queryString = "from KwValue as model where model.startDate"
-					+ " >= '" + startDateParam + "' and model.endDate <= '" + endDateParam + "'";
+					+ " <= '" + startDateParam + "' and model.endDate >= '" + endDateParam + "'";
                         
                         return getHibernateTemplate().find(queryString);
                         
